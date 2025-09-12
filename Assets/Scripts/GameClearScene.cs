@@ -18,7 +18,7 @@ public class GameClearScene : MonoBehaviour
 
     private void Start()
     {
-        
+        StartCoroutine(OnStart());
     }
 
     IEnumerator OnStart()
@@ -26,10 +26,15 @@ public class GameClearScene : MonoBehaviour
         yield return new WaitForSeconds(loadWaitTime);
         isLoadable = true;
         // button select
+        nextButton.Select();
     }
 
     public void OnTitleButtonClick()
     {
-        SceneManager.LoadScene(nextScene);
+        if (isLoadable)
+        {
+            SceneManager.LoadScene(nextScene);
+
+        }
     }
 }
