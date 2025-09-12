@@ -1,16 +1,35 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameClearScene : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField]
+    private string nextScene = "Title";
+
+    [SerializeField]
+    private float loadWaitTime = 1;
+
+    [SerializeField]
+    private Button nextButton = null;
+
+    private bool isLoadable = false;
+
+    private void Start()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    IEnumerator OnStart()
     {
-        
+        yield return new WaitForSeconds(loadWaitTime);
+        isLoadable = true;
+        // button select
+    }
+
+    public void OnTitleButtonClick()
+    {
+        SceneManager.LoadScene(nextScene);
     }
 }
