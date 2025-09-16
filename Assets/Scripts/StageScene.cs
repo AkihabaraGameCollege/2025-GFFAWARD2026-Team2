@@ -2,15 +2,11 @@ using UnityEngine;
 
 public class StageScene : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    // 自分自身のインスタンスを取得します。
+    public static StageScene Instance { get; private set; } = null;
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        
+        Instance = this;
     }
 }
