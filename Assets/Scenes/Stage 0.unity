@@ -1062,6 +1062,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 1639803956734386482, guid: 7826d37eca2123749bf50017c6d4dfbc, type: 3}
+      propertyPath: EndPoint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1639803956734386482, guid: 7826d37eca2123749bf50017c6d4dfbc, type: 3}
+      propertyPath: EndPoint.y
+      value: -1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1639803956734386482, guid: 7826d37eca2123749bf50017c6d4dfbc, type: 3}
+      propertyPath: EndPoint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1639803956734386482, guid: 7826d37eca2123749bf50017c6d4dfbc, type: 3}
+      propertyPath: startPoint.y
+      value: -0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 1676061408467678680, guid: 7826d37eca2123749bf50017c6d4dfbc, type: 3}
       propertyPath: m_Camera
       value: 
