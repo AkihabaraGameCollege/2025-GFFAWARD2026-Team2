@@ -64,7 +64,7 @@ public class Player : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (!IsSleeping) Jump(jumpForce);
+        if (!IsSleeping && (motionState == MotionState.Stopping || motionState == MotionState.Walking)) Jump(jumpForce);
     }
 
     private void FixedUpdate()

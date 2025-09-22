@@ -1123,7 +1123,15 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7248677125196857952, guid: 7826d37eca2123749bf50017c6d4dfbc, type: 3}
+      propertyPath: jumpForce
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248677125196857952, guid: 7826d37eca2123749bf50017c6d4dfbc, type: 3}
       propertyPath: isEnableSense
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8308588155637797034, guid: 7826d37eca2123749bf50017c6d4dfbc, type: 3}
+      propertyPath: m_Mass
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
