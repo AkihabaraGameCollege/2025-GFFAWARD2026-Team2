@@ -1081,7 +1081,7 @@ PrefabInstance:
     - target: {fileID: 1676061408467678680, guid: 7826d37eca2123749bf50017c6d4dfbc, type: 3}
       propertyPath: m_Camera
       value: 
-      objectReference: {fileID: 330585545}
+      objectReference: {fileID: 0}
     - target: {fileID: 6665057671805973998, guid: 7826d37eca2123749bf50017c6d4dfbc, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1129,6 +1129,26 @@ PrefabInstance:
     - target: {fileID: 7248677125196857952, guid: 7826d37eca2123749bf50017c6d4dfbc, type: 3}
       propertyPath: isEnableSense
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248677125196857952, guid: 7826d37eca2123749bf50017c6d4dfbc, type: 3}
+      propertyPath: rotationOffset
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248677125196857952, guid: 7826d37eca2123749bf50017c6d4dfbc, type: 3}
+      propertyPath: attackEndDegree
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248677125196857952, guid: 7826d37eca2123749bf50017c6d4dfbc, type: 3}
+      propertyPath: totalMoveDegree
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248677125196857952, guid: 7826d37eca2123749bf50017c6d4dfbc, type: 3}
+      propertyPath: attackStartDegree
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7248677125196857952, guid: 7826d37eca2123749bf50017c6d4dfbc, type: 3}
+      propertyPath: attackRotationSpeed
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 8308588155637797034, guid: 7826d37eca2123749bf50017c6d4dfbc, type: 3}
       propertyPath: m_Mass

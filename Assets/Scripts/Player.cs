@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +10,9 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private float jumpForce = 10;
+
+    [SerializeField]
+    private float rotationOffset = 0;
 
     [SerializeField]
     private bool isEnableSense = true;
@@ -23,6 +27,20 @@ public class Player : MonoBehaviour
     private Vector3 groundCheckStartPoint = new Vector3(0, -0.5f, 0);
     [SerializeField]
     private Vector3 groundCheckEndPoint = new Vector3(0, -1.5f, 0);
+
+    [Header("攻撃関連")]
+    [SerializeField]
+    [Tooltip("childを指定")]
+    private AttackCollider attackCollider = null;
+    [SerializeField]
+    [Tooltip("攻撃判定の一番上の角度(度数法)を指定")]
+    private float attackStartDegree = 0;
+    [SerializeField]
+    [Tooltip("攻撃判定の一番下の角度(度数法)を指定")]
+    private float totalMoveDegree = 0;
+    [SerializeField]
+    [Tooltip("一秒で動かす各度(度数法)を指定")]
+    private float attackRotationSpeed = 1;
 
     private bool IsGrounded => Physics.Linecast(transform.position + groundCheckStartPoint, transform.position + groundCheckEndPoint);
 
@@ -64,7 +82,12 @@ public class Player : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (!IsSleeping && (motionState == MotionState.Stopping || motionState == MotionState.Walking)) Jump(jumpForce);
+        if (!IsSleeping && context.started && (motionState == MotionState.Stopping || motionState == MotionState.Walking)) Jump(jumpForce);
+    }
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        if (!IsSleeping && context.started) Attack();
     }
 
     private void FixedUpdate()
@@ -147,7 +170,7 @@ public class Player : MonoBehaviour
 
         // 回転
         transform.rotation = Quaternion.Euler(0,
-                        (Mathf.Atan2(Input.x, Input.y) * Mathf.Rad2Deg), 0);
+                        (Mathf.Atan2(Input.x, Input.y) * Mathf.Rad2Deg) + rotationOffset, 0);
         // 以下、Unityの機能を使った簡単バージョン(AI頼り)
         //transform.rotation = Quaternion.LookRotation(new Vector3(moveInput.x, 0f, moveInput.y));
     }
@@ -159,5 +182,11 @@ public class Player : MonoBehaviour
         rigidbody.linearVelocity = velocity;
 
         motionState = MotionState.JumpAnticipation;
+    }
+
+    private void Attack()
+    {
+        attackCollider.Init(attackStartDegree, totalMoveDegree, attackRotationSpeed);
+        Debug.Log("Attack");
     }
 }
