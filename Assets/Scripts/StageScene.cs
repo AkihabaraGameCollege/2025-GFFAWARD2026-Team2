@@ -58,7 +58,7 @@ public class StageScene : MonoBehaviour
         pause.OnExitButtonClick.AddListener(Exit);
 
         // ゲーム開始時はポーズ状態ではない
-        sceneState = SceneState.Intro;
+        sceneState = SceneState.Play;
     }
 
     void Update()
