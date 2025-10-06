@@ -42,6 +42,10 @@ public class Player : MonoBehaviour
     [Tooltip("一秒で動かす各度(度数法)を指定")]
     private float attackRotationSpeed = 1;
 
+    // ポーズUIを指定します。
+    [SerializeField]
+    private pauseUI pause = null;
+
     private bool IsGrounded => Physics.Linecast(transform.position + groundCheckStartPoint, transform.position + groundCheckEndPoint);
 
     // 移動ベクトル保持用
@@ -88,6 +92,16 @@ public class Player : MonoBehaviour
     public void OnAttack(InputAction.CallbackContext context)
     {
         if (!IsSleeping && context.started) Attack();
+    }
+
+    // Pause アクションが発生した際に呼び出されます。
+    public void OnPause(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            StageScene.Instance.TogglePause();
+        pause.Show();
+        }
     }
 
     private void FixedUpdate()
