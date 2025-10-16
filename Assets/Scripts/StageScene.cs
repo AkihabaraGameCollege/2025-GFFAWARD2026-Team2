@@ -15,7 +15,7 @@ public class StageScene : MonoBehaviour
 
     // ポーズUIを指定します。
     [SerializeField]
-    private pauseUI pause = null;
+    private PauseUI pause = null;
 
     // ポーズ状態の場合はtrue、プレイ状態の場合はfalse
     public bool IsPaused { get; private set; } = false;

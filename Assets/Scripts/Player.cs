@@ -44,7 +44,7 @@ public class Player : MonoBehaviour
 
     // ポーズUIを指定します。
     [SerializeField]
-    private pauseUI pause = null;
+    private PauseUI pause = null;
 
     private bool IsGrounded => Physics.Linecast(transform.position + groundCheckStartPoint, transform.position + groundCheckEndPoint);
 
