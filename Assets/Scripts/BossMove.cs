@@ -10,12 +10,26 @@ public class BossMove : MonoBehaviour
     [SerializeField]
     private float moveP = 3;
 
+    [Header("Collider")]
+    [SerializeField]
+    private Collider attackCollider;
+    [SerializeField]
+    private Collider damageArea;
+
+    [Header("Stats")]
+    
+    [SerializeField]
+    private int maxHealth;
+    private int health;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
         //行動パターン開始
         StartCoroutine(Move());
+
+        health = maxHealth;
     }
 
     //ジャンプ
@@ -48,5 +62,21 @@ public class BossMove : MonoBehaviour
             //3秒待つ
             yield return new WaitForSeconds(3);
         }
+    }
+
+    public void TakeDamage()
+    {
+        health--;
+        Debug.Log("TakeDamage");
+
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        Destroy(gameObject);
     }
 }
