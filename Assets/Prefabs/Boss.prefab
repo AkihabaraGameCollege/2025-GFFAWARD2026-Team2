@@ -91,8 +91,8 @@ GameObject:
   - component: {fileID: 7838690427887041136}
   - component: {fileID: 4934914448239608629}
   - component: {fileID: 8383499099893546306}
-  - component: {fileID: 5972236684258173089}
-  m_Layer: 0
+  - component: {fileID: 7005702674666279764}
+  m_Layer: 12
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -167,7 +167,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5972236684258173089
+--- !u!65 &7005702674666279764
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -307,3 +307,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93ea21f5e673c7f47b1421f66c9465c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayersScript: 0

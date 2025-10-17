@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerAttackCollider : MonoBehaviour
+public class AttackCollider : MonoBehaviour
 {
     // プレイヤーの子オブジェクトにアタッチしている場合はtrue、敵の場合はfalse
     [SerializeField]
