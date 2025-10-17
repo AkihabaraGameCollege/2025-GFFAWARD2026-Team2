@@ -107,6 +107,7 @@ MonoBehaviour:
   groundCheckEndPoint: {x: 0, y: -1.5, z: 0}
   attackCollider: {fileID: 8263717616957561195}
   pause: {fileID: 0}
+  maxHealth: 0
 --- !u!114 &1676061408467678680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -351,8 +352,9 @@ GameObject:
   - component: {fileID: 8358501159409728593}
   - component: {fileID: 544688693457460727}
   - component: {fileID: 2244614337812689752}
+  - component: {fileID: 1025571372934595764}
   m_Layer: 10
-  m_Name: Cylinder
+  m_Name: AttackCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -441,7 +443,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -449,3 +451,15 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+--- !u!114 &1025571372934595764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8263717616957561195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93ea21f5e673c7f47b1421f66c9465c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

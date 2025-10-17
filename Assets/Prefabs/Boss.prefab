@@ -198,7 +198,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5980099086902244410}
   - component: {fileID: 6523543305683736042}
-  - component: {fileID: 7658038266429336664}
   m_Layer: 9
   m_Name: DamageArea
   m_TagString: Untagged
@@ -236,25 +235,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7658038266429336664
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3780741556776112634}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d2d0160551803a4b91d7725c954085c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyParentScript: {fileID: 4548236816610410560}
 --- !u!1 &4813275543668054340
 GameObject:
   m_ObjectHideFlags: 0
@@ -265,6 +251,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2140926022368146885}
   - component: {fileID: 6629475655043403389}
+  - component: {fileID: 7787934933310647298}
   m_Layer: 8
   m_Name: AttackCollider
   m_TagString: Untagged
@@ -302,9 +289,21 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 5, y: 10, z: 5}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7787934933310647298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4813275543668054340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93ea21f5e673c7f47b1421f66c9465c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

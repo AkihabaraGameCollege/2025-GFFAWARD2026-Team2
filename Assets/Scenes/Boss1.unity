@@ -457,38 +457,6 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 1
---- !u!1 &412322195 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3780741556776112634, guid: 8db8c7fdda0465347a28dfcfe8d189ab, type: 3}
-  m_PrefabInstance: {fileID: 8299546373823771526}
-  m_PrefabAsset: {fileID: 0}
---- !u!54 &412322199
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 412322195}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!4 &757490536 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6665057671805973998, guid: 7826d37eca2123749bf50017c6d4dfbc, type: 3}
@@ -1115,6 +1083,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 1025571372934595764, guid: 7826d37eca2123749bf50017c6d4dfbc, type: 3}
+      propertyPath: isPlayersScript
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1639803956734386482, guid: 7826d37eca2123749bf50017c6d4dfbc, type: 3}
       propertyPath: EndPoint.x
       value: 0
@@ -1174,6 +1146,10 @@ PrefabInstance:
     - target: {fileID: 1676061408467678680, guid: 7826d37eca2123749bf50017c6d4dfbc, type: 3}
       propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2244614337812689752, guid: 7826d37eca2123749bf50017c6d4dfbc, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3736326092339916411, guid: 7826d37eca2123749bf50017c6d4dfbc, type: 3}
       propertyPath: m_Enabled
@@ -1250,6 +1226,10 @@ PrefabInstance:
     - target: {fileID: 7248677125196857952, guid: 7826d37eca2123749bf50017c6d4dfbc, type: 3}
       propertyPath: attackRotationSpeed
       value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 8263717616957561195, guid: 7826d37eca2123749bf50017c6d4dfbc, type: 3}
+      propertyPath: m_Name
+      value: AttackCollider
       objectReference: {fileID: 0}
     - target: {fileID: 8308588155637797034, guid: 7826d37eca2123749bf50017c6d4dfbc, type: 3}
       propertyPath: m_Mass
@@ -1546,13 +1526,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6523543305683736042, guid: 8db8c7fdda0465347a28dfcfe8d189ab, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6629475655043403389, guid: 8db8c7fdda0465347a28dfcfe8d189ab, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3780741556776112634, guid: 8db8c7fdda0465347a28dfcfe8d189ab, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 412322199}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8db8c7fdda0465347a28dfcfe8d189ab, type: 3}
 --- !u!1001 &8730643381335991842
 PrefabInstance:

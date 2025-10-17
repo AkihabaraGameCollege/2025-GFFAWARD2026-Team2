@@ -42,6 +42,12 @@ public class Player : MonoBehaviour
     new private Rigidbody rigidbody;
     public bool IsSleeping { get; private set; }
 
+    private int health;
+
+    [Header("ステータス")]
+    [SerializeField]
+    private int maxHealth;
+
     enum MotionState
     {
         Stopping,
@@ -56,7 +62,14 @@ public class Player : MonoBehaviour
     {
         rigidbody = GetComponent<Rigidbody>();
 
+        StatusReset();
+
         attackCollider.SetActive(false);
+    }
+
+    private void StatusReset()
+    {
+        health = maxHealth;
     }
 
     public void Sleep()
@@ -192,5 +205,21 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         attackCollider.SetActive(false);
+    }
+
+    public void TakeDamage()
+    {
+        health--;
+        Debug.Log($"Player TakeDamage{health}");
+
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        Debug.Log("ImDead");
     }
 }

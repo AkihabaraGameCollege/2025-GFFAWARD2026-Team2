@@ -67,7 +67,7 @@ public class BossMove : MonoBehaviour
     public void TakeDamage()
     {
         health--;
-        Debug.Log("TakeDamage");
+        Debug.Log($"Enemy TakeDamage{health}");
 
         if (health <= 0)
         {
