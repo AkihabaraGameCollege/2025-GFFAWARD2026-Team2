@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerAttackCollider : MonoBehaviour
+public class AttackCollider : MonoBehaviour
 {
     // プレイヤーの子オブジェクトにアタッチしている場合はtrue、敵の場合はfalse
     [SerializeField]
@@ -18,7 +18,7 @@ public class PlayerAttackCollider : MonoBehaviour
         }
         else
         {
-            Debug.Log("EnemyAttackPlpayer");
+            Debug.Log("EnemyAttackPlayer");
             // 敵の場合は
             // プレイヤーの親スクリプト持ってきて実行
             var victimScript = collider.GetComponentInParent<Player>();
