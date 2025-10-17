@@ -18,7 +18,7 @@ public class PlayerAttackCollider : MonoBehaviour
         }
         else
         {
-            Debug.Log("EnemyAttackPlpayer");
+            Debug.Log("EnemyAttackPlayer");
             // 敵の場合は
             // プレイヤーの親スクリプト持ってきて実行
             var victimScript = collider.GetComponentInParent<Player>();
