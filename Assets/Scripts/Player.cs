@@ -15,9 +15,6 @@ public class Player : MonoBehaviour
     private float rotationOffset = 0;
 
     [SerializeField]
-    private bool isEnableSense = true;
-
-    [SerializeField]
     [Tooltip("ジャンプに必要な速度を指定")]
     private float requiredJumpSpeed = 0.1f;
 
@@ -31,16 +28,7 @@ public class Player : MonoBehaviour
     [Header("攻撃関連")]
     [SerializeField]
     [Tooltip("childを指定")]
-    private AttackCollider attackCollider = null;
-    [SerializeField]
-    [Tooltip("攻撃判定の一番上の角度(度数法)を指定")]
-    private float attackStartDegree = 0;
-    [SerializeField]
-    [Tooltip("攻撃判定の一番下の角度(度数法)を指定")]
-    private float totalMoveDegree = 0;
-    [SerializeField]
-    [Tooltip("一秒で動かす各度(度数法)を指定")]
-    private float attackRotationSpeed = 1;
+    private GameObject attackCollider = null;
 
     // ポーズUIを指定します。
     [SerializeField]
@@ -53,6 +41,12 @@ public class Player : MonoBehaviour
 
     new private Rigidbody rigidbody;
     public bool IsSleeping { get; private set; }
+
+    private int health;
+
+    [Header("ステータス")]
+    [SerializeField]
+    private int maxHealth;
 
     enum MotionState
     {
@@ -67,6 +61,15 @@ public class Player : MonoBehaviour
     private void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
+
+        StatusReset();
+
+        attackCollider.SetActive(false);
+    }
+
+    private void StatusReset()
+    {
+        health = maxHealth;
     }
 
     public void Sleep()
@@ -122,15 +125,6 @@ public class Player : MonoBehaviour
                 if (moveInput != Vector2.zero)
                 {
                     Move(moveInput);
-                }
-                else
-                {
-                    motionState = MotionState.Stopping;
-
-                    if (!isEnableSense)
-                    {
-                        Move(moveInput);
-                    }
                 }
                 break;
             case MotionState.JumpAnticipation:
@@ -200,7 +194,32 @@ public class Player : MonoBehaviour
 
     private void Attack()
     {
-        attackCollider.Init(attackStartDegree, totalMoveDegree, attackRotationSpeed);
+        attackCollider.SetActive(true);
+        StartCoroutine(AttackTimer());
+
         Debug.Log("Attack");
+    }
+
+    IEnumerator AttackTimer()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        attackCollider.SetActive(false);
+    }
+
+    public void TakeDamage()
+    {
+        health--;
+        Debug.Log($"Player TakeDamage{health}");
+
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        Debug.Log("ImDead");
     }
 }
