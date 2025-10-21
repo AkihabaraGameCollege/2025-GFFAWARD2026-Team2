@@ -51,7 +51,7 @@ public class PlayerN : MonoBehaviour
     Animator animator;
 
     static readonly int idleID = Animator.StringToHash("idle");
-    static readonly int runID = Animator.StringToHash("run");
+    static readonly int isRunID = Animator.StringToHash("run");
     static readonly int jumpID = Animator.StringToHash("jump");
     static readonly int attackID = Animator.StringToHash("attack");
 
@@ -127,13 +127,14 @@ public class PlayerN : MonoBehaviour
                 if (moveInput != Vector2.zero)
                 {
                     motionState = MotionState.Walking;
-
+                    animator.SetBool(isRunID, false);
                     Move(moveInput);
                 }
                 break;
             case MotionState.Walking:
                 if (moveInput != Vector2.zero)
                 {
+                    animator.SetBool(isRunID, true);
                     Move(moveInput);
                 }
                 break;
@@ -151,6 +152,7 @@ public class PlayerN : MonoBehaviour
                     if (moveInput != Vector2.zero)
                     {
                         motionState = MotionState.Walking;
+                        animator.SetTrigger(idleID);
                     }
                     else
                     {
@@ -168,6 +170,7 @@ public class PlayerN : MonoBehaviour
                     if (moveInput != Vector2.zero)
                     {
                         motionState = MotionState.Walking;
+                        animator.SetTrigger(jumpID);
                     }
                     else
                     {
@@ -180,15 +183,13 @@ public class PlayerN : MonoBehaviour
 
     private void Stand()
     {
-        animator.SetTrigger(idleID);
-
         motionState = MotionState.Stopping;
+        animator.SetBool(isRunID, false);
     }
 
     private void Move(Vector2 Input)
     {
-        animator.SetTrigger(runID);
-
+        animator.SetBool(isRunID, true);
         // à⁄ìÆ(ë¨ìxïœçX)
         Vector3 velocity = rigidbody.linearVelocity;
         velocity.x = Input.x * moveSpeed;
@@ -204,19 +205,17 @@ public class PlayerN : MonoBehaviour
 
     private void Jump(float power)
     {
-        animator.SetTrigger(jumpID);
-
         Vector3 velocity = rigidbody.linearVelocity;
         velocity.y = power;
         rigidbody.linearVelocity = velocity;
 
         motionState = MotionState.JumpAnticipation;
+        animator.SetTrigger(jumpID);
     }
 
     private void Attack()
     {
         animator.SetTrigger(attackID);
-
         attackCollider.SetActive(true);
         StartCoroutine(AttackTimer());
 
