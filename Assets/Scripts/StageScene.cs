@@ -47,6 +47,10 @@ public class StageScene : MonoBehaviour
 
     static readonly int outroId = Animator.StringToHash("Outro");// AnimatorパラメーターID(中山が編集)
 
+    // ステージクリアー表示用のUIを指定します。（中山が編集）
+    [SerializeField]
+    private StageClearUI stageClearUI = null;
+
     // ステージ画面内の進行状態を表します。
     enum SceneState
     {
@@ -78,6 +82,7 @@ public class StageScene : MonoBehaviour
         // ゲームオーバーUIの各ボタンが押されたときのイベントを登録(中山が編集)
         gameOverUI.OnRetryButtonClick.AddListener(Retry);
         gameOverUI.OnExitButtonClick.AddListener(Exit);
+        stageClearUI.OnNextButtonClick.AddListener(LoadNextStage);// ステージクリアーUIのNEXTボタンにイベントを登録（中山が編集）
 
         animator = GetComponent<Animator>();// コンポーネントを参照しておく(中山が編集)
 
@@ -184,6 +189,21 @@ public class StageScene : MonoBehaviour
             player.enabled = false;// プレイヤー操作を無効化(中山が編集)
             musicAudio.Stop();
             gameOverUI.Show();// ゲームオーバーUIを表示(中山が編集)
+        }
+    }
+
+    // このステージをステージクリアーとします。
+    public void StageClear()
+    {
+        // ステージプレイ中のみ
+        if (sceneState == SceneState.Play)
+        {
+            sceneState = SceneState.StageClear;
+
+            musicAudio.Stop();
+            player.enabled = false;// プレイヤー操作を無効化(中山が編集)
+            // ステージクリアーUIを表示
+            stageClearUI.Show();
         }
     }
 }
