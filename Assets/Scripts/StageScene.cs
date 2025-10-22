@@ -30,6 +30,23 @@ public class StageScene : MonoBehaviour
     [SerializeField]
     private float playTimeout = 100;
 
+    // ゲームオーバートリガーを指定します。(中山が編集)
+    [SerializeField]
+    private GameOverTrigger gameOverTrigger = null;
+    // ゲームオーバー表示用のUIを指定します。(中山が編集)
+    [SerializeField]
+    private GameOverUI gameOverUI = null;
+    // 楽曲再生用の AudioSource を指定します。(中山が編集)
+    [SerializeField]
+    private AudioSource musicAudio = null;
+    //プレイヤーを指定(中山が編集)
+    [SerializeField]
+    private Player player = null;
+
+    Animator animator;// コンポーネントを事前に参照しておく変数(中山が編集)
+
+    static readonly int outroId = Animator.StringToHash("Outro");// AnimatorパラメーターID(中山が編集)
+
     // ステージ画面内の進行状態を表します。
     enum SceneState
     {
@@ -56,6 +73,15 @@ public class StageScene : MonoBehaviour
         pause.OnResumeButtonClick.AddListener(Resume);
         pause.OnRetryButtonClick.AddListener(Retry);
         pause.OnExitButtonClick.AddListener(Exit);
+
+        gameOverTrigger.OnEnter.AddListener(GameOver);// ゲームオーバートリガーにイベントを登録(中山が編集)
+        // ゲームオーバーUIの各ボタンが押されたときのイベントを登録(中山が編集)
+        gameOverUI.OnRetryButtonClick.AddListener(Retry);
+        gameOverUI.OnExitButtonClick.AddListener(Exit);
+
+        animator = GetComponent<Animator>();// コンポーネントを参照しておく(中山が編集)
+
+       player.enabled = true;// プレイヤーを無効化しておく(中山が編集)
 
         // ゲーム開始時はポーズ状態ではない
         sceneState = SceneState.Play;
@@ -141,9 +167,23 @@ public class StageScene : MonoBehaviour
         {
             Resume();
         }
+        animator.SetTrigger(outroId);// アウトロアニメーションを開始(中山が編集)
         // アニメーションが終了するまで1秒待機
         yield return new WaitForSeconds(3);
         // シーンをロードする
         SceneManager.LoadScene(sceneName);
+    }
+
+    // このステージをゲームオーバーとします。(中山が編集)
+    public void GameOver()
+    {
+        // ステージプレイ中のみ(中山が編集)
+        if (sceneState == SceneState.Play)
+        {
+            sceneState = SceneState.GameOver;
+            player.enabled = false;// プレイヤー操作を無効化(中山が編集)
+            musicAudio.Stop();
+            gameOverUI.Show();// ゲームオーバーUIを表示(中山が編集)
+        }
     }
 }

@@ -48,6 +48,14 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int maxHealth;
 
+    Animator animator;// Animator コンポーネントの参照（中山が編集）
+
+    //アニメーションID登録（中山が編集）
+    static readonly int idleID = Animator.StringToHash("idle");
+    static readonly int isRunID = Animator.StringToHash("run");
+    static readonly int jumpID = Animator.StringToHash("jump");
+    static readonly int attackID = Animator.StringToHash("attack");
+
     enum MotionState
     {
         Stopping,
@@ -65,6 +73,8 @@ public class Player : MonoBehaviour
         StatusReset();
 
         attackCollider.SetActive(false);
+
+        animator = GetComponent<Animator>();// Animator コンポーネントを取得（中山が編集）
     }
 
     private void StatusReset()
@@ -117,40 +127,49 @@ public class Player : MonoBehaviour
                 if (moveInput != Vector2.zero)
                 {
                     motionState = MotionState.Walking;
-
+                    animator.SetBool(isRunID, true);// Runアニメーションを開始（中山が編集）
                     Move(moveInput);
                 }
                 break;
             case MotionState.Walking:
                 if (moveInput != Vector2.zero)
                 {
+                    motionState = MotionState.Walking;// 継続（中山が編集）
+                    animator.SetBool(isRunID, true);// Runアニメーションを継続（中山が編集）
                     Move(moveInput);
                 }
                 break;
             case MotionState.JumpAnticipation:
                 if (moveInput != Vector2.zero)
                 {
+                    motionState = MotionState.Walking;// 継続（中山が編集）
+                    animator.SetBool(isRunID, true);// Runアニメーションを継続（中山が編集）
                     Move(moveInput);
                 }
                 if (!IsGrounded)
                 {
                     motionState = MotionState.Jumping;
+                    animator.SetTrigger(jumpID);// Jumpアニメーションを開始（中山が編集）
                 }
                 else if (rigidbody.linearVelocity.y < requiredJumpSpeed)
                 {
                     if (moveInput != Vector2.zero)
                     {
                         motionState = MotionState.Walking;
+                        animator.SetBool(isRunID, true);// Runアニメーションを開始（中山が編集）
                     }
                     else
                     {
                         motionState = MotionState.Stopping;
+                        animator.SetBool(isRunID, false);// Runアニメーションを停止（中山が編集）
                     }
                 }
                 break;
             case MotionState.Jumping:
                 if (moveInput != Vector2.zero)
                 {
+                    motionState = MotionState.Walking;// 継続（中山が編集）
+                    animator.SetBool(isRunID, true);// Runアニメーションを継続（中山が編集）
                     Move(moveInput);
                 }
                 if (IsGrounded)
@@ -158,10 +177,14 @@ public class Player : MonoBehaviour
                     if (moveInput != Vector2.zero)
                     {
                         motionState = MotionState.Walking;
+                        animator.SetTrigger(idleID);// Jumpアニメーションを終了（中山が編集）
+                        animator.SetBool(isRunID, true);// Runアニメーションを開始（中山が編集）
                     }
                     else
                     {
                         motionState = MotionState.Stopping;
+                        animator.SetTrigger(idleID);// Jumpアニメーションを終了（中山が編集）
+                        animator.SetBool(isRunID, false);// Runアニメーションを停止（中山が編集）
                     }
                 }
                 break;
@@ -190,11 +213,13 @@ public class Player : MonoBehaviour
         rigidbody.linearVelocity = velocity;
 
         motionState = MotionState.JumpAnticipation;
+        animator.SetTrigger(jumpID);// Jumpアニメーションを開始（中山が編集）
     }
 
     private void Attack()
     {
         attackCollider.SetActive(true);
+        animator.SetTrigger(attackID);// Attackアニメーションを開始（中山が編集）
         StartCoroutine(AttackTimer());
 
         Debug.Log("Attack");
@@ -203,7 +228,7 @@ public class Player : MonoBehaviour
     IEnumerator AttackTimer()
     {
         yield return new WaitForSeconds(0.5f);
-
+        animator.SetTrigger(idleID);// Attackアニメーションを終了（中山が編集）
         attackCollider.SetActive(false);
     }
 
