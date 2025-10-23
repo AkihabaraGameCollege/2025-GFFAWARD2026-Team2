@@ -22,45 +22,64 @@ public class BossMove : MonoBehaviour
     private int maxHealth;
     private int health;
 
+    Animator animator;// Animator ï¿½Rï¿½ï¿½ï¿½|ï¿½[ï¿½lï¿½ï¿½ï¿½gï¿½ÌQï¿½Æiï¿½ï¿½ï¿½Rï¿½ï¿½ï¿½ÒWï¿½j
+
+    static readonly int IsWalkingID = Animator.StringToHash("isWalking"); // Animatorï¿½pï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½Ìƒnï¿½bï¿½Vï¿½ï¿½ï¿½lï¿½iï¿½ï¿½ï¿½Rï¿½ï¿½ï¿½ÒWï¿½j
+    static readonly int jumpID = Animator.StringToHash("jump"); // Animatorï¿½pï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½Ìƒnï¿½bï¿½Vï¿½ï¿½ï¿½lï¿½iï¿½ï¿½ï¿½Rï¿½ï¿½ï¿½ÒWï¿½j
+    static readonly int grandID = Animator.StringToHash("grand"); // Animatorï¿½pï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½Ìƒnï¿½bï¿½Vï¿½ï¿½ï¿½lï¿½iï¿½ï¿½ï¿½Rï¿½ï¿½ï¿½ÒWï¿½j
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
-        //s“®ƒpƒ^[ƒ“ŠJn
+        
+        animator = GetComponent<Animator>();// ï¿½Rï¿½ï¿½ï¿½|ï¿½[ï¿½lï¿½ï¿½ï¿½gï¿½ï¿½ï¿½Qï¿½Æ‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½Rï¿½ï¿½ï¿½ÒW)
+        
+        //ï¿½sï¿½ï¿½ï¿½pï¿½^ï¿½[ï¿½ï¿½ï¿½Jï¿½n
         StartCoroutine(Move());
 
         health = maxHealth;
     }
 
-    //ƒWƒƒƒ“ƒv
+    //ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½v
     void Jump()
         {
-        //ã•ûŒü‚É—Í‚ğ‰Á‚¦‚é
+        animator.SetTrigger(jumpID);// Jumpï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Jï¿½nï¿½iï¿½ï¿½ï¿½Rï¿½ï¿½ï¿½ÒWï¿½j
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É—Í‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         rigidbody.AddForce(Vector3.up * jumpP, ForceMode.Impulse);
     }
 
-    //s“®ƒpƒ^[ƒ“
+    private void Walking()
+        {
+        animator.SetFloat(IsWalkingID, rigidbody.linearVelocity.magnitude);// Walkï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Jï¿½nï¿½iï¿½ï¿½ï¿½Rï¿½ï¿½ï¿½ÒWï¿½j
+      
+        rigidbody.AddForce(transform.forward * moveP, ForceMode.Impulse);//ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½É—Í‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    }
+
+    //ï¿½sï¿½ï¿½ï¿½pï¿½^ï¿½[ï¿½ï¿½
     IEnumerator Move()
     {
-        //–³ŒÀƒ‹[ƒv
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½v
         while (true)
         {
-            // ˆÚ“®(‘¬“x•ÏX)
-            Vector3 velocity = rigidbody.linearVelocity;
-            velocity.x = moveP;
-            rigidbody.linearVelocity = velocity;
-            //3•b‘Ò‚Â
-            yield return new WaitForSeconds(3);
-            //ƒWƒƒƒ“ƒv
-            Jump();
-            //3•b‘Ò‚Â
-            yield return new WaitForSeconds(3);
-            // ˆÚ“®(‘¬“x•ÏX)
-            velocity = rigidbody.linearVelocity;
-            velocity.x = -moveP;
-            rigidbody.linearVelocity = velocity;
-            //3•b‘Ò‚Â
-            yield return new WaitForSeconds(3);
+            animator.SetFloat(IsWalkingID, rigidbody.linearVelocity.magnitude);// Walkï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Jï¿½nï¿½iï¿½ï¿½ï¿½Rï¿½ï¿½ï¿½ÒWï¿½j
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 90, 0), 1f);// ï¿½Eï¿½ï¿½]ï¿½iï¿½ï¿½ï¿½Rï¿½ï¿½ï¿½ÒWï¿½j
+            yield return new WaitForSeconds(3);// 3ï¿½bï¿½Ò‹@
+            Walking();//ï¿½ï¿½ï¿½ï¿½
+            yield return new WaitForSeconds(5);// 5ï¿½bï¿½Ò‹@
+            rigidbody.linearVelocity = new Vector3(0, rigidbody.linearVelocity.y, 0);//ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½Ö‚Ì—Í‚ï¿½0ï¿½É‚ï¿½ï¿½ï¿½
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, -90, 0), 1f);// ï¿½ï¿½ï¿½ï¿½]ï¿½iï¿½ï¿½ï¿½Rï¿½ï¿½ï¿½ÒWï¿½j
+            yield return new WaitForSeconds(3);// 3ï¿½bï¿½Ò‹@
+            Jump();//ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½v
+            yield return new WaitForSeconds(5);// 5ï¿½bï¿½Ò‹@
+            animator.SetTrigger(grandID);// Grandï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Jï¿½nï¿½iï¿½ï¿½ï¿½Rï¿½ï¿½ï¿½ÒWï¿½j
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, -90, 0), 1f);// ï¿½ï¿½ï¿½ï¿½]ï¿½iï¿½ï¿½ï¿½Rï¿½ï¿½ï¿½ÒWï¿½j
+            yield return new WaitForSeconds(3);// 3ï¿½bï¿½Ò‹@
+            Walking();//ï¿½ï¿½ï¿½ï¿½
+            yield return new WaitForSeconds(5);// 5ï¿½bï¿½Ò‹@
+            rigidbody.linearVelocity = new Vector3(0, rigidbody.linearVelocity.y, 0);//ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½Ö‚Ì—Í‚ï¿½0ï¿½É‚ï¿½ï¿½ï¿½
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 90, 0), 1f);// ï¿½Eï¿½ï¿½]ï¿½iï¿½ï¿½ï¿½Rï¿½ï¿½ï¿½ÒWï¿½j
+            yield return new WaitForSeconds(3);// 5ï¿½bï¿½Ò‹@
         }
     }
 
