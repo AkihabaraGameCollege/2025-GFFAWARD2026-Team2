@@ -57,6 +57,10 @@ public class Player : MonoBehaviour
     static readonly int attackID = Animator.StringToHash("attack");
     static readonly int speedID = Animator.StringToHash("speed");
 
+    //BossMoveScript登録
+    [SerializeField]
+    private BossMove bossMove = null;
+
     enum MotionState
     {
         Stopping,
@@ -193,18 +197,18 @@ public class Player : MonoBehaviour
     }
 
     private void Attack()
-    {
-        attackCollider.SetActive(true);
-        animator.SetTrigger(attackID);// Attackアニメーションを開始（中山が編集）
-        StartCoroutine(AttackTimer());
-
-        Debug.Log("Attack");
+    {  
+        StartCoroutine(AttackTimer()); //攻撃処理開始（中山が編集）
     }
 
-    IEnumerator AttackTimer()//攻撃判定の有効時間を制御するコルーチン（中山が編集）
+    //攻撃判定の有効時間、攻撃演出を制御するコルーチン（中山が編集）
+    IEnumerator AttackTimer()
     {
-        yield return new WaitForSeconds(0.5f);
-        attackCollider.SetActive(false);
+        attackCollider.SetActive(true);//攻撃判定を有効化（中山が編集）
+        animator.SetTrigger(attackID);// Attackアニメーションを開始（中山が編集）
+        yield return new WaitForSeconds(1f);//1秒待機（中山が編集）
+        attackCollider.SetActive(false);//攻撃判定を無効化（中山が編集）
+        bossMove.TakeDamage(); //ボスにダメージを与える（中山が編集）
     }
 
     public void TakeDamage()
