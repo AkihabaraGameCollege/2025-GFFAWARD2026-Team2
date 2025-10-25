@@ -1,116 +1,177 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
+using UnityEngine.Windows;
 
 public class BossMove : MonoBehaviour
 {
-    new private Rigidbody rigidbody;
-
+    new private Rigidbody rigidbody;//Rigidbodyコンポーネント参照用（中山が編集）
+    
+    //移動、ジャンプ力設定（中山が編集）
     [SerializeField]
     private float jumpP = 10;
+    //移動速度設定（中山が編集）
     [SerializeField]
     private float moveP = 3;
 
+    //コライダー参照用（中山が編集）
     [Header("Collider")]
+    //攻撃判定（中山が編集）
     [SerializeField]
-    private Collider attackCollider;
-    [SerializeField]
-    private Collider damageArea;
+    private GameObject attackCollider;
+    //ボス本体判定（中山が編集）
     [SerializeField]
     private Collider thisCollider;
 
+    //ステージシーン参照用（中山が編集）
     [SerializeField]
     private StageScene stageScene = null;
 
+    //ステータス設定（中山が編集）
     [Header("Stats")]
+    //体力設定（中山が編集）
     [SerializeField]
     private int maxHealth;
     private int health;
 
+    //プレイヤー参照用（中山が編集）
+    [SerializeField]
+    private Player player;
+
+    //弱体化時間表示用テキスト（中山が編集）
+    [SerializeField]
+    private GameObject weakTimeText = null;
+
     Animator animator;//アニメーター（中山が編集）
 
+    //アニメーションID登録（中山が編集）
     static readonly int IsWalkingID = Animator.StringToHash("isWalking");
     static readonly int jumpID = Animator.StringToHash("jump");
     static readonly int grandID = Animator.StringToHash("grand");
     static readonly int dieID = Animator.StringToHash("die");
 
+    // エフェクト再生用の AudioSource を指定します。（中山が編集）
+    [SerializeField]
+    private AudioSource effectAudio = null;
+    // ジャンプ時のサウンドを指定します。（中山が編集）
+    [SerializeField]
+    private AudioClip soundOnAttack = null;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        rigidbody = GetComponent<Rigidbody>();
+        rigidbody = GetComponent<Rigidbody>();//Rigidbodyコンポーネント取得（中山が編集）
+        animator = GetComponent<Animator>();//Animatorコンポーネント取得（中山が編集）
+        thisCollider = GetComponent<Collider>();//ボス本体コライダー取得（中山が編集）
+        health = maxHealth;//体力初期化（中山が編集）
+        attackCollider.SetActive(false);//攻撃判定無効化（中山が編集）
+        weakTimeText.SetActive(false);//弱体化時間表示無効化（中山が編集）
 
-        animator = GetComponent<Animator>();
-
-        //行動パターン開始（中山が編集）
-        StartCoroutine(Move());
-
-        health = maxHealth;
+        StartCoroutine(Move());//行動パターン開始（中山が編集）
     }
 
     //ジャンプ攻撃（中山が編集）
     void JumpAttack()
     {
-        animator.SetTrigger(jumpID);
-        //上に力を加える（中山が編集）
-        rigidbody.AddForce(Vector3.up * jumpP, ForceMode.Impulse);
+        animator.SetTrigger(jumpID);//ジャンプアニメーション開始（中山が編集）
+        rigidbody.AddForce(Vector3.up * jumpP, ForceMode.Impulse);//上方向に力を加える（中山が編集）
     }
 
     //歩く（中山が編集）
     private void Walking()
     {
-        animator.SetFloat(IsWalkingID, rigidbody.linearVelocity.magnitude);
-
-        rigidbody.AddForce(transform.forward * moveP, ForceMode.Impulse);
+        StartCoroutine(OnWalk());//歩行コルーチン開始（中山が編集）
     }
 
-    //回転、（）の中に角度を設定（中山が編集）
+    //歩行コルーチン（中山が編集）
+    IEnumerator OnWalk()
+    {
+        animator.SetFloat(IsWalkingID, 1);//歩行アニメーション開始（中山が編集）
+        Vector3 forward = transform.forward * moveP;//前方向に移動ベクトル設定（中山が編集）
+        rigidbody.linearVelocity = new Vector3(forward.x, rigidbody.linearVelocity.y, forward.z);//前方向に移動（中山が編集）
+        yield return new WaitForSeconds(0.8f);//歩行時間（中山が編集）
+        rigidbody.linearVelocity = Vector3.zero;//停止（中山が編集）
+        animator.SetFloat(IsWalkingID,0);//歩行アニメーション終了（中山が編集）
+    }
+
+    //回転（）の中に角度を設定（中山が編集）
     private void Turn(float rotate)
     {
-        transform.Rotate(0, rotate * Time.deltaTime, 0);
+        transform.Rotate(0, rotate * Time.deltaTime * 65, 0);//Y軸回転（中山が編集）
     }
 
     //行動パターン（中山が編集）
     IEnumerator Move()
     {
-        //無限ループ（中山が編集）
         while (true)
         {
-            yield return new WaitForSeconds(3);
-            Turn(90);
-            yield return new WaitForSeconds(3);
-            Walking();
-            yield return new WaitForSeconds(2);
-            rigidbody.linearVelocity = new Vector3(0, rigidbody.linearVelocity.y, 0);//移動停止（中山が編集）
-            Turn(-90);
-            yield return new WaitForSeconds(6);
-            JumpAttack();
-           thisCollider.enabled = false;//当たり判定無効化（中山が編集）
-            yield return new WaitForSeconds(20);
-            //ダメージ処理（中山が編集）
-            if (health <= 0)
-            {
-                Die();
-                break;
-            }
-            else
-            {
-                animator.SetTrigger(grandID);//地面にハマるアニメーション終了（中山が編集）
-                JumpAttack();
-                yield return new WaitForSeconds(2);
-                thisCollider.enabled = true;//当たり判定有効化（中山が編集）
-            }
+            yield return new WaitForSeconds(3);//待機（中山が編集）
+            Turn(90);//右回転（中山が編集）
+            yield return new WaitForSeconds(3);//待機（中山が編集）
+            Turn(0);//正面向き（中山が編集）
+            yield return new WaitForSeconds(1);//待機（中山が編集）
+            Walking();//歩行開始（中山が編集）
+            yield return new WaitForSeconds(3);//歩行時間（中山が編集）
+            Turn(-90);//左回転（中山が編集）
+            yield return new WaitForSeconds(3);//待機（中山が編集）
+            Turn(0);//正面向き（中山が編集）
+            yield return new WaitForSeconds(1);//待機（中山が編集）
+            JumpAttack();//ジャンプ攻撃（中山が編集）
+            yield return new WaitForSeconds(1);//ジャンプ攻撃中（中山が編集）
+            attackCollider.SetActive(true);//攻撃判定有効化（中山が編集）
+            thisCollider.enabled = false;//当たり判定無効化（中山が編集）
+            effectAudio.PlayOneShot(soundOnAttack);//攻撃時サウンド再生（中山が編集）
+            yield return new WaitForSeconds(3);//ハマる時間（中山が編集）
+            attackCollider.SetActive(false);//攻撃判定無効化（中山が編集）
+            weakTimeText.SetActive(true);//弱体化時間表示有効化（中山が編集）
+            yield return new WaitForSeconds(7);
+            weakTimeText.SetActive(false);//弱体化時間表示無効化（中山が編集）
+            animator.SetTrigger(grandID);//地面にハマるアニメーション終了（中山が編集）
+            JumpAttack();//ジャンプ攻撃（中山が編集）
+            yield return new WaitForSeconds(1);//ジャンプ攻撃中（中山が編集）
+            attackCollider.SetActive(false);//攻撃判定有効化（中山が編集）
+            thisCollider.enabled = true;//当たり判定有効化（中山が編集）
+            yield return new WaitForSeconds(3);//待機（中山が編集）
+            Turn(-90);//左回転（中山が編集）
+            yield return new WaitForSeconds(3);//待機（中山が編集）
+            Turn(0);//正面向き（中山が編集）
+            yield return new WaitForSeconds(1);//待機（中山が編集）
+            Walking();//歩行開始（中山が編集）
+            yield return new WaitForSeconds(3);//歩行時間（中山が編集）
+            Turn(90);//右回転（中山が編集）
+            yield return new WaitForSeconds(3);//待機（中山が編集）
+            Turn(0);//正面向き（中山が編集）
+            yield return new WaitForSeconds(1);//待機（中山が編集）
+            JumpAttack();//ジャンプ攻撃（中山が編集）
+            yield return new WaitForSeconds(1);//ジャンプ攻撃中（中山が編集）
+            attackCollider.SetActive(true);//攻撃判定有効化（中山が編集）
+            thisCollider.enabled = false;//当たり判定無効化（中山が編集）
+            effectAudio.PlayOneShot(soundOnAttack);//攻撃時サウンド再生（中山が編集）
+            yield return new WaitForSeconds(3);//待機（中山が編集）
+            attackCollider.SetActive(false);//攻撃判定無効化（中山が編集）
+            weakTimeText.SetActive(true);//弱体化時間表示有効化（中山が編集）
+            yield return new WaitForSeconds(7);
+            weakTimeText.SetActive(false);//弱体化時間表示無効化（中山が編集）
+            animator.SetTrigger(grandID);//地面にハマるアニメーション終了（中山が編集）
+            JumpAttack();//ジャンプ攻撃（中山が編集）
+            yield return new WaitForSeconds(1);//ジャンプ攻撃中（中山が編集）
+            thisCollider.enabled = true;//当たり判定有効化（中山が編集）
+            attackCollider.SetActive(false);//攻撃判定有効化（中山が編集）
         }
     }
 
+    //ダメージ処理（中山が編集）
     public void TakeDamage()
     {
-        //ダメージ処理（中山が編集）
-        health--;
+        health--;//体力を1減らす（中山が編集）
+
+        //体力が0以下なら撃破処理（中山が編集）
         if (health <= 0)
         {
-            Die();
+            Die();//撃破処理を呼び出す（中山が編集）
         }
     }
 
+    //撃破処理（中山が編集）
     private void Die()
     {
         StartCoroutine(OnDie());//撃破演出開始（中山が編集）
@@ -120,11 +181,9 @@ public class BossMove : MonoBehaviour
     IEnumerator OnDie()
     {
         animator.SetTrigger(dieID);//死亡アニメーション再生（中山が編集）
-        yield return new WaitForSeconds(5);
-        rigidbody.isKinematic = true;//物理演算無効化（中山が編集）
-        yield return new WaitForSeconds(3);
-        Destroy(gameObject);
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(5);//死亡アニメーション終了まで待機（中山が編集）
+        Destroy(gameObject);//ボスオブジェクトを破壊（中山が編集）
+        yield return new WaitForSeconds(1);//少し待機（中山が編集）
         stageScene.StageClear();//ステージクリア処理（中山が編集）
     }
 }

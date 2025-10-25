@@ -8,24 +8,25 @@ public class Player : MonoBehaviour
     // 毎秒の移動速度指定
     [SerializeField]
     private float moveSpeed = 1;
-
+    // ジャンプ力指定
     [SerializeField]
     private float jumpForce = 10;
-
+    // 回転オフセット指定
     [SerializeField]
     private float rotationOffset = 0;
-
+    // ジャンプに必要な速度指定
     [SerializeField]
     [Tooltip("ジャンプに必要な速度を指定")]
     private float requiredJumpSpeed = 0.1f;
 
-
+    // 地面判定用の線分の始点と終点を指定
     [Header("GroundChecker")]
     [SerializeField]
     private Vector3 groundCheckStartPoint = new Vector3(0, -0.5f, 0);
     [SerializeField]
     private Vector3 groundCheckEndPoint = new Vector3(0, -1.5f, 0);
 
+    // 攻撃判定用のコライダーを指定
     [Header("攻撃関連")]
     [SerializeField]
     [Tooltip("childを指定")]
@@ -35,16 +36,17 @@ public class Player : MonoBehaviour
     [SerializeField]
     private PauseUI pause = null;
 
-    private bool IsGrounded => Physics.Linecast(transform.position + groundCheckStartPoint, transform.position + groundCheckEndPoint);
+    private bool IsGrounded => Physics.Linecast(transform.position + groundCheckStartPoint, transform.position + groundCheckEndPoint);// 地面接地判定
 
-    // 移動ベクトル保持用
-    private Vector2 moveInput;
+    private Vector2 moveInput;// 移動入力ベクトル
 
-    new private Rigidbody rigidbody;
-    public bool IsSleeping { get; private set; }
+    new private Rigidbody rigidbody;// Rigidbody コンポーネントの参照
 
-    private int health;
+    public bool IsSleeping { get; private set; }// 眠っているかどうか
 
+    private int health;// プレイヤーの体力
+
+    //ステータス設定
     [Header("ステータス")]
     [SerializeField]
     private int maxHealth;
@@ -56,11 +58,23 @@ public class Player : MonoBehaviour
     static readonly int jumpID = Animator.StringToHash("jump");
     static readonly int attackID = Animator.StringToHash("attack");
     static readonly int speedID = Animator.StringToHash("speed");
+    static readonly int hitID = Animator.StringToHash("hit");
+    static readonly int dieID = Animator.StringToHash("die");
 
     //BossMoveScript登録
     [SerializeField]
     private BossMove bossMove = null;
+    // ゲームオーバーUI登録
+    [SerializeField]
+    private GameOverUI gameOverUI = null;
 
+    /*
+    //ダメージコライダー登録をいったん消去（中山が編集）
+    [SerializeField]
+    private Collider damageCollision = null;
+    */
+
+    // モーション状態定義（中山が編集）
     enum MotionState
     {
         Stopping,
@@ -68,18 +82,15 @@ public class Player : MonoBehaviour
         JumpAnticipation,
         Jumping,
     }
-
-    MotionState motionState = MotionState.Stopping;
+    MotionState motionState = MotionState.Stopping;// 現在のモーション状態（中山が編集）
 
     private void Start()
     {
-        rigidbody = GetComponent<Rigidbody>();
-
-        StatusReset();
-
-        attackCollider.SetActive(false);
-
+        //damageCollision = GetComponent<Collider>();// ダメージコライダーを取得をいったん消去（中山が編集）
+        rigidbody = GetComponent<Rigidbody>();// Rigidbody コンポーネントを取得
         animator = GetComponent<Animator>();// Animator コンポーネントを取得（中山が編集）
+        attackCollider.SetActive(false);// 攻撃判定を無効化（中山が編集）
+        StatusReset();// ステータス初期化（中山が編集）
     }
 
     private void StatusReset()
@@ -170,32 +181,32 @@ public class Player : MonoBehaviour
 
     private void Move(Vector2 input)//input: 入力ベクトル（中山が編集）
     {
-        // 移動(速度変更)
-        Vector3 velocity = rigidbody.linearVelocity;
+        Vector3 velocity = rigidbody.linearVelocity;// 現在の速度取得（中山が編集）
         velocity.x = input.x * moveSpeed;// X軸方向の速度設定（中山が編集）
         velocity.z = input.y * moveSpeed;// Z軸方向の速度設定（中山が編集）
-        rigidbody.linearVelocity = velocity;
+        rigidbody.linearVelocity = velocity;// 速度変更（中山が編集）
 
         // 回転（中山が編集）
         if (input != Vector2.zero)
         {
-            transform.rotation = Quaternion.Euler(0,
-                            (Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg) + rotationOffset, 0);
-            // 以下、Unityの機能を使った簡単バージョン(AI頼り)
-            //transform.rotation = Quaternion.LookRotation(new Vector3(moveInput.x, 0f, moveInput.y));
+            transform.rotation = Quaternion.Euler(0,(Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg) + rotationOffset, 0);// Y軸回転（中山が編集）
+            //transform.rotation = Quaternion.LookRotation(new Vector3(moveInput.x, 0f, moveInput.y));// 以下、Unityの機能を使った簡単バージョン(AI頼り)
         }
     }
 
+    // ジャンプ処理（中山が編集）
     private void Jump(float power)
     {
+        // ジャンプ(速度変更)
         Vector3 velocity = rigidbody.linearVelocity;
         velocity.y = power;
         rigidbody.linearVelocity = velocity;
 
-        motionState = MotionState.JumpAnticipation;
+        motionState = MotionState.JumpAnticipation;// ジャンプ予備動作状態へ移行（中山が編集）
         animator.SetTrigger(jumpID);// Jumpアニメーションを開始（中山が編集）
     }
 
+    //攻撃処理（中山が編集）
     private void Attack()
     {  
         StartCoroutine(AttackTimer()); //攻撃処理開始（中山が編集）
@@ -208,22 +219,27 @@ public class Player : MonoBehaviour
         animator.SetTrigger(attackID);// Attackアニメーションを開始（中山が編集）
         yield return new WaitForSeconds(1f);//1秒待機（中山が編集）
         attackCollider.SetActive(false);//攻撃判定を無効化（中山が編集）
-        bossMove.TakeDamage(); //ボスにダメージを与える（中山が編集）
     }
 
+    //ダメージ処理（中山が編集）
     public void TakeDamage()
     {
-        health--;
-        Debug.Log($"Player TakeDamage{health}");
+        animator.SetTrigger(hitID);// Hitアニメーションを開始（中山が編集）
 
+        health--;//体力を1減らす（中山が編集）
+
+        //体力が0以下になったら死亡処理を呼び出す（中山が編集）
         if (health <= 0)
         {
-            Die();
+            Die();//死亡処理を呼び出す（中山が編集）
         }
     }
 
+    //死亡処理（中山が編集）
     private void Die()
     {
-        Debug.Log("ImDead");
+        animator.SetTrigger(dieID);// Dieアニメーションを開始（中山が編集）
+        this.enabled = false; // Player スクリプトを無効化
+        gameOverUI.Show(); // ゲームオーバーUIを表示
     }
 }

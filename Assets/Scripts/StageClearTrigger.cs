@@ -14,7 +14,7 @@ using UnityEngine.Events;
         private void OnTriggerEnter(Collider collision)
         {
             // ステージクリアー判定
-            if (collision.CompareTag("Player"))
+            if (collision.CompareTag("Boss"))
             {
                 OnEnter.Invoke();
             }

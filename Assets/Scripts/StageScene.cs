@@ -30,9 +30,6 @@ public class StageScene : MonoBehaviour
     [SerializeField]
     private float playTimeout = 100;
 
-    // ゲームオーバートリガーを指定します。(中山が編集)
-    [SerializeField]
-    private GameOverTrigger gameOverTrigger = null;
     // ゲームオーバー表示用のUIを指定します。(中山が編集)
     [SerializeField]
     private GameOverUI gameOverUI = null;
@@ -63,14 +60,15 @@ public class StageScene : MonoBehaviour
         // ステージクリアーが確定していて演出中
         StageClear,
     }
-    // 現在の進行状態
-    SceneState sceneState = SceneState.Intro;
+    SceneState sceneState = SceneState.Intro;// 現在のステージ画面内の進行状態
 
+    // Awake is called when the script instance is being loaded（中山が編集）
     private void Awake()
     {
-        Instance = this;
+        Instance = this;// シングルトンインスタンスを設定(中山が編集)
     }
 
+    // Start is called before the first frame update（中山が編集）
     private void Start()
     {
         // ポーズUIの各ボタンが押されたときのイベントを登録
@@ -78,18 +76,14 @@ public class StageScene : MonoBehaviour
         pause.OnRetryButtonClick.AddListener(Retry);
         pause.OnExitButtonClick.AddListener(Exit);
 
-        gameOverTrigger.OnEnter.AddListener(GameOver);// ゲームオーバートリガーにイベントを登録(中山が編集)
         // ゲームオーバーUIの各ボタンが押されたときのイベントを登録(中山が編集)
         gameOverUI.OnRetryButtonClick.AddListener(Retry);
         gameOverUI.OnExitButtonClick.AddListener(Exit);
+
         stageClearUI.OnNextButtonClick.AddListener(LoadNextStage);// ステージクリアーUIのNEXTボタンにイベントを登録（中山が編集）
-
         animator = GetComponent<Animator>();// コンポーネントを参照しておく(中山が編集)
-
-       player.enabled = true;// プレイヤーを無効化しておく(中山が編集)
-
-        // ゲーム開始時はポーズ状態ではない
-        sceneState = SceneState.Play;
+        player.enabled = true;// プレイヤーを無効化しておく(中山が編集)
+        sceneState = SceneState.Play;// ステージプレイ中に変更(中山が編集)
     }
 
     void Update()
