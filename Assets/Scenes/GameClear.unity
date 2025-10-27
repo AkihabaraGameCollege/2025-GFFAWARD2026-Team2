@@ -525,7 +525,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextScene: Title
-  loadWaitTime: 1
+  loadWaitTime: 3
   nextButton: {fileID: 1004716220}
 --- !u!4 &562259293
 Transform:
@@ -559,11 +559,11 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: f2e5ef59814ab8747a44f309eb2b76b5, type: 3}
+  m_Resource: {fileID: 8300000, guid: 4d692ba1b79bfce4ebb1618905f9198f, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

@@ -98,8 +98,6 @@ public class Player : MonoBehaviour
         animator = GetComponent<Animator>();// Animator コンポーネントを取得（中山が編集）
 
         attackCollider.SetActive(false);// 攻撃判定を無効化（中山が編集）
-        effectAudio.Stop();// エフェクト音停止（中山が編集）
-
         StatusReset();// ステータス初期化（中山が編集）
     }
 

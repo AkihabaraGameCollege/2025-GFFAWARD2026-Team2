@@ -52,9 +52,13 @@ public class BossMove : MonoBehaviour
     // エフェクト再生用の AudioSource を指定します。（中山が編集）
     [SerializeField]
     private AudioSource effectAudio = null;
-    // ジャンプ時のサウンドを指定します。（中山が編集）
+    [SerializeField]
+    private AudioSource effectAudioLoop;
+    // サウンドを指定します。（中山が編集）
     [SerializeField]
     private AudioClip soundOnAttack = null;
+    [SerializeField]
+    private AudioClip soundOnMove = null;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -68,7 +72,7 @@ public class BossMove : MonoBehaviour
         attackCollider.SetActive(false);//攻撃判定無効化（中山が編集）
         weakTimeText.SetActive(false);//弱体化時間表示無効化（中山が編集）
 
-        effectAudio.Stop();//エフェクト音停止（中山が編集）
+        effectAudioLoop.Stop();//歩行時サウンド停止（中山が編集）
 
         StartCoroutine(Move());//行動パターン開始（中山が編集）
     }
@@ -78,6 +82,7 @@ public class BossMove : MonoBehaviour
     {
         animator.SetTrigger(jumpID);//ジャンプアニメーション開始（中山が編集）
         rigidbody.AddForce(Vector3.up * jumpP, ForceMode.Impulse);//上方向に力を加える（中山が編集）
+        effectAudio.PlayOneShot(soundOnMove);//ジャンプ攻撃時サウンド再生（中山が編集）
     }
 
     //歩く（中山が編集）
@@ -90,17 +95,22 @@ public class BossMove : MonoBehaviour
     IEnumerator OnWalk()
     {
         animator.SetFloat(IsWalkingID, 1);//歩行アニメーション開始（中山が編集）
+
         Vector3 forward = transform.forward * moveP;//前方向に移動ベクトル設定（中山が編集）
         rigidbody.linearVelocity = new Vector3(forward.x, rigidbody.linearVelocity.y, forward.z);//前方向に移動（中山が編集）
+
+        effectAudioLoop.Play();//歩行時サウンド再生（中山が編集）
         yield return new WaitForSeconds(0.8f);//歩行時間（中山が編集）
         rigidbody.linearVelocity = Vector3.zero;//停止（中山が編集）
         animator.SetFloat(IsWalkingID,0);//歩行アニメーション終了（中山が編集）
+        effectAudioLoop.Stop();//歩行時サウンド停止（中山が編集）
     }
 
     //回転（）の中に角度を設定（中山が編集）
     private void Turn(float rotate)
     {
         transform.Rotate(0, rotate * Time.deltaTime * 65, 0);//Y軸回転（中山が編集）
+    effectAudio.PlayOneShot(soundOnMove);//回転時サウンド再生（中山が編集）
     }
 
     //行動パターン（中山が編集）
@@ -127,7 +137,9 @@ public class BossMove : MonoBehaviour
             yield return new WaitForSeconds(3);//ハマる時間（中山が編集）
             attackCollider.SetActive(false);//攻撃判定無効化（中山が編集）
             weakTimeText.SetActive(true);//弱体化時間表示有効化（中山が編集）
+            effectAudioLoop.Play();//歩行時サウンド再生（中山が編集）
             yield return new WaitForSeconds(7);
+            effectAudioLoop.Stop();//歩行時サウンド停止（中山が編集）
             weakTimeText.SetActive(false);//弱体化時間表示無効化（中山が編集）
             animator.SetTrigger(grandID);//地面にハマるアニメーション終了（中山が編集）
             JumpAttack();//ジャンプ攻撃（中山が編集）
@@ -153,7 +165,9 @@ public class BossMove : MonoBehaviour
             yield return new WaitForSeconds(3);//待機（中山が編集）
             attackCollider.SetActive(false);//攻撃判定無効化（中山が編集）
             weakTimeText.SetActive(true);//弱体化時間表示有効化（中山が編集）
+            effectAudioLoop.Play();//歩行時サウンド再生（中山が編集）
             yield return new WaitForSeconds(7);
+            effectAudioLoop.Stop();//歩行時サウンド停止（中山が編集）
             weakTimeText.SetActive(false);//弱体化時間表示無効化（中山が編集）
             animator.SetTrigger(grandID);//地面にハマるアニメーション終了（中山が編集）
             JumpAttack();//ジャンプ攻撃（中山が編集）
