@@ -1428,6 +1428,7 @@ MonoBehaviour:
   gameOverUI: {fileID: 2089348004}
   musicAudio: {fileID: 1633997428}
   clearAudio: {fileID: 6895128436491128959}
+  overAudio: {fileID: 2089348006}
   player: {fileID: 472593818178697721}
   stageClearUI: {fileID: 6895128436491128958}
 --- !u!4 &1633997427
@@ -2099,6 +2100,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6705ddd47143ca748a32b5f9fd118bf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!82 &2089348006 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 5900768121130899634, guid: b48f019b78e681f45afa74f50da84dad, type: 3}
+  m_PrefabInstance: {fileID: 3915831167717033600}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &472593818178697721 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3374631571962649348, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
