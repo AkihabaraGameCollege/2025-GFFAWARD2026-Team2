@@ -68,6 +68,13 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameOverUI gameOverUI = null;
 
+    // エフェクト再生用の AudioSource を指定します。（中山が編集）
+    [SerializeField]
+    private AudioSource effectAudio = null;
+    // ジャンプ時のサウンドを指定します。（中山が編集）
+    [SerializeField]
+    private AudioClip soundOnAttack = null;
+
     /*
     //ダメージコライダー登録をいったん消去（中山が編集）
     [SerializeField]
@@ -89,7 +96,10 @@ public class Player : MonoBehaviour
         //damageCollision = GetComponent<Collider>();// ダメージコライダーを取得をいったん消去（中山が編集）
         rigidbody = GetComponent<Rigidbody>();// Rigidbody コンポーネントを取得
         animator = GetComponent<Animator>();// Animator コンポーネントを取得（中山が編集）
+
         attackCollider.SetActive(false);// 攻撃判定を無効化（中山が編集）
+        effectAudio.Stop();// エフェクト音停止（中山が編集）
+
         StatusReset();// ステータス初期化（中山が編集）
     }
 
@@ -215,6 +225,7 @@ public class Player : MonoBehaviour
     //攻撃判定の有効時間、攻撃演出を制御するコルーチン（中山が編集）
     IEnumerator AttackTimer()
     {
+        effectAudio.PlayOneShot(soundOnAttack);// 攻撃音再生（中山が編集）
         attackCollider.SetActive(true);//攻撃判定を有効化（中山が編集）
         animator.SetTrigger(attackID);// Attackアニメーションを開始（中山が編集）
         yield return new WaitForSeconds(1f);//1秒待機（中山が編集）

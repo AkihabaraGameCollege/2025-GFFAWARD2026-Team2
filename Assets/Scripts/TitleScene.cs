@@ -51,4 +51,18 @@ public class TitleScene : MonoBehaviour
         // 次のシーンへ遷移
         SceneManager.LoadScene(nextSceneName);
     }
+
+    // クイットボタンが押されたときに呼び出されるメソッド（中山が編集）
+    public void QuitGame()
+    {
+        StartCoroutine(OnQuit());// クイット処理開始（中山が編集）
+    }
+
+    // クイットボタンが押されたときの処理を行うコルーチン（中山が編集）
+    IEnumerator OnQuit()
+    {
+        animator.SetTrigger(outroId);// エフェクトを再生（中山が編集）
+        yield return new WaitForSeconds(stageTransitionDelay);// ウェイト（中山が編集）
+        Application.Quit();// ゲーム終了（中山が編集）
+    }
 }

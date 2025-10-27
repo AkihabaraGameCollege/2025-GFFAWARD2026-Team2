@@ -3324,6 +3324,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1633997427}
     m_Modifications:
+    - target: {fileID: 4502643203568371674, guid: 14d97599bf8e3e748b085ff3d1b9adf0, type: 3}
+      propertyPath: m_Convex
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4502643203568371674, guid: 14d97599bf8e3e748b085ff3d1b9adf0, type: 3}
+      propertyPath: m_ProvidesContacts
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7690927773437360759, guid: 14d97599bf8e3e748b085ff3d1b9adf0, type: 3}
       propertyPath: m_Name
       value: Stage 0

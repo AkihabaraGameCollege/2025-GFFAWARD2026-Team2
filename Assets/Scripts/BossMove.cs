@@ -62,9 +62,13 @@ public class BossMove : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();//Rigidbodyコンポーネント取得（中山が編集）
         animator = GetComponent<Animator>();//Animatorコンポーネント取得（中山が編集）
         thisCollider = GetComponent<Collider>();//ボス本体コライダー取得（中山が編集）
+
         health = maxHealth;//体力初期化（中山が編集）
+        
         attackCollider.SetActive(false);//攻撃判定無効化（中山が編集）
         weakTimeText.SetActive(false);//弱体化時間表示無効化（中山が編集）
+
+        effectAudio.Stop();//エフェクト音停止（中山が編集）
 
         StartCoroutine(Move());//行動パターン開始（中山が編集）
     }
