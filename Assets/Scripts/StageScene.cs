@@ -33,9 +33,13 @@ public class StageScene : MonoBehaviour
     // ゲームオーバー表示用のUIを指定します。(中山が編集)
     [SerializeField]
     private GameOverUI gameOverUI = null;
+
     // 楽曲再生用の AudioSource を指定します。(中山が編集)
     [SerializeField]
     private AudioSource musicAudio = null;
+    [SerializeField]
+    private AudioSource clearAudio = null;
+
     //プレイヤーを指定(中山が編集)
     [SerializeField]
     private Player player = null;
@@ -66,6 +70,7 @@ public class StageScene : MonoBehaviour
     private void Awake()
     {
         Instance = this;// シングルトンインスタンスを設定(中山が編集)
+        clearAudio.Stop();// ステージクリアー音声を停止しておく(中山が編集)
     }
 
     // Start is called before the first frame update（中山が編集）

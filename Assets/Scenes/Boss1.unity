@@ -1427,6 +1427,7 @@ MonoBehaviour:
   playTimeout: 100
   gameOverUI: {fileID: 2089348004}
   musicAudio: {fileID: 1633997428}
+  clearAudio: {fileID: 6895128436491128959}
   player: {fileID: 472593818178697721}
   stageClearUI: {fileID: 6895128436491128958}
 --- !u!4 &1633997427
@@ -3112,6 +3113,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7c127f9f25b7844da6ddfda62517665, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!82 &6895128436491128959 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 3187221981936706732, guid: 49bc269f736198841bf115e54a09a5f1, type: 3}
+  m_PrefabInstance: {fileID: 5715120077479292699}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6992002533125138373 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2905794302111428472, guid: 4bee7540489630e4abdddb0486cc83d2, type: 3}
