@@ -22,6 +22,9 @@ public class BossMove : MonoBehaviour
     [SerializeField]
     private Collider thisCollider;
 
+    [SerializeField]
+    private GameObject targetObject;//ターゲットオブジェクト（中山が編集）
+
     //ステージシーン参照用（中山が編集）
     [SerializeField]
     private StageScene stageScene = null;
@@ -59,6 +62,10 @@ public class BossMove : MonoBehaviour
     private AudioClip soundOnAttack = null;
     [SerializeField]
     private AudioClip soundOnMove = null;
+    [SerializeField]
+    private float bossWeakTime = 3f;
+    [SerializeField]
+    private float bossWaitTime = 0.5f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -109,8 +116,17 @@ public class BossMove : MonoBehaviour
     //回転（）の中に角度を設定（中山が編集）
     private void Turn(float rotate)
     {
-        transform.Rotate(0, rotate * Time.deltaTime * 65, 0);//Y軸回転（中山が編集）
-    effectAudio.PlayOneShot(soundOnMove);//回転時サウンド再生（中山が編集）
+        // 補完スピードを決める
+        float speed = 11.1f;
+        // ターゲット方向のベクトルを取得
+        Vector3 relativePos = targetObject.transform.position - this.transform.position;
+        // 方向を、回転情報に変換
+        Quaternion rotation = Quaternion.LookRotation(relativePos);
+        // 現在の回転情報と、ターゲット方向の回転情報を補完する
+        transform.rotation = Quaternion.Slerp(this.transform.rotation, rotation, speed);
+
+        //transform.Rotate(0, rotate * Time.deltaTime * 65, 0);//Y軸回転（中山が編集）
+        effectAudio.PlayOneShot(soundOnMove);//回転時サウンド再生（中山が編集）
     }
 
     //行動パターン（中山が編集）
@@ -118,17 +134,18 @@ public class BossMove : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(3);//待機（中山が編集）
+            yield return new WaitForSeconds(bossWaitTime);//待機（中山が編集）
             Turn(90);//右回転（中山が編集）
-            yield return new WaitForSeconds(3);//待機（中山が編集）
+            yield return new WaitForSeconds(bossWaitTime);//待機（中山が編集）
             Turn(0);//正面向き（中山が編集）
-            yield return new WaitForSeconds(1);//待機（中山が編集）
+            yield return new WaitForSeconds(bossWaitTime);//待機（中山が編集）
             Walking();//歩行開始（中山が編集）
-            yield return new WaitForSeconds(3);//歩行時間（中山が編集）
+            yield return new WaitForSeconds(bossWaitTime);//歩行時間（中山が編集）
             Turn(-90);//左回転（中山が編集）
-            yield return new WaitForSeconds(3);//待機（中山が編集）
+            yield return new WaitForSeconds(bossWaitTime);//待機（中山が編集）
             Turn(0);//正面向き（中山が編集）
-            yield return new WaitForSeconds(1);//待機（中山が編集）
+            yield return new WaitForSeconds(bossWaitTime);//待機（中山が編集）
+
             JumpAttack();//ジャンプ攻撃（中山が編集）
             yield return new WaitForSeconds(1);//ジャンプ攻撃中（中山が編集）
             attackCollider.SetActive(true);//攻撃判定有効化（中山が編集）
@@ -136,44 +153,20 @@ public class BossMove : MonoBehaviour
             effectAudio.PlayOneShot(soundOnAttack);//攻撃時サウンド再生（中山が編集）
             yield return new WaitForSeconds(3);//ハマる時間（中山が編集）
             attackCollider.SetActive(false);//攻撃判定無効化（中山が編集）
+            
             weakTimeText.SetActive(true);//弱体化時間表示有効化（中山が編集）
             effectAudioLoop.Play();//歩行時サウンド再生（中山が編集）
-            yield return new WaitForSeconds(7);
+            yield return new WaitForSeconds(bossWeakTime);
             effectAudioLoop.Stop();//歩行時サウンド停止（中山が編集）
             weakTimeText.SetActive(false);//弱体化時間表示無効化（中山が編集）
             animator.SetTrigger(grandID);//地面にハマるアニメーション終了（中山が編集）
+            
             JumpAttack();//ジャンプ攻撃（中山が編集）
             yield return new WaitForSeconds(1);//ジャンプ攻撃中（中山が編集）
             attackCollider.SetActive(false);//攻撃判定有効化（中山が編集）
             thisCollider.enabled = true;//当たり判定有効化（中山が編集）
-            yield return new WaitForSeconds(3);//待機（中山が編集）
-            Turn(-90);//左回転（中山が編集）
-            yield return new WaitForSeconds(3);//待機（中山が編集）
-            Turn(0);//正面向き（中山が編集）
-            yield return new WaitForSeconds(1);//待機（中山が編集）
-            Walking();//歩行開始（中山が編集）
-            yield return new WaitForSeconds(3);//歩行時間（中山が編集）
-            Turn(90);//右回転（中山が編集）
-            yield return new WaitForSeconds(3);//待機（中山が編集）
-            Turn(0);//正面向き（中山が編集）
-            yield return new WaitForSeconds(1);//待機（中山が編集）
-            JumpAttack();//ジャンプ攻撃（中山が編集）
-            yield return new WaitForSeconds(1);//ジャンプ攻撃中（中山が編集）
-            attackCollider.SetActive(true);//攻撃判定有効化（中山が編集）
-            thisCollider.enabled = false;//当たり判定無効化（中山が編集）
-            effectAudio.PlayOneShot(soundOnAttack);//攻撃時サウンド再生（中山が編集）
-            yield return new WaitForSeconds(3);//待機（中山が編集）
-            attackCollider.SetActive(false);//攻撃判定無効化（中山が編集）
-            weakTimeText.SetActive(true);//弱体化時間表示有効化（中山が編集）
-            effectAudioLoop.Play();//歩行時サウンド再生（中山が編集）
-            yield return new WaitForSeconds(7);
-            effectAudioLoop.Stop();//歩行時サウンド停止（中山が編集）
-            weakTimeText.SetActive(false);//弱体化時間表示無効化（中山が編集）
-            animator.SetTrigger(grandID);//地面にハマるアニメーション終了（中山が編集）
-            JumpAttack();//ジャンプ攻撃（中山が編集）
-            yield return new WaitForSeconds(1);//ジャンプ攻撃中（中山が編集）
-            thisCollider.enabled = true;//当たり判定有効化（中山が編集）
-            attackCollider.SetActive(false);//攻撃判定有効化（中山が編集）
+            yield return new WaitForSeconds(bossWaitTime);//待機（中山が編集）
+            
         }
     }
 

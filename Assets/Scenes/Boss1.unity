@@ -369,6 +369,11 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
+--- !u!1 &345793030 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3067108156452224047, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
+  m_PrefabInstance: {fileID: 3694194575572515687}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -2110,7 +2115,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3374631571962649348, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
   m_PrefabInstance: {fileID: 3694194575572515687}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 345793030}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 52df092b424ca4e47885df2e5ca8d66b, type: 3}
@@ -2153,6 +2158,10 @@ PrefabInstance:
       propertyPath: soundOnMove
       value: 
       objectReference: {fileID: 8300000, guid: 56dae79f1b4bd67408e7738aa3397468, type: 3}
+    - target: {fileID: 690661134588447105, guid: 4bee7540489630e4abdddb0486cc83d2, type: 3}
+      propertyPath: targetObject
+      value: 
+      objectReference: {fileID: 345793030}
     - target: {fileID: 690661134588447105, guid: 4bee7540489630e4abdddb0486cc83d2, type: 3}
       propertyPath: weakTimeText
       value: 
