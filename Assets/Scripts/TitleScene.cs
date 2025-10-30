@@ -22,7 +22,7 @@ public class TitleScene : MonoBehaviour
     // Animatorコンポーネント
     Animator animator;
     // AnimatorのパラメーターID
-   static readonly int outroId = Animator.StringToHash("outro");
+   static readonly int outroId = Animator.StringToHash("Outro");
 
     //スタート時に呼び出されるメソッド
     void Start()
