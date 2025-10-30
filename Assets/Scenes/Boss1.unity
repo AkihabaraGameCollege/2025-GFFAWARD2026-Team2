@@ -2551,6 +2551,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2802148259915651213}
     - target: {fileID: 3374631571962649348, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
+      propertyPath: moveSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3374631571962649348, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
       propertyPath: gameOverUI
       value: 
       objectReference: {fileID: 2089348004}

@@ -19,6 +19,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     [Tooltip("ジャンプに必要な速度を指定")]
     private float requiredJumpSpeed = 0.1f;
+    // プレイヤー待機時間指定（中山が編集）
+    [SerializeField]
+    private float playerWaitTime = 1f;
 
     // 地面判定用の線分の始点と終点を指定
     [Header("GroundChecker")]
@@ -39,11 +42,13 @@ public class Player : MonoBehaviour
 
     private bool IsGrounded => Physics.Linecast(transform.position + groundCheckStartPoint, transform.position + groundCheckEndPoint);// 地面接地判定
 
-    private Vector2 moveInput;// 移動入力ベクトル
+    private Vector2 moveInput;// 移動入力ベクトルを移植（中山が編集）
 
     new private Rigidbody rigidbody;// Rigidbody コンポーネントの参照
 
     public bool IsSleeping { get; private set; }// 眠っているかどうか
+
+    private bool attackOK = false;// 攻撃制限変数（中山が編集）
 
     private int health;// プレイヤーの体力
 
@@ -98,6 +103,7 @@ public class Player : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();// Rigidbody コンポーネントを取得
         animator = GetComponent<Animator>();// Animator コンポーネントを取得（中山が編集）
 
+        attackOK = true;// 攻撃制限変数初期化（中山が編集）
         attackCollider.SetActive(false);// 攻撃判定を無効化（中山が編集）
         StatusReset();// ステータス初期化（中山が編集）
     }
@@ -116,7 +122,7 @@ public class Player : MonoBehaviour
         IsSleeping = false;
     }
 
-    // Move アクションによって呼び出されます。
+    // Move アクションによって呼び出されるプログラムを移植（中山が編集）
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
@@ -188,13 +194,13 @@ public class Player : MonoBehaviour
         }
     }
 
-    // 固定フレームレートで呼び出される更新処理（中山が編集）
+    // 固定フレームレートで呼び出される更新処理を移植（中山が編集）
     void FixedUpdate()
     {
-        Move();// 移動処理呼び出し（中山が編集）
+        Move();// 指定した速度で、このキャラクターを移動させる
     }
 
-    // 指定した速度で、このキャラクターを移動させます。
+    // 指定した速度で、このキャラクターを移動させるプログラムを移植（中山が編集）
     public void Move()
     {
         // メインカメラが存在する場合のみ処理を行う
@@ -229,24 +235,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    //カメラに準じた移動ができないため削除（中山が編集）
-    /*
-     private void Move(Vector2 input)//input: 入力ベクトル（中山が編集）
-    {
-        Vector3 velocity = rigidbody.linearVelocity;// 現在の速度取得（中山が編集）
-        velocity.x = input.x * moveSpeed;// X軸方向の速度設定（中山が編集）
-        velocity.z = input.y * moveSpeed;// Z軸方向の速度設定（中山が編集）
-        rigidbody.linearVelocity = velocity;// 速度変更（中山が編集）
-
-        // 回転（中山が編集）
-        if (input != Vector2.zero)
-        {
-            transform.rotation = Quaternion.Euler(0,(Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg) + rotationOffset, 0);// Y軸回転（中山が編集）
-            //transform.rotation = Quaternion.LookRotation(new Vector3(moveInput.x, 0f, moveInput.y));// 以下、Unityの機能を使った簡単バージョン(AI頼り)
-        }
-    }
-    */
-
     // ジャンプ処理（中山が編集）
     private void Jump(float power)
     {
@@ -261,18 +249,26 @@ public class Player : MonoBehaviour
 
     //攻撃処理（中山が編集）
     private void Attack()
-    {  
-        StartCoroutine(AttackTimer()); //攻撃処理開始（中山が編集）
+    {
+        //攻撃制限変数判定（中山が編集）
+        if (attackOK)
+        {
+            StartCoroutine(AttackTimer()); //攻撃処理開始（中山が編集）
+        }
+        return;//攻撃制限変数判定終了（中山が編集）
     }
 
     //攻撃判定の有効時間、攻撃演出を制御するコルーチン（中山が編集）
     IEnumerator AttackTimer()
     {
-        effectAudio.PlayOneShot(soundOnAttack);// 攻撃音再生（中山が編集）
-        attackCollider.SetActive(true);//攻撃判定を有効化（中山が編集）
+        attackOK = false;//攻撃制限変数をfalseに設定（中山が編集）
         animator.SetTrigger(attackID);// Attackアニメーションを開始（中山が編集）
-        yield return new WaitForSeconds(1f);//1秒待機（中山が編集）
+        attackCollider.SetActive(true);//攻撃判定を有効化（中山が編集）
+        effectAudio.PlayOneShot(soundOnAttack);// 攻撃音再生（中山が編集）
+        yield return new WaitForSeconds(playerWaitTime);//1秒待機（中山が編集）
         attackCollider.SetActive(false);//攻撃判定を無効化（中山が編集）
+        yield return new WaitForSeconds(playerWaitTime);//1秒待機（中山が編集）
+        attackOK = true;//攻撃制限変数をtrueに設定（中山が編集）
     }
 
     //ダメージ処理（中山が編集）
