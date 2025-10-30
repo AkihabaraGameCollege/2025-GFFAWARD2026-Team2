@@ -270,9 +270,9 @@ public class Player : MonoBehaviour
         animator.SetTrigger(attackID);// Attackアニメーションを開始（中山が編集）
         attackCollider.SetActive(true);//攻撃判定を有効化（中山が編集）
         effectAudio.PlayOneShot(soundOnAttack);// 攻撃音再生（中山が編集）
-        yield return new WaitForSeconds(playerWaitTime);//1秒待機（中山が編集）
+        yield return new WaitForSeconds(1);//1秒待機（中山が編集）
         attackCollider.SetActive(false);//攻撃判定を無効化（中山が編集）
-        yield return new WaitForSeconds(playerWaitTime);//1秒待機（中山が編集）
+        yield return new WaitForSeconds(playerWaitTime);//playerWaitTime秒待機（中山が編集）
         attackOK = true;//攻撃制限変数をtrueに設定（中山が編集）
     }
 
