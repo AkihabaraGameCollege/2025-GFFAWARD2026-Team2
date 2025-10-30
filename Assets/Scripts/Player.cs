@@ -40,6 +40,10 @@ public class Player : MonoBehaviour
     [SerializeField]
     private PauseUI pause = null;
 
+    // プレイヤーダメージUIを指定します。（中山が編集）
+    [SerializeField]
+    private GameObject playerDamage = null;
+
     private bool IsGrounded => Physics.Linecast(transform.position + groundCheckStartPoint, transform.position + groundCheckEndPoint);// 地面接地判定
 
     private Vector2 moveInput;// 移動入力ベクトルを移植（中山が編集）
@@ -105,6 +109,7 @@ public class Player : MonoBehaviour
 
         attackOK = true;// 攻撃制限変数初期化（中山が編集）
         attackCollider.SetActive(false);// 攻撃判定を無効化（中山が編集）
+        playerDamage.SetActive(false);// ダメージUI非表示（中山が編集）
         StatusReset();// ステータス初期化（中山が編集）
     }
 
@@ -275,7 +280,7 @@ public class Player : MonoBehaviour
     public void TakeDamage()
     {
         animator.SetTrigger(hitID);// Hitアニメーションを開始（中山が編集）
-
+        playerDamage.SetActive(true);// ダメージUI表示（中山が編集）
         health--;//体力を1減らす（中山が編集）
 
         //体力が0以下になったら死亡処理を呼び出す（中山が編集）

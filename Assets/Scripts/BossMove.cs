@@ -153,20 +153,20 @@ public class BossMove : MonoBehaviour
             effectAudio.PlayOneShot(soundOnAttack);//攻撃時サウンド再生（中山が編集）
             yield return new WaitForSeconds(3);//ハマる時間（中山が編集）
             attackCollider.SetActive(false);//攻撃判定無効化（中山が編集）
-            
+
             weakTimeText.SetActive(true);//弱体化時間表示有効化（中山が編集）
             effectAudioLoop.Play();//歩行時サウンド再生（中山が編集）
             yield return new WaitForSeconds(bossWeakTime);
             effectAudioLoop.Stop();//歩行時サウンド停止（中山が編集）
             weakTimeText.SetActive(false);//弱体化時間表示無効化（中山が編集）
             animator.SetTrigger(grandID);//地面にハマるアニメーション終了（中山が編集）
-            
+
             JumpAttack();//ジャンプ攻撃（中山が編集）
             yield return new WaitForSeconds(1);//ジャンプ攻撃中（中山が編集）
             attackCollider.SetActive(false);//攻撃判定有効化（中山が編集）
             thisCollider.enabled = true;//当たり判定有効化（中山が編集）
             yield return new WaitForSeconds(bossWaitTime);//待機（中山が編集）
-            
+
         }
     }
 
