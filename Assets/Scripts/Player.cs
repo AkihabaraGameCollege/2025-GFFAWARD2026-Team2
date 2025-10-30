@@ -44,7 +44,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject playerDamage = null;
 
-    private bool IsGrounded => Physics.Linecast(transform.position + groundCheckStartPoint, transform.position + groundCheckEndPoint);// 地面接地判定
+
+    [SerializeField]    private bool IsGrounded => Physics.Linecast(transform.position + groundCheckStartPoint, transform.position + groundCheckEndPoint);// 地面接地判定
 
     private Vector2 moveInput;// 移動入力ベクトルを移植（中山が編集）
 
@@ -99,6 +100,7 @@ public class Player : MonoBehaviour
         JumpAnticipation,
         Jumping,
     }
+    [SerializeField]
     MotionState motionState = MotionState.Stopping;// 現在のモーション状態（中山が編集）
 
     private void Start()
