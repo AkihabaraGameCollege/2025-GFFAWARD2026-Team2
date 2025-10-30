@@ -1013,6 +1013,9 @@ MonoBehaviour:
   playerWaitTime: 1
   groundCheckStartPoint: {x: 0, y: -0.5, z: 0}
   groundCheckEndPoint: {x: 0, y: -1.5, z: 0}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
   attackCollider: {fileID: 4619011987892502512}
   pause: {fileID: 0}
   playerDamage: {fileID: 0}

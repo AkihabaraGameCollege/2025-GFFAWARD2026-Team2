@@ -415,7 +415,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 16151
+    m_Bits: 16215
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -2914,7 +2914,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3374631571962649348, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
       propertyPath: requiredJumpSpeed
-      value: 0
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3374631571962649348, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
+      propertyPath: groundCheckEndPoint.y
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3374631571962649348, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
+      propertyPath: groundCheckStartPoint.y
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 3586249527065422193, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
       propertyPath: targetTag
@@ -3521,6 +3529,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1633997427}
     m_Modifications:
+    - target: {fileID: 453914413459628443, guid: 14d97599bf8e3e748b085ff3d1b9adf0, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1654706733177181107, guid: 14d97599bf8e3e748b085ff3d1b9adf0, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3756547593913524979, guid: 14d97599bf8e3e748b085ff3d1b9adf0, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4502643203568371674, guid: 14d97599bf8e3e748b085ff3d1b9adf0, type: 3}
       propertyPath: m_Convex
       value: 0
@@ -3529,9 +3549,25 @@ PrefabInstance:
       propertyPath: m_ProvidesContacts
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5219046229445718006, guid: 14d97599bf8e3e748b085ff3d1b9adf0, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6659280684275685955, guid: 14d97599bf8e3e748b085ff3d1b9adf0, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7481416973313821807, guid: 14d97599bf8e3e748b085ff3d1b9adf0, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7690927773437360759, guid: 14d97599bf8e3e748b085ff3d1b9adf0, type: 3}
       propertyPath: m_Name
       value: Stage 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7690927773437360759, guid: 14d97599bf8e3e748b085ff3d1b9adf0, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8845022245986990365, guid: 14d97599bf8e3e748b085ff3d1b9adf0, type: 3}
       propertyPath: m_LocalScale.x

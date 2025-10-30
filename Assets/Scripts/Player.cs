@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -30,6 +31,10 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Vector3 groundCheckEndPoint = new Vector3(0, -1.5f, 0);
 
+    // 地面判定に使用するレイヤーを指定
+    [SerializeField]
+    LayerMask groundLayer = default;
+
     // 攻撃判定用のコライダーを指定
     [Header("攻撃関連")]
     [SerializeField]
@@ -44,12 +49,11 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject playerDamage = null;
 
-
-    [SerializeField]    private bool IsGrounded => Physics.Linecast(transform.position + groundCheckStartPoint, transform.position + groundCheckEndPoint);// 地面接地判定
-
     private Vector2 moveInput;// 移動入力ベクトルを移植（中山が編集）
 
     new private Rigidbody rigidbody;// Rigidbody コンポーネントの参照
+
+    private bool IsGrounded= false;// 地面に接地しているかどうか
 
     public bool IsSleeping { get; private set; }// 眠っているかどうか
 
@@ -180,12 +184,14 @@ public class Player : MonoBehaviour
                 //地面から離れたらジャンピング状態へ移行（中山が編集）
                 if (!IsGrounded)
                 {
+                    Debug.Log("Jumping");
                     motionState = MotionState.Jumping;
                     animator.SetTrigger(jumpID);// Jumpアニメーションを開始（中山が編集）
                 }
                 //ジャンプ予備動作から進行しなくなったら待機状態へ戻る（中山が編集）
                 else if (rigidbody.linearVelocity.y < requiredJumpSpeed)
                 {
+                    Debug.Log("JumpAnticipation to Stopping");
                     motionState = MotionState.Stopping;
                     animator.SetTrigger(landingID);// Jumpアニメーションを終了（中山が編集）
                 }
@@ -194,21 +200,23 @@ public class Player : MonoBehaviour
                 //地面に着地した判定（中山が編集）
                 if (IsGrounded)
                 {
+                    Debug.Log("Landed");
                     motionState = MotionState.Stopping;
                     animator.SetTrigger(landingID);// Jumpアニメーションを終了（中山が編集）
                 }
                 break;
         }
+        Move();// カメラに準じた移動を呼び出し（中山が編集）
     }
 
     // 固定フレームレートで呼び出される更新処理を移植（中山が編集）
     void FixedUpdate()
-    {
-        Move();// 指定した速度で、このキャラクターを移動させる
+    {      
+        IsGrounded = Physics.Linecast(rigidbody.position + groundCheckStartPoint, rigidbody.position + groundCheckEndPoint, groundLayer);// 地面接地判定を更新
     }
 
-    // 指定した速度で、このキャラクターを移動させるプログラムを移植（中山が編集）
-    public void Move()
+// 指定した速度で、このキャラクターを移動させるプログラムを移植（中山が編集）
+public void Move()
     {
         // メインカメラが存在する場合のみ処理を行う
         if (Camera.main != null)
