@@ -6,11 +6,7 @@ using UnityEngine.UI;
 
 public class GameDirector : MonoBehaviour
 {
-    GameObject gameOver;
     GameObject hpGauge;
-    GameObject BGM;
-    GameObject gameDirector;
-   
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

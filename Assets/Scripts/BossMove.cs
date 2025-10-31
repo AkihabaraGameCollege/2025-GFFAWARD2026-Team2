@@ -193,7 +193,7 @@ public class BossMove : MonoBehaviour
     {
         animator.SetTrigger(dieID);//死亡アニメーション再生（中山が編集）
         yield return new WaitForSeconds(2);//少し待機（中山が編集）
-        stageScene.StageClear();//ステージクリア処理（中山が編集）
+        stageScene.StageClear1();//ステージクリア処理（中山が編集）
         Destroy(gameObject);//ボスオブジェクトを破壊（中山が編集）
     }
 }

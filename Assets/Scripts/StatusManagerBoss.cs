@@ -5,18 +5,27 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class StatusManager : MonoBehaviour
+// ボスのステータスに関するスクリプト（中山が別プロジェクトから移植）
+public class StatusManagerBoss : MonoBehaviour
 {
-    [SerializeField] GameObject MainObject; //このスクリプトをアタッチするオブジェクト
-    [SerializeField] int hp = 3;             //hp現在値
-    [SerializeField] int maxHp = 3;          //いずれmaxHp利用する際に使用
+    //このスクリプトをアタッチするオブジェクト
+    [SerializeField]
+    GameObject MainObject;
+
+    //hp現在値
+    [SerializeField]
+    int hp = 6;
+    //いずれmaxHp利用する際に使用
+    [SerializeField]
+    int maxHp = 6;
+    //ダメージを与える値（中山が編集）
+    [SerializeField]
+    public int damage = 1;
 
     [SerializeField] GameObject destroyEffect;  //撃破エフェクト
     [SerializeField] GameObject damageEffect;   //被弾エフェクト
 
     //スクリプト参照用（中山が編集）
-    [SerializeField]
- private Player player = null;
     [SerializeField]
     private BossMove bossMove = null;
     [SerializeField]
@@ -35,7 +44,7 @@ public class StatusManager : MonoBehaviour
     public void Damage()
     {
         // HPを減少させ、ダメージエフェクトを発生させる
-        hp--;
+        hp -= damage;
 
         gameDirector.DecreaseHp();//HPゲージを減少させる（中山が編集）
 
@@ -70,7 +79,6 @@ public class StatusManager : MonoBehaviour
         Destroy(effect, 5);
         Destroy(MainObject);
 
-        player.Die();
         bossMove.Die();
     }
 }

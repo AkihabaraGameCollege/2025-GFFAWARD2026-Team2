@@ -1,17 +1,18 @@
 using UnityEngine;
 
-public class Hitbox : MonoBehaviour
+// プレイヤーの当たり判定のスクリプト（中山が移植）
+public class HitboxPlayer : MonoBehaviour
 {
     // 注意: このColliderが衝突する条件は、Unityの「Project Settings」->「Physics」の
     //       「Layer Collision Matrix」で設定されています。
     //       例: 「EnemyAttack」レイヤーは「PlayerHitbox」レイヤーのみ衝突が許可されている必要があります。
 
-    private StatusManager receiverStatus; // ダメージを受ける側のStatusManager
+    private StatusManagerPlayer receiverStatus; // ダメージを受ける側のStatusManager
 
     void Start()
     {
         // 自身の親オブジェクトからStatusManagerを取得
-        receiverStatus = GetComponentInParent<StatusManager>();
+        receiverStatus = GetComponentInParent<StatusManagerPlayer>();
 
         if (receiverStatus == null)
         {
@@ -29,6 +30,5 @@ public class Hitbox : MonoBehaviour
 
         // 被弾側のStatusManagerに通知
         receiverStatus.Damage();
-
     }
 }

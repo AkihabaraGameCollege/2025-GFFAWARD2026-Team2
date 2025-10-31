@@ -54,6 +54,10 @@ public class StageScene : MonoBehaviour
     [SerializeField]
     private StageClearUI stageClearUI = null;
 
+    //スクリプトを参照
+    [SerializeField]
+    private StatusManagerPlayer statusManagerPlayer = null;
+
     // ステージ画面内の進行状態を表します。
     enum SceneState
     {
@@ -196,7 +200,38 @@ public class StageScene : MonoBehaviour
     }
 
     // このステージをステージクリアーとします。
-    public void StageClear()
+    public void StageClear1()
+    {
+        // ステージプレイ中のみ
+        if (sceneState == SceneState.Play)
+        {
+            sceneState = SceneState.StageClear;
+
+            musicAudio.Stop();
+            player.enabled = false;// プレイヤー操作を無効化(中山が編集)
+            statusManagerPlayer.BurikiArm();// プレイヤーの攻撃面を強化する関数を呼び出す（中山が編集）
+            // ステージクリアーUIを表示
+            stageClearUI.Show();
+        }
+    }
+
+    // このステージをステージクリアーとします。
+    public void StageClear2()
+    {
+        // ステージプレイ中のみ
+        if (sceneState == SceneState.Play)
+        {
+            sceneState = SceneState.StageClear;
+
+            musicAudio.Stop();
+            player.enabled = false;// プレイヤー操作を無効化(中山が編集)
+            // ステージクリアーUIを表示
+            stageClearUI.Show();
+        }
+    }
+
+    // このステージをステージクリアーとします。
+    public void StageClea3r()
     {
         // ステージプレイ中のみ
         if (sceneState == SceneState.Play)
