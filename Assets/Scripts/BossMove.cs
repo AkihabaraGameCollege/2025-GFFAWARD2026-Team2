@@ -183,7 +183,7 @@ public class BossMove : MonoBehaviour
     }
 
     //撃破処理（中山が編集）
-    private void Die()
+    public void Die()
     {
         StartCoroutine(OnDie());//撃破演出開始（中山が編集）
     }
@@ -192,9 +192,8 @@ public class BossMove : MonoBehaviour
     IEnumerator OnDie()
     {
         animator.SetTrigger(dieID);//死亡アニメーション再生（中山が編集）
-        yield return new WaitForSeconds(5);//死亡アニメーション終了まで待機（中山が編集）
-        Destroy(gameObject);//ボスオブジェクトを破壊（中山が編集）
-        yield return new WaitForSeconds(1);//少し待機（中山が編集）
+        yield return new WaitForSeconds(2);//少し待機（中山が編集）
         stageScene.StageClear();//ステージクリア処理（中山が編集）
+        Destroy(gameObject);//ボスオブジェクトを破壊（中山が編集）
     }
 }

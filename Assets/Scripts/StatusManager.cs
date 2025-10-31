@@ -1,5 +1,6 @@
 using NUnit.Framework.Interfaces;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -12,7 +13,13 @@ public class StatusManager : MonoBehaviour
 
     [SerializeField] GameObject destroyEffect;  //撃破エフェクト
     [SerializeField] GameObject damageEffect;   //被弾エフェクト
-    
+
+    //スクリプト参照用（中山が編集）
+    [SerializeField]
+ private Player player = null;
+    [SerializeField]
+    private BossMove bossMove = null;
+
     // Update is called once per frame
     void Update()
     {
@@ -58,5 +65,8 @@ public class StatusManager : MonoBehaviour
         effect.transform.position = effectPos;
         Destroy(effect, 5);
         Destroy(MainObject);
+
+        player.Die();
+        bossMove.Die();
     }
 }

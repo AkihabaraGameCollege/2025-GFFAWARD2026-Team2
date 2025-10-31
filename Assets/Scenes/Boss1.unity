@@ -715,6 +715,23 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 1
+--- !u!1 &495027212 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3449587677935745533, guid: 4bee7540489630e4abdddb0486cc83d2, type: 3}
+  m_PrefabInstance: {fileID: 2489677327665391321}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &495027216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 495027212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a58fa65c33b971488f83bf03fbbd303, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &623957995
 GameObject:
   m_ObjectHideFlags: 0
@@ -2374,9 +2391,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2089348004}
     - target: {fileID: 2508532194529083278, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
+      propertyPath: stageScene
+      value: 
+      objectReference: {fileID: 1633997426}
+    - target: {fileID: 2508532194529083278, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
       propertyPath: playerDamage
       value: 
       objectReference: {fileID: 1690816770}
+    - target: {fileID: 2508532194529083278, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
+      propertyPath: playerWaitTime
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 2873788763243606751, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
       propertyPath: onEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -2420,6 +2445,14 @@ PrefabInstance:
     - target: {fileID: 3401943718075337740, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8734794260185636031, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 2130611556953251939}
+    - target: {fileID: 8734794260185636031, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
+      propertyPath: bossMove
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2804,6 +2837,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7772579410418451484, guid: 4bee7540489630e4abdddb0486cc83d2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1928168120}
+    - targetCorrespondingSourceObject: {fileID: 3449587677935745533, guid: 4bee7540489630e4abdddb0486cc83d2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 495027216}
   m_SourcePrefab: {fileID: 100100000, guid: 4bee7540489630e4abdddb0486cc83d2, type: 3}
 --- !u!4 &2724396032687731523 stripped
 Transform:

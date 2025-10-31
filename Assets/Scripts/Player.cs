@@ -78,6 +78,8 @@ public class Player : MonoBehaviour
     //BossMoveScript登録
     [SerializeField]
     private BossMove bossMove = null;
+    [SerializeField]
+    private StageScene stageScene = null;
     // ゲームオーバーUI登録
     [SerializeField]
     private GameOverUI gameOverUI = null;
@@ -300,10 +302,10 @@ public void Move()
     }
 
     //死亡処理（中山が編集）
-    private void Die()
+    public void Die()
     {
         animator.SetTrigger(dieID);// Dieアニメーションを開始（中山が編集）
-        this.enabled = false; // Player スクリプトを無効化
-        gameOverUI.Show(); // ゲームオーバーUIを表示
+        Destroy(gameObject, 2f);//3秒後にプレイヤーオブジェクトを破壊（中山が編集）
+        stageScene.GameOver(); // ゲームオーバー処理を呼び出す
     }
 }

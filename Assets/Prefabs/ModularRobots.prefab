@@ -346,6 +346,7 @@ GameObject:
   - component: {fileID: 2769864945430577467}
   - component: {fileID: 3478621149218836489}
   - component: {fileID: 1604344495776143427}
+  - component: {fileID: 1290068588266773868}
   m_Layer: 0
   m_Name: ModularRobots
   m_TagString: Untagged
@@ -420,6 +421,7 @@ MonoBehaviour:
   moveP: 100
   attackCollider: {fileID: 5910458117196692379}
   thisCollider: {fileID: 2769864945430577467}
+  targetObject: {fileID: 0}
   stageScene: {fileID: 0}
   maxHealth: 5
   player: {fileID: 0}
@@ -428,6 +430,8 @@ MonoBehaviour:
   effectAudioLoop: {fileID: 2492374993594410836}
   soundOnAttack: {fileID: 8300000, guid: afd9374998875d54c8063c6c53989dad, type: 3}
   soundOnMove: {fileID: 8300000, guid: 56dae79f1b4bd67408e7738aa3397468, type: 3}
+  bossWeakTime: 3
+  bossWaitTime: 0.5
 --- !u!65 &2769864945430577467
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -568,6 +572,25 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1290068588266773868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2800254350771268401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e5209af2d5474d4fad22c982bbf55c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MainObject: {fileID: 3449587677935745533}
+  hp: 3
+  maxHp: 3
+  destroyEffect: {fileID: 8962295279383145195, guid: 7cdd99d9641263e498d658cb227be266, type: 3}
+  damageEffect: {fileID: 1430198582188953287, guid: 21b15d55fb362544fab3a70419757060, type: 3}
+  player: {fileID: 0}
+  bossMove: {fileID: 690661134588447105}
 --- !u!1 &2945321809703843249
 GameObject:
   m_ObjectHideFlags: 0
@@ -649,6 +672,7 @@ GameObject:
   - component: {fileID: 538724650965010865}
   - component: {fileID: 7539625336095395571}
   - component: {fileID: 361398553110098544}
+  - component: {fileID: 5629229946744342860}
   m_Layer: 0
   m_Name: R1_Head
   m_TagString: Untagged
@@ -764,6 +788,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.47279048, y: 0.36522865, z: 0.34062052}
   m_Center: {x: -0.0018159151, y: 1.4912107, z: -0.0107234325}
+--- !u!114 &5629229946744342860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3449587677935745533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a58fa65c33b971488f83bf03fbbd303, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4059895298473326349
 GameObject:
   m_ObjectHideFlags: 0
