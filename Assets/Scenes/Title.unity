@@ -2560,7 +2560,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stageTransitionDelay: 5
-  nextSceneName: Boss1
+  nextSceneName: StageSelect
   effectAudio: {fileID: 1976859861}
 --- !u!4 &1976859859
 Transform:

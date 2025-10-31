@@ -9,8 +9,17 @@ EditorBuildSettings:
     path: Assets/Scenes/Title.unity
     guid: ad8ecc07e2895a34284fea3991dff50f
   - enabled: 1
+    path: Assets/Scenes/StageSelect.unity
+    guid: 9969f539933dc98469b525898ab33ee8
+  - enabled: 1
     path: Assets/Scenes/Boss1.unity
     guid: ebb6fdd54f304424bae9df72ac751397
+  - enabled: 1
+    path: Assets/Scenes/Boss2.unity
+    guid: b1c176dec9c7abb4a8ed012c81ee647a
+  - enabled: 1
+    path: Assets/Scenes/Boss3.unity
+    guid: 8d237b3ad04ea594ba1a90faf662665e
   - enabled: 1
     path: Assets/Scenes/GameClear.unity
     guid: 99c9720ab356a0642a771bea13969a05
