@@ -285,7 +285,7 @@ GameObject:
   - component: {fileID: 277449798}
   - component: {fileID: 277449797}
   m_Layer: 5
-  m_Name: Image
+  m_Name: hpGauge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -519,6 +519,50 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
+--- !u!1 &338243593
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 338243594}
+  - component: {fileID: 338243595}
+  m_Layer: 0
+  m_Name: GameDirector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &338243594
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 338243593}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1633997427}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &338243595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 338243593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 979d4f4e484e36d48979d48347486746, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &370251868
 GameObject:
   m_ObjectHideFlags: 0
@@ -1771,7 +1815,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 89743402}
   - {fileID: 832575519}
   - {fileID: 410087041}
   - {fileID: 330585546}
@@ -1781,6 +1824,8 @@ Transform:
   - {fileID: 8730643381335991843}
   - {fileID: 1341848759890697714}
   - {fileID: 6992002533125138373}
+  - {fileID: 89743402}
+  - {fileID: 338243594}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &1633997428
@@ -2454,6 +2499,10 @@ PrefabInstance:
       propertyPath: bossMove
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 8734794260185636031, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
+      propertyPath: gameDirector
+      value: 
+      objectReference: {fileID: 338243595}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

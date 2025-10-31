@@ -19,6 +19,8 @@ public class StatusManager : MonoBehaviour
  private Player player = null;
     [SerializeField]
     private BossMove bossMove = null;
+    [SerializeField]
+    private GameDirector gameDirector = null;
 
     // Update is called once per frame
     void Update()
@@ -34,6 +36,8 @@ public class StatusManager : MonoBehaviour
     {
         // HPを減少させ、ダメージエフェクトを発生させる
         hp--;
+
+        gameDirector.DecreaseHp();//HPゲージを減少させる（中山が編集）
 
         // エフェクトをインスタンス化
         GameObject effect = Instantiate(damageEffect);

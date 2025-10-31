@@ -16,31 +16,11 @@ public class GameDirector : MonoBehaviour
     void Start()
     {
         this.hpGauge = GameObject.Find("hpGauge");
-        this.gameOver = GameObject.Find("gameOver");
-        this.BGM = GameObject.Find("BGM");
-         this. gameDirector= GameObject.Find("gameDirector");
-        this.gameOver.SetActive(false);
     }
 
     // Update is called once per frame
     public void DecreaseHp()
     {
-        this.hpGauge.GetComponent<Image>().fillAmount -= 0.1f;
-        if (this.hpGauge.GetComponent<Image>().fillAmount <= 0) 
-        {
-            this.gameOver.SetActive(true);
-            this.BGM.SetActive(false);
-            this.gameDirector.SetActive(false);
-            StartCoroutine(OnStart());
-
-        }
-
-        IEnumerator OnStart()
-        {
-            yield return new WaitForSeconds(3);
-            if (Input.GetButtonDown("Submit"))
-                SceneManager.LoadScene("SampleScene");
-            
-        }
+        this.hpGauge.GetComponent<Image>().fillAmount -= 0.34f;
     }
 }
