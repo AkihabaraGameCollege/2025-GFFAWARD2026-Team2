@@ -247,9 +247,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   jumpForce: 10
-  rotationOffset: 0
   requiredJumpSpeed: 0.1
   playerWaitTime: 1
+  playerAttackTime: 0.5
   groundCheckStartPoint: {x: 0, y: 0.5, z: 0}
   groundCheckEndPoint: {x: 0, y: -0.5, z: 0}
   groundLayer:
@@ -259,9 +259,7 @@ MonoBehaviour:
   pause: {fileID: 0}
   playerDamage: {fileID: 0}
   maxHealth: 3
-  bossMove: {fileID: 0}
   stageScene: {fileID: 0}
-  gameOverUI: {fileID: 0}
   effectAudio: {fileID: 6295322545844377381}
   soundOnAttack: {fileID: 8300000, guid: 485775dbb05a10948832be7b84b752fa, type: 3}
   motionState: 0
@@ -375,12 +373,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MainObject: {fileID: 67187401318048243}
-  hp: 3
+  playerAttackCollider: {fileID: 0}
   maxHp: 3
   destroyEffect: {fileID: 8962295279383145195, guid: 7cdd99d9641263e498d658cb227be266, type: 3}
   damageEffect: {fileID: 1430198582188953287, guid: 21b15d55fb362544fab3a70419757060, type: 3}
   player: {fileID: 0}
-  bossMove: {fileID: 0}
   gameDirector: {fileID: 0}
 --- !u!1 &77928447854540009
 GameObject:
@@ -1223,6 +1220,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424283730482264022}
+  - component: {fileID: 9135191589690067075}
   m_Layer: 10
   m_Name: AttackCollider
   m_TagString: Untagged
@@ -1242,10 +1240,30 @@ Transform:
   m_LocalPosition: {x: 0, y: 1, z: 0.6}
   m_LocalScale: {x: 1, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 4957607865731348305}
+  m_Children: []
   m_Father: {fileID: 3401943718075337740}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &9135191589690067075
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4535509625820239764}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4644203703471215420
 GameObject:
   m_ObjectHideFlags: 0
@@ -2348,75 +2366,3 @@ CapsuleCollider:
   m_Height: 1.8
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!1001 &9000170802781998230
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 2424283730482264022}
-    m_Modifications:
-    - target: {fileID: 1498361587899432014, guid: 7f96df65ecbe0b74f8ca1cf4077ec2c9, type: 3}
-      propertyPath: m_Name
-      value: StageClearTrigger
-      objectReference: {fileID: 0}
-    - target: {fileID: 4047594494327045063, guid: 7f96df65ecbe0b74f8ca1cf4077ec2c9, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4047594494327045063, guid: 7f96df65ecbe0b74f8ca1cf4077ec2c9, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4047594494327045063, guid: 7f96df65ecbe0b74f8ca1cf4077ec2c9, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4047594494327045063, guid: 7f96df65ecbe0b74f8ca1cf4077ec2c9, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4047594494327045063, guid: 7f96df65ecbe0b74f8ca1cf4077ec2c9, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4047594494327045063, guid: 7f96df65ecbe0b74f8ca1cf4077ec2c9, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4047594494327045063, guid: 7f96df65ecbe0b74f8ca1cf4077ec2c9, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4047594494327045063, guid: 7f96df65ecbe0b74f8ca1cf4077ec2c9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4047594494327045063, guid: 7f96df65ecbe0b74f8ca1cf4077ec2c9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4047594494327045063, guid: 7f96df65ecbe0b74f8ca1cf4077ec2c9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6559132279611670089, guid: 7f96df65ecbe0b74f8ca1cf4077ec2c9, type: 3}
-      propertyPath: onEnter.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: TakeDamage
-      objectReference: {fileID: 0}
-    - target: {fileID: 6559132279611670089, guid: 7f96df65ecbe0b74f8ca1cf4077ec2c9, type: 3}
-      propertyPath: onEnter.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: BossMove, Assembly-CSharp
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 1209739673417445897, guid: 7f96df65ecbe0b74f8ca1cf4077ec2c9, type: 3}
-    - {fileID: 4035163319538658323, guid: 7f96df65ecbe0b74f8ca1cf4077ec2c9, type: 3}
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 7f96df65ecbe0b74f8ca1cf4077ec2c9, type: 3}
---- !u!4 &4957607865731348305 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4047594494327045063, guid: 7f96df65ecbe0b74f8ca1cf4077ec2c9, type: 3}
-  m_PrefabInstance: {fileID: 9000170802781998230}
-  m_PrefabAsset: {fileID: 0}

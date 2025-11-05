@@ -17,7 +17,7 @@ public class BossMove : MonoBehaviour
     [Header("Collider")]
     //攻撃判定（中山が編集）
     [SerializeField]
-    private GameObject attackCollider;
+    private Collider attackCollider;
     //ボス本体判定（中山が編集）
     [SerializeField]
     private Collider thisCollider;
@@ -66,6 +66,8 @@ public class BossMove : MonoBehaviour
     private float bossWeakTime = 3f;
     [SerializeField]
     private float bossWaitTime = 0.5f;
+    [SerializeField]
+    private float bossAttackTime = 1f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -76,12 +78,12 @@ public class BossMove : MonoBehaviour
 
         health = maxHealth;//体力初期化（中山が編集）
         
-        attackCollider.SetActive(false);//攻撃判定無効化（中山が編集）
+        attackCollider.enabled = false;//攻撃判定無効化（中山が編集）
         weakTimeText.SetActive(false);//弱体化時間表示無効化（中山が編集）
 
         effectAudioLoop.Stop();//歩行時サウンド停止（中山が編集）
 
-        StartCoroutine(Move());//行動パターン開始（中山が編集）
+        StartCoroutine(Move(true));//行動パターン開始（中山が編集）
     }
 
     //ジャンプ攻撃（中山が編集）
@@ -130,9 +132,9 @@ public class BossMove : MonoBehaviour
     }
 
     //行動パターン（中山が編集）
-    IEnumerator Move()
+    IEnumerator Move(bool loop)
     {
-        while (true)
+       while(loop == true)
         {
             yield return new WaitForSeconds(bossWaitTime);//待機（中山が編集）
             Turn(90);//右回転（中山が編集）
@@ -148,11 +150,11 @@ public class BossMove : MonoBehaviour
 
             JumpAttack();//ジャンプ攻撃（中山が編集）
             yield return new WaitForSeconds(1);//ジャンプ攻撃中（中山が編集）
-            attackCollider.SetActive(true);//攻撃判定有効化（中山が編集）
+            attackCollider.enabled = true;//攻撃判定有効化（中山が編集）
             thisCollider.enabled = false;//当たり判定無効化（中山が編集）
             effectAudio.PlayOneShot(soundOnAttack);//攻撃時サウンド再生（中山が編集）
-            yield return new WaitForSeconds(3);//ハマる時間（中山が編集）
-            attackCollider.SetActive(false);//攻撃判定無効化（中山が編集）
+            yield return new WaitForSeconds(bossAttackTime);//ハマるまでの時間（中山が編集）
+            attackCollider.enabled = false;//攻撃判定無効化（中山が編集）
 
             weakTimeText.SetActive(true);//弱体化時間表示有効化（中山が編集）
             effectAudioLoop.Play();//歩行時サウンド再生（中山が編集）
@@ -162,23 +164,9 @@ public class BossMove : MonoBehaviour
             animator.SetTrigger(grandID);//地面にハマるアニメーション終了（中山が編集）
 
             JumpAttack();//ジャンプ攻撃（中山が編集）
-            yield return new WaitForSeconds(1);//ジャンプ攻撃中（中山が編集）
-            attackCollider.SetActive(false);//攻撃判定有効化（中山が編集）
+            yield return new WaitForSeconds(1);//ジャンプ中（中山が編集）
             thisCollider.enabled = true;//当たり判定有効化（中山が編集）
             yield return new WaitForSeconds(bossWaitTime);//待機（中山が編集）
-
-        }
-    }
-
-    //ダメージ処理（中山が編集）
-    public void TakeDamage()
-    {
-        health--;//体力を1減らす（中山が編集）
-
-        //体力が0以下なら撃破処理（中山が編集）
-        if (health <= 0)
-        {
-            Die();//撃破処理を呼び出す（中山が編集）
         }
     }
 
@@ -191,9 +179,10 @@ public class BossMove : MonoBehaviour
     //撃破演出（中山が編集）
     IEnumerator OnDie()
     {
+        Move(false);
         animator.SetTrigger(dieID);//死亡アニメーション再生（中山が編集）
         yield return new WaitForSeconds(2);//少し待機（中山が編集）
-        stageScene.StageClear1();//ステージクリア処理（中山が編集）
+        stageScene.StageClear();//ステージクリア処理（中山が編集）
         Destroy(gameObject);//ボスオブジェクトを破壊（中山が編集）
     }
 }

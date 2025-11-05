@@ -63,9 +63,6 @@ public class PlayerN : MonoBehaviour
     static readonly int hitID = Animator.StringToHash("hit");
     static readonly int dieID = Animator.StringToHash("die");
 
-    //BossMoveScriptìoò^
-    [SerializeField]
-    private BossMove bossMove = null;
     // ÉQÅ[ÉÄÉIÅ[ÉoÅ[UIìoò^
     [SerializeField]
     private GameOverUI gameOverUI = null;

@@ -1,46 +1,48 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.Windows;
 
 public class Player : MonoBehaviour
 {
-    //移動速度
+    //移動速度（中山が編集）
     [SerializeField]
     private float moveSpeed = 5f;
-    // ジャンプ力指定
+    // ジャンプ力指定（中山が編集）
     [SerializeField]
     private float jumpForce = 10;
-    // 回転オフセット指定
+    // ジャンプに必要な速度指定（中山が編集）
     [SerializeField]
-    private float rotationOffset = 0;
-    // ジャンプに必要な速度指定
-    [SerializeField]
-    [Tooltip("ジャンプに必要な速度を指定")]
     private float requiredJumpSpeed = 0.1f;
     // プレイヤー待機時間指定（中山が編集）
     [SerializeField]
     private float playerWaitTime = 1f;
+    // プレイヤー攻撃時間指定（中山が編集）
+    [SerializeField]
+    private float playerAttackTime = 0.5f;
 
-    // 地面判定用の線分の始点と終点を指定
-    [Header("GroundChecker")]
+    // 地面判定用の線分の始点と終点を指定（中山が編集）
     [SerializeField]
     private Vector3 groundCheckStartPoint = new Vector3(0, -0.5f, 0);
     [SerializeField]
     private Vector3 groundCheckEndPoint = new Vector3(0, -1.5f, 0);
 
-    // 地面判定に使用するレイヤーを指定
+    // 攻撃リーチの倍率（中山が編集）
+  [SerializeField]
+    public static float ReachX = 1.0f;
+    [SerializeField]
+  public static float ReachY = 1.0f;
+    [SerializeField]
+    public static float ReachZ = 1.0f;
+
+    // 地面判定に使用するレイヤーを指定（中山が編集）
     [SerializeField]
     LayerMask groundLayer = default;
 
-    // 攻撃判定用のコライダーを指定
-    [Header("攻撃関連")]
+    // 攻撃判定用のコライダーを指定（中山が編集）
     [SerializeField]
-    [Tooltip("childを指定")]
     private GameObject attackCollider = null;
 
-    // ポーズUIを指定します。
+    // ポーズUIを指定します。（中山が編集）
     [SerializeField]
     private PauseUI pause = null;
 
@@ -60,8 +62,7 @@ public class Player : MonoBehaviour
 
     private int health;// プレイヤーの体力
 
-    //ステータス設定
-    [Header("ステータス")]
+    //ステータス設定（中山が編集）
     [SerializeField]
     private int maxHealth;
 
@@ -75,14 +76,9 @@ public class Player : MonoBehaviour
     static readonly int hitID = Animator.StringToHash("hit");
     static readonly int dieID = Animator.StringToHash("die");
 
-    //BossMoveScript登録
-    [SerializeField]
-    private BossMove bossMove = null;
+    //ステージシーン参照用（中山が編集）
     [SerializeField]
     private StageScene stageScene = null;
-    // ゲームオーバーUI登録
-    [SerializeField]
-    private GameOverUI gameOverUI = null;
 
     // エフェクト再生用の AudioSource を指定します。（中山が編集）
     [SerializeField]
@@ -90,12 +86,6 @@ public class Player : MonoBehaviour
     // ジャンプ時のサウンドを指定します。（中山が編集）
     [SerializeField]
     private AudioClip soundOnAttack = null;
-
-    /*
-    //ダメージコライダー登録をいったん消去（中山が編集）
-    [SerializeField]
-    private Collider damageCollision = null;
-    */
 
     // モーション状態定義（中山が編集）
     enum MotionState
@@ -110,9 +100,10 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        //damageCollision = GetComponent<Collider>();// ダメージコライダーを取得をいったん消去（中山が編集）
         rigidbody = GetComponent<Rigidbody>();// Rigidbody コンポーネントを取得
         animator = GetComponent<Animator>();// Animator コンポーネントを取得（中山が編集）
+
+       attackCollider.transform.localScale = new Vector3(ReachX, ReachY, ReachZ);// 当たり判定を指定
 
         attackOK = true;// 攻撃制限変数初期化（中山が編集）
         attackCollider.SetActive(false);// 攻撃判定を無効化（中山が編集）
@@ -185,14 +176,12 @@ public class Player : MonoBehaviour
                 //地面から離れたらジャンピング状態へ移行（中山が編集）
                 if (!IsGrounded)
                 {
-                    Debug.Log("Jumping");
                     motionState = MotionState.Jumping;
                     animator.SetTrigger(jumpID);// Jumpアニメーションを開始（中山が編集）
                 }
                 //ジャンプ予備動作から進行しなくなったら待機状態へ戻る（中山が編集）
                 else if (rigidbody.linearVelocity.y < requiredJumpSpeed)
                 {
-                    Debug.Log("JumpAnticipation to Stopping");
                     motionState = MotionState.Stopping;
                     animator.SetTrigger(landingID);// Jumpアニメーションを終了（中山が編集）
                 }
@@ -201,7 +190,6 @@ public class Player : MonoBehaviour
                 //地面に着地した判定（中山が編集）
                 if (IsGrounded)
                 {
-                    Debug.Log("Landed");
                     motionState = MotionState.Stopping;
                     animator.SetTrigger(landingID);// Jumpアニメーションを終了（中山が編集）
                 }
@@ -281,24 +269,10 @@ public void Move()
         animator.SetTrigger(attackID);// Attackアニメーションを開始（中山が編集）
         attackCollider.SetActive(true);//攻撃判定を有効化（中山が編集）
         effectAudio.PlayOneShot(soundOnAttack);// 攻撃音再生（中山が編集）
-        yield return new WaitForSeconds(1);//1秒待機（中山が編集）
+        yield return new WaitForSeconds(playerAttackTime);//1秒待機（中山が編集）
         attackCollider.SetActive(false);//攻撃判定を無効化（中山が編集）
         yield return new WaitForSeconds(playerWaitTime);//playerWaitTime秒待機（中山が編集）
         attackOK = true;//攻撃制限変数をtrueに設定（中山が編集）
-    }
-
-    //ダメージ処理（中山が編集）
-    public void TakeDamage()
-    {
-        animator.SetTrigger(hitID);// Hitアニメーションを開始（中山が編集）
-        playerDamage.SetActive(true);// ダメージUI表示（中山が編集）
-        health--;//体力を1減らす（中山が編集）
-
-        //体力が0以下になったら死亡処理を呼び出す（中山が編集）
-        if (health <= 0)
-        {
-            Die();//死亡処理を呼び出す（中山が編集）
-        }
     }
 
     //死亡処理（中山が編集）

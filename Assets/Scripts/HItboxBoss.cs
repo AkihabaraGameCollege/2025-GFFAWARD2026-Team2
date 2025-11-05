@@ -7,12 +7,12 @@ public class HitboxBoss : MonoBehaviour
     //       「Layer Collision Matrix」で設定されています。
     //       例: 「EnemyAttack」レイヤーは「PlayerHitbox」レイヤーのみ衝突が許可されている必要があります。
 
-    private StatusManagerPlayer receiverStatus; // ダメージを受ける側のStatusManager
+    private StatusManagerBoss receiverStatus; // ダメージを受ける側のStatusManager
 
     void Start()
     {
         // 自身の親オブジェクトからStatusManagerを取得
-        receiverStatus = GetComponentInParent<StatusManagerPlayer>();
+        receiverStatus = GetComponentInParent<StatusManagerBoss>();
 
         if (receiverStatus == null)
         {

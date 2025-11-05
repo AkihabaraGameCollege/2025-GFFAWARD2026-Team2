@@ -5,19 +5,19 @@ using UnityEngine.SceneManagement;
 //タイトルのアニメーション・ステージ画面への遷移・ボタン機能・音響を制御するスクリプト
 public class TitleScene : MonoBehaviour
 {
-    // ステージ画面に遷移するまでの時間を指定
+    // ステージ画面に遷移するまでの時間を指定（中山が編集）
     [SerializeField]
-    [Tooltip("スタートボタンを押した後、ステージ画面に遷移するまでの時間を指定")]
     private float stageTransitionDelay;
 
-    // 次のシーン名を指定
+    // 次のシーン名を指定（中山が編集）
     [SerializeField]
-    [Tooltip("次のシーン名を指定")]
     private string nextSceneName;
 
     // エフェクト再生用の AudioSource を指定します。
     [SerializeField]
     private AudioSource effectAudio = null;
+
+    public static bool setUpgrade = false;// 装備強化フラグ（中山が編集）
 
     // Animatorコンポーネント
     Animator animator;
@@ -44,6 +44,7 @@ public class TitleScene : MonoBehaviour
     // スタートボタンが押されたときの処理を行うコルーチン
     IEnumerator OnStart()
     {
+        setUpgrade= true;// 装備強化フラグを立てる（中山が編集）
         // エフェクトを再生
         animator.SetTrigger(outroId);
         // ウェイト

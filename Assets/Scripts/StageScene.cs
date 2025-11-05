@@ -1,7 +1,5 @@
 using UnityEngine;
-using static UnityEngine.EventSystems.EventTrigger;
 using System.Collections;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class StageScene : MonoBehaviour
@@ -17,8 +15,7 @@ public class StageScene : MonoBehaviour
     [SerializeField]
     private PauseUI pause = null;
 
-    // ポーズ状態の場合はtrue、プレイ状態の場合はfalse
-    public bool IsPaused { get; private set; } = false;
+    public bool IsPaused { get; private set; } = false;// ポーズ状態の場合はtrue、プレイ状態の場合はfalse
 
     // このステージのプレイ時間を取得します。
     public float PlayTime { get; private set; } = 0;
@@ -53,8 +50,7 @@ public class StageScene : MonoBehaviour
     // ステージクリアー表示用のUIを指定します。（中山が編集）
     [SerializeField]
     private StageClearUI stageClearUI = null;
-
-    //スクリプトを参照
+    // ステータスマネージャープレイヤー参照用（中山が編集）
     [SerializeField]
     private StatusManagerPlayer statusManagerPlayer = null;
 
@@ -171,7 +167,7 @@ public class StageScene : MonoBehaviour
         StartCoroutine(OnLoadScene(nextStage));
     }
 
-    // 指定したシーンを読み込みます。
+    // 指定したシーンを読み込みます。（中山が編集）
     IEnumerator OnLoadScene(string sceneName)
     {
         // ポーズ状態の場合は、コルーチン内で処理が流れなくなるためポーズ解除する
@@ -179,6 +175,18 @@ public class StageScene : MonoBehaviour
         {
             Resume();
         }
+
+        // 装備強化フラグに応じて装備強化を行う(中山が編集)
+        if (TitleScene.setUpgrade == true)
+        {
+            statusManagerPlayer.BurikiArm(true);// 装備強化を行う(中山が編集)
+        }
+        // 装備強化フラグがtrueの場合、装備強化を行う(中山が編集)
+        else
+        { 
+            statusManagerPlayer.BurikiArm(false);// 装備強化を行わない(中山が編集)
+        }
+
         animator.SetTrigger(outroId);// アウトロアニメーションを開始(中山が編集)
         // アニメーションが終了するまで1秒待機
         yield return new WaitForSeconds(3);
@@ -200,44 +208,12 @@ public class StageScene : MonoBehaviour
     }
 
     // このステージをステージクリアーとします。
-    public void StageClear1()
+    public void StageClear()
     {
         // ステージプレイ中のみ
         if (sceneState == SceneState.Play)
         {
             sceneState = SceneState.StageClear;
-
-            musicAudio.Stop();
-            player.enabled = false;// プレイヤー操作を無効化(中山が編集)
-            statusManagerPlayer.BurikiArm();// プレイヤーの攻撃面を強化する関数を呼び出す（中山が編集）
-            // ステージクリアーUIを表示
-            stageClearUI.Show();
-        }
-    }
-
-    // このステージをステージクリアーとします。
-    public void StageClear2()
-    {
-        // ステージプレイ中のみ
-        if (sceneState == SceneState.Play)
-        {
-            sceneState = SceneState.StageClear;
-
-            musicAudio.Stop();
-            player.enabled = false;// プレイヤー操作を無効化(中山が編集)
-            // ステージクリアーUIを表示
-            stageClearUI.Show();
-        }
-    }
-
-    // このステージをステージクリアーとします。
-    public void StageClea3r()
-    {
-        // ステージプレイ中のみ
-        if (sceneState == SceneState.Play)
-        {
-            sceneState = SceneState.StageClear;
-
             musicAudio.Stop();
             player.enabled = false;// プレイヤー操作を無効化(中山が編集)
             // ステージクリアーUIを表示

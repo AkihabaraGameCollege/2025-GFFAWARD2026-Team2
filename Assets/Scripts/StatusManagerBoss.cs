@@ -14,13 +14,10 @@ public class StatusManagerBoss : MonoBehaviour
 
     //hp現在値
     [SerializeField]
-    int hp = 6;
-    //いずれmaxHp利用する際に使用
-    [SerializeField]
     int maxHp = 6;
     //ダメージを与える値（中山が編集）
     [SerializeField]
-    public int damage = 1;
+    public static int damage = 1;
 
     [SerializeField] GameObject destroyEffect;  //撃破エフェクト
     [SerializeField] GameObject damageEffect;   //被弾エフェクト
@@ -28,14 +25,12 @@ public class StatusManagerBoss : MonoBehaviour
     //スクリプト参照用（中山が編集）
     [SerializeField]
     private BossMove bossMove = null;
-    [SerializeField]
-    private GameDirector gameDirector = null;
 
     // Update is called once per frame
     void Update()
     {
         //hpが0以下なら、撃破エフェクトを生成してMainを破壊
-        if (hp <= 0)
+        if (maxHp <= 0)
         {
             DestoryMainObject();
         }
@@ -44,9 +39,7 @@ public class StatusManagerBoss : MonoBehaviour
     public void Damage()
     {
         // HPを減少させ、ダメージエフェクトを発生させる
-        hp -= damage;
-
-        gameDirector.DecreaseHp();//HPゲージを減少させる（中山が編集）
+        maxHp -= damage;
 
         // エフェクトをインスタンス化
         GameObject effect = Instantiate(damageEffect);
@@ -55,16 +48,22 @@ public class StatusManagerBoss : MonoBehaviour
         Vector3 effectPos = transform.position;
 
         // エフェクトの位置を少し上に調整
-        effectPos.y += 1.0f;
+        effectPos.y += 5.0f;
 
         // エフェクトの位置を設定
         effect.transform.position = effectPos;
+
+        // エフェクトのサイズを少し大きくする（中山が編集）
+        effect.transform.localScale *= 5f;
+
+        // エフェクトを5秒後に破壊（中山が編集）
+        Destroy(effect, 5);
     }
 
     private void DestoryMainObject()
     {
         // 破壊エフェクトを発生させてから、MainObjectに設定したもの（自分自身や部位破壊対象）を破壊
-        hp = 0;
+        maxHp = 0;
         // エフェクトをインスタンス化
         GameObject effect = Instantiate(destroyEffect);
 
@@ -77,7 +76,6 @@ public class StatusManagerBoss : MonoBehaviour
         // エフェクトの位置を設定
         effect.transform.position = effectPos;
         Destroy(effect, 5);
-        Destroy(MainObject);
 
         bossMove.Die();
     }
