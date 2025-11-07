@@ -12,6 +12,7 @@ public class PlayerSkillUI : MonoBehaviour
         ReloadFlag();
     }
 
+    // 能力取得状態を更新 (富里が編集)
     public void ReloadFlag()
     {
         for (int i = 0; i < TitleScene.IsUpgraded.Length; i++)

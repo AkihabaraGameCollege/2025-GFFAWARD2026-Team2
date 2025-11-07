@@ -182,7 +182,6 @@ public class Player : MonoBehaviour
                 {
                     motionState = MotionState.Walking;
                     animator.SetFloat(speedID, rigidbody.linearVelocity.magnitude);// Runアニメーションを開始（中山が編集）
-                    //Move(moveInput);//カメラに準じた移動ができないため削除（中山が編集）
                     Move();// カメラに準じた移動を呼び出し（富里が編集）
                 }
                 break;
@@ -190,7 +189,6 @@ public class Player : MonoBehaviour
             case MotionState.Walking:
                 Move();// カメラに準じた移動を呼び出し（富里が編集）
                 animator.SetFloat(speedID, rigidbody.linearVelocity.magnitude);// Runアニメーションを継続（中山が編集）
-                //Move(moveInput);//カメラに準じた移動ができないため削除（中山が編集）
                 break;
             //移動入力がなくなったら停止状態へ移行（中山が編集）
             case MotionState.JumpAnticipation:

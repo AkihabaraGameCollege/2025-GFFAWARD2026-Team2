@@ -109,15 +109,17 @@ public class StatusManagerPlayer : MonoBehaviour
         TitleScene.IsUpgraded[0] = true; // 取得状態をtrueに
     }
 
+    // プレイヤーのジャンプ力を強化 (富里が編集)
     public void MokoMokoBoots()
     {
         player.jumpForce *= magnificationJumpForce; // ジャンプ倍率を変更
         TitleScene.IsUpgraded[1] = true; // 取得状態をtrueに
     }
 
+    // プレイヤーの移動速度を強化(富里が編集)
     public void SatsurikuDash()
     {
-        player.moveSpeed *= magnificationMoveSpeed;
-        TitleScene.IsUpgraded[2] = true;
+        player.moveSpeed *= magnificationMoveSpeed; // 移動速度を上昇
+        TitleScene.IsUpgraded[2] = true; // 取得状態をtrueに
     }
 }
