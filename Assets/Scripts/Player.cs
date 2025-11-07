@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     private float moveSpeed = 5f;
     // ジャンプ力指定（中山が編集）
     [SerializeField]
-    private float jumpForce = 10;
+    public float jumpForce = 10;
     // ジャンプに必要な速度指定（中山が編集）
     [SerializeField]
     private float requiredJumpSpeed = 0.1f;

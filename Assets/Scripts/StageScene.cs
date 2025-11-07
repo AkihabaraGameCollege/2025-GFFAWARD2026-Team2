@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using System;
 
 public class StageScene : MonoBehaviour
 {
@@ -53,6 +54,14 @@ public class StageScene : MonoBehaviour
     // ステータスマネージャープレイヤー参照用（中山が編集）
     [SerializeField]
     private StatusManagerPlayer statusManagerPlayer = null;
+
+    // ステージ名での現在のステージ数検知用
+    [SerializeField]
+    private string boss1StageName = "Boss1";
+    [SerializeField]
+    private string boss2StageName = "Boss2";
+    [SerializeField]
+    private string boss3StageName = "Boss2";
 
     // ステージ画面内の進行状態を表します。
     enum SceneState
@@ -211,9 +220,31 @@ public class StageScene : MonoBehaviour
             stageClearUI.Show();
 
             // 装備強化フラグに応じて装備強化を行う(富里が編集)
-            if (TitleScene.setUpgrade[0] == false)
+            var thisSceneName = SceneManager.GetActiveScene().name;
+            if (thisSceneName == boss1StageName)
             {
-                statusManagerPlayer.BurikiArm();
+                if (TitleScene.setUpgrade[0] == false)
+                {
+                    statusManagerPlayer.BurikiArm();
+                }
+            }
+            else if (thisSceneName == boss2StageName)
+            {
+                if (TitleScene.setUpgrade[1] == false)
+                {
+                    statusManagerPlayer.MokoMokoBoots();
+                }
+            }
+            else if (gameObject.name == boss3StageName)
+            {
+                if (TitleScene.setUpgrade[2] == false)
+                {
+                    statusManagerPlayer.BurikiArm();
+                }
+            }
+            else
+            {
+                Console.Error.WriteLine("どこやねんここ");
             }
         }
     }

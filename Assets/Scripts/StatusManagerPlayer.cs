@@ -24,6 +24,10 @@ public class StatusManagerPlayer : MonoBehaviour
     [SerializeField]
     private static int magnificationDamage = 2;
 
+    // ジャンプ力倍率
+    [SerializeField]
+    private static float magnificationJumpForce = 3;
+
     [SerializeField] GameObject destroyEffect;  //撃破エフェクト
     [SerializeField] GameObject damageEffect;   //被弾エフェクト
 
@@ -99,5 +103,11 @@ public class StatusManagerPlayer : MonoBehaviour
         playerAttackCollider.transform.localScale = new Vector3(Player.ReachX * magnificationReachX, Player.ReachY * magnificationReachY, Player.ReachZ * magnificationReachZ);// 当たり判定を指定の倍率に拡大（中山が編集）
         StatusManagerBoss.damage *= magnificationDamage; // ボスに与えるダメージを指定の倍率に変更（中山が編集）
         TitleScene.setUpgrade[0] = true; // 取得状態をtrueに
+    }
+
+    public void MokoMokoBoots()
+    {
+        player.jumpForce *= magnificationJumpForce; // ジャンプ倍率を変更
+        TitleScene.setUpgrade[1] = true; // 取得状態をtrueに
     }
 }
