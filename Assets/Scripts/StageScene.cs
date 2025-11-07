@@ -239,7 +239,7 @@ public class StageScene : MonoBehaviour
             {
                 if (TitleScene.setUpgrade[2] == false)
                 {
-                    statusManagerPlayer.BurikiArm();
+                    statusManagerPlayer.SatsurikuDash();
                 }
             }
             else

@@ -24,9 +24,13 @@ public class StatusManagerPlayer : MonoBehaviour
     [SerializeField]
     private static int magnificationDamage = 2;
 
-    // ジャンプ力倍率
+    // ジャンプ力倍率 (富里が編集)
     [SerializeField]
     private static float magnificationJumpForce = 3;
+
+    // 移動速度倍率 (富里が編集)
+    [SerializeField]
+    private static float magnificationMoveSpeed = 2;
 
     [SerializeField] GameObject destroyEffect;  //撃破エフェクト
     [SerializeField] GameObject damageEffect;   //被弾エフェクト
@@ -109,5 +113,11 @@ public class StatusManagerPlayer : MonoBehaviour
     {
         player.jumpForce *= magnificationJumpForce; // ジャンプ倍率を変更
         TitleScene.setUpgrade[1] = true; // 取得状態をtrueに
+    }
+
+    public void SatsurikuDash()
+    {
+        player.moveSpeed *= magnificationMoveSpeed;
+        TitleScene.setUpgrade[2] = true;
     }
 }
