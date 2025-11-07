@@ -41,6 +41,7 @@ Transform:
   - {fileID: 2424283730482264022}
   - {fileID: 382498934180559289}
   - {fileID: 980178656128187056}
+  - {fileID: 8718820783905178278}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &8705455037013829096
@@ -206,6 +207,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: dad70c86-b58c-4b17-88ad-f5e53adf419e
     m_ActionName: 'UI/MiddleClick[/Mouse/middleButton]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2508532194529083278}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: OnDashAttack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 75edc570-db37-4770-9a51-c60b2125e261
+    m_ActionName: 'Player/DashAttack[/Keyboard/shift]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -250,12 +267,14 @@ MonoBehaviour:
   requiredJumpSpeed: 0.1
   playerWaitTime: 1
   playerAttackTime: 0.5
+  dashAttackSpeed: 20
   groundCheckStartPoint: {x: 0, y: 0.5, z: 0}
   groundCheckEndPoint: {x: 0, y: -0.5, z: 0}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
   attackCollider: {fileID: 4535509625820239764}
+  dashAttackCollider: {fileID: 1525174610445278448}
   pause: {fileID: 0}
   playerDamage: {fileID: 0}
   maxHealth: 3
@@ -730,6 +749,59 @@ Transform:
   - {fileID: 5954608317613223587}
   m_Father: {fileID: 9029683321850147686}
   m_LocalEulerAnglesHint: {x: 0.00007315613, y: -0.00005625181, z: -32.524544}
+--- !u!1 &1525174610445278448
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8718820783905178278}
+  - component: {fileID: 6791532657955559284}
+  m_Layer: 10
+  m_Name: DashAttackCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8718820783905178278
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1525174610445278448}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3401943718075337740}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &6791532657955559284
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1525174610445278448}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.2, y: 2.4, z: 1.2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1526792575600331953
 GameObject:
   m_ObjectHideFlags: 0

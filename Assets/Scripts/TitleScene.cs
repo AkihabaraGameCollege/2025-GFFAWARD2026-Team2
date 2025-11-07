@@ -17,7 +17,7 @@ public class TitleScene : MonoBehaviour
     [SerializeField]
     private AudioSource effectAudio = null;
 
-    public static bool[] setUpgrade = { false, false, false };// 強化状態かどうかのフラグ（富里が編集）
+    public static bool[] IsUpgraded = { false, false, false };// 強化状態かどうかのフラグ（富里が編集）
 
     // Animatorコンポーネント
     Animator animator;
