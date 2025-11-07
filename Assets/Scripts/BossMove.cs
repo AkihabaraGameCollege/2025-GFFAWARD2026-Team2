@@ -22,8 +22,12 @@ public class BossMove : MonoBehaviour
     [SerializeField]
     private Collider thisCollider;
 
+    // ターゲットオブジェクト（中山が編集）
     [SerializeField]
-    private GameObject targetObject;//ターゲットオブジェクト（中山が編集）
+    private GameObject targetObject;
+    // ボスオブジェクト（中山が編集）
+    [SerializeField]
+    private GameObject bossObject;
 
     //ステージシーン参照用（中山が編集）
     [SerializeField]
@@ -121,7 +125,7 @@ public class BossMove : MonoBehaviour
         // 補完スピードを決める
         float speed = 11.1f;
         // ターゲット方向のベクトルを取得
-        Vector3 relativePos = targetObject.transform.position - this.transform.position;
+        Vector3 relativePos = targetObject.transform.position - bossObject.transform.position;
         // 方向を、回転情報に変換
         Quaternion rotation = Quaternion.LookRotation(relativePos);
         // 現在の回転情報と、ターゲット方向の回転情報を補完する
