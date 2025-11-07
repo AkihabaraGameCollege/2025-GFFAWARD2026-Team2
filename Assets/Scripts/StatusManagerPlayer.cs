@@ -30,7 +30,7 @@ public class StatusManagerPlayer : MonoBehaviour
 
     // 移動速度倍率 (富里が編集)
     [SerializeField]
-    private static float magnificationMoveSpeed = 2;
+    private static float magnificationMoveSpeed = 1.5f;
 
     [SerializeField] GameObject destroyEffect;  //撃破エフェクト
     [SerializeField] GameObject damageEffect;   //被弾エフェクト

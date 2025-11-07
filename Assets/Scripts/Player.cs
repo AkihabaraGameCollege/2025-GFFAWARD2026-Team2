@@ -94,6 +94,7 @@ public class Player : MonoBehaviour
         Walking,
         JumpAnticipation,
         Jumping,
+        DashAttacking
     }
     [SerializeField]
     MotionState motionState = MotionState.Stopping;// 現在のモーション状態（中山が編集）
@@ -151,6 +152,14 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void OnDashAttack(InputAction.CallbackContext context)
+    {
+        if (motionState == MotionState.Stopping || motionState == MotionState.Walking)
+        {
+            DashAttack();
+        }
+    }
+
     void Update() //モーション状態に応じた処理（中山が編集）
     {
         if (IsSleeping) return;
@@ -193,6 +202,8 @@ public class Player : MonoBehaviour
                     motionState = MotionState.Stopping;
                     animator.SetTrigger(landingID);// Jumpアニメーションを終了（中山が編集）
                 }
+                break;
+            case MotionState.DashAttacking:
                 break;
         }
         Move();// カメラに準じた移動を呼び出し（中山が編集）
@@ -281,5 +292,18 @@ public void Move()
         animator.SetTrigger(dieID);// Dieアニメーションを開始（中山が編集）
         Destroy(gameObject, 2f);//3秒後にプレイヤーオブジェクトを破壊（中山が編集）
         stageScene.GameOver(); // ゲームオーバー処理を呼び出す
+    }
+
+    private void DashAttack()
+    {
+        motionState = MotionState.DashAttacking;
+        StartCoroutine(DashAttacking());
+    }
+
+    IEnumerator DashAttacking()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        var pow = gameObject.transform.forward;
     }
 }
