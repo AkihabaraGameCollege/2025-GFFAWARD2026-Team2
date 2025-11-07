@@ -105,6 +105,9 @@ public class StatusManagerPlayer : MonoBehaviour
     public void BurikiArm()
     {
         playerAttackCollider.transform.localScale = new Vector3(Player.ReachX * magnificationReachX, Player.ReachY * magnificationReachY, Player.ReachZ * magnificationReachZ);// 当たり判定を指定の倍率に拡大（中山が編集）
+        var pos = playerAttackCollider.transform.position;
+        pos.z += magnificationReachZ / 2;
+        playerAttackCollider.transform.position = pos;
         StatusManagerBoss.damage *= magnificationDamage; // ボスに与えるダメージを指定の倍率に変更（中山が編集）
         TitleScene.IsUpgraded[0] = true; // 取得状態をtrueに
     }
