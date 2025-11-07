@@ -11,7 +11,7 @@ public class StatusManagerPlayer : MonoBehaviour
     GameObject playerAttackCollider;
 
     // hp現在値
-    [SerializeField] 
+    [SerializeField]
     int maxHp = 3;
     // 攻撃リーチの倍率（中山が編集）
     [SerializeField]
@@ -29,7 +29,7 @@ public class StatusManagerPlayer : MonoBehaviour
 
     //スクリプト参照用（中山が編集）
     [SerializeField]
- private Player player = null;
+    private Player player = null;
     [SerializeField]
     private GameDirector gameDirector = null;
 
@@ -93,14 +93,11 @@ public class StatusManagerPlayer : MonoBehaviour
         player.Die();
     }
 
-    // プレイヤーの攻撃面を強化する関数（中山が編集）
-    public void BurikiArm(bool replay)
+    // プレイヤーの攻撃面を強化する関数(富里が編集)
+    public void BurikiArm()
     {
-        if (replay)
-        {
-            playerAttackCollider.transform.localScale = new Vector3(Player.ReachX * magnificationReachX, Player.ReachY * magnificationReachY, Player.ReachZ * magnificationReachZ);// 当たり判定を指定の倍率に拡大（中山が編集）
-            StatusManagerBoss.damage *= magnificationDamage; // ボスに与えるダメージを指定の倍率に変更（中山が編集）
-            TitleScene.setUpgrade = false;
-        }
+        playerAttackCollider.transform.localScale = new Vector3(Player.ReachX * magnificationReachX, Player.ReachY * magnificationReachY, Player.ReachZ * magnificationReachZ);// 当たり判定を指定の倍率に拡大（中山が編集）
+        StatusManagerBoss.damage *= magnificationDamage; // ボスに与えるダメージを指定の倍率に変更（中山が編集）
+        TitleScene.setUpgrade[0] = true; // 取得状態をtrueに
     }
 }

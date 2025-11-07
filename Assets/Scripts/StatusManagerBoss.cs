@@ -1,9 +1,4 @@
-using NUnit.Framework.Interfaces;
-using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 // ボスのステータスに関するスクリプト（中山が別プロジェクトから移植）
 public class StatusManagerBoss : MonoBehaviour

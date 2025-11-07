@@ -176,16 +176,7 @@ public class StageScene : MonoBehaviour
             Resume();
         }
 
-        // 装備強化フラグに応じて装備強化を行う(中山が編集)
-        if (TitleScene.setUpgrade == true)
-        {
-            statusManagerPlayer.BurikiArm(true);// 装備強化を行う(中山が編集)
-        }
-        // 装備強化フラグがtrueの場合、装備強化を行う(中山が編集)
-        else
-        { 
-            statusManagerPlayer.BurikiArm(false);// 装備強化を行わない(中山が編集)
-        }
+       
 
         animator.SetTrigger(outroId);// アウトロアニメーションを開始(中山が編集)
         // アニメーションが終了するまで1秒待機
@@ -218,6 +209,12 @@ public class StageScene : MonoBehaviour
             player.enabled = false;// プレイヤー操作を無効化(中山が編集)
             // ステージクリアーUIを表示
             stageClearUI.Show();
+
+            // 装備強化フラグに応じて装備強化を行う(富里が編集)
+            if (TitleScene.setUpgrade[0] == false)
+            {
+                statusManagerPlayer.BurikiArm();
+            }
         }
     }
 }

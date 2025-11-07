@@ -17,12 +17,12 @@ public class TitleScene : MonoBehaviour
     [SerializeField]
     private AudioSource effectAudio = null;
 
-    public static bool setUpgrade = false;// 装備強化フラグ（中山が編集）
+    public static bool[] setUpgrade = { false, false, false };// 強化状態かどうかのフラグ（富里が編集）
 
     // Animatorコンポーネント
     Animator animator;
     // AnimatorのパラメーターID
-   static readonly int outroId = Animator.StringToHash("Outro");
+    static readonly int outroId = Animator.StringToHash("Outro");
 
     //スタート時に呼び出されるメソッド
     void Start()
@@ -44,7 +44,6 @@ public class TitleScene : MonoBehaviour
     // スタートボタンが押されたときの処理を行うコルーチン
     IEnumerator OnStart()
     {
-        setUpgrade= true;// 装備強化フラグを立てる（中山が編集）
         // エフェクトを再生
         animator.SetTrigger(outroId);
         // ウェイト
