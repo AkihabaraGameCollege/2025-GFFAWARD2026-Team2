@@ -19,6 +19,9 @@ public class Player : MonoBehaviour
     // プレイヤー攻撃時間指定（中山が編集）
     [SerializeField]
     private float playerAttackTime = 0.5f;
+    // ダッシュアタック移動力 (富里が編集)
+    [SerializeField]
+    private float dashAttackSpeed = 20;
 
     // 地面判定用の線分の始点と終点を指定（中山が編集）
     [SerializeField]
@@ -41,6 +44,10 @@ public class Player : MonoBehaviour
     // 攻撃判定用のコライダーを指定（中山が編集）
     [SerializeField]
     private GameObject attackCollider = null;
+
+    // ダッシュアタック用のコライダーを指定 (富里が編集)
+    [SerializeField]
+    private GameObject dashAttackCollider = null;
 
     // ポーズUIを指定します。（中山が編集）
     [SerializeField]
@@ -75,6 +82,7 @@ public class Player : MonoBehaviour
     static readonly int speedID = Animator.StringToHash("speed");
     static readonly int hitID = Animator.StringToHash("hit");
     static readonly int dieID = Animator.StringToHash("die");
+    static readonly int dashAttackID = Animator.StringToHash("DashAttack");
 
     //ステージシーン参照用（中山が編集）
     [SerializeField]
@@ -86,6 +94,7 @@ public class Player : MonoBehaviour
     // ジャンプ時のサウンドを指定します。（中山が編集）
     [SerializeField]
     private AudioClip soundOnAttack = null;
+
 
     // モーション状態定義（中山が編集）
     enum MotionState
@@ -108,6 +117,7 @@ public class Player : MonoBehaviour
 
         attackOK = true;// 攻撃制限変数初期化（中山が編集）
         attackCollider.SetActive(false);// 攻撃判定を無効化（中山が編集）
+        dashAttackCollider.SetActive(false); // ダッシュアタック判定を無効化 (富里が編集)
         playerDamage.SetActive(false);// ダメージUI非表示（中山が編集）
         StatusReset();// ステータス初期化（中山が編集）
     }
@@ -134,12 +144,12 @@ public class Player : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (!IsSleeping && context.started && (motionState == MotionState.Stopping || motionState == MotionState.Walking)) Jump(jumpForce);
+        if (context.started) Jump(jumpForce);
     }
 
     public void OnAttack(InputAction.CallbackContext context)
     {
-        if (!IsSleeping && context.started) Attack();
+        if (context.started) Attack();
     }
 
     // Pause アクションが発生した際に呼び出されます。
@@ -154,7 +164,7 @@ public class Player : MonoBehaviour
 
     public void OnDashAttack(InputAction.CallbackContext context)
     {
-        if (motionState == MotionState.Stopping || motionState == MotionState.Walking)
+        if (context.started)
         {
             DashAttack();
         }
@@ -173,15 +183,18 @@ public class Player : MonoBehaviour
                     motionState = MotionState.Walking;
                     animator.SetFloat(speedID, rigidbody.linearVelocity.magnitude);// Runアニメーションを開始（中山が編集）
                     //Move(moveInput);//カメラに準じた移動ができないため削除（中山が編集）
+                    Move();// カメラに準じた移動を呼び出し（富里が編集）
                 }
                 break;
             //移動入力がある場合は移動状態へ移行（中山が編集）
             case MotionState.Walking:
+                Move();// カメラに準じた移動を呼び出し（富里が編集）
                 animator.SetFloat(speedID, rigidbody.linearVelocity.magnitude);// Runアニメーションを継続（中山が編集）
                 //Move(moveInput);//カメラに準じた移動ができないため削除（中山が編集）
                 break;
             //移動入力がなくなったら停止状態へ移行（中山が編集）
             case MotionState.JumpAnticipation:
+                Move();// カメラに準じた移動を呼び出し（富里が編集）
                 //地面から離れたらジャンピング状態へ移行（中山が編集）
                 if (!IsGrounded)
                 {
@@ -197,6 +210,7 @@ public class Player : MonoBehaviour
                 break;
             case MotionState.Jumping:
                 //地面に着地した判定（中山が編集）
+                Move();// カメラに準じた移動を呼び出し（富里が編集）
                 if (IsGrounded)
                 {
                     motionState = MotionState.Stopping;
@@ -206,7 +220,7 @@ public class Player : MonoBehaviour
             case MotionState.DashAttacking:
                 break;
         }
-        Move();// カメラに準じた移動を呼び出し（中山が編集）
+        
     }
 
     // 固定フレームレートで呼び出される更新処理を移植（中山が編集）
@@ -253,18 +267,24 @@ public void Move()
     // ジャンプ処理（中山が編集）
     private void Jump(float power)
     {
-        // ジャンプ(速度変更)
-        Vector3 velocity = rigidbody.linearVelocity;
-        velocity.y = power;
-        rigidbody.linearVelocity = velocity;
+        if (IsSleeping) return;
 
-        motionState = MotionState.JumpAnticipation;// ジャンプ予備動作状態へ移行（中山が編集）
-        animator.SetTrigger(jumpID);// Jumpアニメーションを開始（中山が編集）
+        if (motionState == MotionState.Walking || motionState == MotionState.Stopping)
+        {
+            // ジャンプ(速度変更)
+            Vector3 velocity = rigidbody.linearVelocity;
+            velocity.y = power;
+            rigidbody.linearVelocity = velocity;
+
+            motionState = MotionState.JumpAnticipation;// ジャンプ予備動作状態へ移行（中山が編集）
+            animator.SetTrigger(jumpID);// Jumpアニメーションを開始（中山が編集）
+        }
     }
 
     //攻撃処理（中山が編集）
     private void Attack()
     {
+        if (IsSleeping) return;
         //攻撃制限変数判定（中山が編集）
         if (attackOK)
         {
@@ -296,14 +316,25 @@ public void Move()
 
     private void DashAttack()
     {
-        motionState = MotionState.DashAttacking;
-        StartCoroutine(DashAttacking());
+        if ((motionState == MotionState.Stopping || motionState == MotionState.Walking) && TitleScene.IsUpgraded[2])
+        {
+            motionState = MotionState.DashAttacking; // MotionState更新 (富里が編集)
+            animator.SetTrigger(dashAttackID); // アニメーター起動 (富里が編集)
+        }
     }
 
-    IEnumerator DashAttacking()
+    // Animation Eventから起動 (富里が編集)
+    private void DashAttackAddForce()
     {
-        yield return new WaitForSeconds(0.1f);
-
         var pow = gameObject.transform.forward;
+        rigidbody.linearVelocity = pow * dashAttackSpeed;
+        dashAttackCollider.SetActive(true);
+    }
+
+    // Animation Eventから起動 (富里が編集)
+    private void DashAttackEnd()
+    {
+        motionState = MotionState.Walking;
+        dashAttackCollider.SetActive(false);
     }
 }

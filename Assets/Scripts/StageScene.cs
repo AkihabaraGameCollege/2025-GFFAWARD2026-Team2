@@ -223,21 +223,21 @@ public class StageScene : MonoBehaviour
             var thisSceneName = SceneManager.GetActiveScene().name;
             if (thisSceneName == boss1StageName)
             {
-                if (TitleScene.setUpgrade[0] == false)
+                if (TitleScene.IsUpgraded[0] == false)
                 {
                     statusManagerPlayer.BurikiArm();
                 }
             }
             else if (thisSceneName == boss2StageName)
             {
-                if (TitleScene.setUpgrade[1] == false)
+                if (TitleScene.IsUpgraded[1] == false)
                 {
                     statusManagerPlayer.MokoMokoBoots();
                 }
             }
             else if (gameObject.name == boss3StageName)
             {
-                if (TitleScene.setUpgrade[2] == false)
+                if (TitleScene.IsUpgraded[2] == false)
                 {
                     statusManagerPlayer.SatsurikuDash();
                 }
