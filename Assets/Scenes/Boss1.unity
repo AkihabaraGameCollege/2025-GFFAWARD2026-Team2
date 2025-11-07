@@ -1597,6 +1597,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1166333154}
   m_CullTransparentMesh: 1
+--- !u!1 &1178439559 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 67187401318048243, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
+  m_PrefabInstance: {fileID: 435073128615777359}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1255238907
 GameObject:
   m_ObjectHideFlags: 0
@@ -1751,6 +1756,9 @@ MonoBehaviour:
   player: {fileID: 2130611556953251939}
   stageClearUI: {fileID: 6895128436491128958}
   statusManagerPlayer: {fileID: 2130611556953251941}
+  boss1StageName: Boss1
+  boss2StageName: Boss2
+  boss3StageName: Boss2
 --- !u!4 &1633997427
 Transform:
   m_ObjectHideFlags: 0
@@ -2381,6 +2389,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7075836444740004840, guid: 1a1631aa175561d459e073db7cf1f343, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 2130611556953251939}
+    - target: {fileID: 7075836444740004840, guid: 1a1631aa175561d459e073db7cf1f343, type: 3}
+      propertyPath: stageScene
+      value: 
+      objectReference: {fileID: 1633997426}
+    - target: {fileID: 7075836444740004840, guid: 1a1631aa175561d459e073db7cf1f343, type: 3}
+      propertyPath: targetObject
+      value: 
+      objectReference: {fileID: 1178439559}
+    - target: {fileID: 7075836444740004840, guid: 1a1631aa175561d459e073db7cf1f343, type: 3}
+      propertyPath: weakTimeText
+      value: 
+      objectReference: {fileID: 1166333154}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2528,7 +2552,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2508532194529083278, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
   m_PrefabInstance: {fileID: 435073128615777359}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1178439559}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 52df092b424ca4e47885df2e5ca8d66b, type: 3}
@@ -2539,7 +2563,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8734794260185636031, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
   m_PrefabInstance: {fileID: 435073128615777359}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1178439559}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6e5209af2d5474d4fad22c982bbf55c1, type: 3}
