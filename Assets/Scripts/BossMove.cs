@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.Windows;
 
@@ -21,6 +22,9 @@ public class BossMove : MonoBehaviour
     //ボス本体判定（中山が編集）
     [SerializeField]
     private Collider thisCollider;
+    // 弱点判定（中山が編集）
+    [SerializeField]
+    private Collider weakCollider;
 
     // ターゲットオブジェクト（中山が編集）
     [SerializeField]
@@ -53,6 +57,8 @@ public class BossMove : MonoBehaviour
     //アニメーションID登録（中山が編集）
     static readonly int IsWalkingID = Animator.StringToHash("isWalking");
     static readonly int jumpID = Animator.StringToHash("jump");
+    static readonly int landingID = Animator.StringToHash("landing");
+    static readonly int weakID = Animator.StringToHash("weak");
     static readonly int grandID = Animator.StringToHash("grand");
     static readonly int dieID = Animator.StringToHash("die");
 
@@ -82,6 +88,7 @@ public class BossMove : MonoBehaviour
 
         health = maxHealth;//体力初期化（中山が編集）
         
+        weakCollider.enabled = false;//弱点判定無効化（中山が編集）
         attackCollider.enabled = false;//攻撃判定無効化（中山が編集）
         weakTimeText.SetActive(false);//弱体化時間表示無効化（中山が編集）
 
@@ -160,16 +167,21 @@ public class BossMove : MonoBehaviour
             yield return new WaitForSeconds(bossAttackTime);//ハマるまでの時間（中山が編集）
             attackCollider.enabled = false;//攻撃判定無効化（中山が編集）
 
+            animator.SetTrigger(weakID);//弱体化アニメーション再生（中山が編集）
             weakTimeText.SetActive(true);//弱体化時間表示有効化（中山が編集）
+            weakCollider.enabled = true;//弱点判定有効化（中山が編集）
             effectAudioLoop.Play();//歩行時サウンド再生（中山が編集）
             yield return new WaitForSeconds(bossWeakTime);
             effectAudioLoop.Stop();//歩行時サウンド停止（中山が編集）
             weakTimeText.SetActive(false);//弱体化時間表示無効化（中山が編集）
+            weakCollider.enabled = false;//弱点判定無効化（中山が編集）
             animator.SetTrigger(grandID);//地面にハマるアニメーション終了（中山が編集）
+            yield return new WaitForSeconds(0.1f);// 少し待機（中山が編集）
 
             JumpAttack();//ジャンプ攻撃（中山が編集）
             yield return new WaitForSeconds(1);//ジャンプ中（中山が編集）
             thisCollider.enabled = true;//当たり判定有効化（中山が編集）
+            animator.SetTrigger(landingID);//着地アニメーション再生（中山が編集）
             yield return new WaitForSeconds(bossWaitTime);//待機（中山が編集）
         }
     }

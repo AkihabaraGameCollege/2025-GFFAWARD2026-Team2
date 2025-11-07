@@ -2140,9 +2140,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1633997426}
     - target: {fileID: 7075836444740004840, guid: 1a1631aa175561d459e073db7cf1f343, type: 3}
+      propertyPath: bossWeakTime
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7075836444740004840, guid: 1a1631aa175561d459e073db7cf1f343, type: 3}
       propertyPath: targetObject
       value: 
       objectReference: {fileID: 1178439559}
+    - target: {fileID: 7075836444740004840, guid: 1a1631aa175561d459e073db7cf1f343, type: 3}
+      propertyPath: weakCollider
+      value: 
+      objectReference: {fileID: 2119462024}
     - target: {fileID: 7075836444740004840, guid: 1a1631aa175561d459e073db7cf1f343, type: 3}
       propertyPath: weakTimeText
       value: 
@@ -2155,6 +2163,11 @@ PrefabInstance:
 --- !u!4 &2119462023 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5954467733029181647, guid: 1a1631aa175561d459e073db7cf1f343, type: 3}
+  m_PrefabInstance: {fileID: 2119462022}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &2119462024 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 8183599811501601035, guid: 1a1631aa175561d459e073db7cf1f343, type: 3}
   m_PrefabInstance: {fileID: 2119462022}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &435073128615777359
