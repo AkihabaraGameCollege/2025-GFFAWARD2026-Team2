@@ -1,7 +1,5 @@
 using System.Collections;
-using UnityEditorInternal;
 using UnityEngine;
-using UnityEngine.Windows;
 
 public class BossMove : MonoBehaviour
 {
