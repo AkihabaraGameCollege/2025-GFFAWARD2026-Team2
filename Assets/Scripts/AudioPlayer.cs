@@ -99,7 +99,7 @@ public class AudioPlayer : MonoBehaviour
     /// SEを再生する
     /// </summary>
     /// <param name="seIndex">SEの配列インデックス</param>
-    public void PlaySE(int seIndex)
+    public void PlaySE(int seIndex, bool isLoop)
     {
         if (seIndex < 0 || seIndex >= seClips.Length)
         {
@@ -107,8 +107,23 @@ public class AudioPlayer : MonoBehaviour
             return;
         }
 
-        //SEを再生する
-        seSource.PlayOneShot(seClips[seIndex]);
+        if (isLoop)
+        {
+            //BGMが再生中なら停止する
+            if (loopSeSource.isPlaying)
+            {
+                loopSeSource.Stop();
+            }
+
+            //BGMを再生する
+            loopSeSource.clip = seClips[seIndex];
+            loopSeSource.Play();
+        }
+        else
+        {
+            //SEを再生する
+            seSource.PlayOneShot(seClips[seIndex]);
+        }
     }
 
     /// <summary>
@@ -119,24 +134,6 @@ public class AudioPlayer : MonoBehaviour
         seSource.Stop();
     }
 
-    public void PlayLoopSE(int seIndex)
-    {
-        if (seIndex < 0 || seIndex >= seClips.Length)
-        {
-            Debug.LogError("SEのインデックスが範囲外です");
-            return;
-        }
-
-        //BGMが再生中なら停止する
-        if (loopSeSource.isPlaying)
-        {
-            loopSeSource.Stop();
-        }
-
-        //BGMを再生する
-        loopSeSource.clip = seClips[seIndex];
-        loopSeSource.Play();
-    }
 
     public void StopLoopSE()
     {
