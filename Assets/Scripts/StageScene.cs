@@ -221,6 +221,7 @@ public class StageScene : MonoBehaviour
 
             // 装備強化フラグに応じて装備強化を行う(富里が編集)
             var thisSceneName = SceneManager.GetActiveScene().name;
+            // Stage1ならブリキアーム強化を実行
             if (thisSceneName == boss1StageName)
             {
                 if (TitleScene.IsUpgraded[0] == false)
@@ -228,6 +229,7 @@ public class StageScene : MonoBehaviour
                     statusManagerPlayer.BurikiArm();
                 }
             }
+            // Stage2ならもこもこブーツ強化を実行
             else if (thisSceneName == boss2StageName)
             {
                 if (TitleScene.IsUpgraded[1] == false)
@@ -235,16 +237,18 @@ public class StageScene : MonoBehaviour
                     statusManagerPlayer.MokoMokoBoots();
                 }
             }
-            else if (gameObject.name == boss3StageName)
+            // Stage3なら殺戮ダッシュ強化を実行
+            else if (thisSceneName == boss3StageName)
             {
                 if (TitleScene.IsUpgraded[2] == false)
                 {
                     statusManagerPlayer.SatsurikuDash();
                 }
             }
+            // どこでもない場合はエラー
             else
             {
-                Console.Error.WriteLine("どこやねんここ");
+                Debug.LogError("どこやねんここ");
             }
         }
     }
