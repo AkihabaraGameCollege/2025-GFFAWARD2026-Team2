@@ -11,6 +11,9 @@ public class BossMove : MonoBehaviour
     //移動速度設定（中山が編集）
     [SerializeField]
     private float moveP = 3;
+    //回転速度設定（中山が編集）
+    [SerializeField]
+    private float speedNumber = 11.1f;
 
     //コライダー参照用（中山が編集）
     [Header("Collider")]
@@ -128,15 +131,17 @@ public class BossMove : MonoBehaviour
     private void Turn(float rotate)
     {
         // 補完スピードを決める
-        float speed = 11.1f;
+        float speed = speedNumber;
         // ターゲット方向のベクトルを取得
         Vector3 relativePos = targetObject.transform.position - bossObject.transform.position;
+
+        relativePos.y = 0; // X軸の回転は禁止する（中山が編集）
+
         // 方向を、回転情報に変換
         Quaternion rotation = Quaternion.LookRotation(relativePos);
         // 現在の回転情報と、ターゲット方向の回転情報を補完する
         transform.rotation = Quaternion.Slerp(this.transform.rotation, rotation, speed);
 
-        //transform.Rotate(0, rotate * Time.deltaTime * 65, 0);//Y軸回転（中山が編集）
         effectAudio.PlayOneShot(soundOnMove);//回転時サウンド再生（中山が編集）
     }
 
