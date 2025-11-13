@@ -47,8 +47,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6132fac1a29ded4b9e926edd3edf62b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bgmClips: []
-  seClips: []
+  bgmClips:
+  - {fileID: 8300000, guid: 1419680a310406a4b8c651ded62a7753, type: 3}
+  - {fileID: 8300000, guid: b62e7e8119cb54b4396c8b6df2fbd1aa, type: 3}
+  - {fileID: 8300000, guid: a8101b6842c005a44924e44828da63da, type: 3}
+  - {fileID: 8300000, guid: db9ce1ebdf2a4da458139504980e3602, type: 3}
+  - {fileID: 8300000, guid: 421ddce5291904243a7ee20593c804d4, type: 3}
+  - {fileID: 8300000, guid: 182aa64f7539e2d42bccab7ece048315, type: 3}
+  - {fileID: 8300000, guid: 52c9e80d5119e3e4ab4ae25c38a3b0bc, type: 3}
+  - {fileID: 8300000, guid: 6bb645b08d4c89b4bab87e7d67aebd36, type: 3}
+  - {fileID: 8300000, guid: cc96d9bea34d04f4ea4f626d807b7147, type: 3}
+  - {fileID: 8300000, guid: 4f3a8438831884147b3ac7e48b423327, type: 3}
+  - {fileID: 8300000, guid: 2c88760426b808f4986bb7642c1dae77, type: 3}
+  - {fileID: 8300000, guid: 601f97ccbbb3d20499ff217cd69c2214, type: 3}
+  - {fileID: 8300000, guid: 2ad93a2f7f150af4682000e21e044261, type: 3}
+  - {fileID: 8300000, guid: 29e8c838d988a5b4fa1f907608c5ffc4, type: 3}
+  - {fileID: 8300000, guid: dae451feecbb18e47a706763fbf4f46e, type: 3}
+  - {fileID: 8300000, guid: 084efb219cf1de54f8993bd71d994c9b, type: 3}
+  seClips:
+  - {fileID: 8300000, guid: f44d4e220138ae34ea472fdf6687ee0b, type: 3}
+  - {fileID: 8300000, guid: e0465d31a353d1042837b4d3266c7f9a, type: 3}
+  - {fileID: 8300000, guid: f26f5b5e436275d42b4f644d4948ba84, type: 3}
+  - {fileID: 8300000, guid: b985e1946e2a4ba4e9321e4e24a05275, type: 3}
+  - {fileID: 8300000, guid: 76f19abbc439c6f4297a10901d741502, type: 3}
+  - {fileID: 8300000, guid: c1af596db4e1b8c43986299d9cb6db5c, type: 3}
+  - {fileID: 8300000, guid: 5fefa6f55a7e0ff4fafec715a6406ba1, type: 3}
+  - {fileID: 8300000, guid: 2ff31ab87a4a35947a5d8c4a7c231c7c, type: 3}
+  - {fileID: 8300000, guid: d91b7ccc76371324798db75fef7adb22, type: 3}
+  - {fileID: 8300000, guid: 280ab3cf4a2728247b6f13c8f3e3be8a, type: 3}
+  - {fileID: 8300000, guid: 9549d065fcbae524594f5b95a7f4010a, type: 3}
+  - {fileID: 8300000, guid: d6c37f75256151d47aa6380efbcd8a0d, type: 3}
   bgmSource: {fileID: 1175352549287661820}
   seSource: {fileID: 7479978559394380311}
   loopSeSource: {fileID: 2108518947670037537}
