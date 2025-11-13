@@ -101,15 +101,19 @@ public class StageScene : MonoBehaviour
         // 各シーンに対応したBGMを再生
         if (activeSceneName == boss1StageName)
         {
-            AudioPlayer.instance.PlayBGM(0);//boss1Musicを再生
+            AudioPlayer.instance.PlayBGM(0);//boss1Musicを再生(富里が編集)
         }
         else if (activeSceneName == boss2StageName)
         {
-            AudioPlayer.instance.PlayBGM(2);//boss2Musicを再生
+            AudioPlayer.instance.PlayBGM(2);//boss2Musicを再生(富里が編集)
         }
         else if (activeSceneName == boss3StageName)
         {
-            AudioPlayer.instance.PlayBGM(4);//boss3Musicを再生
+            AudioPlayer.instance.PlayBGM(4);//boss3Musicを再生(富里が編集)
+        }
+        else
+        {
+            Debug.LogError("現在のsceneが、どのstageNameとも一致しません");
         }
     }
 
@@ -211,7 +215,7 @@ public class StageScene : MonoBehaviour
         {
             sceneState = SceneState.GameOver;
             player.enabled = false;// プレイヤー操作を無効化(中山が編集)
-            musicAudio.Stop();
+            AudioPlayer.instance.PlayBGM(8); // gameoverを再生(富里が編集)
             gameOverUI.Show();// ゲームオーバーUIを表示(中山が編集)
         }
     }
@@ -223,7 +227,7 @@ public class StageScene : MonoBehaviour
         if (sceneState == SceneState.Play)
         {
             sceneState = SceneState.StageClear;
-            musicAudio.Stop();
+            AudioPlayer.instance.PlayBGM(12); // stageclearを再生 (富里が編集)
             player.enabled = false;// プレイヤー操作を無効化(中山が編集)
             // ステージクリアーUIを表示
             stageClearUI.Show();

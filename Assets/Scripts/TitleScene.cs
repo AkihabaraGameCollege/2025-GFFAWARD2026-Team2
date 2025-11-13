@@ -13,10 +13,6 @@ public class TitleScene : MonoBehaviour
     [SerializeField]
     private string nextSceneName;
 
-    // エフェクト再生用の AudioSource を指定します。
-    [SerializeField]
-    private AudioSource effectAudio = null;
-
     public static bool[] IsUpgraded = { false, false, false };// 強化状態かどうかのフラグ（富里が編集）
 
     // Animatorコンポーネント
@@ -29,15 +25,12 @@ public class TitleScene : MonoBehaviour
     {
         // Animatorコンポーネントを取得
         animator = GetComponent<Animator>();
-        // 効果音を再生
-        effectAudio.Play();
+        AudioPlayer.instance.PlayBGM(15); // titlemusicを再生(富里が編集)
     }
 
     // スタートボタンが押されたときに呼び出されるメソッド
     public void PressStartButton()
     {
-        // 効果音を停止
-        effectAudio.Stop();
         // エフェクトを再生
         StartCoroutine(OnStart());
     }
