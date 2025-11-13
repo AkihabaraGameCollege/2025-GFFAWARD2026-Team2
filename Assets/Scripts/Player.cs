@@ -88,13 +88,6 @@ public class Player : MonoBehaviour
     [SerializeField]
     private StageScene stageScene = null;
 
-    // エフェクト再生用の AudioSource を指定します。（中山が編集）
-    [SerializeField]
-    private AudioSource effectAudio = null;
-    // ジャンプ時のサウンドを指定します。（中山が編集）
-    [SerializeField]
-    private AudioClip soundOnAttack = null;
-
 
     // モーション状態定義（中山が編集）
     enum MotionState
@@ -298,7 +291,7 @@ public void Move()
         attackOK = false;//攻撃制限変数をfalseに設定（中山が編集）
         animator.SetTrigger(attackID);// Attackアニメーションを開始（中山が編集）
         attackCollider.SetActive(true);//攻撃判定を有効化（中山が編集）
-        effectAudio.PlayOneShot(soundOnAttack);// 攻撃音再生（中山が編集）
+        AudioPlayer.instance.PlaySE(3);// PlayerClawAttackを再生 (富里が編集)
         yield return new WaitForSeconds(playerAttackTime);//1秒待機（中山が編集）
         attackCollider.SetActive(false);//攻撃判定を無効化（中山が編集）
         yield return new WaitForSeconds(playerWaitTime);//playerWaitTime秒待機（中山が編集）

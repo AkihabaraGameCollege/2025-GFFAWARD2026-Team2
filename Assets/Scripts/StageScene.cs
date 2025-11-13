@@ -32,14 +32,6 @@ public class StageScene : MonoBehaviour
     [SerializeField]
     private GameOverUI gameOverUI = null;
 
-    // 楽曲再生用の AudioSource を指定します。(中山が編集)
-    [SerializeField]
-    private AudioSource musicAudio = null;
-    [SerializeField]
-    private AudioSource clearAudio = null;
-    [SerializeField]
-    private AudioSource overAudio = null;
-
     //プレイヤーを指定(中山が編集)
     [SerializeField]
     private Player player = null;
@@ -82,8 +74,9 @@ public class StageScene : MonoBehaviour
     {
         Instance = this;// シングルトンインスタンスを設定(中山が編集)
      
-        clearAudio.Stop();// ステージクリアー音声を停止しておく(中山が編集)
-        overAudio.Stop();// ゲームオーバー音声を停止しておく(中山が編集)
+        // 多分いらなくなった(富里が編集)
+        //clearAudio.Stop();// ステージクリアー音声を停止しておく(中山が編集)
+        //overAudio.Stop();// ゲームオーバー音声を停止しておく(中山が編集)
     }
 
     // Start is called before the first frame update（中山が編集）
@@ -102,6 +95,22 @@ public class StageScene : MonoBehaviour
         animator = GetComponent<Animator>();// コンポーネントを参照しておく(中山が編集)
         player.enabled = true;// プレイヤーを無効化しておく(中山が編集)
         sceneState = SceneState.Play;// ステージプレイ中に変更(中山が編集)
+
+        // シーン名を取得
+        string activeSceneName = SceneManager.GetActiveScene().name;
+        // 各シーンに対応したBGMを再生
+        if (activeSceneName == boss1StageName)
+        {
+            AudioPlayer.instance.PlayBGM(0);//boss1Musicを再生
+        }
+        else if (activeSceneName == boss2StageName)
+        {
+            AudioPlayer.instance.PlayBGM(2);//boss2Musicを再生
+        }
+        else if (activeSceneName == boss3StageName)
+        {
+            AudioPlayer.instance.PlayBGM(4);//boss3Musicを再生
+        }
     }
 
     void Update()
