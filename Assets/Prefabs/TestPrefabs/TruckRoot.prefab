@@ -68,6 +68,7 @@ GameObject:
   - component: {fileID: 7691662004568904729}
   - component: {fileID: 7287977716851024897}
   - component: {fileID: 5917800688856476479}
+  - component: {fileID: 2113923271850196446}
   m_Layer: 0
   m_Name: TruckRoot
   m_TagString: Untagged
@@ -134,8 +135,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumpP: 170
   moveP: 20
-  attackCollider: {fileID: 1414895318605274009}
+  speedNumber: 11.1
   thisCollider: {fileID: 7287977716851024897}
+  damageCollider: {fileID: 0}
+  attackCollider: {fileID: 1414895318605274009}
   weakCollider: {fileID: 7549347237955073667}
   targetObject: {fileID: 0}
   bossObject: {fileID: 3257924096081043186}
@@ -166,7 +169,9 @@ MonoBehaviour:
   maxHp: 6
   destroyEffect: {fileID: 8962295279383145195, guid: 7cdd99d9641263e498d658cb227be266, type: 3}
   damageEffect: {fileID: 1430198582188953287, guid: 21b15d55fb362544fab3a70419757060, type: 3}
-  bossMove: {fileID: 6363660092418422825}
+  bossMove1: {fileID: 0}
+  bossMove2: {fileID: 0}
+  bossMove3: {fileID: 0}
 --- !u!82 &7691662004568904729
 AudioSource:
   m_ObjectHideFlags: 0
@@ -307,6 +312,37 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2113923271850196446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3257924096081043186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be12adef7acdf2245ac53f2d6afbd23c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jumpP: 170
+  moveP: 20
+  speedNumber: 11.1
+  attackCollider: {fileID: 1414895318605274009}
+  thisCollider: {fileID: 7287977716851024897}
+  weakCollider: {fileID: 7549347237955073667}
+  targetObject: {fileID: 0}
+  bossObject: {fileID: 3257924096081043186}
+  stageScene: {fileID: 0}
+  maxHealth: 0
+  player: {fileID: 0}
+  weakTimeText: {fileID: 0}
+  effectAudio: {fileID: 0}
+  effectAudioLoop: {fileID: 0}
+  soundOnAttack: {fileID: 0}
+  soundOnMove: {fileID: 0}
+  bossWeakTime: 3
+  bossWaitTime: 0.5
+  bossAttackTime: 1
 --- !u!1 &3740772395354955211
 GameObject:
   m_ObjectHideFlags: 0

@@ -49,10 +49,6 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject dashAttackCollider = null;
 
-    // ポーズUIを指定します。（中山が編集）
-    [SerializeField]
-    private PauseUI pause = null;
-
     // プレイヤーダメージUIを指定します。（中山が編集）
     [SerializeField]
     private GameObject playerDamage = null;

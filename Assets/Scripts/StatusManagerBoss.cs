@@ -1,3 +1,4 @@
+using UnityEditorInternal;
 using UnityEngine;
 
 // ボスのステータスに関するスクリプト（中山が別プロジェクトから移植）
@@ -19,7 +20,11 @@ public class StatusManagerBoss : MonoBehaviour
 
     //スクリプト参照用（中山が編集）
     [SerializeField]
-    private BossMove bossMove = null;
+    private BossMove1 bossMove1 = null;
+    [SerializeField]
+    private BossMove2 bossMove2 = null;
+    [SerializeField]
+    private BossMove3 bossMove3 = null;
 
     // Update is called once per frame
     void Update()
@@ -72,6 +77,8 @@ public class StatusManagerBoss : MonoBehaviour
         effect.transform.position = effectPos;
         Destroy(effect, 5);
 
-        bossMove.Die();
+        bossMove1.Die();
+        bossMove2.Die();
+        bossMove3.Die();
     }
 }

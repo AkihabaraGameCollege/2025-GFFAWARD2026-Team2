@@ -13,8 +13,10 @@ public class PlayerAttackColliderN : MonoBehaviour
         {
             // プレイヤーの場合は
             // 敵の親スクリプト持ってきて実行
-            var victimScript = collider.GetComponentInParent<BossMove>();
-           // victimScript.TakeDamage();
+            var victimScript1 = collider.GetComponentInParent<BossMove1>();
+            var victimScript2 = collider.GetComponentInParent<BossMove2>();
+            var victimScript3 = collider.GetComponentInParent<BossMove3>();
+            // victimScript.TakeDamage();
         }
         else
         {
