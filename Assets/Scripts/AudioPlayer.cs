@@ -99,7 +99,7 @@ public class AudioPlayer : MonoBehaviour
     /// SEを再生する
     /// </summary>
     /// <param name="seIndex">SEの配列インデックス</param>
-    public void PlaySE(int seIndex, bool isLoop)
+    public void PlaySE(int seIndex, bool isLoop = false)
     {
         if (seIndex < 0 || seIndex >= seClips.Length)
         {
