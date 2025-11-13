@@ -7,6 +7,14 @@ public class PlayerSkillUI : MonoBehaviour
     [Tooltip("ブリキアームから順に入れてください")]
     private Image[] images = null;
 
+    [SerializeField]
+    [Tooltip("ブリキアームから順に入れてください")]
+    private Sprite[] gotSprites = null;
+
+    [SerializeField]
+    [Tooltip("ブリキアームから順に入れてください")]
+    private Sprite[] notGotSprites = null;
+
     private void Start()
     {
         ReloadFlag();
@@ -17,7 +25,7 @@ public class PlayerSkillUI : MonoBehaviour
     {
         for (int i = 0; i < TitleScene.IsUpgraded.Length; i++)
         {
-            images[i].enabled = TitleScene.IsUpgraded[i];
+            images[i].sprite = (TitleScene.IsUpgraded[i]) ? gotSprites[i] : notGotSprites[i];
         }
     }
 }
