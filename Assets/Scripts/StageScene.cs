@@ -157,6 +157,7 @@ public class StageScene : MonoBehaviour
             IsPaused = true;
             Time.timeScale = 0;
             pause.Show();
+            Cursor.lockState = CursorLockMode.None;
         }
     }
 
@@ -168,6 +169,7 @@ public class StageScene : MonoBehaviour
             IsPaused = false;
             Time.timeScale = 1;
             pause.Hide();
+            Cursor.lockState = CursorLockMode.Locked;
         }
     }
 
@@ -202,7 +204,7 @@ public class StageScene : MonoBehaviour
 
         animator.SetTrigger(outroId);// アウトロアニメーションを開始(中山が編集)
         // アニメーションが終了するまで1秒待機
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(1);
         // シーンをロードする
         SceneManager.LoadScene(sceneName);
     }

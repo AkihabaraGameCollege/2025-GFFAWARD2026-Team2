@@ -152,7 +152,6 @@ public class Player : MonoBehaviour
         if (context.started)
         {
             StageScene.Instance.TogglePause();
-            pause.Show();
         }
     }
 
