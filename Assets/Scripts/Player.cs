@@ -115,6 +115,7 @@ public class Player : MonoBehaviour
 
        attackCollider.transform.localScale = new Vector3(ReachX, ReachY, ReachZ);// 当たり判定を指定
 
+        OnApplicationFocus(true);
         attackOK = true;// 攻撃制限変数初期化（中山が編集）
         attackCollider.SetActive(false);// 攻撃判定を無効化（中山が編集）
         dashAttackCollider.SetActive(false); // ダッシュアタック判定を無効化 (富里が編集)
@@ -334,5 +335,19 @@ public void Move()
     {
         motionState = MotionState.Walking;
         dashAttackCollider.SetActive(false);
+    }
+
+    // アプリケーションのフォーカスが変化したときに呼び出されるメソッド（中山が編集）
+    private void OnApplicationFocus(bool focus)
+    {
+        // フォーカスがある場合はカーソルをロックし、ない場合はロックを解除する（中山が編集）
+        if (focus)
+        {
+          Cursor.lockState = CursorLockMode.Locked;// カーソルをロック（中山が編集）
+        }
+        else
+        {
+          Cursor.lockState = CursorLockMode.None;// カーソルのロックを解除（中山が編集）
+        }
     }
 }
