@@ -65,11 +65,9 @@ public class BossMove1 : MonoBehaviour
     private float bossWakeUpTime = 5f;
     [SerializeField]
     private float bossWaitTime = 3f;
-    //前進と回転の繰り返し回数設定（中山が編集）
-    [SerializeField]
-    private int forwardTurn = 10;
 
     private bool isMoving = false;//移動中かどうか判定（中山が編集）
+    private bool onTurn = false;//攻撃中かどうか判定（中山が編集）
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -77,6 +75,7 @@ public class BossMove1 : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();//Rigidbodyコンポーネント取得（中山が編集）
         animator = GetComponent<Animator>();//Animatorコンポーネント取得（中山が編集）
 
+        onTurn = true;//攻撃停止（中山が編集）
         isMoving = false;//移動停止（中山が編集）
         weakCollider.enabled = false;//弱点判定無効化（中山が編集）
         attackCollider.enabled = false;//攻撃判定無効化（中山が編集）
@@ -88,20 +87,24 @@ public class BossMove1 : MonoBehaviour
     // ボスの毎フレーム更新処理
     void FixedUpdate()
     {
-        Turn();//回転処理（中山が編集）
+        // 弱点出現していないときの処理（中山が編集）
+        if (onTurn)
+        {
+            Turn();//回転処理（中山が編集）
 
-        //移動処理（中山が編集）
-        if (isMoving)
-        {
-            Vector3 forward = transform.forward * moveP;//前方向に移動ベクトル設定（中山が編集）
-            rigidbody.linearVelocity = new Vector3(forward.x, rigidbody.linearVelocity.y, forward.z);//前方向に移動（中山が編集）
-            animator.SetFloat(IsWalkingID, rigidbody.linearVelocity.magnitude);//歩行アニメーション開始（中山が編集）
-        }
-        //移動停止処理（中山が編集）
-        else if (!isMoving)
-        {
-        rigidbody.linearVelocity = new Vector3(0, rigidbody.linearVelocity.y, 0);//移動停止（中山が編集）
-        animator.SetFloat(IsWalkingID, rigidbody.linearVelocity.magnitude);//歩行アニメーション停止（中山が編集）
+            //移動処理（中山が編集）
+            if (isMoving)
+            {
+                Vector3 forward = transform.forward * moveP;//前方向に移動ベクトル設定（中山が編集）
+                rigidbody.linearVelocity = new Vector3(forward.x, rigidbody.linearVelocity.y, forward.z);//前方向に移動（中山が編集）
+                animator.SetFloat(IsWalkingID, rigidbody.linearVelocity.magnitude);//歩行アニメーション開始（中山が編集）
+            }
+            //移動停止処理（中山が編集）
+            else if (!isMoving)
+            {
+                rigidbody.linearVelocity = new Vector3(0, rigidbody.linearVelocity.y, 0);//移動停止（中山が編集）
+                animator.SetFloat(IsWalkingID, rigidbody.linearVelocity.magnitude);//歩行アニメーション停止（中山が編集）
+            }
         }
     }
 
@@ -156,8 +159,8 @@ public class BossMove1 : MonoBehaviour
                 yield return new WaitForSeconds(bossMoveTime);//待機（中山が編集）
                isMoving = false;//移動停止（中山が編集）
 
-            Turn();//向く（中山が編集）
-            yield return new WaitForSeconds(bossLittleWaitTime);
+            yield return new WaitForSeconds(bossLittleWaitTime);//少し待機（中山が編集）
+            onTurn = false;//攻撃開始（中山が編集）
             HammerAttack();//ハンマー攻撃（中山が編集）
             yield return new WaitForSeconds(bossAttackTime);//攻撃する時間（中山が編集）
 
@@ -174,6 +177,7 @@ public class BossMove1 : MonoBehaviour
             WakeUp();// 起き上がり（中山が編集）
             yield return new WaitForSeconds(bossWakeUpTime);// 待機（中山が編集）
 
+            onTurn = true;//攻撃停止（中山が編集）
             yield return new WaitForSeconds(bossWaitTime);//待機（中山が編集）
         }
     }
