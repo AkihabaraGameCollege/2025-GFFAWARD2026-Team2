@@ -20,9 +20,6 @@ using UnityEngine.UI;
         // Exit Button を指定します。
         [SerializeField]
         private Button exitButton = null;
-        // 楽曲再生用の AudioSource を指定します。
-        [SerializeField]
-        private AudioSource musicAudio = null;
 
         // コンポーネントを事前に参照しておく変数
         Animator animator;
@@ -53,6 +50,5 @@ using UnityEngine.UI;
         {
             animator.SetTrigger(showId);
             retryButton.Select();
-            musicAudio.Play();
         }
     }

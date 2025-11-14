@@ -1,4 +1,3 @@
-using UnityEditorInternal;
 using UnityEngine;
 
 // ボスのステータスに関するスクリプト（中山が別プロジェクトから移植）
