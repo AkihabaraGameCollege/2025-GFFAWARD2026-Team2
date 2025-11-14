@@ -262,8 +262,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52df092b424ca4e47885df2e5ca8d66b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  jumpForce: 10
   requiredJumpSpeed: 0.1
   playerWaitTime: 1
   playerAttackTime: 0.5
@@ -275,12 +273,9 @@ MonoBehaviour:
     m_Bits: 64
   attackCollider: {fileID: 4535509625820239764}
   dashAttackCollider: {fileID: 1525174610445278448}
-  pause: {fileID: 0}
   playerDamage: {fileID: 0}
   maxHealth: 3
   stageScene: {fileID: 0}
-  effectAudio: {fileID: 6295322545844377381}
-  soundOnAttack: {fileID: 8300000, guid: 485775dbb05a10948832be7b84b752fa, type: 3}
   motionState: 0
 --- !u!82 &6295322545844377381
 AudioSource:
@@ -394,6 +389,12 @@ MonoBehaviour:
   MainObject: {fileID: 67187401318048243}
   playerAttackCollider: {fileID: 0}
   maxHp: 3
+  magnificationReachX: 2
+  magnificationReachY: 2
+  magnificationReachZ: 2
+  magnificationDamage: 2
+  magnificationJumpForce: 1.5
+  magnificationMoveSpeed: 1.5
   destroyEffect: {fileID: 8962295279383145195, guid: 7cdd99d9641263e498d658cb227be266, type: 3}
   damageEffect: {fileID: 1430198582188953287, guid: 21b15d55fb362544fab3a70419757060, type: 3}
   player: {fileID: 0}

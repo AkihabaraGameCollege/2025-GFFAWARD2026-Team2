@@ -15,22 +15,22 @@ public class StatusManagerPlayer : MonoBehaviour
     int maxHp = 3;
     // 攻撃リーチの倍率（中山が編集）
     [SerializeField]
-    private static float magnificationReachX = 2.0f;
+    private float magnificationReachX = 2.0f;
     [SerializeField]
-    private static float magnificationReachY = 2.0f;
+    private float magnificationReachY = 2.0f;
     [SerializeField]
-    private static float magnificationReachZ = 2.0f;
+    private float magnificationReachZ = 2.0f;
     // ダメージの倍率（中山が編集）
     [SerializeField]
-    private static int magnificationDamage = 2;
+    private int magnificationDamage = 2;
 
     // ジャンプ力倍率 (富里が編集)
     [SerializeField]
-    private static float magnificationJumpForce = 3;
+    private float magnificationJumpForce = 3;
 
     // 移動速度倍率 (富里が編集)
     [SerializeField]
-    private static float magnificationMoveSpeed = 1.5f;
+    private float magnificationMoveSpeed = 1.5f;
 
     [SerializeField] GameObject destroyEffect;  //撃破エフェクト
     [SerializeField] GameObject damageEffect;   //被弾エフェクト
