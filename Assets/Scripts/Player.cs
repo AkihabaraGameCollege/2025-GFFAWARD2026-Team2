@@ -1,15 +1,20 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    //移動速度（中山が編集）
+    [Header("Default Status")]
     [SerializeField]
-    public static float moveSpeed = 5f;
-    // ジャンプ力指定（中山が編集）
+    private float defaultMoveSpeed = 5f; // Inspectorでいじる用のデフォルト値 (富里が編集)
     [SerializeField]
-    public static float jumpForce = 10;
+    private float defaultJumpForce = 10f; // Inspectorでいじる用のデフォルト値 (富里が編集)
+    // 地面判定用の線分の始点と終点を指定（中山が編集）
+    [SerializeField]
+    private Vector3 groundCheckStartPoint = new Vector3(0, -0.5f, 0);
+    [SerializeField]
+    private Vector3 groundCheckEndPoint = new Vector3(0, -1.5f, 0);
     // ジャンプに必要な速度指定（中山が編集）
     [SerializeField]
     private float requiredJumpSpeed = 0.1f;
@@ -22,20 +27,33 @@ public class Player : MonoBehaviour
     // ダッシュアタック移動力 (富里が編集)
     [SerializeField]
     private float dashAttackSpeed = 20;
+    // デフォルトの攻撃リーチ (富里が編集)
+    [SerializeField]
+    private float defaultReachX = 1f;
+    [SerializeField]
+    private float defaultReachY = 1f;
+    [SerializeField]
+    private float defaultReachZ = 1f;
 
-    // 地面判定用の線分の始点と終点を指定（中山が編集）
-    [SerializeField]
-    private Vector3 groundCheckStartPoint = new Vector3(0, -0.5f, 0);
-    [SerializeField]
-    private Vector3 groundCheckEndPoint = new Vector3(0, -1.5f, 0);
+    //移動速度（中山が編集）
+    public static float moveSpeed;
+    // ジャンプ力指定（中山が編集）
+    public static float jumpForce;
+
 
     // 攻撃リーチの倍率（中山が編集）
-  [SerializeField]
-    public static float ReachX = 1.0f;
+    public static float ReachX;
+    public static float ReachY;
+    public static float ReachZ;
+
+    // static変数が初期化されているかどうか(富里が編集)
+    private static bool IsInitializedStatic = false;
+
+    //ステータス設定（中山が編集）
     [SerializeField]
-  public static float ReachY = 1.0f;
-    [SerializeField]
-    public static float ReachZ = 1.0f;
+    private int maxHealth;
+
+    [Header("参照関連")]
 
     // 地面判定に使用するレイヤーを指定（中山が編集）
     [SerializeField]
@@ -57,7 +75,7 @@ public class Player : MonoBehaviour
 
     new private Rigidbody rigidbody;// Rigidbody コンポーネントの参照
 
-    private bool IsGrounded= false;// 地面に接地しているかどうか
+    private bool IsGrounded = false;// 地面に接地しているかどうか
 
     public bool IsSleeping { get; private set; }// 眠っているかどうか
 
@@ -65,9 +83,6 @@ public class Player : MonoBehaviour
 
     private int health;// プレイヤーの体力
 
-    //ステータス設定（中山が編集）
-    [SerializeField]
-    private int maxHealth;
 
     Animator animator;// Animator コンポーネントの参照（中山が編集）
 
@@ -80,9 +95,6 @@ public class Player : MonoBehaviour
     static readonly int dieID = Animator.StringToHash("die");
     static readonly int dashAttackID = Animator.StringToHash("DashAttack");
 
-    //ステージシーン参照用（中山が編集）
-    [SerializeField]
-    private StageScene stageScene = null;
 
 
     // モーション状態定義（中山が編集）
@@ -102,7 +114,7 @@ public class Player : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();// Rigidbody コンポーネントを取得
         animator = GetComponent<Animator>();// Animator コンポーネントを取得（中山が編集）
 
-       attackCollider.transform.localScale = new Vector3(ReachX, ReachY, ReachZ);// 当たり判定を指定
+        attackCollider.transform.localScale = new Vector3(ReachX, ReachY, ReachZ);// 当たり判定を指定
 
         OnApplicationFocus(true);
         attackOK = true;// 攻撃制限変数初期化（中山が編集）
@@ -115,6 +127,17 @@ public class Player : MonoBehaviour
     private void StatusReset()
     {
         health = maxHealth;
+
+        // 初めて開始したら初期化
+        if (!IsInitializedStatic)
+        {
+            moveSpeed = defaultMoveSpeed;
+            jumpForce = defaultJumpForce;
+            ReachX = defaultReachX;
+            ReachY = defaultReachY;
+            ReachZ = defaultReachZ;
+            IsInitializedStatic = true;
+        }
     }
 
     public void Sleep()
@@ -207,17 +230,17 @@ public class Player : MonoBehaviour
             case MotionState.DashAttacking:
                 break;
         }
-        
+
     }
 
     // 固定フレームレートで呼び出される更新処理を移植（中山が編集）
     void FixedUpdate()
-    {      
+    {
         IsGrounded = Physics.Linecast(rigidbody.position + groundCheckStartPoint, rigidbody.position + groundCheckEndPoint, groundLayer);// 地面接地判定を更新
     }
 
-// 指定した速度で、このキャラクターを移動させるプログラムを移植（中山が編集）
-public void Move()
+    // 指定した速度で、このキャラクターを移動させるプログラムを移植（中山が編集）
+    public void Move()
     {
         // メインカメラが存在する場合のみ処理を行う
         if (Camera.main != null)
@@ -298,7 +321,7 @@ public void Move()
     {
         animator.SetTrigger(dieID);// Dieアニメーションを開始（中山が編集）
         Destroy(gameObject, 2f);//3秒後にプレイヤーオブジェクトを破壊（中山が編集）
-        stageScene.GameOver(); // ゲームオーバー処理を呼び出す
+        StageScene.Instance.GameOver(); // ゲームオーバー処理を呼び出す
     }
 
     private void DashAttack()
@@ -331,11 +354,11 @@ public void Move()
         // フォーカスがある場合はカーソルをロックし、ない場合はロックを解除する（中山が編集）
         if (focus)
         {
-          Cursor.lockState = CursorLockMode.Locked;// カーソルをロック（中山が編集）
+            Cursor.lockState = CursorLockMode.Locked;// カーソルをロック（中山が編集）
         }
         else
         {
-          Cursor.lockState = CursorLockMode.None;// カーソルのロックを解除（中山が編集）
+            Cursor.lockState = CursorLockMode.None;// カーソルのロックを解除（中山が編集）
         }
     }
 }
