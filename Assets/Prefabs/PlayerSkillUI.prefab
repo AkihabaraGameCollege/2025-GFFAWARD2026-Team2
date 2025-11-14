@@ -206,13 +206,13 @@ MonoBehaviour:
   - {fileID: 8255657485909470258}
   - {fileID: 2300606244098694365}
   gotSprites:
-  - {fileID: 1158644856, guid: b3ce60a1376e1aa448b9132b0672395b, type: 3}
-  - {fileID: 644353367, guid: 2f4661e99480df84cbd1087602e96cf6, type: 3}
-  - {fileID: -239438931, guid: 5ae32c2e0be8a9d4cb217e54cb017f10, type: 3}
+  - {fileID: 21300000, guid: b3ce60a1376e1aa448b9132b0672395b, type: 3}
+  - {fileID: 21300000, guid: 2f4661e99480df84cbd1087602e96cf6, type: 3}
+  - {fileID: 21300000, guid: 5ae32c2e0be8a9d4cb217e54cb017f10, type: 3}
   notGotSprites:
-  - {fileID: -11985101, guid: d02efc6161e034843bb86a6942d25233, type: 3}
-  - {fileID: -1426486118, guid: 8af083d801febcb459cbc33bb68427bf, type: 3}
-  - {fileID: -624674905, guid: bf410ba0e814f6d4eb1b07c332d31672, type: 3}
+  - {fileID: 21300000, guid: d02efc6161e034843bb86a6942d25233, type: 3}
+  - {fileID: 21300000, guid: 8af083d801febcb459cbc33bb68427bf, type: 3}
+  - {fileID: 21300000, guid: bf410ba0e814f6d4eb1b07c332d31672, type: 3}
 --- !u!1 &7290196538183161713
 GameObject:
   m_ObjectHideFlags: 0

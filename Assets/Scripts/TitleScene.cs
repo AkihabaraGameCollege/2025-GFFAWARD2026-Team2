@@ -23,6 +23,7 @@ public class TitleScene : MonoBehaviour
     //スタート時に呼び出されるメソッド
     void Start()
     {
+        Cursor.lockState = CursorLockMode.None;// カーソルのロックを解除（富里が編集）
         // Animatorコンポーネントを取得
         animator = GetComponent<Animator>();
         AudioPlayer.instance.PlayBGM(15); // titlemusicを再生(富里が編集)
