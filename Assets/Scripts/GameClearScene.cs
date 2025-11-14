@@ -18,6 +18,7 @@ public class GameClearScene : MonoBehaviour
 
     private void Start()
     {
+        Cursor.lockState = CursorLockMode.None;// カーソルのロックを解除（中山が編集）
         StartCoroutine(OnStart());
     }
 
