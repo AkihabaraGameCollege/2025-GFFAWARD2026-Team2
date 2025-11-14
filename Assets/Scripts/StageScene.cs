@@ -12,6 +12,9 @@ public class StageScene : MonoBehaviour
     [SerializeField]
     private string nextStage = "GameClear";
 
+    [SerializeField]
+    private string clearStage = "GameClear";
+
     // ポーズUIを指定します。
     [SerializeField]
     private PauseUI pause = null;
@@ -188,7 +191,15 @@ public class StageScene : MonoBehaviour
     // 次のステージを読み込みます。
     public void LoadNextStage()
     {
-        StartCoroutine(OnLoadScene(nextStage));
+        // すべての強化を取得していたらクリアシーンに
+        if (TitleScene.IsUpgraded[0] && TitleScene.IsUpgraded[1] && TitleScene.IsUpgraded[2])
+        {
+            StartCoroutine(OnLoadScene(clearStage));
+        }
+        else
+        {
+            StartCoroutine(OnLoadScene(nextStage));
+        }
     }
 
     // 指定したシーンを読み込みます。（中山が編集）
