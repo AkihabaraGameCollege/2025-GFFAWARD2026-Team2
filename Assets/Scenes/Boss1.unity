@@ -2635,7 +2635,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2688220698231501378, guid: 461e5d3ad6a7e364380e5e89159f5484, type: 3}
       propertyPath: moveP
-      value: 15
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2688220698231501378, guid: 461e5d3ad6a7e364380e5e89159f5484, type: 3}
       propertyPath: player
@@ -2647,7 +2647,7 @@ PrefabInstance:
       objectReference: {fileID: 245249491}
     - target: {fileID: 2688220698231501378, guid: 461e5d3ad6a7e364380e5e89159f5484, type: 3}
       propertyPath: bossMoveTime
-      value: 2
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 2688220698231501378, guid: 461e5d3ad6a7e364380e5e89159f5484, type: 3}
       propertyPath: bossWaitTime
