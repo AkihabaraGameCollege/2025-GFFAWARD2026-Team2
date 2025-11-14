@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class BossMove1 : MonoBehaviour
 {
-    new private Rigidbody rigidbody;//Rigidbodyコンポーネント参照用（中山が編集）
-    
     //移動速度設定（中山が編集）
     [SerializeField]
     private float moveP = 3;
@@ -44,6 +42,7 @@ public class BossMove1 : MonoBehaviour
     [SerializeField]
     private GameObject weakTimeText = null;
 
+    new private Rigidbody rigidbody;//Rigidbodyコンポーネント参照用（中山が編集）
     Animator animator;//アニメーター（中山が編集）
 
     //アニメーションID登録（中山が編集）
@@ -66,18 +65,44 @@ public class BossMove1 : MonoBehaviour
     private float bossWakeUpTime = 5f;
     [SerializeField]
     private float bossWaitTime = 3f;
+    //前進と回転の繰り返し回数設定（中山が編集）
+    [SerializeField]
+    private int forwardTurn = 10;
+
+    private bool isMoving = false;//移動中かどうか判定（中山が編集）
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();//Rigidbodyコンポーネント取得（中山が編集）
         animator = GetComponent<Animator>();//Animatorコンポーネント取得（中山が編集）
-        
+
+        isMoving = false;//移動停止（中山が編集）
         weakCollider.enabled = false;//弱点判定無効化（中山が編集）
         attackCollider.enabled = false;//攻撃判定無効化（中山が編集）
         weakTimeText.SetActive(false);//弱体化時間表示無効化（中山が編集）
 
         StartCoroutine(Move(true));//行動パターン開始（中山が編集）
+    }
+
+    // ボスの毎フレーム更新処理
+    void FixedUpdate()
+    {
+        Turn();//回転処理（中山が編集）
+
+        //移動処理（中山が編集）
+        if (isMoving)
+        {
+            Vector3 forward = transform.forward * moveP;//前方向に移動ベクトル設定（中山が編集）
+            rigidbody.linearVelocity = new Vector3(forward.x, rigidbody.linearVelocity.y, forward.z);//前方向に移動（中山が編集）
+            animator.SetFloat(IsWalkingID, rigidbody.linearVelocity.magnitude);//歩行アニメーション開始（中山が編集）
+        }
+        //移動停止処理（中山が編集）
+        else if (!isMoving)
+        {
+        rigidbody.linearVelocity = new Vector3(0, rigidbody.linearVelocity.y, 0);//移動停止（中山が編集）
+        animator.SetFloat(IsWalkingID, rigidbody.linearVelocity.magnitude);//歩行アニメーション停止（中山が編集）
+        }
     }
 
     //回転（）の中に角度を設定（中山が編集）
@@ -94,22 +119,6 @@ public class BossMove1 : MonoBehaviour
         Quaternion rotation = Quaternion.LookRotation(relativePos);
         // 現在の回転情報と、ターゲット方向の回転情報を補完する
         transform.rotation = Quaternion.Slerp(this.transform.rotation, rotation, speed);
-    }
-
-    //移動処理（中山が編集）
-    private void MoveForward()
-    {
-        Vector3 forward = transform.forward * moveP;//前方向に移動ベクトル設定（中山が編集）
-        rigidbody.linearVelocity = new Vector3(forward.x, rigidbody.linearVelocity.y, forward.z);//前方向に移動（中山が編集）
-
-        animator.SetFloat(IsWalkingID,rigidbody.linearVelocity.magnitude);//歩行アニメーション開始（中山が編集）
-    }
-
-    //移動停止処理（中山が編集）
-    private void Stop()
-        {
-        rigidbody.linearVelocity = new Vector3(0, rigidbody.linearVelocity.y, 0);//移動停止（中山が編集）
-        animator.SetFloat(IsWalkingID, rigidbody.linearVelocity.magnitude);//歩行アニメーション停止（中山が編集）a    
     }
 
     //ジャンプ攻撃（中山が編集）
@@ -143,36 +152,9 @@ public class BossMove1 : MonoBehaviour
     {
        while(loop == true)
         {
-            Turn();//向く（中山が編集）
-            yield return new WaitForSeconds(bossLittleWaitTime);//待機（中山が編集）
-            MoveForward();//移動（中山が編集）
-            yield return new WaitForSeconds(bossMoveTime);//待機（中山が編集）
-            Stop();
-            Turn();//向く（中山が編集）
-            yield return new WaitForSeconds(bossLittleWaitTime);//待機（中山が編集）
-            MoveForward();//移動（中山が編集）
-            yield return new WaitForSeconds(bossMoveTime);//待機（中山が編集）
-            Stop();
-            Turn();//向く（中山が編集）
-            yield return new WaitForSeconds(bossLittleWaitTime);//待機（中山が編集）
-            MoveForward();//移動（中山が編集）
-            yield return new WaitForSeconds(bossMoveTime);//待機（中山が編集）
-            Stop();
-            Turn();//向く（中山が編集）
-            yield return new WaitForSeconds(bossLittleWaitTime);//待機（中山が編集）
-            MoveForward();//移動（中山が編集）
-            yield return new WaitForSeconds(bossMoveTime);//待機（中山が編集）
-            Stop();
-            Turn();//向く（中山が編集）
-            yield return new WaitForSeconds(bossLittleWaitTime);//待機（中山が編集）
-            MoveForward();//移動（中山が編集）
-            yield return new WaitForSeconds(bossMoveTime);//待機（中山が編集）
-            Stop();
-            Turn();//向く（中山が編集）
-            yield return new WaitForSeconds(bossLittleWaitTime);//待機（中山が編集）
-            MoveForward();//移動（中山が編集）
-            yield return new WaitForSeconds(bossMoveTime);//待機（中山が編集）
-            Stop();
+               isMoving = true;//移動開始（中山が編集）
+                yield return new WaitForSeconds(bossMoveTime);//待機（中山が編集）
+               isMoving = false;//移動停止（中山が編集）
 
             Turn();//向く（中山が編集）
             yield return new WaitForSeconds(bossLittleWaitTime);
