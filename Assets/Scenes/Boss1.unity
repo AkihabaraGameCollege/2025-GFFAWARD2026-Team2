@@ -1885,7 +1885,7 @@ PrefabInstance:
       objectReference: {fileID: 787839353}
     - target: {fileID: 2508532194529083278, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
       propertyPath: playerWaitTime
-      value: 0.5
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 2508532194529083278, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
       propertyPath: dashAttackSpeed
@@ -1893,7 +1893,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2508532194529083278, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
       propertyPath: playerAttackTime
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2548598249388598948, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
