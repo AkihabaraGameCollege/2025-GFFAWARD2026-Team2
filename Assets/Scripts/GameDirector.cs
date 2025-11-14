@@ -1,14 +1,30 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+// ゲーム全体を管理するスクリプト（中山が別プロジェクトから移植）
 public class GameDirector : MonoBehaviour
 {
+    // こちらにプレイヤーとボスのライフイメージをアタッチしてください（中山が編集）
     [SerializeField]
     GameObject playerLifeImage = null;
+    [SerializeField]
+    GameObject bossLifeImage = null;
 
-    // Update is called once per frame
-    public void DecreaseHp()
+    // プレイヤーとボスのHP減少量設定（中山が編集）
+    [SerializeField]
+    private float playerFillAmountNumber = 0.34f;
+    [SerializeField]
+    private float bossFillAmountNumber = 0.2f;
+
+    // プレイヤーのHPを減少させるメソッド（中山が編集）
+    public void DecreaseHpPlayer()
     {
-        this.playerLifeImage.GetComponent<Image>().fillAmount -= 0.34f;
+        this.playerLifeImage.GetComponent<Image>().fillAmount -= playerFillAmountNumber;// 3回攻撃で0になるように調整
+    }
+
+    // ボスのHPを減少させるメソッド（中山が編集）
+    public void DecreaseHpBoss()
+    {
+        this.bossLifeImage.GetComponent<Image>().fillAmount -= bossFillAmountNumber;// 15回攻撃で0になるように調整
     }
 }

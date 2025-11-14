@@ -1666,6 +1666,10 @@ PrefabInstance:
       propertyPath: bossMove
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1363920118302882519, guid: 461e5d3ad6a7e364380e5e89159f5484, type: 3}
+      propertyPath: gameDirector
+      value: 
+      objectReference: {fileID: 1926928901}
     - target: {fileID: 2688220698231501378, guid: 461e5d3ad6a7e364380e5e89159f5484, type: 3}
       propertyPath: moveP
       value: 3
@@ -3610,6 +3614,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerLifeImage: {fileID: 1118965949}
+  bossLifeImage: {fileID: 1985028518}
+  playerFillAmountNumber: 0.34
+  bossFillAmountNumber: 0.07
 --- !u!4 &1926928902
 Transform:
   m_ObjectHideFlags: 0
