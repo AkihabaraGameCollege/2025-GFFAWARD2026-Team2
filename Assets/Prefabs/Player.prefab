@@ -262,20 +262,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52df092b424ca4e47885df2e5ca8d66b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  requiredJumpSpeed: 0.1
-  playerWaitTime: 1
-  playerAttackTime: 0.5
-  dashAttackSpeed: 20
+  defaultMoveSpeed: 5
+  defaultJumpForce: 10
   groundCheckStartPoint: {x: 0, y: 0.5, z: 0}
   groundCheckEndPoint: {x: 0, y: -0.5, z: 0}
+  requiredJumpSpeed: 0.1
+  playerWaitTime: 0.1
+  playerAttackTime: 0.5
+  dashAttackSpeed: 20
+  defaultReachX: 1
+  defaultReachY: 1
+  defaultReachZ: 1
+  maxHealth: 3
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
   attackCollider: {fileID: 4535509625820239764}
   dashAttackCollider: {fileID: 1525174610445278448}
   playerDamage: {fileID: 0}
-  maxHealth: 3
-  stageScene: {fileID: 0}
   motionState: 0
 --- !u!82 &6295322545844377381
 AudioSource:
