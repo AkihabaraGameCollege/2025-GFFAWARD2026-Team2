@@ -267,8 +267,9 @@ MonoBehaviour:
   groundCheckStartPoint: {x: 0, y: 0.5, z: 0}
   groundCheckEndPoint: {x: 0, y: -0.5, z: 0}
   requiredJumpSpeed: 0.1
-  playerWaitTime: 0.1
-  playerAttackTime: 0.5
+  playerWaitTime: 0.3
+  playerLittleWaitTime: 0.3
+  playerAttackTime: 0.1
   dashAttackSpeed: 20
   defaultReachX: 1
   defaultReachY: 1
@@ -1339,8 +1340,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 2.0937965, z: 1}
+  m_Center: {x: 0, y: -0.5468979, z: 0}
 --- !u!1 &4644203703471215420
 GameObject:
   m_ObjectHideFlags: 0

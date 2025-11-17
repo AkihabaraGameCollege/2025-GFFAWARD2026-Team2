@@ -273,7 +273,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveP: 4
-  jumpP: 12
+  jumpP: 15
   speedNumber: 3.01
   bossLittleWaitTime: 0.5
   bossAttackTime: 1.5
@@ -288,6 +288,8 @@ MonoBehaviour:
   distanceNumber: 5
   hammerAttackTime: 10
   bossDieTime: 3
+  bossStartTime: 8
+  hammerAttackTimeDefault: 10
   thisCollider: {fileID: 5917551275364361533}
   attackCollider: {fileID: 7511170518278572008}
   weakCollider: {fileID: 7589276869094633371}
@@ -1006,7 +1008,7 @@ Transform:
   m_GameObject: {fileID: 5308524055327387721}
   serializedVersion: 2
   m_LocalRotation: {x: 1, y: -0, z: -0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.42, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1267,7 +1269,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 3
       scalar: 0.7
-      minScalar: 0.2
+      minScalar: 0.7
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -5983,7 +5985,7 @@ Transform:
   m_GameObject: {fileID: 5540320286487068357}
   serializedVersion: 2
   m_LocalRotation: {x: 1, y: -0, z: -0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.34, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6243,8 +6245,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.15
-      minScalar: 0.05
+      scalar: 0.2
+      minScalar: 0.2
       maxCurve:
         serializedVersion: 2
         m_Curve:

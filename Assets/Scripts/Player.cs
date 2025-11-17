@@ -20,6 +20,9 @@ public class Player : MonoBehaviour
     // プレイヤー待機時間指定（中山が編集）
     [SerializeField]
     private float playerWaitTime = 1f;
+    // プレイヤーちょっとだけ待機時間指定（中山が編集）
+    [SerializeField]
+    private float playerLittleWaitTime = 0.2f;
     // プレイヤー攻撃時間指定（中山が編集）
     [SerializeField]
     private float playerAttackTime = 0.5f;
@@ -108,7 +111,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     MotionState motionState = MotionState.Stopping;// 現在のモーション状態（中山が編集）
 
-    private void Start()
+    private void Awake()
     {
         rigidbody = GetComponent<Rigidbody>();// Rigidbody コンポーネントを取得
         animator = GetComponent<Animator>();// Animator コンポーネントを取得（中山が編集）
@@ -307,8 +310,9 @@ public class Player : MonoBehaviour
     {
         attackOK = false;//攻撃制限変数をfalseに設定（中山が編集）
         animator.SetTrigger(attackID);// Attackアニメーションを開始（中山が編集）
-        attackCollider.SetActive(true);//攻撃判定を有効化（中山が編集）
         AudioPlayer.instance.PlaySE(3);// PlayerClawAttackを再生 (富里が編集)
+        yield return new WaitForSeconds(playerLittleWaitTime);//playerLittleWaitTime秒待機（中山が編集）
+        attackCollider.SetActive(true);//攻撃判定を有効化（中山が編集）
         yield return new WaitForSeconds(playerAttackTime);//1秒待機（中山が編集）
         attackCollider.SetActive(false);//攻撃判定を無効化（中山が編集）
         yield return new WaitForSeconds(playerWaitTime);//playerWaitTime秒待機（中山が編集）

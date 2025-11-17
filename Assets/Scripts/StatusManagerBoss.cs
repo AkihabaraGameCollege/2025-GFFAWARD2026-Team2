@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 // ボスのステータスに関するスクリプト（中山が別プロジェクトから移植）
 public class StatusManagerBoss : MonoBehaviour
@@ -25,15 +24,9 @@ public class StatusManagerBoss : MonoBehaviour
     [SerializeField]
     private GameDirector gameDirector = null;
 
-    Animator animator;// ボスのアニメーター（中山が編集）
-
-    static readonly int dieID = Animator.StringToHash("Die");// アニメーションID登録（中山が編集）
-
     // 登録用（中山が編集）
     void Awake()
     {
-        animator = GetComponent<Animator>();// アニメーターコンポーネント取得（中山が編集）
-
         destroyEffect.SetActive(false);// 撃破エフェクト非表示（中山が編集）
         damageEffect.SetActive(false);// 被弾エフェクト非表示（中山が編集）
     }
@@ -50,7 +43,6 @@ public class StatusManagerBoss : MonoBehaviour
 
     public void Damage()
     {
-        destroyEffect.SetActive(true);// 撃破エフェクト表示（中山が編集）
         damageEffect.SetActive(true);// 被弾エフェクト表示（中山が編集）
 
         // HPを減少させ、ダメージエフェクトを発生させる
@@ -61,37 +53,22 @@ public class StatusManagerBoss : MonoBehaviour
         // エフェクトをインスタンス化
         GameObject effect = Instantiate(damageEffect);
 
-        // 現在の位置を取得し、Vector3型の変数に格納
-        Vector3 effectPos = transform.position;
-
-        // エフェクトの位置を少し上に調整
-        effectPos.y += 5.0f;
-
-        // エフェクトの位置を設定
-        effect.transform.position = effectPos;
-
-        // エフェクトのサイズを少し大きくする（中山が編集）
-        effect.transform.localScale *= 5f;
-
-        // エフェクトを5秒後に破壊（中山が編集）
-        Destroy(effect, 5);
+        effect.transform.position = damageEffect.transform.position;// effect変数のエフェクトの位置をdamageEffectの位置と同期させる（中山が編集）
+        Destroy(effect, 5);// エフェクトを5秒後に破壊（中山が編集）
     }
 
+    // ボス撃破処理（中山が編集）
     private void DestoryMainObject()
     {
+        destroyEffect.SetActive(true);// 撃破エフェクト表示（中山が編集）
+
         // 破壊エフェクトを発生させてから、MainObjectに設定したもの（自分自身や部位破壊対象）を破壊
         maxHp = 0;
+
         // エフェクトをインスタンス化
         GameObject effect = Instantiate(destroyEffect);
 
-        // 現在の位置を取得し、Vector3型の変数に格納
-        Vector3 effectPos = transform.position;
-
-        // エフェクトの位置を少し上に調整
-        effectPos.y += 1.0f;
-
-        // エフェクトの位置を設定
-        effect.transform.position = effectPos;
-        Destroy(effect, 10);
+        effect.transform.position = destroyEffect.transform.position;// effect変数のエフェクトの位置をdestroyEffectの位置と同期させる（中山が編集）
+        Destroy(effect, 10);// エフェクトを10秒後に破壊（中山が編集）
     }
 }

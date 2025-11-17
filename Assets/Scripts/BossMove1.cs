@@ -43,6 +43,12 @@ public class BossMove1 : MonoBehaviour
     // ボスがやられる時間設定（中山が編集）
     [SerializeField]
     private float bossDieTime = 3.0f;
+    // ボス開始待機時間設定（中山が編集）
+    [SerializeField]
+    private float bossStartTime = 3.0f;
+    // ハンマー攻撃時間初期値設定（中山が編集）
+    [SerializeField]
+    private float hammerAttackTimeDefault = 30.0f;
 
     // ボス本体判定（中山が編集）
     [SerializeField]
@@ -94,8 +100,6 @@ public class BossMove1 : MonoBehaviour
     private bool isTurning = true;// 攻撃中かどうか判定（中山が編集）
     private bool isJumping = false;// 攻撃中かどうか判定（中山が編集）
 
-    private const float hammerAttackTimeDefault = 30.0f;// ハンマー攻撃を仕掛けるデフォルト時間設定
-
     // 初期設定・登録等（中山が編集）
     void Awake()
     {
@@ -105,7 +109,7 @@ public class BossMove1 : MonoBehaviour
         isTurning = false;// 方向可能（中山が編集）
         isMoving = false;// 移動停止（中山が編集）
         isJumping = false;// 攻撃停止（中山が編集）
-        thisCollider.enabled = true;// ボス本体判定有効化（中山が編集）
+        thisCollider.enabled = false;// ボス本体判定有効化（中山が編集）
         weakCollider.enabled = false;// 弱点判定無効化（中山が編集）
         attackCollider.enabled = false;// 攻撃判定無効化（中山が編集）
         bodyAttackCollider.enabled = true;// ボス本体判定有効化（中山が編集）
@@ -123,10 +127,13 @@ public class BossMove1 : MonoBehaviour
     // 初動行動（中山が編集）
     IEnumerator Move()
     {
-        yield return new WaitForSeconds(bossWaitTime);// 待機（中山が編集）
+        yield return new WaitForSeconds(bossStartTime);// 待機（中山が編集）
 
         isTurning = true;// 方向可能（中山が編集）
         isMoving = true;// 移動開始（中山が編集）
+        thisCollider.enabled = true;// ボス本体判定有効化（中山が編集）
+
+        hammerAttackTime = hammerAttackTimeDefault;// ハンマー攻撃時間リセット（中山が編集）
     }
 
     // ボスの毎フレーム更新処理
@@ -217,13 +224,11 @@ public class BossMove1 : MonoBehaviour
         velocity.y = jumpP;
         rigidbody.linearVelocity = velocity;
 
-        yield return new WaitForSeconds(upTime);// 少し待機（中山が編集）
-        this.rigidbody.constraints = RigidbodyConstraints.FreezePosition;// 軸の移動固定（中山が編集）
-        yield return new WaitForSeconds(jumpAirTime);// 少し待機（中山が編集）
-
-        this.rigidbody.constraints = RigidbodyConstraints.None;// Y軸の移動固定解除（中山が編集）
         this.rigidbody.constraints = RigidbodyConstraints.FreezeRotation;// 軸の回転固定（中山が編集）
-
+        yield return new WaitForSeconds(upTime);// 少し待機（中山が編集）
+        this.rigidbody.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;//軸回転と移動を固定（中山が編集）
+        yield return new WaitForSeconds(jumpAirTime);// 少し待機（中山が編集）
+        this.rigidbody.constraints = RigidbodyConstraints.FreezeRotation;// 軸の回転固定（中山が編集）
         animator.SetTrigger(landingID);// 着地アニメーション開始（中山が編集）
         yield return new WaitForSeconds(landTime);// 少し待機（中山が編集）
         animator.SetTrigger(standID);// 立ち直り開始（中山が編集）
@@ -254,9 +259,7 @@ public class BossMove1 : MonoBehaviour
         yield return new WaitForSeconds(bossLittleWaitTime);// 少し待機（中山が編集）
         Weak();// 弱点出現（中山が編集）
         yield return new WaitForSeconds(bossWeakBeforTime);// 弱点タイム（中山が編集）
-        weakTimeText.SetActive(true);// 弱体化時間表示有効化（中山が編集）
-        weakCollider.enabled = true;// 弱点判定有効化（中山が編集）
-        bodyAttackCollider.enabled = false;// ボス本体判定無効化（中山が編集）
+        Weaking();// 弱体化処理（中山が編集）
         yield return new WaitForSeconds(bossWeakTime);// 弱点タイム（中山が編集）
 
         // ボスがやられたら処理を抜ける（中山が編集）
@@ -264,8 +267,7 @@ public class BossMove1 : MonoBehaviour
         {
             animator.SetTrigger(dieID);// 死亡アニメーション再生（中山が編集）
             yield return new WaitForSeconds(bossDieTime);// 少し待機（中山が編集）
-            stageScene.StageClear();// ステージクリア処理（中山が編集）
-            Destroy(gameObject);// ボスオブジェクトを破壊（中山が編集）
+            Die();// ボス撃破処理（中山が編集）
         }
         // ボスがやられていなかったら起き上がる（中山が編集）
         else
@@ -282,18 +284,26 @@ public class BossMove1 : MonoBehaviour
         }
     }
 
-// ハンマー攻撃処理（中山が編集）
-private void HammerAttackMove()
+    // ハンマー攻撃処理（中山が編集）
+    private void HammerAttackMove()
     {
         animator.SetTrigger(attackID);// ジャンプアニメーション開始（中山が編集）
         attackCollider.enabled = true;// 攻撃判定有効化（中山が編集）
     }
 
-// 弱点タイム（中山が編集）
-private void Weak()
+    // 弱点タイム（中山が編集）
+    private void Weak()
     {
         thisCollider.enabled = false;// ボス本体判定無効化（中山が編集）
         animator.SetTrigger(weakID);// 弱体化アニメーション再生（中山が編集）
+    }
+
+    // 弱体化処理（中山が編集）
+    private void Weaking()
+    {
+        weakTimeText.SetActive(true);// 弱体化時間表示有効化（中山が編集）
+        weakCollider.enabled = true;// 弱点判定有効化（中山が編集）
+        bodyAttackCollider.enabled = false;// ボス本体判定無効化（中山が編集）
     }
 
     // 起き上がり（中山が編集）
@@ -304,5 +314,11 @@ private void Weak()
         weakCollider.enabled = false;// 弱点判定無効化（中山が編集）
         weakTimeText.SetActive(false);// 弱体化時間表示無効化（中山が編集）
         thisCollider.enabled = true;// ボス本体判定有効化（中山が編集）
+    }
+
+    private void Die()
+    {
+        stageScene.StageClear();// ステージクリア処理（中山が編集）
+        Destroy(gameObject);// ボスオブジェクトを破壊（中山が編集）
     }
 }
