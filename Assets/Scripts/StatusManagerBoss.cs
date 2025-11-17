@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 // ボスのステータスに関するスクリプト（中山が別プロジェクトから移植）
 public class StatusManagerBoss : MonoBehaviour
@@ -6,26 +7,36 @@ public class StatusManagerBoss : MonoBehaviour
     //このスクリプトをアタッチするオブジェクト
     [SerializeField]
     GameObject MainObject;
+    //撃破エフェクト
+    [SerializeField] 
+    GameObject destroyEffect;
+    //被弾エフェクト
+    [SerializeField] 
+    GameObject damageEffect;
 
     //hp現在値
     [SerializeField]
-    int maxHp = 6;
+    public int maxHp = 6;
     //ダメージを与える値（中山が編集）
     [SerializeField]
     public static int damage = 1;
 
-    [SerializeField] GameObject destroyEffect;  //撃破エフェクト
-    [SerializeField] GameObject damageEffect;   //被弾エフェクト
-
     //スクリプト参照用（中山が編集）
     [SerializeField]
-    private BossMove1 bossMove1 = null;
-    [SerializeField]
-    private BossMove2 bossMove2 = null;
-    [SerializeField]
-    private BossMove3 bossMove3 = null;
-    [SerializeField]
     private GameDirector gameDirector = null;
+
+    Animator animator;// ボスのアニメーター（中山が編集）
+
+    static readonly int dieID = Animator.StringToHash("Die");// アニメーションID登録（中山が編集）
+
+    // 登録用（中山が編集）
+    void Awake()
+    {
+        animator = GetComponent<Animator>();// アニメーターコンポーネント取得（中山が編集）
+
+        destroyEffect.SetActive(false);// 撃破エフェクト非表示（中山が編集）
+        damageEffect.SetActive(false);// 被弾エフェクト非表示（中山が編集）
+    }
 
     // Update is called once per frame
     void Update()
@@ -39,6 +50,9 @@ public class StatusManagerBoss : MonoBehaviour
 
     public void Damage()
     {
+        destroyEffect.SetActive(true);// 撃破エフェクト表示（中山が編集）
+        damageEffect.SetActive(true);// 被弾エフェクト表示（中山が編集）
+
         // HPを減少させ、ダメージエフェクトを発生させる
         maxHp -= damage;
 
@@ -78,10 +92,6 @@ public class StatusManagerBoss : MonoBehaviour
 
         // エフェクトの位置を設定
         effect.transform.position = effectPos;
-        Destroy(effect, 5);
-
-        bossMove1.Die();
-        bossMove2.Die();
-        bossMove3.Die();
+        Destroy(effect, 10);
     }
 }
