@@ -83,6 +83,10 @@ public class BossMove1 : MonoBehaviour
     [SerializeField]
     private StatusManagerBoss StatusManagerBoss = null;
 
+    [SerializeField]
+    [Tooltip("プレイヤーが踏める用のコライダー")]
+    private Collider collider2Player = null;
+
     new private Rigidbody rigidbody;// Rigidbodyコンポーネント参照用（中山が編集）
     Animator animator;// アニメーター（中山が編集）
 
@@ -109,11 +113,13 @@ public class BossMove1 : MonoBehaviour
         isTurning = false;// 方向可能（中山が編集）
         isMoving = false;// 移動停止（中山が編集）
         isJumping = false;// 攻撃停止（中山が編集）
-        thisCollider.enabled = false;// ボス本体判定有効化（中山が編集）
+        // これいらない てかコメントミスで実際は無効化になってる(富里が編集)
+        // thisCollider.enabled = false;// ボス本体判定有効化（中山が編集）
         weakCollider.enabled = false;// 弱点判定無効化（中山が編集）
         attackCollider.enabled = false;// 攻撃判定無効化（中山が編集）
         bodyAttackCollider.enabled = true;// ボス本体判定有効化（中山が編集）
         weakTimeText.SetActive(false);// 弱体化時間表示無効化（中山が編集）
+        collider2Player.enabled = false; // プレイヤーとのCollisionColliderを無効化 (富里が編集)
 
         StopBoss();// ボス停止処理（中山が編集）
     }
@@ -296,6 +302,7 @@ public class BossMove1 : MonoBehaviour
     {
         thisCollider.enabled = false;// ボス本体判定無効化（中山が編集）
         animator.SetTrigger(weakID);// 弱体化アニメーション再生（中山が編集）
+        collider2Player.enabled = true; // プレイヤーとのCollisionColliderを有効化 (富里が編集)
     }
 
     // 弱体化処理（中山が編集）
@@ -314,6 +321,7 @@ public class BossMove1 : MonoBehaviour
         weakCollider.enabled = false;// 弱点判定無効化（中山が編集）
         weakTimeText.SetActive(false);// 弱体化時間表示無効化（中山が編集）
         thisCollider.enabled = true;// ボス本体判定有効化（中山が編集）
+        collider2Player.enabled = false; // プレイヤーとのCollisionColliderを無効化 (富里が編集)
     }
 
     private void Die()

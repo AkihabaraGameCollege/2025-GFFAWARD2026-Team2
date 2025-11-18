@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3305663206505304487}
   - component: {fileID: 2508532194529083278}
   - component: {fileID: 8734794260185636031}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -275,8 +275,10 @@ MonoBehaviour:
   defaultReachZ: 1
   maxHealth: 3
   groundLayer:
-    serializedVersion: 2
+  - serializedVersion: 2
     m_Bits: 64
+  - serializedVersion: 2
+    m_Bits: 16384
   attackCollider: {fileID: 4535509625820239764}
   dashAttackCollider: {fileID: 1525174610445278448}
   playerDamage: {fileID: 0}
