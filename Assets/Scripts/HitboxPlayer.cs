@@ -29,6 +29,6 @@ public class HitboxPlayer : MonoBehaviour
         // もし意図しない衝突判定が起きた場合は最初にレイヤーマスクを確認してください。
 
         // 被弾側のStatusManagerに通知
-        receiverStatus.Damage();
+        receiverStatus.Hit();
     }
 }
