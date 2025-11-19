@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 // プレイヤーのステータスに関するスクリプト（中山が別プロジェクトから移植）
@@ -32,6 +33,10 @@ public class StatusManagerPlayer : MonoBehaviour
     [SerializeField]
     private float magnificationMoveSpeed = 1.5f;
 
+    // 無敵時間
+    [SerializeField]
+    private float invincibleTime = 1;
+
     [SerializeField] GameObject destroyEffect;  //撃破エフェクト
     [SerializeField] GameObject damageEffect;   //被弾エフェクト
 
@@ -45,6 +50,8 @@ public class StatusManagerPlayer : MonoBehaviour
     [SerializeField]
     public static StatusManagerPlayer instance;
 
+    private bool isInvincible = false;
+
     // Update is called once per frame
     void Update()
     {
@@ -55,7 +62,23 @@ public class StatusManagerPlayer : MonoBehaviour
         }
     }
 
-    public void Damage()
+    public void Hit()
+    {
+        if (!isInvincible)
+        {
+            StartCoroutine(EnterInvinsicle());
+            Damage();
+        }
+    }
+
+    private IEnumerator EnterInvinsicle()
+    {
+        isInvincible = true;
+        yield return new WaitForSeconds(invincibleTime);
+        isInvincible = false;
+    }
+
+    private void Damage()
     {
         // HPを減少させ、ダメージエフェクトを発生させる
         maxHp--;

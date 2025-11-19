@@ -59,7 +59,7 @@ public class Player : MonoBehaviour
 
     // 地面判定に使用するレイヤーを指定（中山が編集）
     [SerializeField]
-    LayerMask groundLayer = default;
+    LayerMask[] groundLayer = null;
 
     // 攻撃判定用のコライダーを指定（中山が編集）
     [SerializeField]
@@ -238,7 +238,11 @@ public class Player : MonoBehaviour
     // 固定フレームレートで呼び出される更新処理を移植（中山が編集）
     void FixedUpdate()
     {
-        IsGrounded = Physics.Linecast(rigidbody.position + groundCheckStartPoint, rigidbody.position + groundCheckEndPoint, groundLayer);// 地面接地判定を更新
+        for (int i = 0; i < groundLayer.Length; i++)
+        {
+            IsGrounded = Physics.Linecast(rigidbody.position + groundCheckStartPoint, rigidbody.position + groundCheckEndPoint, groundLayer[i]);// 地面接地判定を更新
+            if (IsGrounded) break;
+        }
     }
 
     // 指定した速度で、このキャラクターを移動させるプログラムを移植（中山が編集）
