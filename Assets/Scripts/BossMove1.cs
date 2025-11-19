@@ -88,6 +88,9 @@ public class BossMove1 : MonoBehaviour
     // StatusManagerBoss参照用（中山が編集）
     [SerializeField]
     private StatusManagerBoss StatusManagerBoss = null;
+    // プレイヤーとのCollisionCollider参照用 (富里が編集)
+    [SerializeField]
+    private Collider collider2Player = null;
 
     new private Rigidbody rigidbody;// Rigidbodyコンポーネント参照用（中山が編集）
     Animator animator;// アニメーター（中山が編集）
@@ -124,6 +127,7 @@ public class BossMove1 : MonoBehaviour
         bodyAttackCollider.enabled = true;// ボス本体判定有効化（中山が編集）
         weakTimeText.SetActive(false);// 弱体化時間表示無効化（中山が編集）
         isDefeatSounding = true;// ボスがやられたときのSE再生判定用（中山が編集）
+        collider2Player.enabled = false; // プレイヤーとのCollisionColliderを無効化 (富里が編集)
 
         StopBoss();// ボス停止処理（中山が編集）
     }
@@ -138,7 +142,7 @@ public class BossMove1 : MonoBehaviour
     IEnumerator OnMove()
     {
         AudioPlayer.instance.StopBGM();// BGM停止（中山が編集）
-        AudioPlayer.instance.PlaySE(6,true);// ボスSE再生（中山が編集）
+        AudioPlayer.instance.PlaySE(6, true);// ボスSE再生（中山が編集）
 
         yield return new WaitForSeconds(bossStartTime);// 待機（中山が編集）
         AudioPlayer.instance.StopLoopSE();// ボスSE停止（中山が編集）
@@ -192,7 +196,7 @@ public class BossMove1 : MonoBehaviour
         }
 
         // ボスがやられたらSE処理（中山が編集）
-        if (StatusManagerBoss.maxHp <= 0&&isDefeatSounding)
+        if (StatusManagerBoss.maxHp <= 0 && isDefeatSounding)
         {
             AudioPlayer.instance.PlaySE(4, true);// 死亡SE再生（中山が編集）
             isDefeatSounding = false;// 2回目以降再生されないようにする（中山が編集）
@@ -230,7 +234,7 @@ public class BossMove1 : MonoBehaviour
     IEnumerator OnMoveSound()
     {
         // 歩行SE再生ループ（中山が編集）
-        while (true&&isMoving)
+        while (true && isMoving)
         {
             AudioPlayer.instance.PlaySE(1, false);// 歩行SE再生（中山が編集）
             yield return new WaitForSeconds(moveSoundMTime);// 少し待機（中山が編集）
@@ -342,6 +346,7 @@ public class BossMove1 : MonoBehaviour
     {
         thisCollider.enabled = false;// ボス本体判定無効化（中山が編集）
         animator.SetTrigger(weakID);// 弱体化アニメーション再生（中山が編集）
+        collider2Player.enabled = true; // プレイヤーとのCollisionColliderを有効化 (富里が編集)
     }
 
     // 弱体化処理（中山が編集）
@@ -360,6 +365,7 @@ public class BossMove1 : MonoBehaviour
         weakCollider.enabled = false;// 弱点判定無効化（中山が編集）
         weakTimeText.SetActive(false);// 弱体化時間表示無効化（中山が編集）
         thisCollider.enabled = true;// ボス本体判定有効化（中山が編集）
+        collider2Player.enabled = false; // プレイヤーとのCollisionColliderを無効化 (富里が編集)
     }
 
     private void Die()
