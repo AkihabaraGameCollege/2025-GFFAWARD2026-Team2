@@ -48,9 +48,6 @@ public class Player : MonoBehaviour
     public static float ReachY;
     public static float ReachZ;
 
-    // static変数が初期化されているかどうか(富里が編集)
-    private static bool IsInitializedStatic = false;
-
     //ステータス設定（中山が編集）
     [SerializeField]
     private int maxHealth;
@@ -125,16 +122,24 @@ public class Player : MonoBehaviour
     {
         health = maxHealth;
 
-        // 初めて開始したら初期化
-        if (!IsInitializedStatic)
+        if (!TitleScene.IsUpgraded[0])
         {
-            moveSpeed = defaultMoveSpeed;
-            jumpForce = defaultJumpForce;
             ReachX = defaultReachX;
             ReachY = defaultReachY;
             ReachZ = defaultReachZ;
-            IsInitializedStatic = true;
         }
+
+        if (!TitleScene.IsUpgraded[1])
+        {
+            jumpForce = defaultJumpForce;
+        }
+
+        if (!TitleScene.IsUpgraded[2])
+        {
+            moveSpeed = defaultMoveSpeed;
+        }
+
+            
     }
 
     public void Sleep()
@@ -182,6 +187,8 @@ public class Player : MonoBehaviour
     void Update() //モーション状態に応じた処理（中山が編集）
     {
         if (IsSleeping) return;
+
+        Debug.Log(jumpForce);
 
         switch (motionState)
         {
