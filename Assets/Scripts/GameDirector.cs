@@ -12,14 +12,17 @@ public class GameDirector : MonoBehaviour
 
     // プレイヤーとボスのHP減少量設定（中山が編集）
     [SerializeField]
-    private float playerFillAmountNumber = 0.34f;
+    private float playerFillAmountNumberL = 0.34f;
+    [SerializeField]
+    private float playerFillAmountNumberD = 0.34f;
     [SerializeField]
     private float bossFillAmountNumber = 0.2f;
 
     // プレイヤーのHPを減少させるメソッド（中山が編集）
     public void DecreaseHpPlayer()
     {
-        this.playerLifeImage.GetComponent<Image>().fillAmount -= playerFillAmountNumber;// 3回攻撃で0になるように調整
+        this.playerLifeImage.GetComponent<Image>().fillAmount -= playerFillAmountNumberL;// 3回攻撃で0になるように調整
+        this.playerLifeImage.GetComponent<Image>().fillAmount += playerFillAmountNumberD;// 3回攻撃で0になるように調整
     }
 
     // ボスのHPを減少させるメソッド（中山が編集）

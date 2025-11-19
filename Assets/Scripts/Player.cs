@@ -69,10 +69,6 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject dashAttackCollider = null;
 
-    // プレイヤーダメージUIを指定します。（中山が編集）
-    [SerializeField]
-    private GameObject playerDamage = null;
-
     private Vector2 moveInput;// 移動入力ベクトルを移植（中山が編集）
 
     new private Rigidbody rigidbody;// Rigidbody コンポーネントの参照
@@ -122,7 +118,6 @@ public class Player : MonoBehaviour
         attackOK = true;// 攻撃制限変数初期化（中山が編集）
         attackCollider.SetActive(false);// 攻撃判定を無効化（中山が編集）
         dashAttackCollider.SetActive(false); // ダッシュアタック判定を無効化 (富里が編集)
-        playerDamage.SetActive(false);// ダメージUI非表示（中山が編集）
         StatusReset();// ステータス初期化（中山が編集）
     }
 
