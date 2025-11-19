@@ -49,6 +49,12 @@ public class BossMove1 : MonoBehaviour
     // ハンマー攻撃時間初期値設定（中山が編集）
     [SerializeField]
     private float hammerAttackTimeDefault = 30.0f;
+    // 歩行SE再生間隔時間設定（中山が編集）
+    [SerializeField]
+    private float moveSoundMTime = 1f;
+    // ボス開始時の効果音再生時間設定（中山が編集）
+    [SerializeField]
+    private float bossStartSoundMTime = 1.0f;
 
     // ボス本体判定（中山が編集）
     [SerializeField]
@@ -97,8 +103,10 @@ public class BossMove1 : MonoBehaviour
     static readonly int standID = Animator.StringToHash("stand");
 
     private bool isMoving = false;// 移動中かどうか判定（中山が編集）
-    private bool isTurning = true;// 攻撃中かどうか判定（中山が編集）
+    private bool isTurning = false;// 攻撃中かどうか判定（中山が編集）
     private bool isJumping = false;// 攻撃中かどうか判定（中山が編集）
+    private bool isWalking = false;// 歩行SE再生判定用（中山が編集）
+    private bool isDefeatSounding = false;// ボスがやられたときのSE再生判定用（中山が編集）
 
     // 初期設定・登録等（中山が編集）
     void Awake()
@@ -106,6 +114,7 @@ public class BossMove1 : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();// Rigidbodyコンポーネント取得（中山が編集）
         animator = GetComponent<Animator>();// Animatorコンポーネント取得（中山が編集）
 
+        isWalking = true;// 歩行SE再生判定用（中山が編集）
         isTurning = false;// 方向可能（中山が編集）
         isMoving = false;// 移動停止（中山が編集）
         isJumping = false;// 攻撃停止（中山が編集）
@@ -114,6 +123,7 @@ public class BossMove1 : MonoBehaviour
         attackCollider.enabled = false;// 攻撃判定無効化（中山が編集）
         bodyAttackCollider.enabled = true;// ボス本体判定有効化（中山が編集）
         weakTimeText.SetActive(false);// 弱体化時間表示無効化（中山が編集）
+        isDefeatSounding = true;// ボスがやられたときのSE再生判定用（中山が編集）
 
         StopBoss();// ボス停止処理（中山が編集）
     }
@@ -121,19 +131,25 @@ public class BossMove1 : MonoBehaviour
     // ボスの開始処理（中山が編集）
     void Start()
     {
-        StartCoroutine(Move());// 初動行動開始（中山が編集）
+        StartCoroutine(OnMove());// 初動行動開始（中山が編集）
     }
 
     // 初動行動（中山が編集）
-    IEnumerator Move()
+    IEnumerator OnMove()
     {
+        AudioPlayer.instance.StopBGM();// BGM停止（中山が編集）
+        AudioPlayer.instance.PlaySE(6,true);// ボスSE再生（中山が編集）
+
         yield return new WaitForSeconds(bossStartTime);// 待機（中山が編集）
+        AudioPlayer.instance.StopLoopSE();// ボスSE停止（中山が編集）
+        yield return new WaitForSeconds(bossStartSoundMTime);// 少し待機（中山が編集）
 
         isTurning = true;// 方向可能（中山が編集）
         isMoving = true;// 移動開始（中山が編集）
         thisCollider.enabled = true;// ボス本体判定有効化（中山が編集）
 
         hammerAttackTime = hammerAttackTimeDefault;// ハンマー攻撃時間リセット（中山が編集）
+        AudioPlayer.instance.PlayBGM(0);// ボスBGM再生（中山が編集）
     }
 
     // ボスの毎フレーム更新処理
@@ -174,6 +190,13 @@ public class BossMove1 : MonoBehaviour
                 StopBoss();// ボス停止処理（中山が編集）
             }
         }
+
+        // ボスがやられたらSE処理（中山が編集）
+        if (StatusManagerBoss.maxHp <= 0&&isDefeatSounding)
+        {
+            AudioPlayer.instance.PlaySE(4, true);// 死亡SE再生（中山が編集）
+            isDefeatSounding = false;// 2回目以降再生されないようにする（中山が編集）
+        }
     }
 
     // プレイヤーを追尾する（中山が編集）
@@ -194,6 +217,24 @@ public class BossMove1 : MonoBehaviour
         Vector3 forward = transform.forward * moveP;// 前方向に移動ベクトル設定（中山が編集）
         rigidbody.linearVelocity = new Vector3(forward.x, rigidbody.linearVelocity.y, forward.z);// 前方向に移動（中山が編集）
         animator.SetFloat(isWalkingID, rigidbody.linearVelocity.magnitude);// 歩行アニメーション開始（中山が編集）
+
+        // 歩行SE再生処理開始（中山が編集）
+        if (isWalking)
+        {
+            StartCoroutine(OnMoveSound());// 歩行SE再生処理開始（中山が編集）
+            isWalking = false;// 歩行SE再生判定用（中山が編集）
+        }
+    }
+
+    // 歩行SE再生処理（中山が編集）
+    IEnumerator OnMoveSound()
+    {
+        // 歩行SE再生ループ（中山が編集）
+        while (true&&isMoving)
+        {
+            AudioPlayer.instance.PlaySE(1, false);// 歩行SE再生（中山が編集）
+            yield return new WaitForSeconds(moveSoundMTime);// 少し待機（中山が編集）
+        }
     }
 
     // ボスが止まる（中山が編集）
@@ -214,6 +255,7 @@ public class BossMove1 : MonoBehaviour
     {
         // ジャンプ開始
         isMoving = false;
+        isWalking = true;
         isJumping = true;
 
         animator.SetTrigger(jumpID);// ジャンプアニメーション開始（中山が編集）
@@ -230,6 +272,7 @@ public class BossMove1 : MonoBehaviour
         yield return new WaitForSeconds(jumpAirTime);// 少し待機（中山が編集）
         this.rigidbody.constraints = RigidbodyConstraints.FreezeRotation;// 軸の回転固定（中山が編集）
         animator.SetTrigger(landingID);// 着地アニメーション開始（中山が編集）
+        AudioPlayer.instance.PlaySE(7, false);// ジャンプ攻撃SE再生（中山が編集）
         yield return new WaitForSeconds(landTime);// 少し待機（中山が編集）
         animator.SetTrigger(standID);// 立ち直り開始（中山が編集）
         isTurning = true;// 回転可能（中山が編集）
@@ -251,8 +294,10 @@ public class BossMove1 : MonoBehaviour
     IEnumerator OnHammerAttack()
     {
         isMoving = false;// 移動停止（中山が編集）
+        isWalking = true;// 歩行SE再生判定用（中山が編集）
+
+        AudioPlayer.instance.PlaySE(2, false);// 攻撃SE再生（中山が編集）
         yield return new WaitForSeconds(bossLittleWaitTime);// 少し待機（中山が編集）
-        isTurning = false;// 攻撃開始（中山が編集）
         HammerAttackMove();// ハンマー攻撃（中山が編集）
         yield return new WaitForSeconds(bossAttackTime);// 攻撃する時間（中山が編集）
         attackCollider.enabled = false;// 攻撃判定無効化（中山が編集）
@@ -287,6 +332,7 @@ public class BossMove1 : MonoBehaviour
     // ハンマー攻撃処理（中山が編集）
     private void HammerAttackMove()
     {
+        isTurning = false;// 攻撃開始（中山が編集）
         animator.SetTrigger(attackID);// ジャンプアニメーション開始（中山が編集）
         attackCollider.enabled = true;// 攻撃判定有効化（中山が編集）
     }
@@ -318,6 +364,7 @@ public class BossMove1 : MonoBehaviour
 
     private void Die()
     {
+        AudioPlayer.instance.StopLoopSE();// ボス撃破SE再生（中山が編集）
         stageScene.StageClear();// ステージクリア処理（中山が編集）
         Destroy(gameObject);// ボスオブジェクトを破壊（中山が編集）
     }

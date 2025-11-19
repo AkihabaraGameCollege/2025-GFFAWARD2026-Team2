@@ -19,14 +19,23 @@ public class StatusManagerBoss : MonoBehaviour
     //ダメージを与える値（中山が編集）
     [SerializeField]
     public static int damage = 1;
+    //ラストスパートHP（中山が編集）
+    [SerializeField]
+    public int lastSpurtHP = 5;
+    //ラストスパートBGM（中山が編集）
+    [SerializeField]
+    private int bossLastBGM = 1;
 
     //スクリプト参照用（中山が編集）
     [SerializeField]
     private GameDirector gameDirector = null;
 
+    private bool oncePlay;//ラストスパートBGM再生判定用（中山が編集）
+
     // 登録用（中山が編集）
     void Awake()
     {
+        oncePlay = true;// ラストスパートBGM再生判定用（中山が編集）
         destroyEffect.SetActive(false);// 撃破エフェクト非表示（中山が編集）
         damageEffect.SetActive(false);// 被弾エフェクト非表示（中山が編集）
     }
@@ -55,6 +64,13 @@ public class StatusManagerBoss : MonoBehaviour
 
         effect.transform.position = damageEffect.transform.position;// effect変数のエフェクトの位置をdamageEffectの位置と同期させる（中山が編集）
         Destroy(effect, 5);// エフェクトを5秒後に破壊（中山が編集）
+
+        // ラストスパートBGM再生判定（中山が編集）
+        if (maxHp <= lastSpurtHP&&oncePlay)
+        {
+            AudioPlayer.instance.PlayBGM(bossLastBGM);// ラストスパートBGM再生（中山が編集）
+            oncePlay = false;// 2回目以降再生されないようにする（中山が編集）
+        }
     }
 
     // ボス撃破処理（中山が編集）
@@ -69,6 +85,6 @@ public class StatusManagerBoss : MonoBehaviour
         GameObject effect = Instantiate(destroyEffect);
 
         effect.transform.position = destroyEffect.transform.position;// effect変数のエフェクトの位置をdestroyEffectの位置と同期させる（中山が編集）
-        Destroy(effect, 10);// エフェクトを10秒後に破壊（中山が編集）
+        Destroy(effect, 30);// エフェクトを30秒後に破壊（中山が編集）
     }
 }
