@@ -6,9 +6,13 @@ public class Player : MonoBehaviour
 {
     [Header("Default Status")]
     [SerializeField]
-    private float defaultMoveSpeed = 5f; // Inspectorでいじる用のデフォルト値 (富里が編集)
+    [Tooltip("移動速度")]
+    private float moveSpeed;
+
     [SerializeField]
-    private float defaultJumpForce = 10f; // Inspectorでいじる用のデフォルト値 (富里が編集)
+    [Tooltip("ジャンプ力")]
+    private float jumpForce;
+
     // 地面判定用の線分の始点と終点を指定（中山が編集）
     [SerializeField]
     private Vector3 groundCheckStartPoint = new Vector3(0, -0.5f, 0);
@@ -17,40 +21,55 @@ public class Player : MonoBehaviour
     // ジャンプに必要な速度指定（中山が編集）
     [SerializeField]
     private float requiredJumpSpeed = 0.1f;
-    // プレイヤー待機時間指定（中山が編集）
+
     [SerializeField]
-    private float playerWaitTime = 1f;
-    // プレイヤーちょっとだけ待機時間指定（中山が編集）
+    [Tooltip("攻撃後の膠着を指定")]
+    private float playerWaitTime;
+
     [SerializeField]
+    [Tooltip("攻撃前のモーション時間")]
     private float playerLittleWaitTime = 0.2f;
-    // プレイヤー攻撃時間指定（中山が編集）
+
     [SerializeField]
+    [Tooltip("攻撃コライダー出現時間を指定")]
     private float playerAttackTime = 0.5f;
-    // ダッシュアタック移動力 (富里が編集)
+
     [SerializeField]
+    [Tooltip("ダッシュアタック機動力")]
     private float dashAttackSpeed = 20;
-    // デフォルトの攻撃リーチ (富里が編集)
-    [SerializeField]
-    private float defaultReachX = 1f;
-    [SerializeField]
-    private float defaultReachY = 1f;
-    [SerializeField]
-    private float defaultReachZ = 1f;
 
-    //移動速度（中山が編集）
-    public static float moveSpeed;
-    // ジャンプ力指定（中山が編集）
-    public static float jumpForce;
-
-
-    // 攻撃リーチの倍率（中山が編集）
-    public static float ReachX;
-    public static float ReachY;
-    public static float ReachZ;
-
-    //ステータス設定（中山が編集）
     [SerializeField]
+    [Tooltip("攻撃コライダーのサイズ")]
+    private Vector3 attackReach;
+
+    [SerializeField]
+    [Tooltip("最大HP")]
     private int maxHealth;
+
+    [SerializeField]
+    [Tooltip("無敵時間")]
+    private float invincibleTime = 1;
+
+    [Tooltip("攻撃力")]
+    public int damage;
+
+    [Header("強化倍率")]
+    [SerializeField]
+    [Tooltip("攻撃コライダーサイズ")]
+    private float attackReachMagnification;
+
+    [SerializeField]
+    [Tooltip("攻撃力")]
+    private int damageMagnicifation;
+
+    [SerializeField]
+    [Tooltip("ジャンプ力")]
+    private float jumpForceMagnification;
+
+    [SerializeField]
+    [Tooltip("移動速度")]
+    private float moveSpeedMagnification;
+
 
     [Header("参照関連")]
 
@@ -60,11 +79,19 @@ public class Player : MonoBehaviour
 
     // 攻撃判定用のコライダーを指定（中山が編集）
     [SerializeField]
-    private GameObject attackCollider = null;
+    private Collider attackCollider = null;
 
     // ダッシュアタック用のコライダーを指定 (富里が編集)
     [SerializeField]
     private GameObject dashAttackCollider = null;
+
+    [SerializeField]
+    [Tooltip("攻撃エフェクト")]
+    GameObject destroyEffect;
+
+    [SerializeField]
+    [Tooltip("被弾エフェクト")]
+    GameObject damageEffect;
 
     private Vector2 moveInput;// 移動入力ベクトルを移植（中山が編集）
 
@@ -77,6 +104,8 @@ public class Player : MonoBehaviour
     private bool attackOK = false;// 攻撃制限変数（中山が編集）
 
     private int health;// プレイヤーの体力
+
+    private bool isInvincible = false; //無敵状態かどうか(富里が編集)
 
 
     Animator animator;// Animator コンポーネントの参照（中山が編集）
@@ -101,7 +130,6 @@ public class Player : MonoBehaviour
         Jumping,
         DashAttacking
     }
-    [SerializeField]
     MotionState motionState = MotionState.Stopping;// 現在のモーション状態（中山が編集）
 
     private void Awake()
@@ -109,11 +137,10 @@ public class Player : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();// Rigidbody コンポーネントを取得
         animator = GetComponent<Animator>();// Animator コンポーネントを取得（中山が編集）
 
-        attackCollider.transform.localScale = new Vector3(ReachX, ReachY, ReachZ);// 当たり判定を指定
 
         OnApplicationFocus(true);
         attackOK = true;// 攻撃制限変数初期化（中山が編集）
-        attackCollider.SetActive(false);// 攻撃判定を無効化（中山が編集）
+        attackCollider.enabled = false;// 攻撃判定を無効化（中山が編集）
         dashAttackCollider.SetActive(false); // ダッシュアタック判定を無効化 (富里が編集)
         StatusReset();// ステータス初期化（中山が編集）
     }
@@ -121,25 +148,27 @@ public class Player : MonoBehaviour
     private void StatusReset()
     {
         health = maxHealth;
+        attackCollider.transform.localScale = attackReach;
 
-        if (!TitleScene.IsUpgraded[0])
+        if (PlayerPrefs.GetInt("AttackLevel", 1) == 2)
         {
-            ReachX = defaultReachX;
-            ReachY = defaultReachY;
-            ReachZ = defaultReachZ;
+            attackReach *= attackReachMagnification;
+            var pos = attackCollider.transform.position;
+            pos.z += attackReachMagnification / 2;
+            attackCollider.transform.position = pos;
+
+            damage *= damageMagnicifation;
         }
 
-        if (!TitleScene.IsUpgraded[1])
+        if (PlayerPrefs.GetInt("JumpLevel", 1) == 2)
         {
-            jumpForce = defaultJumpForce;
+            jumpForce *= jumpForceMagnification;
         }
 
-        if (!TitleScene.IsUpgraded[2])
+        if (PlayerPrefs.GetInt("SpeedLevel", 1) == 2)
         {
-            moveSpeed = defaultMoveSpeed;
+            moveSpeed *= moveSpeedMagnification;
         }
-
-            
     }
 
     public void Sleep()
@@ -187,8 +216,6 @@ public class Player : MonoBehaviour
     void Update() //モーション状態に応じた処理（中山が編集）
     {
         if (IsSleeping) return;
-
-        Debug.Log(jumpForce);
 
         switch (motionState)
         {
@@ -318,24 +345,18 @@ public class Player : MonoBehaviour
         animator.SetTrigger(attackID);// Attackアニメーションを開始（中山が編集）
         AudioPlayer.instance.PlaySE(3);// PlayerClawAttackを再生 (富里が編集)
         yield return new WaitForSeconds(playerLittleWaitTime);//playerLittleWaitTime秒待機（中山が編集）
-        attackCollider.SetActive(true);//攻撃判定を有効化（中山が編集）
+        attackCollider.enabled = true;//攻撃判定を有効化（中山が編集）
         yield return new WaitForSeconds(playerAttackTime);//1秒待機（中山が編集）
-        attackCollider.SetActive(false);//攻撃判定を無効化（中山が編集）
+        attackCollider.enabled = false;//攻撃判定を無効化（中山が編集）
         yield return new WaitForSeconds(playerWaitTime);//playerWaitTime秒待機（中山が編集）
         attackOK = true;//攻撃制限変数をtrueに設定（中山が編集）
     }
 
-    //死亡処理（中山が編集）
-    public void Die()
-    {
-        animator.SetTrigger(dieID);// Dieアニメーションを開始（中山が編集）
-        Destroy(gameObject, 2f);//3秒後にプレイヤーオブジェクトを破壊（中山が編集）
-        StageScene.Instance.GameOver(); // ゲームオーバー処理を呼び出す
-    }
 
     private void DashAttack()
     {
-        if ((motionState == MotionState.Stopping || motionState == MotionState.Walking) && TitleScene.IsUpgraded[2])
+        if ((motionState == MotionState.Stopping || motionState == MotionState.Walking) &&
+            PlayerPrefs.GetInt("AttackLevel", 1) == 2)
         {
             motionState = MotionState.DashAttacking; // MotionState更新 (富里が編集)
             animator.SetTrigger(dashAttackID); // アニメーター起動 (富里が編集)
@@ -355,6 +376,80 @@ public class Player : MonoBehaviour
     {
         motionState = MotionState.Walking;
         dashAttackCollider.SetActive(false);
+    }
+
+    public void Hit()
+    {
+        if (!isInvincible)
+        {
+            StartCoroutine(EnterInvinsicle());
+            Damage();
+        }
+    }
+
+    private IEnumerator EnterInvinsicle()
+    {
+        isInvincible = true;
+        yield return new WaitForSeconds(invincibleTime);
+        isInvincible = false;
+    }
+
+    private void Damage()
+    {
+        // HPを減少させ、ダメージエフェクトを発生させる
+        health--;
+
+        StageScene.Instance.DecreaseHpPlayer();//HPゲージを減少させる（中山が編集）
+
+        // エフェクトをインスタンス化
+        GameObject effect = Instantiate(damageEffect);
+
+        // 現在の位置を取得し、Vector3型の変数に格納
+        Vector3 effectPos = transform.position;
+
+        // エフェクトの位置を少し上に調整
+        effectPos.y += 1.0f;
+
+        // エフェクトの位置を設定
+        effect.transform.position = effectPos;
+
+        // エフェクトのサイズを少し大きくする（中山が編集）
+        effect.transform.localScale *= 2f;
+
+        // エフェクトを5秒後に破壊（中山が編集）
+        Destroy(effect, 5);
+
+        if (health <= 0)
+        {
+            DestoryMainObject();
+        }
+    }
+
+    private void DestoryMainObject()
+    {
+        // 破壊エフェクトを発生させてから、MainObjectに設定したもの（自分自身や部位破壊対象）を破壊
+        health = 0;
+        // エフェクトをインスタンス化
+        GameObject effect = Instantiate(destroyEffect);
+
+        // 現在の位置を取得し、Vector3型の変数に格納
+        Vector3 effectPos = transform.position;
+
+        // エフェクトの位置を少し上に調整
+        effectPos.y += 1.0f;
+
+        // エフェクトの位置を設定
+        effect.transform.position = effectPos;
+        Destroy(effect, 5);
+
+        Die();
+    }
+
+    private void Die()
+    {
+        animator.SetTrigger(dieID);// Dieアニメーションを開始（中山が編集）
+        Destroy(gameObject, 2f);//3秒後にプレイヤーオブジェクトを破壊（中山が編集）
+        StageScene.Instance.GameOver(); // ゲームオーバー処理を呼び出す
     }
 
     // アプリケーションのフォーカスが変化したときに呼び出されるメソッド（中山が編集）

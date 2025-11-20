@@ -3,13 +3,6 @@ using UnityEngine.Events;
 
 public class AttackCollider : MonoBehaviour
 {
-    // プレイヤーの子オブジェクトにアタッチしている場合はtrue、敵の場合はfalseをいったん消去（中山が編集）
-    /*
-    [SerializeField]
-    private bool isPlayersScript = false;
-    */
-
-    // ゲームオーバーエリアに入ったときのイベントを取得または設定します（中山が編集）
     public UnityEvent OnEnter { get => onEnter; set => onEnter = value; }
     [SerializeField]
     [Tooltip("アタックエリアに入ったときのイベント")]
@@ -27,23 +20,5 @@ public class AttackCollider : MonoBehaviour
             Debug.Log("AttackCollider: OnTriggerEnter");
             onEnter.Invoke();
         }
-
-        // ダメージを与える処理をいったん消去（中山が編集）
-        /*
-        if (isPlayersScript)
-        {
-            // プレイヤーの場合は
-            // 敵の親スクリプト持ってきて実行
-            var victimScript = collider.GetComponentInParent<BossMove>();
-            victimScript.TakeDamage();
-        }
-        else
-        {
-            // 敵の場合は
-            // プレイヤーの親スクリプト持ってきて実行
-            var victimScript = collider.GetComponentInParent<Player>();
-            victimScript.TakeDamage();
-        }
-        */
     }
 }

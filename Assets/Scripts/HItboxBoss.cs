@@ -29,6 +29,8 @@ public class HitboxBoss : MonoBehaviour
         // もし意図しない衝突判定が起きた場合は最初にレイヤーマスクを確認してください。
 
         // 被弾側のStatusManagerに通知
-        receiverStatus.Damage();
+        Player playerScript = other.GetComponentInParent<Player>();
+        int dam = playerScript.damage;
+        receiverStatus.Damage(dam);
     }
 }

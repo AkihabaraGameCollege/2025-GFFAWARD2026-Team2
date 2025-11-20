@@ -7,14 +7,14 @@ public class HitboxPlayer : MonoBehaviour
     //       「Layer Collision Matrix」で設定されています。
     //       例: 「EnemyAttack」レイヤーは「PlayerHitbox」レイヤーのみ衝突が許可されている必要があります。
 
-    private StatusManagerPlayer receiverStatus; // ダメージを受ける側のStatusManager
+    private Player playerScript; // ダメージを受ける側のStatusManager
 
     void Start()
     {
         // 自身の親オブジェクトからStatusManagerを取得
-        receiverStatus = GetComponentInParent<StatusManagerPlayer>();
+        playerScript = GetComponentInParent<Player>();
 
-        if (receiverStatus == null)
+        if (playerScript == null)
         {
             Debug.LogError("Hitboxの親にStatusManagerが見つかりません。");
             enabled = false;
@@ -29,6 +29,6 @@ public class HitboxPlayer : MonoBehaviour
         // もし意図しない衝突判定が起きた場合は最初にレイヤーマスクを確認してください。
 
         // 被弾側のStatusManagerに通知
-        receiverStatus.Hit();
+        playerScript.Hit();
     }
 }

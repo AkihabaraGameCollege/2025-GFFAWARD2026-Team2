@@ -196,7 +196,7 @@ public class BossMove1 : MonoBehaviour
         }
 
         // ボスがやられたらSE処理（中山が編集）
-        if (StatusManagerBoss.maxHp <= 0 && isDefeatSounding)
+        if (StatusManagerBoss.health <= 0 && isDefeatSounding)
         {
             AudioPlayer.instance.PlaySE(4, true);// 死亡SE再生（中山が編集）
             isDefeatSounding = false;// 2回目以降再生されないようにする（中山が編集）
@@ -312,7 +312,7 @@ public class BossMove1 : MonoBehaviour
         yield return new WaitForSeconds(bossWeakTime);// 弱点タイム（中山が編集）
 
         // ボスがやられたら処理を抜ける（中山が編集）
-        if (StatusManagerBoss.maxHp <= 0)
+        if (StatusManagerBoss.health <= 0)
         {
             animator.SetTrigger(dieID);// 死亡アニメーション再生（中山が編集）
             yield return new WaitForSeconds(bossDieTime);// 少し待機（中山が編集）

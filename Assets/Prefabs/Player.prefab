@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 141362804754037259}
   - component: {fileID: 3305663206505304487}
   - component: {fileID: 2508532194529083278}
-  - component: {fileID: 8734794260185636031}
   m_Layer: 13
   m_Name: Player
   m_TagString: Player
@@ -261,8 +260,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52df092b424ca4e47885df2e5ca8d66b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultMoveSpeed: 5
-  defaultJumpForce: 10
+  moveSpeed: 5
+  jumpForce: 10
   groundCheckStartPoint: {x: 0, y: 0.5, z: 0}
   groundCheckEndPoint: {x: 0, y: -0.5, z: 0}
   requiredJumpSpeed: 0.1
@@ -270,45 +269,22 @@ MonoBehaviour:
   playerLittleWaitTime: 0.3
   playerAttackTime: 0.1
   dashAttackSpeed: 20
-  defaultReachX: 1
-  defaultReachY: 1
-  defaultReachZ: 1
+  attackReach: {x: 0, y: 0, z: 0}
   maxHealth: 3
+  invincibleTime: 1
+  attackReachMagnification: 2
+  damageMagnicifation: 2
+  jumpForceMagnification: 1.5
+  moveSpeedMagnification: 1.5
   groundLayer:
   - serializedVersion: 2
     m_Bits: 64
   - serializedVersion: 2
     m_Bits: 16384
-  attackCollider: {fileID: 4535509625820239764}
+  attackCollider: {fileID: 9135191589690067075}
   dashAttackCollider: {fileID: 1525174610445278448}
-  playerDamage: {fileID: 0}
-  motionState: 0
---- !u!114 &8734794260185636031
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 67187401318048243}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e5209af2d5474d4fad22c982bbf55c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MainObject: {fileID: 67187401318048243}
-  playerAttackCollider: {fileID: 0}
-  maxHp: 3
-  magnificationReachX: 2
-  magnificationReachY: 2
-  magnificationReachZ: 2
-  magnificationDamage: 2
-  magnificationJumpForce: 1.5
-  magnificationMoveSpeed: 1.5
-  invincibleTime: 1
-  destroyEffect: {fileID: 8962295279383145195, guid: 7cdd99d9641263e498d658cb227be266, type: 3}
+  destroyEffect: {fileID: 1430198582188953287, guid: 21b15d55fb362544fab3a70419757060, type: 3}
   damageEffect: {fileID: 1430198582188953287, guid: 21b15d55fb362544fab3a70419757060, type: 3}
-  player: {fileID: 0}
-  gameDirector: {fileID: 0}
 --- !u!1 &77928447854540009
 GameObject:
   m_ObjectHideFlags: 0
