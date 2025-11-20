@@ -298,9 +298,6 @@ PrefabInstance:
       addedObject: {fileID: 8649423870654933553}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 86e9b2833d2c69d44bed55f4503e5257, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7369481197298221719}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 86e9b2833d2c69d44bed55f4503e5257, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 3476611586394716549}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 86e9b2833d2c69d44bed55f4503e5257, type: 3}
       insertIndex: -1
@@ -411,109 +408,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MainObject: {fileID: 9190801381781861545}
-  maxHp: 6
   destroyEffect: {fileID: 8962295279383145195, guid: 7cdd99d9641263e498d658cb227be266, type: 3}
   damageEffect: {fileID: 1430198582188953287, guid: 21b15d55fb362544fab3a70419757060, type: 3}
-  bossMove1: {fileID: 0}
-  bossMove2: {fileID: 0}
-  bossMove3: {fileID: 0}
---- !u!82 &7369481197298221719
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9190801381781861545}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  maxHealth: 15
+  health: 0
+  lastSpurtHP: 5
+  bossLastBGM: 1
 --- !u!95 &3476611586394716549
 Animator:
   serializedVersion: 7
@@ -553,17 +453,13 @@ MonoBehaviour:
   speedNumber: 11.1
   attackCollider: {fileID: 848999166529578570}
   thisCollider: {fileID: 7492541590139795926}
-  weakCollider: {fileID: 0}
+  weakCollider: {fileID: 776567048355683635}
   targetObject: {fileID: 0}
-  bossObject: {fileID: 0}
+  bossObject: {fileID: 9190801381781861545}
   stageScene: {fileID: 0}
-  maxHealth: 0
   player: {fileID: 0}
+  statusManagerBoss: {fileID: 8649423870654933553}
   weakTimeText: {fileID: 0}
-  effectAudio: {fileID: 0}
-  effectAudioLoop: {fileID: 0}
-  soundOnAttack: {fileID: 0}
-  soundOnMove: {fileID: 0}
   bossWeakTime: 3
   bossWaitTime: 0.5
   bossAttackTime: 1
