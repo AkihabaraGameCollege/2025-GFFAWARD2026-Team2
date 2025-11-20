@@ -435,6 +435,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerLifeImage: {fileID: 45863527}
+  playerDamageImage: {fileID: 803932755}
   bossLifeImage: {fileID: 934075758}
   playerFillAmountNumberL: 0.34
   playerFillAmountNumberD: 0.34

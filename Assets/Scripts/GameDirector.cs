@@ -8,6 +8,8 @@ public class GameDirector : MonoBehaviour
     [SerializeField]
     GameObject playerLifeImage = null;
     [SerializeField]
+    GameObject playerDamageImage = null;
+    [SerializeField]
     GameObject bossLifeImage = null;
 
     // プレイヤーとボスのHP減少量設定（中山が編集）
@@ -22,7 +24,7 @@ public class GameDirector : MonoBehaviour
     public void DecreaseHpPlayer()
     {
         this.playerLifeImage.GetComponent<Image>().fillAmount -= playerFillAmountNumberL;// 3回攻撃で0になるように調整
-        this.playerLifeImage.GetComponent<Image>().fillAmount += playerFillAmountNumberD;// 3回攻撃で0になるように調整
+        this.playerDamageImage.GetComponent<Image>().fillAmount += playerFillAmountNumberD;// 3回攻撃で0になるように調整
     }
 
     // ボスのHPを減少させるメソッド（中山が編集）
