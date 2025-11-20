@@ -1141,7 +1141,6 @@ MonoBehaviour:
   bossLifeImage: {fileID: 934075759}
   playerFillAmountNumberLife: 0.34
   playerFillAmountNumberDamage: 0.34
-  bossFillAmountNumber: 0.2
 --- !u!4 &584909208
 Transform:
   m_ObjectHideFlags: 0
@@ -3154,6 +3153,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 584909208}
     m_Modifications:
     - target: {fileID: 1313018972993166331, guid: abdd8555a0044784e96c14384e43a237, type: 3}
+      propertyPath: health
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313018972993166331, guid: abdd8555a0044784e96c14384e43a237, type: 3}
+      propertyPath: maxHealth
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313018972993166331, guid: abdd8555a0044784e96c14384e43a237, type: 3}
       propertyPath: gameDirector
       value: 
       objectReference: {fileID: 0}
@@ -3173,6 +3180,10 @@ PrefabInstance:
       propertyPath: weakTimeText
       value: 
       objectReference: {fileID: 1593121523}
+    - target: {fileID: 2317411829476705113, guid: abdd8555a0044784e96c14384e43a237, type: 3}
+      propertyPath: hammerAttackTimeDefault
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4915863685626552124, guid: abdd8555a0044784e96c14384e43a237, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
