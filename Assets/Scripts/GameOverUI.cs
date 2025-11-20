@@ -50,5 +50,6 @@ public class GameOverUI : MonoBehaviour
     {
         animator.SetTrigger(showId);
         retryButton.Select();
+        Cursor.lockState = CursorLockMode.Confined;
     }
 }

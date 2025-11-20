@@ -174,7 +174,7 @@ public class StageScene : MonoBehaviour
             IsPaused = true;
             Time.timeScale = 0;
             pause.Show();
-            Cursor.lockState = CursorLockMode.None;
+            Cursor.lockState = CursorLockMode.Confined;
         }
     }
 
