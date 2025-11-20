@@ -1,7 +1,7 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 using UnityEngine.SceneManagement;
-using System;
+using UnityEngine.UI;
 
 public class StageScene : MonoBehaviour
 {
@@ -46,9 +46,6 @@ public class StageScene : MonoBehaviour
     // ステージクリアー表示用のUIを指定します。（中山が編集）
     [SerializeField]
     private StageClearUI stageClearUI = null;
-    // ステータスマネージャープレイヤー参照用（中山が編集）
-    [SerializeField]
-    private StatusManagerPlayer statusManagerPlayer = null;
 
     // ステージ名での現在のステージ数検知用
     [SerializeField]
@@ -57,6 +54,22 @@ public class StageScene : MonoBehaviour
     private string boss2StageName = "Boss2";
     [SerializeField]
     private string boss3StageName = "Boss2";
+
+    private bool isFullUpgraded = false;
+
+    // こちらにプレイヤーとボスのライフイメージをアタッチしてください（中山が編集）
+    [SerializeField]
+    Image playerLifeImage = null;
+    [SerializeField]
+    Image playerDamageImage = null;
+    [SerializeField]
+    Image bossLifeImage = null;
+
+    // プレイヤーとボスのHP減少量設定（中山が編集）
+    [SerializeField]
+    private float playerFillAmountNumberLife = 0.34f;
+    [SerializeField]
+    private float playerFillAmountNumberDamage = 0.34f;
 
     // ステージ画面内の進行状態を表します。
     enum SceneState
@@ -76,7 +89,7 @@ public class StageScene : MonoBehaviour
     private void Awake()
     {
         Instance = this;// シングルトンインスタンスを設定(中山が編集)
-     
+
         // 多分いらなくなった(富里が編集)
         //clearAudio.Stop();// ステージクリアー音声を停止しておく(中山が編集)
         //overAudio.Stop();// ゲームオーバー音声を停止しておく(中山が編集)
@@ -193,7 +206,7 @@ public class StageScene : MonoBehaviour
     public void LoadNextStage()
     {
         // すべての強化を取得していたらクリアシーンに
-        if (TitleScene.IsUpgraded[0] && TitleScene.IsUpgraded[1] && TitleScene.IsUpgraded[2])
+        if (isFullUpgraded)
         {
             StartCoroutine(OnLoadScene(clearStage));
         }
@@ -212,7 +225,7 @@ public class StageScene : MonoBehaviour
             Resume();
         }
 
-       
+
 
         animator.SetTrigger(outroId);// アウトロアニメーションを開始(中山が編集)
         // アニメーションが終了するまで1秒待機
@@ -248,35 +261,42 @@ public class StageScene : MonoBehaviour
 
             // 装備強化フラグに応じて装備強化を行う(富里が編集)
             var thisSceneName = SceneManager.GetActiveScene().name;
-            // Stage1ならブリキアーム強化を実行
+            // Stage1ならブリキアーム強化
             if (thisSceneName == boss1StageName)
             {
-                if (TitleScene.IsUpgraded[0] == false)
-                {
-                    statusManagerPlayer.BurikiArm();
-                }
+                PlayerPrefs.SetInt("AttackLevel", 2);
             }
-            // Stage2ならもこもこブーツ強化を実行
+            // Stage2ならもこもこブーツ強化
             else if (thisSceneName == boss2StageName)
             {
-                if (TitleScene.IsUpgraded[1] == false)
-                {
-                    statusManagerPlayer.MokoMokoBoots();
-                }
+                PlayerPrefs.SetInt("JumpLevel", 2);
             }
-            // Stage3なら殺戮ダッシュ強化を実行
+            // Stage3なら殺戮ダッシュ強化
             else if (thisSceneName == boss3StageName)
             {
-                if (TitleScene.IsUpgraded[2] == false)
-                {
-                    statusManagerPlayer.SatsurikuDash();
-                }
+                PlayerPrefs.SetInt("SpeedLevel", 2);
             }
             // どこでもない場合はエラー
             else
             {
                 Debug.LogError("どこやねんここ");
             }
+
+            isFullUpgraded = PlayerPrefs.GetInt("AttackLevel", 1) == 2 &&
+                PlayerPrefs.GetInt("JumpLevel", 1) == 2 &&
+                PlayerPrefs.GetInt("SpeedLevel", 1) == 2;
         }
+    }
+
+    public void DecreaseHpPlayer()
+    {
+        playerLifeImage.fillAmount -= playerFillAmountNumberLife;// 3回攻撃で0になるように調整
+        playerDamageImage.fillAmount += playerFillAmountNumberDamage;// 3回攻撃で0になるように調整
+    }
+
+    // ボスのHPを減少させるメソッド（中山が編集）
+    public void DecreaseHpBoss(float health, int maxhealth)
+    {
+        bossLifeImage.fillAmount = health / maxhealth;// 15回攻撃で0になるように調整
     }
 }

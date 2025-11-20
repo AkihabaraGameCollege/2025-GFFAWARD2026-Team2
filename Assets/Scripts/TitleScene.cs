@@ -13,8 +13,6 @@ public class TitleScene : MonoBehaviour
     [SerializeField]
     private string nextSceneName;
 
-    public static bool[] IsUpgraded = { false, false, false };// 強化状態かどうかのフラグ（富里が編集）
-
     // Animatorコンポーネント
     Animator animator;
     // AnimatorのパラメーターID
