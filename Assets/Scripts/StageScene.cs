@@ -258,6 +258,7 @@ public class StageScene : MonoBehaviour
             player.enabled = false;// プレイヤー操作を無効化(中山が編集)
             // ステージクリアーUIを表示
             stageClearUI.Show();
+            Cursor.lockState = CursorLockMode.Confined;
 
             // 装備強化フラグに応じて装備強化を行う(富里が編集)
             var thisSceneName = SceneManager.GetActiveScene().name;
