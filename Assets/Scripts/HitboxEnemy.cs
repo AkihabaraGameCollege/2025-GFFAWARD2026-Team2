@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 // ボスの当たり判定のスクリプト（中山が移植）
-public class HitboxBoss : MonoBehaviour
+public class HitboxEnemy : MonoBehaviour
 {
     // 注意: このColliderが衝突する条件は、Unityの「Project Settings」->「Physics」の
     //       「Layer Collision Matrix」で設定されています。

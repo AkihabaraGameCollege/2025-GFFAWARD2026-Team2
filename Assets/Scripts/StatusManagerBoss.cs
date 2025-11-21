@@ -24,7 +24,7 @@ public class StatusManagerBoss : MonoBehaviour
 
     [SerializeField]
     [Tooltip("HitBox")]
-    private HitboxBoss hitbox;
+    private HitboxEnemy hitbox;
 
 
     private bool isAlreadyPlayed = false;//ラストスパートBGM再生判定用（中山が編集）
@@ -70,6 +70,14 @@ public class StatusManagerBoss : MonoBehaviour
         if (health <= 0)
         {
             OnDeath?.Invoke();
+        }
+    }
+
+    void OnDestroy()
+    {
+        if (hitbox != null)
+        {
+            hitbox.OnHit -= Damage;
         }
     }
 }

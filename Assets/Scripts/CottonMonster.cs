@@ -12,6 +12,12 @@ public class CottonMonster : MonoBehaviour
     private float spreadTimer = 0;
     private float spreadTime = 0;
     private Vector3 targetOffset = Vector3.zero;
+
+
+    [SerializeField]
+    [Tooltip("HitBox")]
+    private HitboxEnemy hitbox;
+
     enum MotionState
     {
         // ÉXÉ|Å[Éìíºå„ÇÃägéUÇµÇƒÇ¢ÇÈèÛë‘
@@ -22,8 +28,11 @@ public class CottonMonster : MonoBehaviour
     private MotionState motionState = MotionState.Spreading;
     public void Initialize(BossMove2 script, Vector3 direction, float spreadSpeed, float spreadTime, float moveSpeed, Vector3 spawnOffset)
     {
-        bossScript = script;
         rb = GetComponent<Rigidbody>();
+        hitbox.OnHit += OnDamageTaken;
+
+
+        bossScript = script;
         motionState = MotionState.Spreading;
         spreadVelocity = direction * spreadSpeed;
         this.spreadTime = spreadTime;
@@ -41,7 +50,6 @@ public class CottonMonster : MonoBehaviour
                 if (spreadTimer >= spreadTime)
                 {
                     motionState = MotionState.Moving;
-                    Debug.Log("TheEndOfSpread");
                 }
                 break;
             case MotionState.Moving:
@@ -49,5 +57,16 @@ public class CottonMonster : MonoBehaviour
                 rb.linearVelocity = moveDirection * moveSpeed;
                 break;
         }
+    }
+    
+    public void OnDamageTaken(int dummy = 0)
+    {
+        hitbox.OnHit -= OnDamageTaken;
+        Destroy(gameObject);
+    }
+    [ContextMenu("Destroy")]
+    private void Shine()
+    {
+        OnDamageTaken();
     }
 }

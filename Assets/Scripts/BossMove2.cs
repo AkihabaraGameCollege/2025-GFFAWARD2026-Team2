@@ -268,7 +268,7 @@ public class BossMove2 : MonoBehaviour
             // 召喚したオブジェクトのscriptを持ってくる
             CottonMonster script = go.GetComponent<CottonMonster>();
             // Yはプラス、XZは完全ランダムな方向を取得
-            Vector3 dir = new Vector3(Random.Range(-1f, 1f), Random.Range(0f, 1f), Random.Range(-1f, 1f)).normalized;
+            Vector3 dir = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized;
             // 拡散スピードを決定
             float spd = Random.Range(zakoMinSpreadSpeed, zakoMaxSpreadSpeed);
             // 初期化
