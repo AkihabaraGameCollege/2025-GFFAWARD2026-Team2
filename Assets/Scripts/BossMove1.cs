@@ -104,11 +104,16 @@ public class BossMove1 : MonoBehaviour
     private bool isWalking = false;// 歩行SE再生判定用（中山が編集）
     private bool isDefeatSounding = false;// ボスがやられたときのSE再生判定用（中山が編集）
 
+    private StatusManagerBoss statusManager;
+
     // 初期設定・登録等（中山が編集）
     void Awake()
     {
         rigidbody = GetComponent<Rigidbody>();// Rigidbodyコンポーネント取得（中山が編集）
         animator = GetComponent<Animator>();// Animatorコンポーネント取得（中山が編集）
+        statusManager = GetComponent<StatusManagerBoss>();
+
+        statusManager.OnDeath += Die; // 死亡時実行の関数をいれとく 富里
 
         isWalking = true;// 歩行SE再生判定用（中山が編集）
         isTurning = false;// 方向可能（中山が編集）
@@ -305,26 +310,16 @@ public class BossMove1 : MonoBehaviour
         Weaking();// 弱体化処理（中山が編集）
         yield return new WaitForSeconds(bossWeakTime);// 弱点タイム（中山が編集）
 
-        // ボスがやられたら処理を抜ける（中山が編集）
-        if (StatusManagerBoss.health <= 0)
-        {
-            animator.SetTrigger(dieID);// 死亡アニメーション再生（中山が編集）
-            yield return new WaitForSeconds(bossDieTime);// 少し待機（中山が編集）
-            Die();// ボス撃破処理（中山が編集）
-        }
-        // ボスがやられていなかったら起き上がる（中山が編集）
-        else
-        {
-            WakeUp();// 起き上がり（中山が編集）
-            yield return new WaitForSeconds(bossWakeUpTime);// 待機（中山が編集）
-            bodyAttackCollider.enabled = true;// ボス本体判定有効化（中山が編集）
-            yield return new WaitForSeconds(bossWaitTime);// 少し待機（中山が編集）
+        WakeUp();// 起き上がり（中山が編集）
+        yield return new WaitForSeconds(bossWakeUpTime);// 待機（中山が編集）
+        bodyAttackCollider.enabled = true;// ボス本体判定有効化（中山が編集）
+        yield return new WaitForSeconds(bossWaitTime);// 少し待機（中山が編集）
 
-            isTurning = true;// 攻撃停止（中山が編集）
-            isMoving = true;// 移動開始（中山が編集）
+        isTurning = true;// 攻撃停止（中山が編集）
+        isMoving = true;// 移動開始（中山が編集）
 
-            hammerAttackTime = hammerAttackTimeDefault;// ハンマー攻撃時間リセット（中山が編集）
-        }
+        hammerAttackTime = hammerAttackTimeDefault;// ハンマー攻撃時間リセット（中山が編集）
+
     }
 
     // ハンマー攻撃処理（中山が編集）
@@ -364,6 +359,13 @@ public class BossMove1 : MonoBehaviour
 
     private void Die()
     {
+        StartCoroutine(OnDeath());
+    }
+
+    IEnumerator OnDeath()
+    {
+        animator.SetTrigger(dieID);// 死亡アニメーション再生（中山が編集）
+        yield return new WaitForSeconds(bossDieTime);// 少し待機（中山が編集）
         AudioPlayer.instance.StopLoopSE();// ボス撃破SE再生（中山が編集）
         StageScene.Instance.StageClear();// ステージクリア処理（中山が編集）
         Destroy(gameObject);// ボスオブジェクトを破壊（中山が編集）

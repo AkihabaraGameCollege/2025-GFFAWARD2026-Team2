@@ -22,29 +22,25 @@ public class StatusManagerBoss : MonoBehaviour
     [SerializeField]
     private int bossLastBGM = 1;
 
+    [SerializeField]
+    [Tooltip("HitBox")]
+    private HitboxBoss hitbox;
 
-    private bool oncePlay;//ラストスパートBGM再生判定用（中山が編集）
 
-    public event Action<int> OnDamageTaken;
+    private bool isAlreadyPlayed = false;//ラストスパートBGM再生判定用（中山が編集）
+
+    public event Action OnDamageTaken;
+    public event Action OnDeath;
 
     // 登録用（中山が編集）
     void Awake()
     {
-        oncePlay = true;// ラストスパートBGM再生判定用（中山が編集）
         destroyEffect.SetActive(false);// 撃破エフェクト非表示（中山が編集）
         damageEffect.SetActive(false);// 被弾エフェクト非表示（中山が編集）
 
-        health = maxHealth;
-    }
+        hitbox.OnHit += Damage;
 
-    // Update is called once per frame
-    void Update()
-    {
-        //hpが0以下なら、撃破エフェクトを生成してMainを破壊
-        if (health <= 0)
-        {
-            DestoryMainObject();
-        }
+        health = maxHealth;
     }
 
     public void Damage(int damage)
@@ -63,27 +59,17 @@ public class StatusManagerBoss : MonoBehaviour
         Destroy(effect, 5);// エフェクトを5秒後に破壊（中山が編集）
 
         // ラストスパートBGM再生判定（中山が編集）
-        if (health <= lastSpurtHP&&oncePlay)
+        if (health <= lastSpurtHP && !isAlreadyPlayed)
         {
             AudioPlayer.instance.PlayBGM(bossLastBGM);// ラストスパートBGM再生（中山が編集）
-            oncePlay = false;// 2回目以降再生されないようにする（中山が編集）
+            isAlreadyPlayed = true;// 2回目以降再生されないようにする（Tomisatoが編集）
         }
 
-        OnDamageTaken?.Invoke(health);
-    }
+        OnDamageTaken?.Invoke();
 
-    // ボス撃破処理（中山が編集）
-    private void DestoryMainObject()
-    {
-        destroyEffect.SetActive(true);// 撃破エフェクト表示（中山が編集）
-
-        // 破壊エフェクトを発生させてから、MainObjectに設定したもの（自分自身や部位破壊対象）を破壊
-        health = 0;
-
-        // エフェクトをインスタンス化
-        GameObject effect = Instantiate(destroyEffect);
-
-        effect.transform.position = destroyEffect.transform.position;// effect変数のエフェクトの位置をdestroyEffectの位置と同期させる（中山が編集）
-        Destroy(effect, 30);// エフェクトを30秒後に破壊（中山が編集）
+        if (health <= 0)
+        {
+            OnDeath?.Invoke();
+        }
     }
 }

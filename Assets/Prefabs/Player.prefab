@@ -270,10 +270,10 @@ MonoBehaviour:
   playerLittleWaitTime: 0.3
   playerAttackTime: 0.1
   dashAttackSpeed: 20
-  attackReach: {x: 0, y: 0, z: 0}
+  attackReach: {x: 1, y: 1, z: 1}
   maxHealth: 3
   invincibleTime: 1
-  damage: 0
+  damage: 1
   attackReachMagnification: 2
   damageMagnicifation: 2
   jumpForceMagnification: 1.5
@@ -285,9 +285,9 @@ MonoBehaviour:
   dashAttackCollider: {fileID: 1525174610445278448}
   destroyEffect: {fileID: 1430198582188953287, guid: 21b15d55fb362544fab3a70419757060, type: 3}
   damageEffect: {fileID: 1430198582188953287, guid: 21b15d55fb362544fab3a70419757060, type: 3}
-  wallCheckerOffset:
-  - {x: 0, y: 0.2, z: 0}
+  wallCheckerPos:
   - {x: 0, y: 2, z: 0}
+  - {x: 0, y: 0.2, z: 0}
   wallCheckerDistance: 2
 --- !u!1 &77928447854540009
 GameObject:

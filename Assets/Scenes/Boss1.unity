@@ -629,26 +629,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 2508532194529083278, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
-      propertyPath: damage
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2508532194529083278, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
-      propertyPath: attackReach.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2508532194529083278, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
-      propertyPath: attackReach.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2508532194529083278, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
-      propertyPath: attackReach.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2508532194529083278, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
-      propertyPath: wallCheckerDistance
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3401943718075337740, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1412,6 +1392,17 @@ MonoBehaviour:
       BarrelClipping: 0.25
       Anamorphism: 0
   BlendHint: 0
+--- !u!114 &740675460 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2714503050152480658, guid: abdd8555a0044784e96c14384e43a237, type: 3}
+  m_PrefabInstance: {fileID: 5154163810841109956}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 793745f2eac3b7c47b842b8821b4c1d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &743962826
 GameObject:
   m_ObjectHideFlags: 0
@@ -3163,6 +3154,10 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1313018972993166331, guid: abdd8555a0044784e96c14384e43a237, type: 3}
+      propertyPath: hitbox
+      value: 
+      objectReference: {fileID: 740675460}
+    - target: {fileID: 1313018972993166331, guid: abdd8555a0044784e96c14384e43a237, type: 3}
       propertyPath: maxHealth
       value: 15
       objectReference: {fileID: 0}
@@ -3188,7 +3183,11 @@ PrefabInstance:
       objectReference: {fileID: 1593121523}
     - target: {fileID: 2317411829476705113, guid: abdd8555a0044784e96c14384e43a237, type: 3}
       propertyPath: hammerAttackTimeDefault
-      value: 10
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4340801082781172159, guid: abdd8555a0044784e96c14384e43a237, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4915863685626552124, guid: abdd8555a0044784e96c14384e43a237, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3230,9 +3229,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8197690724761245432, guid: abdd8555a0044784e96c14384e43a237, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 8546629743395941959, guid: abdd8555a0044784e96c14384e43a237, type: 3}
       propertyPath: m_Name
       value: ModularRobots
+      objectReference: {fileID: 0}
+    - target: {fileID: 8546629743395941959, guid: abdd8555a0044784e96c14384e43a237, type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

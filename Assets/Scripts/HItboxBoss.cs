@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 // ボスの当たり判定のスクリプト（中山が移植）
@@ -7,19 +8,7 @@ public class HitboxBoss : MonoBehaviour
     //       「Layer Collision Matrix」で設定されています。
     //       例: 「EnemyAttack」レイヤーは「PlayerHitbox」レイヤーのみ衝突が許可されている必要があります。
 
-    private StatusManagerBoss receiverStatus; // ダメージを受ける側のStatusManager
-
-    void Start()
-    {
-        // 自身の親オブジェクトからStatusManagerを取得
-        receiverStatus = GetComponentInParent<StatusManagerBoss>();
-
-        if (receiverStatus == null)
-        {
-            Debug.LogError("Hitboxの親にStatusManagerが見つかりません。");
-            enabled = false;
-        }
-    }
+    public event Action<int> OnHit;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -31,6 +20,6 @@ public class HitboxBoss : MonoBehaviour
         // 被弾側のStatusManagerに通知
         Player playerScript = other.GetComponentInParent<Player>();
         int dam = playerScript.damage;
-        receiverStatus.Damage(dam);
+        OnHit?.Invoke(dam);
     }
 }

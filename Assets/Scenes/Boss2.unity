@@ -479,16 +479,8 @@ PrefabInstance:
     m_TransformParent: {fileID: 169873332}
     m_Modifications:
     - target: {fileID: 4526875377509006385, guid: ed207dd9b10190d4280ef4510e6ed7a4, type: 3}
-      propertyPath: zakoSpreadTime
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 4526875377509006385, guid: ed207dd9b10190d4280ef4510e6ed7a4, type: 3}
-      propertyPath: zakoMaxSpreadSpeed
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 4526875377509006385, guid: ed207dd9b10190d4280ef4510e6ed7a4, type: 3}
-      propertyPath: zakoMinSpreadSpeed
-      value: 20
+      propertyPath: zakoSpawnOffset.y
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8414863229317459475, guid: ed207dd9b10190d4280ef4510e6ed7a4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1157,7 +1149,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 16215
+    m_Bits: 65495
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

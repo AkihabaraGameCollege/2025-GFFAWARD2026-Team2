@@ -106,7 +106,6 @@ public class BossMove2 : MonoBehaviour
     // 何回ダメージ食らったかのカウンター
     private int damageCounter = 0;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();//Rigidbodyコンポーネント取得（中山が編集）
@@ -118,6 +117,7 @@ public class BossMove2 : MonoBehaviour
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
 
         statusManager.OnDamageTaken += TakeDamage;
+        statusManager.OnDeath += Die;
 
         weakCollider.enabled = false;//弱点判定無効化（中山が編集）
         attackCollider.enabled = false;//攻撃判定無効化（中山が編集）
@@ -128,14 +128,8 @@ public class BossMove2 : MonoBehaviour
     }
 
     // StatusManagerBossから呼び出される
-    
-    public void TakeDamage(int hp)
+    public void TakeDamage()
     {
-        if (hp <= 0)
-        {
-            Die();
-        }
-
         damageCounter++;
         if (damageCounter >= damageCount2ZakoSummon)
         {
@@ -144,7 +138,7 @@ public class BossMove2 : MonoBehaviour
         }
     }
 
-    private void Die()
+    public void Die()
     {
         StageScene.Instance.StageClear();
         Destroy(gameObject);
