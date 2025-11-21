@@ -295,6 +295,11 @@ public class BossMove2 : MonoBehaviour
     [ContextMenu("デバッグ用雑魚召喚ボタン")]
     private void TesutoZakoShoukan()
     {
+        if (!Application.isPlaying)
+        {
+            Debug.LogError("プレイ中のみ実行可能です");
+            return;
+        }
         StartCoroutine(SummonZako(1));
     }
 }
