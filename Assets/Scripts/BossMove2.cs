@@ -37,6 +37,9 @@ public class BossMove2 : MonoBehaviour
     [Tooltip("次の雑魚が召喚されるまでの待機時間\n(0だと一斉スポーン)")]
     private float zakoSummonWaitTime = 0.1f;
     [SerializeField]
+    [Tooltip("雑魚のprefab")]
+    private GameObject zakoPrefab;
+    [SerializeField]
     [Tooltip("歩行継続時間")]
     private float walkTime = 2;
     [SerializeField]
@@ -251,7 +254,10 @@ public class BossMove2 : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             // 召喚
-
+            GameObject go = Instantiate(zakoPrefab, transform.position, Quaternion.identity);
+            CottonMonster script = go.GetComponent<CottonMonster>();
+            // 初期化
+            script.Initialize(this);
             // 次までの待機
             yield return new WaitForSeconds(zakoSummonWaitTime);
         }
