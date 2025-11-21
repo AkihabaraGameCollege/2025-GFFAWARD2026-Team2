@@ -20,8 +20,6 @@ public class BossMove2 : MonoBehaviour
     [SerializeField]
     [Tooltip("着地攻撃コライダー")]
     private Collider attackCollider;
-
-    private Collider thisCollider;
     [SerializeField]
     [Tooltip("弱点コライダー")]
     private Collider weakCollider;
@@ -113,7 +111,6 @@ public class BossMove2 : MonoBehaviour
     {
         rigidbody = GetComponent<Rigidbody>();//Rigidbodyコンポーネント取得（中山が編集）
         animator = GetComponent<Animator>();//Animatorコンポーネント取得（中山が編集）
-        thisCollider = GetComponent<Collider>();//ボス本体コライダー取得（中山が編集）
         statusManager = GetComponent<StatusManagerBoss>();
 
         // find with tagってやっていいのかな
