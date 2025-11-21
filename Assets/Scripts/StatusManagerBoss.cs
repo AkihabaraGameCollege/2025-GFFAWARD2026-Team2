@@ -1,11 +1,9 @@
+using System;
 using UnityEngine;
 
 // ボスのステータスに関するスクリプト（中山が別プロジェクトから移植）
 public class StatusManagerBoss : MonoBehaviour
 {
-    //このスクリプトをアタッチするオブジェクト
-    [SerializeField]
-    GameObject MainObject;
     //撃破エフェクト
     [SerializeField] 
     GameObject destroyEffect;
@@ -26,6 +24,8 @@ public class StatusManagerBoss : MonoBehaviour
 
 
     private bool oncePlay;//ラストスパートBGM再生判定用（中山が編集）
+
+    public event Action OnDamageTaken;
 
     // 登録用（中山が編集）
     void Awake()
@@ -68,6 +68,8 @@ public class StatusManagerBoss : MonoBehaviour
             AudioPlayer.instance.PlayBGM(bossLastBGM);// ラストスパートBGM再生（中山が編集）
             oncePlay = false;// 2回目以降再生されないようにする（中山が編集）
         }
+
+        OnDamageTaken?.Invoke();
     }
 
     // ボス撃破処理（中山が編集）

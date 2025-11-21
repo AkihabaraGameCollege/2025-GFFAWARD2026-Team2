@@ -15,9 +15,9 @@ public class Player : MonoBehaviour
 
     // 地面判定用の線分の始点と終点を指定（中山が編集）
     [SerializeField]
-    private Vector3 groundCheckStartPoint = new Vector3(0, -0.5f, 0);
+    private Vector3 groundCheckStartPoint = new Vector3(0, 0.5f, 0);
     [SerializeField]
-    private Vector3 groundCheckEndPoint = new Vector3(0, -1.5f, 0);
+    private Vector3 groundCheckEndPoint = new Vector3(0, -0.5f, 0);
     // ジャンプに必要な速度指定（中山が編集）
     [SerializeField]
     private float requiredJumpSpeed = 0.1f;
