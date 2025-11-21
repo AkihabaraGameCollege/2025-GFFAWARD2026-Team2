@@ -279,10 +279,8 @@ MonoBehaviour:
   jumpForceMagnification: 1.5
   moveSpeedMagnification: 1.5
   groundLayer:
-  - serializedVersion: 2
-    m_Bits: 64
-  - serializedVersion: 2
-    m_Bits: 16384
+    serializedVersion: 2
+    m_Bits: 16448
   attackCollider: {fileID: 9135191589690067075}
   dashAttackCollider: {fileID: 1525174610445278448}
   destroyEffect: {fileID: 1430198582188953287, guid: 21b15d55fb362544fab3a70419757060, type: 3}

@@ -75,7 +75,7 @@ public class Player : MonoBehaviour
 
     // 地面判定に使用するレイヤーを指定（中山が編集）
     [SerializeField]
-    LayerMask[] groundLayer = null;
+    LayerMask groundLayer;
 
     // 攻撃判定用のコライダーを指定（中山が編集）
     [SerializeField]
@@ -96,7 +96,7 @@ public class Player : MonoBehaviour
     [Header("その他")]
     [SerializeField]
     [Tooltip("Offset")]
-    private Vector3[] wallCheckerOffset = null;
+    private Vector3[] wallCheckerPos = null;
     [SerializeField]
     [Tooltip("Distance")]
     private float wallCheckerDistance = 0;
@@ -276,11 +276,8 @@ public class Player : MonoBehaviour
     // 固定フレームレートで呼び出される更新処理を移植（中山が編集）
     void FixedUpdate()
     {
-        for (int i = 0; i < groundLayer.Length; i++)
-        {
-            IsGrounded = Physics.Linecast(rigidbody.position + groundCheckStartPoint, rigidbody.position + groundCheckEndPoint, groundLayer[i]);// 地面接地判定を更新
-            if (IsGrounded) break;
-        }
+        IsGrounded = Physics.Linecast(rigidbody.position + groundCheckStartPoint, rigidbody.position + groundCheckEndPoint, groundLayer);// 地面接地判定を更新
+
     }
 
     // 指定した速度で、このキャラクターを移動させるプログラムを移植（中山が編集）
@@ -301,18 +298,15 @@ public class Player : MonoBehaviour
 
             // Wall Check
             bool isCasted = false;
-            // すべてのレイヤーで繰り返し
-            for (int i = 0; i < groundLayer.Length; i++)
+
+            // すべてのoffsetで繰り返す
+            for (int i = 0; i < wallCheckerPos.Length; i++)
             {
-                // すべてのoffsetで繰り返す
-                for (int j = 0; j < wallCheckerOffset.Length; j++)
-                {
-                    isCasted = Physics.Raycast(transform.position + wallCheckerOffset[j], moveDirection, wallCheckerDistance, groundLayer[i]);
-                    // 一個でもtrueがあったらbreakして
-                    if (isCasted) break;
-                }
+                isCasted = Physics.Raycast(transform.position + wallCheckerPos[i], moveDirection, wallCheckerDistance, groundLayer);
+                // 一個でもtrueがあったらbreakして
                 if (isCasted) break;
             }
+
 
             // falseじゃないと発動しない
             if (!isCasted)

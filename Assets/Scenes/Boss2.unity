@@ -315,6 +315,8 @@ MonoBehaviour:
   bossLifeImage: {fileID: 605680671}
   playerFillAmountNumberLife: 0.34
   playerFillAmountNumberDamage: 0.34
+  weakText: {fileID: 627924154}
+  defeatBossText: {fileID: 1724030362}
 --- !u!4 &169873332
 Transform:
   m_ObjectHideFlags: 0

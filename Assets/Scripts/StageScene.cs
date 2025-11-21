@@ -71,6 +71,11 @@ public class StageScene : MonoBehaviour
     [SerializeField]
     private float playerFillAmountNumberDamage = 0.34f;
 
+    [SerializeField]
+    private Image weakText = null;
+    [SerializeField]
+    private Image defeatBossText = null;
+
     // ステージ画面内の進行状態を表します。
     enum SceneState
     {
@@ -299,5 +304,21 @@ public class StageScene : MonoBehaviour
     public void DecreaseHpBoss(float health, int maxhealth)
     {
         bossLifeImage.fillAmount = health / maxhealth;// 15回攻撃で0になるように調整
+    }
+
+    public void ShowWeakText()
+    {
+        if (weakText == null) return;
+        weakText.gameObject.SetActive(true);
+        if (defeatBossText == null) return;
+        defeatBossText.gameObject.SetActive(false);
+    }
+
+    public void HideWeakText()
+    {
+        if (weakText == null) return;
+        weakText.gameObject.SetActive(false);
+        if (defeatBossText == null) return;
+        defeatBossText.gameObject.SetActive(true);
     }
 }

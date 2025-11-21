@@ -25,7 +25,7 @@ public class StatusManagerBoss : MonoBehaviour
 
     private bool oncePlay;//ラストスパートBGM再生判定用（中山が編集）
 
-    public event Action OnDamageTaken;
+    public event Action<int> OnDamageTaken;
 
     // 登録用（中山が編集）
     void Awake()
@@ -69,7 +69,7 @@ public class StatusManagerBoss : MonoBehaviour
             oncePlay = false;// 2回目以降再生されないようにする（中山が編集）
         }
 
-        OnDamageTaken?.Invoke();
+        OnDamageTaken?.Invoke(health);
     }
 
     // ボス撃破処理（中山が編集）
