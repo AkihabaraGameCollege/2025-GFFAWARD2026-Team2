@@ -1,13 +1,17 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CottonMonster : MonoBehaviour
 {
     private BossMove2 bossScript = null;
     private Rigidbody rb = null;
 
-    [SerializeField]
-    [Tooltip("移動速度")]
-    private float moveSpeed = 1;
+    private Vector3 spreadVelocity = Vector3.zero;
+    private float moveSpeed = 0;
+
+    private float spreadTimer = 0;
+    private float spreadTime = 0;
+    private Vector3 targetOffset = Vector3.zero;
     enum MotionState
     {
         // スポーン直後の拡散している状態
@@ -16,11 +20,15 @@ public class CottonMonster : MonoBehaviour
         Moving
     }
     private MotionState motionState = MotionState.Spreading;
-    public void Initialize(BossMove2 script)
+    public void Initialize(BossMove2 script, Vector3 direction, float spreadSpeed, float spreadTime, float moveSpeed, Vector3 spawnOffset)
     {
         bossScript = script;
         rb = GetComponent<Rigidbody>();
         motionState = MotionState.Spreading;
+        spreadVelocity = direction * spreadSpeed;
+        this.spreadTime = spreadTime;
+        this.moveSpeed = moveSpeed;
+        targetOffset = spawnOffset;
     }
 
     private void FixedUpdate()
@@ -28,8 +36,17 @@ public class CottonMonster : MonoBehaviour
         switch (motionState)
         {
             case MotionState.Spreading:
+                rb.linearVelocity = spreadVelocity;
+                spreadTimer += Time.fixedDeltaTime;
+                if (spreadTimer >= spreadTime)
+                {
+                    motionState = MotionState.Moving;
+                    Debug.Log("TheEndOfSpread");
+                }
                 break;
             case MotionState.Moving:
+                Vector3 moveDirection = (bossScript.transform.position + targetOffset - transform.position).normalized;
+                rb.linearVelocity = moveDirection * moveSpeed;
                 break;
         }
     }

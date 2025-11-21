@@ -317,17 +317,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumpForce: 10
   moveSpeed: 3
-  speedNumber: 11.1
+  rotateSpeed: 11.1
   attackCollider: {fileID: 848999166529578570}
   weakCollider: {fileID: 776567048355683635}
+  damageCount2ZakoSummon: 5
+  zakoSummonCount: 3
+  zakoSummonWaitTime: 0.1
+  zakoPrefab: {fileID: 5814671194357170572, guid: 898fcfa99933ff743bda1e6cac2c5d57, type: 3}
+  zakoMinSpreadSpeed: 1
+  zakoMaxSpreadSpeed: 5
+  zakoSpreadTime: 1
+  zakoMoveSpeed: 1
+  walkTime: 2
+  jumpTargetOffsetY: 10
+  jump2DropWaitTime: 1
+  dropSpeed: 10
+  dropAttackTime: 0.1
+  weakTime: 4
+  standUpTime: 5
   groundCheckStartPoint: {x: 0, y: 0.5, z: 0}
   groundCheckEndPoint: {x: 0, y: -0.5, z: 0}
   groundLayer:
     serializedVersion: 2
     m_Bits: 8256
-  bossWeakTime: 3
-  bossWaitTime: 0.5
-  bossAttackTime: 1
 --- !u!1001 &8930874463722383933
 PrefabInstance:
   m_ObjectHideFlags: 0

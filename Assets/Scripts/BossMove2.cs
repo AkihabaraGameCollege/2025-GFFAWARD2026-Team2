@@ -40,6 +40,21 @@ public class BossMove2 : MonoBehaviour
     [Tooltip("雑魚のprefab")]
     private GameObject zakoPrefab;
     [SerializeField]
+    [Tooltip("雑魚の拡散スピード最小値")]
+    private float zakoMinSpreadSpeed;
+    [SerializeField]
+    [Tooltip("雑魚の拡散スピード最大値")]
+    private float zakoMaxSpreadSpeed;
+    [SerializeField]
+    [Tooltip("雑魚の拡散時間")]
+    private float zakoSpreadTime;
+    [SerializeField]
+    [Tooltip("雑魚の移動速度")]
+    private float zakoMoveSpeed;
+    [SerializeField]
+    [Tooltip("雑魚のスポーン地点")]
+    private Vector3 zakoSpawnOffset;
+    [SerializeField]
     [Tooltip("歩行継続時間")]
     private float walkTime = 2;
     [SerializeField]
@@ -86,7 +101,7 @@ public class BossMove2 : MonoBehaviour
     static readonly int grandID = Animator.StringToHash("grand");
     static readonly int dieID = Animator.StringToHash("die");
 
-    
+
 
     // 何回ダメージ食らったかのカウンター
     private int damageCounter = 0;
@@ -113,6 +128,7 @@ public class BossMove2 : MonoBehaviour
     }
 
     // StatusManagerBossから呼び出される
+    
     public void TakeDamage(int hp)
     {
         if (hp <= 0)
@@ -165,8 +181,9 @@ public class BossMove2 : MonoBehaviour
         float timer = 0;
         while (timer < walkTime)
         {
-            timer += Time.deltaTime;
-            yield return StartCoroutine(Walk());
+            timer += Time.fixedDeltaTime;
+            Walk();
+            yield return new WaitForFixedUpdate();
         }
         // 一連の処理
         yield return HipDrop();
@@ -174,7 +191,7 @@ public class BossMove2 : MonoBehaviour
         yield return StandUp();
     }
 
-    IEnumerator Walk()
+    private void Walk()
     {
         // 移動方向を取得
         Vector3 moveDirection = (player.transform.position - transform.position).normalized;
@@ -196,8 +213,6 @@ public class BossMove2 : MonoBehaviour
         Quaternion rotation = Quaternion.LookRotation(relativePos);
         // 現在の回転情報と、ターゲット方向の回転情報を補完する
         rigidbody.rotation = Quaternion.Slerp(transform.rotation, rotation, rotateSpeed);
-
-        yield return new WaitForFixedUpdate();
     }
 
     IEnumerator HipDrop()
@@ -249,17 +264,31 @@ public class BossMove2 : MonoBehaviour
         yield return new WaitForSeconds(standUpTime);
     }
 
+   
     IEnumerator SummonZako(int count)
     {
         for (int i = 0; i < count; i++)
         {
             // 召喚
-            GameObject go = Instantiate(zakoPrefab, transform.position, Quaternion.identity);
+            GameObject go = Instantiate(zakoPrefab, transform.position + zakoSpawnOffset, Quaternion.identity);
+            // 召喚したオブジェクトのscriptを持ってくる
             CottonMonster script = go.GetComponent<CottonMonster>();
+            // Yはプラス、XZは完全ランダムな方向を取得
+            Vector3 dir = new Vector3(Random.Range(-1f, 1f), Random.Range(0f, 1f), Random.Range(-1f, 1f)).normalized;
+            // 拡散スピードを決定
+            float spd = Random.Range(zakoMinSpreadSpeed, zakoMaxSpreadSpeed);
             // 初期化
-            script.Initialize(this);
+            script.Initialize(this, dir, spd,zakoSpreadTime, zakoMoveSpeed, zakoSpawnOffset);
             // 次までの待機
             yield return new WaitForSeconds(zakoSummonWaitTime);
         }
+    }
+
+    // 以下テスト
+    // Inspector上でBossMove2のComponentの右上にある三点リーダーをクリックするとあるよ
+    [ContextMenu("デバッグ用雑魚召喚ボタン")]
+    private void TesutoZakoShoukan()
+    {
+        StartCoroutine(SummonZako(1));
     }
 }
