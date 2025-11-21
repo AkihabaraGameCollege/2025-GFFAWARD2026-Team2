@@ -478,42 +478,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 169873332}
     m_Modifications:
-    - target: {fileID: 4526875377509006385, guid: ed207dd9b10190d4280ef4510e6ed7a4, type: 3}
-      propertyPath: jumpP
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 4526875377509006385, guid: ed207dd9b10190d4280ef4510e6ed7a4, type: 3}
-      propertyPath: moveP
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4526875377509006385, guid: ed207dd9b10190d4280ef4510e6ed7a4, type: 3}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 853917856}
-    - target: {fileID: 4526875377509006385, guid: ed207dd9b10190d4280ef4510e6ed7a4, type: 3}
-      propertyPath: stageScene
-      value: 
-      objectReference: {fileID: 169873331}
-    - target: {fileID: 4526875377509006385, guid: ed207dd9b10190d4280ef4510e6ed7a4, type: 3}
-      propertyPath: bossWeakTime
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 4526875377509006385, guid: ed207dd9b10190d4280ef4510e6ed7a4, type: 3}
-      propertyPath: targetObject
-      value: 
-      objectReference: {fileID: 853917855}
-    - target: {fileID: 4526875377509006385, guid: ed207dd9b10190d4280ef4510e6ed7a4, type: 3}
-      propertyPath: weakTimeText
-      value: 
-      objectReference: {fileID: 627924152}
-    - target: {fileID: 4526875377509006385, guid: ed207dd9b10190d4280ef4510e6ed7a4, type: 3}
-      propertyPath: groundLayer.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4526875377509006385, guid: ed207dd9b10190d4280ef4510e6ed7a4, type: 3}
-      propertyPath: groundLayer.Array.data[0].m_Bits
-      value: 64
-      objectReference: {fileID: 0}
     - target: {fileID: 8414863229317459475, guid: ed207dd9b10190d4280ef4510e6ed7a4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1579,17 +1543,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d91257cbbfeb9c489e22f4dfd16f244, type: 3}
---- !u!1 &853917855 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 67187401318048243, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
-  m_PrefabInstance: {fileID: 1358945542}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &853917856 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2508532194529083278, guid: 80707021696ad9c4587f08a5defbcaad, type: 3}
   m_PrefabInstance: {fileID: 1358945542}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 853917855}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 52df092b424ca4e47885df2e5ca8d66b, type: 3}

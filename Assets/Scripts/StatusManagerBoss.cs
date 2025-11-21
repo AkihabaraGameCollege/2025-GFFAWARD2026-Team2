@@ -59,7 +59,7 @@ public class StatusManagerBoss : MonoBehaviour
         // エフェクトをインスタンス化
         GameObject effect = Instantiate(damageEffect);
 
-        effect.transform.position = damageEffect.transform.position;// effect変数のエフェクトの位置をdamageEffectの位置と同期させる（中山が編集）
+        effect.transform.parent = transform;
         Destroy(effect, 5);// エフェクトを5秒後に破壊（中山が編集）
 
         // ラストスパートBGM再生判定（中山が編集）

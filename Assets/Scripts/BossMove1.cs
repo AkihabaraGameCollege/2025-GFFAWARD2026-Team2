@@ -75,13 +75,6 @@ public class BossMove1 : MonoBehaviour
     // ボスオブジェクト（中山が編集）
     [SerializeField]
     private GameObject bossObject;
-    // 弱体化時間表示用テキスト（中山が編集）
-    [SerializeField]
-    private GameObject weakTimeText = null;
-
-    // ステージシーン参照用（中山が編集）
-    [SerializeField]
-    private StageScene stageScene = null;
     // プレイヤー参照用（中山が編集）
     [SerializeField]
     private Player player;
@@ -125,7 +118,6 @@ public class BossMove1 : MonoBehaviour
         weakCollider.enabled = false;// 弱点判定無効化（中山が編集）
         attackCollider.enabled = false;// 攻撃判定無効化（中山が編集）
         bodyAttackCollider.enabled = true;// ボス本体判定有効化（中山が編集）
-        weakTimeText.SetActive(false);// 弱体化時間表示無効化（中山が編集）
         isDefeatSounding = true;// ボスがやられたときのSE再生判定用（中山が編集）
         collider2Player.enabled = false; // プレイヤーとのCollisionColliderを無効化 (富里が編集)
 
@@ -135,6 +127,8 @@ public class BossMove1 : MonoBehaviour
     // ボスの開始処理（中山が編集）
     void Start()
     {
+
+        StageScene.Instance.HideWeakText();
         StartCoroutine(OnMove());// 初動行動開始（中山が編集）
     }
 
@@ -352,7 +346,7 @@ public class BossMove1 : MonoBehaviour
     // 弱体化処理（中山が編集）
     private void Weaking()
     {
-        weakTimeText.SetActive(true);// 弱体化時間表示有効化（中山が編集）
+        StageScene.Instance.ShowWeakText();
         weakCollider.enabled = true;// 弱点判定有効化（中山が編集）
         bodyAttackCollider.enabled = false;// ボス本体判定無効化（中山が編集）
     }
@@ -363,7 +357,7 @@ public class BossMove1 : MonoBehaviour
         animator.SetTrigger(wakeUpID);// 起き上がりアニメーション再生（中山が編集）
 
         weakCollider.enabled = false;// 弱点判定無効化（中山が編集）
-        weakTimeText.SetActive(false);// 弱体化時間表示無効化（中山が編集）
+        StageScene.Instance.HideWeakText();
         thisCollider.enabled = true;// ボス本体判定有効化（中山が編集）
         collider2Player.enabled = false; // プレイヤーとのCollisionColliderを無効化 (富里が編集)
     }
@@ -371,7 +365,7 @@ public class BossMove1 : MonoBehaviour
     private void Die()
     {
         AudioPlayer.instance.StopLoopSE();// ボス撃破SE再生（中山が編集）
-        stageScene.StageClear();// ステージクリア処理（中山が編集）
+        StageScene.Instance.StageClear();// ステージクリア処理（中山が編集）
         Destroy(gameObject);// ボスオブジェクトを破壊（中山が編集）
     }
 }
