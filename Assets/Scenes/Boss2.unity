@@ -478,11 +478,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4526875377509006385, guid: ed207dd9b10190d4280ef4510e6ed7a4, type: 3}
       propertyPath: jumpP
-      value: 200
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 4526875377509006385, guid: ed207dd9b10190d4280ef4510e6ed7a4, type: 3}
       propertyPath: moveP
-      value: 22.2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4526875377509006385, guid: ed207dd9b10190d4280ef4510e6ed7a4, type: 3}
       propertyPath: player
@@ -504,6 +504,14 @@ PrefabInstance:
       propertyPath: weakTimeText
       value: 
       objectReference: {fileID: 627924152}
+    - target: {fileID: 4526875377509006385, guid: ed207dd9b10190d4280ef4510e6ed7a4, type: 3}
+      propertyPath: groundLayer.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4526875377509006385, guid: ed207dd9b10190d4280ef4510e6ed7a4, type: 3}
+      propertyPath: groundLayer.Array.data[0].m_Bits
+      value: 64
+      objectReference: {fileID: 0}
     - target: {fileID: 8414863229317459475, guid: ed207dd9b10190d4280ef4510e6ed7a4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
