@@ -156,9 +156,6 @@ public class Player : MonoBehaviour
 
     private void StatusReset()
     {
-        health = maxHealth;
-        attackCollider.transform.localScale = attackReach;
-
         if (PlayerPrefs.GetInt("AttackLevel", 1) == 2)
         {
             attackReach *= attackReachMagnification;
@@ -178,6 +175,8 @@ public class Player : MonoBehaviour
         {
             moveSpeed *= moveSpeedMagnification;
         }
+        health = maxHealth;
+        attackCollider.transform.localScale = attackReach;
     }
 
     public void Sleep()
