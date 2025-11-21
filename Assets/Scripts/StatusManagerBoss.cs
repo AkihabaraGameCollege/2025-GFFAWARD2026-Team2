@@ -13,7 +13,7 @@ public class StatusManagerBoss : MonoBehaviour
 
     //hp現在値
     [SerializeField]
-    private int maxHealth = 15;
+    public int maxHealth = 15;
     public int health;
     //ラストスパートHP（中山が編集）
     [SerializeField]
@@ -50,7 +50,7 @@ public class StatusManagerBoss : MonoBehaviour
         // HPを減少させ、ダメージエフェクトを発生させる
         health -= damage;
 
-        StageScene.Instance.DecreaseHpBoss(health,maxHealth);//HPゲージを減少させる（中山が編集）
+        StageScene.Instance.BossBarUpdate(health,maxHealth);//HPゲージを減少させる（中山が編集）
 
         // エフェクトをインスタンス化
         GameObject effect = Instantiate(damageEffect);

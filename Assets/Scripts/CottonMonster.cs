@@ -8,6 +8,7 @@ public class CottonMonster : MonoBehaviour
 
     private Vector3 spreadVelocity = Vector3.zero;
     private float moveSpeed = 0;
+    private float absorbRadius = 0;
 
     private float spreadTimer = 0;
     private float spreadTime = 0;
@@ -26,7 +27,7 @@ public class CottonMonster : MonoBehaviour
         Moving
     }
     private MotionState motionState = MotionState.Spreading;
-    public void Initialize(BossMove2 script, Vector3 direction, float spreadSpeed, float spreadTime, float moveSpeed, Vector3 spawnOffset)
+    public void Initialize(BossMove2 script, Vector3 direction, float spreadSpeed, float spreadTime, float moveSpeed, Vector3 spawnOffset, float absorbRad)
     {
         rb = GetComponent<Rigidbody>();
         hitbox.OnHit += OnDamageTaken;
@@ -38,6 +39,7 @@ public class CottonMonster : MonoBehaviour
         this.spreadTime = spreadTime;
         this.moveSpeed = moveSpeed;
         targetOffset = spawnOffset;
+        absorbRadius = absorbRad * absorbRad;
     }
 
     private void FixedUpdate()
@@ -53,8 +55,15 @@ public class CottonMonster : MonoBehaviour
                 }
                 break;
             case MotionState.Moving:
-                Vector3 moveDirection = (bossScript.transform.position + targetOffset - transform.position).normalized;
-                rb.linearVelocity = moveDirection * moveSpeed;
+                Vector3 diff = bossScript.transform.position + targetOffset - transform.position;
+
+                if (diff.sqrMagnitude <= absorbRadius)
+                {
+                    bossScript.Heal();
+                    OnDamageTaken();
+                }
+
+                rb.linearVelocity = diff.normalized * moveSpeed;
                 break;
         }
     }

@@ -55,6 +55,9 @@ public class BossMove2 : MonoBehaviour
     [Tooltip("雑魚のスポーン地点")]
     private Vector3 zakoSpawnOffset;
     [SerializeField]
+    [Tooltip("雑魚を吸収可能な範囲")]
+    private float zakoAbsorbRadius;
+    [SerializeField]
     [Tooltip("歩行継続時間")]
     private float walkTime = 2;
     [SerializeField]
@@ -272,9 +275,18 @@ public class BossMove2 : MonoBehaviour
             // 拡散スピードを決定
             float spd = Random.Range(zakoMinSpreadSpeed, zakoMaxSpreadSpeed);
             // 初期化
-            script.Initialize(this, dir, spd,zakoSpreadTime, zakoMoveSpeed, zakoSpawnOffset);
+            script.Initialize(this, dir, spd,zakoSpreadTime, zakoMoveSpeed, zakoSpawnOffset,zakoAbsorbRadius);
             // 次までの待機
             yield return new WaitForSeconds(zakoSummonWaitTime);
+        }
+    }
+
+    public void Heal()
+    {
+        if (statusManager.health < statusManager.maxHealth)
+        {
+            statusManager.health++;
+            StageScene.Instance.BossBarUpdate(statusManager.health, statusManager.maxHealth);
         }
     }
 

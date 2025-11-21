@@ -301,7 +301,7 @@ public class StageScene : MonoBehaviour
     }
 
     // ボスのHPを減少させるメソッド（中山が編集）
-    public void DecreaseHpBoss(float health, int maxhealth)
+    public void BossBarUpdate(float health, int maxhealth)
     {
         bossLifeImage.fillAmount = health / maxhealth;// 15回攻撃で0になるように調整
     }
