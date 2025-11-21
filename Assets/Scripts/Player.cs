@@ -93,6 +93,15 @@ public class Player : MonoBehaviour
     [Tooltip("被弾エフェクト")]
     GameObject damageEffect;
 
+    [Header("その他")]
+    [SerializeField]
+    [Tooltip("Offset")]
+    private Vector3[] wallCheckerOffset = null;
+    [SerializeField]
+    [Tooltip("Distance")]
+    private float wallCheckerDistance = 0;
+
+
     private Vector2 moveInput;// 移動入力ベクトルを移植（中山が編集）
 
     new private Rigidbody rigidbody;// Rigidbody コンポーネントの参照
@@ -289,8 +298,27 @@ public class Player : MonoBehaviour
             cameraRight.y = 0;
 
             Vector3 moveDirection = (cameraForward * moveInput.y + cameraRight * moveInput.x).normalized;//正規化して移動方向ベクトルを計算
-            rigidbody.linearVelocity = moveDirection * moveSpeed + new Vector3(0, rigidbody.linearVelocity.y, 0);//移動ベクトルを速度に設定
 
+            // Wall Check
+            bool isCasted = false;
+            // すべてのレイヤーで繰り返し
+            for (int i = 0; i < groundLayer.Length; i++)
+            {
+                // すべてのoffsetで繰り返す
+                for (int j = 0; j < wallCheckerOffset.Length; j++)
+                {
+                    isCasted = Physics.Raycast(transform.position + wallCheckerOffset[j], moveDirection, wallCheckerDistance, groundLayer[i]);
+                    // 一個でもtrueがあったらbreakして
+                    if (isCasted) break;
+                }
+                if (isCasted) break;
+            }
+
+            // falseじゃないと発動しない
+            if (!isCasted)
+            {
+                rigidbody.linearVelocity = moveDirection * moveSpeed + new Vector3(0, rigidbody.linearVelocity.y, 0);//移動ベクトルを速度に設定
+            }
 
             // キャラクターを移動する方向に向かせるための処理
             if (moveDirection != Vector3.zero)  // 何かしら移動が発生している場合のみ回転させる
