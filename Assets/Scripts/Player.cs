@@ -301,7 +301,10 @@ public class Player : MonoBehaviour
             // すべてのoffsetで繰り返す
             for (int i = 0; i < wallCheckerPos.Length; i++)
             {
-                isCasted = Physics.Raycast(transform.position + wallCheckerPos[i], moveDirection, wallCheckerDistance, groundLayer);
+                Vector3 offset = transform.forward * wallCheckerPos[i].x + transform.right * wallCheckerPos[i].z;
+                offset.y = wallCheckerPos[i].y;
+
+                isCasted = Physics.Raycast(transform.position + offset, moveDirection, wallCheckerDistance, groundLayer);
                 // 一個でもtrueがあったらbreakして
                 if (isCasted) break;
             }
@@ -469,7 +472,6 @@ public class Player : MonoBehaviour
     private void Die()
     {
         animator.SetTrigger(dieID);// Dieアニメーションを開始（中山が編集）
-        Destroy(gameObject, 2f);//3秒後にプレイヤーオブジェクトを破壊（中山が編集）
         StageScene.Instance.GameOver(); // ゲームオーバー処理を呼び出す
     }
 
@@ -484,6 +486,20 @@ public class Player : MonoBehaviour
         else
         {
             Cursor.lockState = CursorLockMode.None;// カーソルのロックを解除（中山が編集）
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Vector3 rushDirection = transform.forward;
+        for (int i = 0; i < wallCheckerPos.Length; i++)
+        {
+            Vector3 offset = transform.forward * wallCheckerPos[i].x + transform.right * wallCheckerPos[i].z;
+            offset.y = wallCheckerPos[i].y;
+
+            Gizmos.color = Color.cyan;
+
+            Gizmos.DrawLine(transform.position + offset, transform.position + offset + rushDirection * wallCheckerDistance);
         }
     }
 }

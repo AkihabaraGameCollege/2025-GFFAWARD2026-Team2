@@ -1,9 +1,10 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class BossMove3 : MonoBehaviour
 {
-    new private Rigidbody rigidbody;//Rigidbodyコンポーネント参照用（中山が編集）
+    private Rigidbody rb;//Rigidbodyコンポーネント参照用（中山が編集）
     [Header("ステータス")]
     [SerializeField]
     [Tooltip("ジャンプ力")]
@@ -30,8 +31,13 @@ public class BossMove3 : MonoBehaviour
     private Player player;
     private StatusManagerBoss statusManager;
     [Header("その他")]
+    [SerializeField]
+    [Tooltip("Offset")]
+    private Vector3[] wallCheckerPos = null;
+    [SerializeField]
+    [Tooltip("Distance")]
+    private float wallCheckerDistance = 0;
 
-    
 
     [SerializeField]
     [Tooltip("地面のレイヤー")]
@@ -51,10 +57,11 @@ public class BossMove3 : MonoBehaviour
 
     // 何回ダメージ食らったかのカウンター
     private int damageCounter = 0;
+    private float rushWaitTime = 1;
 
     void Start()
     {
-        rigidbody = GetComponent<Rigidbody>();//Rigidbodyコンポーネント取得（中山が編集）
+        rb = GetComponent<Rigidbody>();//Rigidbodyコンポーネント取得（中山が編集）
         animator = GetComponent<Animator>();//Animatorコンポーネント取得（中山が編集）
         statusManager = GetComponent<StatusManagerBoss>();
 
@@ -111,8 +118,11 @@ public class BossMove3 : MonoBehaviour
 
     IEnumerator MainMotion()
     {
+        // HP8以下なら7回、でなければ5回繰り返す
         for (int i = 0; i < ((statusManager.health <= 8) ? 7 : 5); i++)
         {
+            rushWaitTime = 1;
+            yield return StartCoroutine(Aim());
             yield return StartCoroutine(Rush());
         }
         //Weak出現
@@ -122,23 +132,59 @@ public class BossMove3 : MonoBehaviour
 
     }
 
-    IEnumerator Rush()
+    IEnumerator Aim()
     {
         float timer = 0;
-        while (timer <= 2)
+        while (timer <= rushWaitTime)
         {
-            // ここで力を加える
+            // ここでプレイヤーの方を向いてる
+            // 移動方向を取得
+            Vector3 relativePos = player.transform.position - transform.position;
+            // Yをなくす
+            relativePos.y = 0;
+            // 方向を、回転情報に変換
+            Quaternion rotation = Quaternion.LookRotation(relativePos);
+            // 現在の回転情報と、ターゲット方向の回転情報を補完する
+            rb.rotation = Quaternion.Slerp(transform.rotation, rotation, rotateSpeed);
 
-            // 壁にぶつかったらbreakさせよう
+            // 敵を検知してドリフトをする
 
             timer += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
-        timer = 0;
-        while (timer <= 1)
-        {
-            // ここでプレイヤーの方を向いてる
+    }
 
+    IEnumerator Rush()
+    {
+        float timer = 0;
+        Vector3 rushDirection = transform.forward;
+        bool isCasted = false;
+        while (timer <= 2 && !isCasted)
+        {
+            // ここで力を加える
+            rb.linearVelocity = rushDirection * moveSpeed;
+            // 壁にぶつかったらbreakさせよう
+            // すべてのoffsetで繰り返す
+            for (int i = 0; i < wallCheckerPos.Length; i++)
+            {
+                Vector3 offset = transform.forward * wallCheckerPos[i].x + transform.right * wallCheckerPos[i].z;
+                offset.y = wallCheckerPos[i].y;
+
+                isCasted = Physics.Raycast(transform.position + (offset), rushDirection, wallCheckerDistance, groundLayer);
+                // 一個でもtrueがあったらbreakして
+                if (isCasted) break;
+            }
+
+            if (isCasted)
+            {
+                // trueならwaittimeを短くする上にwhileを抜ける
+                rushWaitTime = 0.5f;
+                Debug.Log("CAST");
+            }
+            else
+            {
+                rushWaitTime = 1;
+            }
             timer += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
@@ -153,7 +199,7 @@ public class BossMove3 : MonoBehaviour
         moveDirection.y = 0;
 
         // 移動
-        rigidbody.linearVelocity = moveDirection * moveSpeed;
+        rb.linearVelocity = moveDirection * moveSpeed;
 
         // 方向転換
         // 補完スピードを決める
@@ -165,6 +211,19 @@ public class BossMove3 : MonoBehaviour
         // 方向を、回転情報に変換
         Quaternion rotation = Quaternion.LookRotation(relativePos);
         // 現在の回転情報と、ターゲット方向の回転情報を補完する
-        rigidbody.rotation = Quaternion.Slerp(transform.rotation, rotation, rotateSpeed);
+        rb.rotation = Quaternion.Slerp(transform.rotation, rotation, rotateSpeed);
+    }
+    private void OnDrawGizmos()
+    {
+        Vector3 rushDirection = transform.forward;
+        for (int i = 0; i < wallCheckerPos.Length; i++)
+        {
+            Vector3 offset = transform.forward * wallCheckerPos[i].x + transform.right * wallCheckerPos[i].z;
+            offset.y = wallCheckerPos[i].y;
+
+            Gizmos.color = Color.red;
+
+            Gizmos.DrawLine(transform.position + offset, transform.position + offset + rushDirection * wallCheckerDistance);
+        }
     }
 }

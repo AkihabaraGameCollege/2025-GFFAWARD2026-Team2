@@ -193,13 +193,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpForce: 10
-  moveSpeed: 3
+  moveSpeed: 10
   rotateSpeed: 11.1
   attackCollider: {fileID: 1414895318605274009}
   weakCollider: {fileID: 7549347237955073667}
+  wallCheckerPos:
+  - {x: 4, y: 2, z: 0}
+  wallCheckerDistance: 3
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
 --- !u!1001 &9175231928098181166
 PrefabInstance:
   m_ObjectHideFlags: 0
