@@ -22,7 +22,7 @@ TagManager:
   - PlayerBody
   - EnemyCollision2Player
   - CottonBody
-  - 
+  - TruckPlayerCheckCollider
   - 
   - 
   - 

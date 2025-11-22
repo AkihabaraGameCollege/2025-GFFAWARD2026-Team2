@@ -7,9 +7,6 @@ public class BossMove3 : MonoBehaviour
     private Rigidbody rb;//Rigidbodyコンポーネント参照用（中山が編集）
     [Header("ステータス")]
     [SerializeField]
-    [Tooltip("ジャンプ力")]
-    private float jumpForce = 10;
-    [SerializeField]
     [Tooltip("移動速度")]
     private float moveSpeed = 3;
     [SerializeField]
@@ -24,9 +21,12 @@ public class BossMove3 : MonoBehaviour
     [SerializeField]
     [Tooltip("弱点コライダー")]
     private Collider weakCollider;
+    [SerializeField]
+    [Tooltip("ドリブル用プレイヤー検知コライダー")]
+    private PlayerCheckCollider playerCheckCollider;
 
     [Header("ボス固有の設定")]
-    
+
 
     private Player player;
     private StatusManagerBoss statusManager;
@@ -55,9 +55,8 @@ public class BossMove3 : MonoBehaviour
 
 
 
-    // 何回ダメージ食らったかのカウンター
-    private int damageCounter = 0;
     private float rushWaitTime = 1;
+    private bool isPlayerCheckColliderEntered = false;
 
     void Start()
     {
@@ -67,22 +66,16 @@ public class BossMove3 : MonoBehaviour
 
         // find with tagってやっていいのかな
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
-
-        statusManager.OnDamageTaken += TakeDamage;
         statusManager.OnDeath += Die;
+        playerCheckCollider.Enter += OnPlayerCheckColliderEnter;
 
         weakCollider.enabled = false;//弱点判定無効化（中山が編集）
         attackCollider.enabled = false;//攻撃判定無効化（中山が編集）
+        playerCheckCollider.Hide();
         StageScene.Instance.HideWeakText();
 
         // 行動のコルーチンを起動
         StartCoroutine(MainLoop());//行動パターン開始（中山が編集）
-    }
-
-    // StatusManagerBossから呼び出される
-    public void TakeDamage()
-    {
-        
     }
 
     public void Die()
@@ -95,7 +88,7 @@ public class BossMove3 : MonoBehaviour
     {
         if (statusManager != null)
         {
-            statusManager.OnDamageTaken -= TakeDamage;
+            playerCheckCollider.Enter -= OnPlayerCheckColliderEnter;
         }
     }
 
@@ -123,19 +116,33 @@ public class BossMove3 : MonoBehaviour
         {
             rushWaitTime = 1;
             yield return StartCoroutine(Aim());
-            yield return StartCoroutine(Rush());
+            if (isPlayerCheckColliderEntered)
+            {
+                // Drift
+                yield return StartCoroutine(Drift());
+                // 突進回数にはカウントしない
+                i--;
+                // TEST
+                Debug.Log("DRIFT");
+            }
+            else
+            {
+                yield return StartCoroutine(Rush());
+            }
         }
         //Weak出現
-
+        weakCollider.enabled = true;
         yield return new WaitForSeconds(15);
         //weak消滅
-
+        weakCollider.enabled = false;
     }
 
     IEnumerator Aim()
     {
         float timer = 0;
-        while (timer <= rushWaitTime)
+        isPlayerCheckColliderEntered = false;
+        playerCheckCollider.Show();
+        while (timer <= rushWaitTime && !isPlayerCheckColliderEntered)
         {
             // ここでプレイヤーの方を向いてる
             // 移動方向を取得
@@ -147,11 +154,21 @@ public class BossMove3 : MonoBehaviour
             // 現在の回転情報と、ターゲット方向の回転情報を補完する
             rb.rotation = Quaternion.Slerp(transform.rotation, rotation, rotateSpeed);
 
-            // 敵を検知してドリフトをする
-
             timer += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
+        playerCheckCollider.Hide();
+    }
+
+    public void OnPlayerCheckColliderEnter()
+    {
+        isPlayerCheckColliderEntered = true;
+    }
+
+    IEnumerator Drift()
+    {
+        // 仮で1秒くらい待つ
+        yield return new WaitForSeconds(1);
     }
 
     IEnumerator Rush()
@@ -188,30 +205,6 @@ public class BossMove3 : MonoBehaviour
             timer += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
-    }
-
-    private void Walk()
-    {
-        // 移動方向を取得
-        Vector3 moveDirection = (player.transform.position - transform.position).normalized;
-
-        // Yをなくす
-        moveDirection.y = 0;
-
-        // 移動
-        rb.linearVelocity = moveDirection * moveSpeed;
-
-        // 方向転換
-        // 補完スピードを決める
-        // ターゲット方向のベクトルを取得
-        Vector3 relativePos = player.gameObject.transform.position - transform.position;
-
-        relativePos.y = 0; // X軸の回転は禁止する（中山が編集）
-
-        // 方向を、回転情報に変換
-        Quaternion rotation = Quaternion.LookRotation(relativePos);
-        // 現在の回転情報と、ターゲット方向の回転情報を補完する
-        rb.rotation = Quaternion.Slerp(transform.rotation, rotation, rotateSpeed);
     }
     private void OnDrawGizmos()
     {
