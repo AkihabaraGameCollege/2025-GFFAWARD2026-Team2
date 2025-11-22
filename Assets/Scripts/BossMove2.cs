@@ -280,7 +280,8 @@ public class BossMove2 : MonoBehaviour
 
     public void Heal()
     {
-        if (statusManager.health < statusManager.maxHealth)
+        Debug.Log(statusManager.health % (statusManager.maxHealth / 3));
+        if (statusManager.health % (statusManager.maxHealth / 3) != 0)
         {
             statusManager.health++;
             StageScene.Instance.BossBarUpdate(statusManager.health, statusManager.maxHealth);

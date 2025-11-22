@@ -80,4 +80,15 @@ public class StatusManagerBoss : MonoBehaviour
             hitbox.OnHit -= Damage;
         }
     }
+
+    [ContextMenu("デバッグ用にダメージを食らわせる")]
+    void DamageForDebug()
+    {
+        if (!Application.isPlaying)
+        {
+            Debug.LogError("プレイ中のみ実行可能です");
+            return;
+        }
+        Damage(1);
+    }
 }
