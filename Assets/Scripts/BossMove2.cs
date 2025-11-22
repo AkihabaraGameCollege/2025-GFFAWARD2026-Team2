@@ -62,8 +62,11 @@ public class BossMove2 : MonoBehaviour
     [Tooltip("ジャンプ目標のY軸オフセット")]
     private float jumpTargetOffsetY = 10;
     [SerializeField]
-    [Tooltip("ジャンプ後のドロップまでの待機時間")]
-    private float jump2DropWaitTime = 1;
+    [Tooltip("ジャンプ後の静止までの待機時間")]
+    private float jump2FreezeWaitTime = 1;
+    [SerializeField]
+    [Tooltip("空中での静止時間")]
+    private float jumpFreezeTime = 1;
     [SerializeField]
     [Tooltip("着地時のスピード")]
     private float dropSpeed = 10;
@@ -218,8 +221,15 @@ public class BossMove2 : MonoBehaviour
         // アニメーション
 
         // ちょっとまつ
-        yield return new WaitForSeconds(jump2DropWaitTime);
+        yield return new WaitForSeconds(jump2FreezeWaitTime);
+
+        // フリーズ
+        rigidbody.linearVelocity = Vector3.zero;
+        rigidbody.useGravity = false;
+        yield return new WaitForSeconds(jumpFreezeTime);
+
         // ドロップ
+        rigidbody.useGravity = true;
         rigidbody.linearVelocity = Vector3.down * dropSpeed;
 
         // 地面に着地するまで待つ
