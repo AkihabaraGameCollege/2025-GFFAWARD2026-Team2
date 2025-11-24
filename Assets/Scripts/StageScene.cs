@@ -106,11 +106,11 @@ public class StageScene : MonoBehaviour
         // ポーズUIの各ボタンが押されたときのイベントを登録
         pause.OnResumeButtonClick.AddListener(Resume);
         pause.OnRetryButtonClick.AddListener(Retry);
-        pause.OnExitButtonClick.AddListener(Exit);
+        pause.OnExitButtonClick.AddListener(Title);
 
         // ゲームオーバーUIの各ボタンが押されたときのイベントを登録(中山が編集)
         gameOverUI.OnRetryButtonClick.AddListener(Retry);
-        gameOverUI.OnExitButtonClick.AddListener(Exit);
+        gameOverUI.OnTitleButtonClick.AddListener(Title);
 
         stageClearUI.OnNextButtonClick.AddListener(LoadNextStage);// ステージクリアーUIのNEXTボタンにイベントを登録（中山が編集）
         animator = GetComponent<Animator>();// コンポーネントを参照しておく(中山が編集)
@@ -202,7 +202,7 @@ public class StageScene : MonoBehaviour
     }
 
     // このステージを抜けてタイトル画面を読み込みます。
-    public void Exit()
+    public void Title()
     {
         StartCoroutine(OnLoadScene("Title"));
     }

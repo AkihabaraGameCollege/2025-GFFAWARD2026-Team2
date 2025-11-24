@@ -10,16 +10,16 @@ public class GameOverUI : MonoBehaviour
     [SerializeField]
     private UnityEvent onRetryButtonClick = null;
     // Exit Button が押されたときに発生する UnityEvent を取得または設定します。
-    public UnityEvent OnExitButtonClick => onExitButtonClick;
+    public UnityEvent OnTitleButtonClick => onTitleButtonClick;
     [SerializeField]
-    private UnityEvent onExitButtonClick = null;
+    private UnityEvent onTitleButtonClick = null;
 
     // Retry Button を指定します。
     [SerializeField]
     private Button retryButton = null;
     // Exit Button を指定します。
     [SerializeField]
-    private Button exitButton = null;
+    private Button titleButton = null;
 
     // コンポーネントを事前に参照しておく変数
     Animator animator;
@@ -38,10 +38,10 @@ public class GameOverUI : MonoBehaviour
             animator.SetTrigger(outroId);
             OnRetryButtonClick.Invoke();
         });
-        exitButton.onClick.AddListener(() =>
+        titleButton.onClick.AddListener(() =>
         {
             animator.SetTrigger(outroId);
-            OnExitButtonClick.Invoke();
+            OnTitleButtonClick.Invoke();
         });
     }
 
