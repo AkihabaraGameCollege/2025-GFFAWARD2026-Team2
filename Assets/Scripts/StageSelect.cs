@@ -20,6 +20,12 @@ public class StageSelect : MonoBehaviour
     [SerializeField]
     private float reqEscapePressTime = 3f;
 
+    // 登録・音楽再生用（中山が編集）
+    void Awake()
+    {
+        AudioPlayer.instance.PlayBGM(13); // stageSelectMusicを再生(中山が編集)
+    }
+
     // ボス戦1へ行くボタンが押されたときに呼び出されるメソッド（中山が編集）
     public void PressBoss1Button()
     {

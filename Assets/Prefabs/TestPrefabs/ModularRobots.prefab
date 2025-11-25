@@ -11002,13 +11002,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a73be9bc8e9ee934c9a649f079631af9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MainObject: {fileID: 8546629743395941959}
   destroyEffect: {fileID: 6723493680042377677}
   damageEffect: {fileID: 5075700349867910352}
-  maxHp: 15
+  maxHealth: 15
+  health: 0
   lastSpurtHP: 5
   bossLastBGM: 1
-  gameDirector: {fileID: 0}
+  bossDamageSE: 99
+  hitbox: {fileID: 0}
 --- !u!114 &2317411829476705113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11033,7 +11034,7 @@ MonoBehaviour:
   upTime: 1
   jumpAirTime: 2
   landTime: 4
-  standTime: 2
+  standTime: 1
   distanceNumber: 5
   hammerAttackTime: 30
   bossDieTime: 3
@@ -11047,8 +11048,6 @@ MonoBehaviour:
   bodyAttackCollider: {fileID: 4073267599801449738}
   targetObject: {fileID: 0}
   bossObject: {fileID: 8546629743395941959}
-  weakTimeText: {fileID: 0}
-  stageScene: {fileID: 0}
   player: {fileID: 0}
   StatusManagerBoss: {fileID: 1313018972993166331}
   collider2Player: {fileID: 6437272643058724069}

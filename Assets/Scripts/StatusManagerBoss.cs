@@ -21,6 +21,9 @@ public class StatusManagerBoss : MonoBehaviour
     //ラストスパートBGM（中山が編集）
     [SerializeField]
     private int bossLastBGM = 1;
+    //ボス被弾SE（中山が編集）
+    [SerializeField]
+    private int bossDamageSE = 1;
 
     [SerializeField]
     [Tooltip("HitBox")]
@@ -45,6 +48,8 @@ public class StatusManagerBoss : MonoBehaviour
 
     public void Damage(int damage)
     {
+        AudioPlayer.instance.PlaySE(bossDamageSE); // bossDamageを再生(中山が編集)
+
         damageEffect.SetActive(true);// 被弾エフェクト表示（中山が編集）
 
         // HPを減少させ、ダメージエフェクトを発生させる

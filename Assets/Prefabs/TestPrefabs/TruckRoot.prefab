@@ -136,7 +136,8 @@ MonoBehaviour:
   maxHealth: 15
   health: 0
   lastSpurtHP: 5
-  bossLastBGM: 1
+  bossLastBGM: 5
+  bossDamageSE: 99
   hitbox: {fileID: 7328600477937234683}
 --- !u!65 &7287977716851024897
 BoxCollider:
@@ -193,7 +194,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be12adef7acdf2245ac53f2d6afbd23c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: 10
   moveSpeed: 10
   rotateSpeed: 11.1
   attackCollider: {fileID: 1414895318605274009}

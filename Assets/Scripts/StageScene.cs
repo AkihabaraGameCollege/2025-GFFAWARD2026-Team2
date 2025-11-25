@@ -122,8 +122,7 @@ public class StageScene : MonoBehaviour
         // 各シーンに対応したBGMを再生
         if (activeSceneName == boss1StageName)
         {
-            //BossMove1のBGM再生処理と被るためコメントアウト（中山が編集）
-            //AudioPlayer.instance.PlayBGM(0);//boss1Musicを再生(富里が編集)
+            AudioPlayer.instance.PlayBGM(0);//boss1Musicを再生(富里が編集)
         }
         else if (activeSceneName == boss2StageName)
         {

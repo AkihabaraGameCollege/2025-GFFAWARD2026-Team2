@@ -235,7 +235,8 @@ public class BossMove1 : MonoBehaviour
         // 歩行SE再生ループ（中山が編集）
         while (true && isMoving)
         {
-            AudioPlayer.instance.PlaySE(5, false);// 歩行SE再生（中山が編集）
+            AudioPlayer.instance.PlaySE(5, false);// 歩行足踏みSE再生（中山が編集）
+            AudioPlayer.instance.PlaySE(6);// 歩行動作SE再生（中山が編集）
             yield return new WaitForSeconds(moveSoundMTime);// 少し待機（中山が編集）
         }
     }

@@ -251,7 +251,7 @@ MonoBehaviour:
   maxHealth: 15
   health: 0
   lastSpurtHP: 5
-  bossLastBGM: 1
+  bossLastBGM: 3
   hitbox: {fileID: 954866801939723954}
 --- !u!95 &3476611586394716549
 Animator:
@@ -304,7 +304,8 @@ MonoBehaviour:
   zakoAbsorbRadius: 2
   walkTime: 2
   jumpTargetOffsetY: 20
-  jump2DropWaitTime: 1
+  jump2FreezeWaitTime: 1
+  jumpFreezeTime: 1
   dropSpeed: 10
   dropAttackTime: 0.1
   weakTime: 4

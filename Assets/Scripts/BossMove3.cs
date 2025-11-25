@@ -80,6 +80,7 @@ public class BossMove3 : MonoBehaviour
 
     public void Die()
     {
+        AudioPlayer.instance.PlaySE(12); // BossDieを再生（富里が編集）
         StageScene.Instance.StageClear();
         Destroy(gameObject);
     }
@@ -88,6 +89,7 @@ public class BossMove3 : MonoBehaviour
     {
         if (statusManager != null)
         {
+            AudioPlayer.instance.PlaySE(13); // BossDestroyを再生（富里が編集）
             playerCheckCollider.Enter -= OnPlayerCheckColliderEnter;
         }
     }
@@ -167,12 +169,14 @@ public class BossMove3 : MonoBehaviour
 
     IEnumerator Drift()
     {
+        AudioPlayer.instance.PlaySE(10); // BossDriftを再生（中山が編集）
         // 仮で1秒くらい待つ
         yield return new WaitForSeconds(1);
     }
 
     IEnumerator Rush()
     {
+        AudioPlayer.instance.PlaySE(9); // BossRushを再生（中山が編集）
         float timer = 0;
         Vector3 rushDirection = transform.forward;
         bool isCasted = false;

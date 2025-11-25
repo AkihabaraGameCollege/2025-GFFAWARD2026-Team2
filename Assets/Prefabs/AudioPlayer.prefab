@@ -78,6 +78,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 280ab3cf4a2728247b6f13c8f3e3be8a, type: 3}
   - {fileID: 8300000, guid: 9549d065fcbae524594f5b95a7f4010a, type: 3}
   - {fileID: 8300000, guid: d6c37f75256151d47aa6380efbcd8a0d, type: 3}
+  - {fileID: 8300000, guid: 039a164368829b54eb0e888d62f01103, type: 3}
+  - {fileID: 8300000, guid: b160e77e750736842be5a823e943c390, type: 3}
   bgmSource: {fileID: 1175352549287661820}
   seSource: {fileID: 7479978559394380311}
   loopSeSource: {fileID: 2108518947670037537}

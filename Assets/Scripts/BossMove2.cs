@@ -190,6 +190,8 @@ public class BossMove2 : MonoBehaviour
 
     private void Walk()
     {
+        AudioPlayer.instance.PlaySE(0); // BossWalkを再生（中山が編集）
+
         // 移動方向を取得
         Vector3 moveDirection = (player.transform.position - transform.position).normalized;
 

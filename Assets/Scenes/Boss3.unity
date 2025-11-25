@@ -1095,6 +1095,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6698327382501558890, guid: 24cbea4bce7577349aa70d96ce267123, type: 3}
+      propertyPath: seClips.Array.size
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 6698327382501558890, guid: 24cbea4bce7577349aa70d96ce267123, type: 3}
+      propertyPath: 'seClips.Array.data[12]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 039a164368829b54eb0e888d62f01103, type: 3}
+    - target: {fileID: 6698327382501558890, guid: 24cbea4bce7577349aa70d96ce267123, type: 3}
+      propertyPath: 'seClips.Array.data[13]'
+      value: 
+      objectReference: {fileID: 8300000, guid: b160e77e750736842be5a823e943c390, type: 3}
     - target: {fileID: 7479978559394380311, guid: 24cbea4bce7577349aa70d96ce267123, type: 3}
       propertyPath: m_Volume
       value: 0.2
