@@ -14,11 +14,6 @@ public class StageSelect : MonoBehaviour
     [SerializeField]
     private string nextSceneName3;
 
-    private bool isEscapePressing = false;
-    private float escapePressTime = 0f;
-
-    [SerializeField]
-    private float reqEscapePressTime = 3f;
 
     // 登録・音楽再生用（中山が編集）
     void Awake()
@@ -42,34 +37,5 @@ public class StageSelect : MonoBehaviour
     public void PressBoss3Button()
     {
         SceneManager.LoadScene(nextSceneName3);// 次のシーンへ遷移（中山が編集）
-    }
-
-    public void OnEscape(InputAction.CallbackContext context)
-    {
-        if (context.started)
-        {
-            isEscapePressing = true;
-        }
-        if (context.canceled)
-        {
-            isEscapePressing = false;
-            if (escapePressTime > reqEscapePressTime)
-            {
-                SaveDataClear();
-            }
-            escapePressTime = 0f;
-        }
-    }
-    private void SaveDataClear()
-    {
-        // ステージランクのリセット
-        PlayerPrefs.SetInt("AttackLevel", 1);
-        PlayerPrefs.SetInt("JumpLevel", 1);
-        PlayerPrefs.SetInt("SpeedLevel", 1);
-    }
-
-    void Update()
-    {
-        if (isEscapePressing) escapePressTime += Time.deltaTime;
     }
 }

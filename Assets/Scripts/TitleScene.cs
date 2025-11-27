@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 //タイトルのアニメーション・ステージ画面への遷移・ボタン機能・音響を制御するスクリプト
 public class TitleScene : MonoBehaviour
@@ -12,6 +13,16 @@ public class TitleScene : MonoBehaviour
     // 次のシーン名を指定（中山が編集）
     [SerializeField]
     private string nextSceneName;
+
+    [SerializeField]
+    private DataClearUI dataClearUI;
+
+    [SerializeField]
+    private Image titleImage;
+
+    [SerializeField]
+    private GameObject titleButtons;
+
 
     // Animatorコンポーネント
     Animator animator;
@@ -25,6 +36,7 @@ public class TitleScene : MonoBehaviour
         // Animatorコンポーネントを取得
         animator = GetComponent<Animator>();
         AudioPlayer.instance.PlayBGM(15); // titlemusicを再生(富里が編集)
+        dataClearUI.Hide();
     }
 
     // スタートボタンが押されたときに呼び出されるメソッド
@@ -49,5 +61,33 @@ public class TitleScene : MonoBehaviour
     {
         Debug.Log("ゲームを終了します");// コンソールに終了メッセージを表示（中山が編集）
         Application.Quit();// ゲーム終了（中山が編集）
+    }
+
+    public void OnClickBackButton()
+    {
+        dataClearUI.Hide();
+        titleImage.enabled = true;
+        titleButtons.SetActive(true);
+    }
+
+    public void OnClickYesButton()
+    {
+        dataClearUI.ShowConfirm();
+        SaveDataClear();
+    }
+
+    public void OnClickDataClearButton()
+    {
+        dataClearUI.ShowAsk();
+        titleImage.enabled = false;
+        titleButtons.SetActive(false);
+    }
+
+    private void SaveDataClear()
+    {
+        // ステージランクのリセット
+        PlayerPrefs.SetInt("AttackLevel", 1);
+        PlayerPrefs.SetInt("JumpLevel", 1);
+        PlayerPrefs.SetInt("SpeedLevel", 1);
     }
 }
