@@ -62,9 +62,6 @@ public class BossMove1 : MonoBehaviour
     // 攻撃判定（中山が編集）
     [SerializeField]
     private Collider attackCollider;
-    // 弱点判定（中山が編集）
-    [SerializeField]
-    private Collider weakCollider;
     // ボスの体に当たった時の判定（中山が編集）
     [SerializeField]
     private Collider bodyAttackCollider;
@@ -120,7 +117,6 @@ public class BossMove1 : MonoBehaviour
         isMoving = false;// 移動停止（中山が編集）
         isJumping = false;// 攻撃停止（中山が編集）
         thisCollider.enabled = false;// ボス本体判定有効化（中山が編集）
-        weakCollider.enabled = false;// 弱点判定無効化（中山が編集）
         attackCollider.enabled = false;// 攻撃判定無効化（中山が編集）
         bodyAttackCollider.enabled = true;// ボス本体判定有効化（中山が編集）
         isDefeatSounding = true;// ボスがやられたときのSE再生判定用（中山が編集）
@@ -343,7 +339,6 @@ public class BossMove1 : MonoBehaviour
     private void Weaking()
     {
         StageScene.Instance.ShowWeakText();
-        weakCollider.enabled = true;// 弱点判定有効化（中山が編集）
         bodyAttackCollider.enabled = false;// ボス本体判定無効化（中山が編集）
     }
 
@@ -351,8 +346,6 @@ public class BossMove1 : MonoBehaviour
     private void WakeUp()
     {
         animator.SetTrigger(wakeUpID);// 起き上がりアニメーション再生（中山が編集）
-
-        weakCollider.enabled = false;// 弱点判定無効化（中山が編集）
         StageScene.Instance.HideWeakText();
         thisCollider.enabled = true;// ボス本体判定有効化（中山が編集）
         collider2Player.enabled = false; // プレイヤーとのCollisionColliderを無効化 (富里が編集)
