@@ -284,6 +284,7 @@ MonoBehaviour:
   damageMagnicifation: 2
   jumpForceMagnification: 1.5
   moveSpeedMagnification: 1.5
+  animator: {fileID: 7325439290136899504}
   groundLayer:
     serializedVersion: 2
     m_Bits: 16448

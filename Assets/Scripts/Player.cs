@@ -73,6 +73,9 @@ public class Player : MonoBehaviour
 
     [Header("参照関連")]
 
+    [SerializeField]
+    Animator animator;// Animator コンポーネントの参照（中山が編集）
+
     // 地面判定に使用するレイヤーを指定（中山が編集）
     [SerializeField]
     LayerMask groundLayer;
@@ -117,8 +120,6 @@ public class Player : MonoBehaviour
     private bool isInvincible = false; //無敵状態かどうか(富里が編集)
 
 
-    Animator animator;// Animator コンポーネントの参照（中山が編集）
-
     //アニメーションID登録（中山が編集）
     static readonly int landingID = Animator.StringToHash("landing");
     static readonly int jumpID = Animator.StringToHash("jump");
@@ -144,7 +145,6 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody>();// Rigidbody コンポーネントを取得
-        animator = GetComponent<Animator>();// Animator コンポーネントを取得（中山が編集）
 
 
         OnApplicationFocus(true);

@@ -9954,11 +9954,10 @@ MonoBehaviour:
   thisCollider: {fileID: 2051404858789972711}
   attackCollider: {fileID: 4021223916108292216}
   bodyAttackCollider: {fileID: 2051404858789972711}
-  targetObject: {fileID: 0}
   bossObject: {fileID: 8451905351038115448}
-  player: {fileID: 0}
   StatusManagerBoss: {fileID: 6758904727045997844}
   collider2Player: {fileID: 2608743836962661204}
+  animator: {fileID: 2725522206805685334}
 --- !u!65 &2051404858789972711
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10244,6 +10243,11 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.22021382, y: 0.3052388, z: 0.1651957}
   m_Center: {x: 0.03402512, y: -0.15453483, z: 0.07209928}
+--- !u!95 &2725522206805685334 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: fc15ab7394f791044b646c33db41bf86, type: 3}
+  m_PrefabInstance: {fileID: 8410918329217698247}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4567633095249153720 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5465940246521907071, guid: fc15ab7394f791044b646c33db41bf86, type: 3}
@@ -10273,7 +10277,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: -0.28, y: 0.5, z: 0.21}
+  m_Size: {x: 0.28, y: 0.5, z: 0.21}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5842915744100246726 stripped
 GameObject:
@@ -10299,7 +10303,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: -0.28, y: 0.5, z: 0.21}
+  m_Size: {x: 0.28, y: 0.5, z: 0.21}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &8301027832342687276 stripped
 Transform:

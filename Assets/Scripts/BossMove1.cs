@@ -66,15 +66,10 @@ public class BossMove1 : MonoBehaviour
     [SerializeField]
     private Collider bodyAttackCollider;
 
-    // ターゲットオブジェクト（中山が編集）
-    [SerializeField]
     private GameObject targetObject;
     // ボスオブジェクト（中山が編集）
     [SerializeField]
     private GameObject bossObject;
-    // プレイヤー参照用（中山が編集）
-    [SerializeField]
-    private Player player;
     // StatusManagerBoss参照用（中山が編集）
     [SerializeField]
     private StatusManagerBoss StatusManagerBoss = null;
@@ -83,6 +78,8 @@ public class BossMove1 : MonoBehaviour
     private Collider collider2Player = null;
 
     new private Rigidbody rigidbody;// Rigidbodyコンポーネント参照用（中山が編集）
+
+    [SerializeField]
     Animator animator;// アニメーター（中山が編集）
 
     // アニメーションID登録（中山が編集）
@@ -106,9 +103,9 @@ public class BossMove1 : MonoBehaviour
     // 初期設定・登録等（中山が編集）
     void Awake()
     {
-        rigidbody = GetComponent<Rigidbody>();// Rigidbodyコンポーネント取得（中山が編集）
-        animator = GetComponent<Animator>();// Animatorコンポーネント取得（中山が編集）
         statusManager = GetComponent<StatusManagerBoss>();
+        rigidbody = GetComponent<Rigidbody>();
+        targetObject = GameObject.FindWithTag("Player");
 
         statusManager.OnDeath += Die; // 死亡時実行の関数をいれとく 富里
 
@@ -154,7 +151,7 @@ public class BossMove1 : MonoBehaviour
     // ボスの毎フレーム更新処理
     void FixedUpdate()
     {
-        float distance = Vector3.Distance(player.transform.position, bossObject.transform.position);// プレイヤーの近くにいたらジャンプ攻撃を仕掛ける処理（中山が編集）
+        float distance = Vector3.Distance(targetObject.transform.position, bossObject.transform.position);// プレイヤーの近くにいたらジャンプ攻撃を仕掛ける処理（中山が編集）
 
         // 30秒たったらハンマー攻撃の関数を呼び出す（中山が編集）
         if (hammerAttackTime <= 0 && !isJumping)
