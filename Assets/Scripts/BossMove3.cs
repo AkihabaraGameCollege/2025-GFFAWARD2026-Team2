@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class BossMove3 : MonoBehaviour
 {
@@ -11,7 +10,10 @@ public class BossMove3 : MonoBehaviour
     private float moveSpeed = 3;
     [SerializeField]
     [Tooltip("回転速度")]
-    private float rotateSpeed = 11.1f;
+    private float rotateSpeed = 1;
+    [SerializeField]
+    [Tooltip("スタン時間")]
+    private float defaultStunTime = 15;
 
     //コライダー参照用（中山が編集）
     [Header("Collider")]
@@ -19,14 +21,12 @@ public class BossMove3 : MonoBehaviour
     [Tooltip("攻撃コライダー")]
     private Collider attackCollider;
     [SerializeField]
-    [Tooltip("弱点コライダー")]
-    private Collider weakCollider;
-    [SerializeField]
     [Tooltip("ドリブル用プレイヤー検知コライダー")]
     private PlayerCheckCollider playerCheckCollider;
 
     [Header("ボス固有の設定")]
-
+    [SerializeField]
+    private float rushWaitTime = 1;
 
     private Player player;
     private StatusManagerBoss statusManager;
@@ -54,9 +54,10 @@ public class BossMove3 : MonoBehaviour
     static readonly int dieID = Animator.StringToHash("die");
 
 
-
-    private float rushWaitTime = 1;
+    
     private bool isPlayerCheckColliderEntered = false;
+    private float stunTimer = 0;
+    private IEnumerator mainMotionRoutine;
 
     void Start()
     {
@@ -67,9 +68,10 @@ public class BossMove3 : MonoBehaviour
         // find with tagってやっていいのかな
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
         statusManager.OnDeath += Die;
+        statusManager.OnStunTaken += TakeStun;
+        statusManager.isInvincible = true;
         playerCheckCollider.Enter += OnPlayerCheckColliderEnter;
 
-        weakCollider.enabled = false;//弱点判定無効化（中山が編集）
         attackCollider.enabled = false;//攻撃判定無効化（中山が編集）
         playerCheckCollider.Hide();
         StageScene.Instance.HideWeakText();
@@ -80,8 +82,10 @@ public class BossMove3 : MonoBehaviour
 
     public void Die()
     {
-        AudioPlayer.instance.PlaySE(12); // BossDieを再生（富里が編集）
         StageScene.Instance.StageClear();
+        //何が違うんこれ
+        AudioPlayer.instance.PlaySE(12); // BossDieを再生（富里が編集）
+        //AudioPlayer.instance.PlaySE(13); // BossDestroyを再生（富里が編集）
         Destroy(gameObject);
     }
 
@@ -89,8 +93,8 @@ public class BossMove3 : MonoBehaviour
     {
         if (statusManager != null)
         {
-            AudioPlayer.instance.PlaySE(13); // BossDestroyを再生（富里が編集）
             playerCheckCollider.Enter -= OnPlayerCheckColliderEnter;
+            statusManager.OnStunTaken -= TakeStun;
         }
     }
 
@@ -102,7 +106,10 @@ public class BossMove3 : MonoBehaviour
         // 基本のループ
         while (true)
         {
-            yield return StartCoroutine(MainMotion());
+            mainMotionRoutine = MainMotion();
+            yield return mainMotionRoutine;
+
+            yield return StartCoroutine(Stun(defaultStunTime));
         }
     }
 
@@ -124,19 +131,12 @@ public class BossMove3 : MonoBehaviour
                 yield return StartCoroutine(Drift());
                 // 突進回数にはカウントしない
                 i--;
-                // TEST
-                Debug.Log("DRIFT");
             }
             else
             {
                 yield return StartCoroutine(Rush());
             }
         }
-        //Weak出現
-        weakCollider.enabled = true;
-        yield return new WaitForSeconds(15);
-        //weak消滅
-        weakCollider.enabled = false;
     }
 
     IEnumerator Aim()
@@ -144,7 +144,7 @@ public class BossMove3 : MonoBehaviour
         float timer = 0;
         isPlayerCheckColliderEntered = false;
         playerCheckCollider.Show();
-        while (timer <= rushWaitTime && !isPlayerCheckColliderEntered)
+        while (timer <= rushWaitTime/* && !isPlayerCheckColliderEntered*/)
         {
             // ここでプレイヤーの方を向いてる
             // 移動方向を取得
@@ -154,7 +154,7 @@ public class BossMove3 : MonoBehaviour
             // 方向を、回転情報に変換
             Quaternion rotation = Quaternion.LookRotation(relativePos);
             // 現在の回転情報と、ターゲット方向の回転情報を補完する
-            rb.rotation = Quaternion.Slerp(transform.rotation, rotation, rotateSpeed);
+            rb.rotation = Quaternion.Slerp(rb.rotation, rotation, rotateSpeed * Time.fixedDeltaTime);
 
             timer += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
@@ -170,8 +170,21 @@ public class BossMove3 : MonoBehaviour
     IEnumerator Drift()
     {
         AudioPlayer.instance.PlaySE(10); // BossDriftを再生（中山が編集）
-        // 仮で1秒くらい待つ
-        yield return new WaitForSeconds(1);
+        attackCollider.enabled = true;
+        float rotatedDegree = 0;
+        Quaternion startRot = rb.rotation;
+        while (rotatedDegree <= 360)
+        {
+            float delta = 180f * Time.fixedDeltaTime;
+            rotatedDegree += delta;
+
+            Quaternion rotation = Quaternion.Euler( 0f,rotatedDegree,0f );
+
+            rb.MoveRotation(startRot * rotation);
+
+            yield return new WaitForFixedUpdate();
+        }
+        attackCollider.enabled = false;
     }
 
     IEnumerator Rush()
@@ -180,6 +193,7 @@ public class BossMove3 : MonoBehaviour
         float timer = 0;
         Vector3 rushDirection = transform.forward;
         bool isCasted = false;
+        attackCollider.enabled = true;
         while (timer <= 2 && !isCasted)
         {
             // ここで力を加える
@@ -209,7 +223,50 @@ public class BossMove3 : MonoBehaviour
             timer += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
+        attackCollider.enabled = false;
     }
+
+    IEnumerator Stun(float stunTime)
+    {
+        //Weak出現
+        statusManager.isInvincible = false;
+        stunTimer = stunTime;
+
+        while (stunTimer >= 0)
+        {
+            stunTimer -= Time.deltaTime;
+            yield return null;
+        }
+        //weak消滅
+        statusManager.isInvincible = true;
+    }
+
+    private void TakeStun()
+    {
+        if (statusManager.isInvincible)
+        {
+            // 現在のコルーチンを止めてひるむ
+            StopAllCoroutines();
+            StartCoroutine(OnStunTaken());
+        }
+        else
+        {
+            // ひるむ時間を３秒くらいのばす
+            stunTimer += 3;
+        }
+    }
+
+    IEnumerator OnStunTaken()
+    {
+        playerCheckCollider.Hide();
+        attackCollider.enabled = false;
+        rb.rotation = Quaternion.identity;
+        rb.linearVelocity = Vector3.zero;
+        yield return StartCoroutine(Stun(defaultStunTime));
+        StartCoroutine(MainLoop());
+    }
+
+
     private void OnDrawGizmos()
     {
         Vector3 rushDirection = transform.forward;

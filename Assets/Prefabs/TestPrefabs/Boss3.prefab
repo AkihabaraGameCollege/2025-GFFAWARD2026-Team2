@@ -64,8 +64,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 8.274519, y: 6.278186, z: 9.999998}
-  m_Center: {x: 8.267103, y: 4.1079164, z: -3.795792e-15}
+  m_Size: {x: 8, y: 8, z: 8}
+  m_Center: {x: 0, y: 4, z: 8}
 --- !u!1 &6641292473034485473
 GameObject:
   m_ObjectHideFlags: 0
@@ -78,7 +78,6 @@ GameObject:
   - component: {fileID: 3495924047179477425}
   - component: {fileID: 4931054114429545894}
   - component: {fileID: 5402830461317789754}
-  - component: {fileID: 7828124879822038581}
   - component: {fileID: 4645506599113787390}
   m_Layer: 12
   m_Name: Boss3
@@ -131,7 +130,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!114 &4931054114429545894
 MonoBehaviour:
@@ -151,7 +150,6 @@ MonoBehaviour:
   health: 0
   lastSpurtHP: 5
   bossLastBGM: 5
-  bossDamageSE: 99
   hitbox: {fileID: 7263840156042156604}
   isInvincible: 0
 --- !u!65 &5402830461317789754
@@ -173,30 +171,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 23.3038, y: 5.6417055, z: 4.7384086}
-  m_Center: {x: -7.7039657, y: 4.53585, z: -0.06579089}
---- !u!95 &7828124879822038581
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6641292473034485473}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 6b67b252125b4df4b8a991e2be09dfb4, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  m_Size: {x: 6, y: 7, z: 23}
+  m_Center: {x: 0, y: 3.5, z: -7}
 --- !u!114 &4645506599113787390
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,16 +186,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
-  rotateSpeed: 11.1
+  rotateSpeed: 3
+  defaultStunTime: 15
   attackCollider: {fileID: 8395592529065250450}
-  weakCollider: {fileID: 108139427083215473}
   playerCheckCollider: {fileID: 3535352282109380067}
+  rushWaitTime: 1
   wallCheckerPos:
   - {x: 4, y: 2, z: 0}
   wallCheckerDistance: 3
   groundLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 72
 --- !u!1 &6890887516328271781
 GameObject:
   m_ObjectHideFlags: 0
@@ -245,14 +222,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6890887516328271781}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7608602248889472928}
   m_Father: {fileID: 5161792772889693995}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!95 &4400895757186819555
 Animator:
   serializedVersion: 7
@@ -326,8 +303,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 23.179613, y: 7.75178, z: 6.0289025}
-  m_Center: {x: -7.6635146, y: 3.73607, z: -0.0970211}
+  m_Size: {x: 6, y: 7, z: 23}
+  m_Center: {x: 0, y: 3.5, z: -7}
 --- !u!1 &8233128062857252933
 GameObject:
   m_ObjectHideFlags: 0
@@ -380,8 +357,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 22.841059, y: 6.972209, z: 6.3021517}
-  m_Center: {x: -7.7214856, y: 4.1329274, z: -0.06694913}
+  m_Size: {x: 6, y: 7, z: 23}
+  m_Center: {x: 0, y: 3.5, z: -7}
 --- !u!114 &7263840156042156604
 MonoBehaviour:
   m_ObjectHideFlags: 0

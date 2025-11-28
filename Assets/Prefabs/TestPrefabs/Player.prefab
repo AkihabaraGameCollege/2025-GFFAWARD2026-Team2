@@ -288,7 +288,7 @@ MonoBehaviour:
   animator: {fileID: 6379943498837059707}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 16448
+    m_Bits: 16456
   attackCollider: {fileID: 3546354141878389678}
   dashAttackCollider: {fileID: 6606404178022784316}
   destroyEffect: {fileID: 1430198582188953287, guid: 21b15d55fb362544fab3a70419757060, type: 3}

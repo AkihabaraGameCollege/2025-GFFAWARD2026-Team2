@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -574,5 +575,23 @@ public class Player : MonoBehaviour
 
             Gizmos.DrawLine(transform.position + offset, transform.position + offset + rushDirection * wallCheckerDistance);
         }
+    }
+
+    [ContextMenu("アタックスキル取得")]
+    private void GetAttackSkill()
+    {
+        PlayerPrefs.SetInt("AttackLevel", 2);
+    }
+
+    [ContextMenu("ジャンプスキル取得")]
+    private void GetJumpSkill()
+    {
+        PlayerPrefs.SetInt("JumpLevel", 2);
+    }
+
+    [ContextMenu("スピードスキル取得")]
+    private void GetSpeedSkill()
+    {
+        PlayerPrefs.SetInt("SpeedLevel", 2);
     }
 }

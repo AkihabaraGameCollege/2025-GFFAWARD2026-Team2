@@ -103,7 +103,7 @@ public class AudioPlayer : MonoBehaviour
     {
         if (seIndex < 0 || seIndex >= seClips.Length)
         {
-            Debug.LogError("SEのインデックスが範囲外です");
+            Debug.LogError("SEのインデックスが範囲外です\n呼び出されたIndex:"+seIndex);
             return;
         }
 

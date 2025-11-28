@@ -13,9 +13,6 @@ public class StageClearUI : MonoBehaviour
     // 「NEXT」ボタンを指定します。
     [SerializeField]
     private Button nextButton = null;
-    // 楽曲再生用の AudioSource を指定します。
-    [SerializeField]
-    private AudioSource musicAudio = null;
 
 
     // コンポーネントを事前に参照しておく変数
@@ -41,6 +38,5 @@ public class StageClearUI : MonoBehaviour
     {
         animator.SetTrigger(showId);
         nextButton.Select();
-        musicAudio.Play();
     }
 }
