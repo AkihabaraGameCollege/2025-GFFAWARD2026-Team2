@@ -87,7 +87,7 @@ public class Player : MonoBehaviour
 
     // ダッシュアタック用のコライダーを指定 (富里が編集)
     [SerializeField]
-    private GameObject dashAttackCollider = null;
+    private Collider dashAttackCollider = null;
 
     [SerializeField]
     [Tooltip("攻撃エフェクト")]
@@ -120,7 +120,7 @@ public class Player : MonoBehaviour
 
     private bool isInvincible = false; //無敵状態かどうか(富里が編集)
 
-    private bool isSprinting = false;
+    public bool isSprinting { get; private set; } = false;
 
     private float sprintTimer;
 
@@ -154,7 +154,7 @@ public class Player : MonoBehaviour
         OnApplicationFocus(true);
         attackOK = true;// 攻撃制限変数初期化（中山が編集）
         attackCollider.enabled = false;// 攻撃判定を無効化（中山が編集）
-        dashAttackCollider.SetActive(false); // ダッシュアタック判定を無効化 (富里が編集)
+        dashAttackCollider.enabled = false; // ダッシュアタック判定を無効化 (富里が編集)
         StatusReset();// ステータス初期化（中山が編集）
     }
 
@@ -414,6 +414,7 @@ public class Player : MonoBehaviour
             {
                 motionState = MotionState.Sprinting;
             }
+            dashAttackCollider.enabled = true;
         }
 
 
@@ -433,6 +434,7 @@ public class Player : MonoBehaviour
         {
             motionState = MotionState.Walking;
         }
+        dashAttackCollider.enabled = false;
     }
 
     //// Animation Eventから起動 (富里が編集)
@@ -471,7 +473,7 @@ public class Player : MonoBehaviour
         // HPを減少させ、ダメージエフェクトを発生させる
         health--;
 
-        StageScene.Instance.DecreaseHpPlayer(health,maxHealth);//HPゲージを減少させる（中山が編集）
+        StageScene.Instance.DecreaseHpPlayer(health, maxHealth);//HPゲージを減少させる（中山が編集）
 
         // エフェクトをインスタンス化
         GameObject effect = Instantiate(damageEffect);

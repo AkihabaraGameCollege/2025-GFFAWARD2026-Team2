@@ -289,7 +289,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 16448
   attackCollider: {fileID: 3546354141878389678}
-  dashAttackCollider: {fileID: 6763169638801987583}
+  dashAttackCollider: {fileID: 6606404178022784316}
   destroyEffect: {fileID: 1430198582188953287, guid: 21b15d55fb362544fab3a70419757060, type: 3}
   damageEffect: {fileID: 1430198582188953287, guid: 21b15d55fb362544fab3a70419757060, type: 3}
   wallCheckerPos:
@@ -374,6 +374,7 @@ GameObject:
   m_Component:
   - component: {fileID: 926161283884221443}
   - component: {fileID: 6606404178022784316}
+  - component: {fileID: 7401221515066048939}
   m_Layer: 10
   m_Name: DashAttackCollider
   m_TagString: Untagged
@@ -390,7 +391,7 @@ Transform:
   m_GameObject: {fileID: 6763169638801987583}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.76, z: 0.946}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -415,8 +416,20 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.2, y: 2.4, z: 1.2}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0.5, z: 0.25}
+--- !u!114 &7401221515066048939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6763169638801987583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cdcd751dfff4d1438ec4f1c05a48101, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7476156322921992943
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,6 +20,13 @@ public class HitboxEnemy : MonoBehaviour
         // ”í’e‘¤‚ÌStatusManager‚É’Ê’m
         Player playerScript = other.GetComponentInParent<Player>();
         int dam = playerScript.damage;
+        DashAttackCollider colliderScript = other.GetComponent<DashAttackCollider>();
+        
+        if (colliderScript != null)
+        {
+            colliderScript.Hit();
+        }
+
         OnHit?.Invoke(dam);
     }
 }
