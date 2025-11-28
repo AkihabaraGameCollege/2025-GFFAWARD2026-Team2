@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -129,7 +128,9 @@ public class Player : MonoBehaviour
     private float sprintTimer;
 
     private float stunTimer = 0;
-    public bool IsStunable { get; private set; } = true;
+    public bool IsStunable { get; private set; } = false;
+
+    private bool isGotAttackSkill = false;
 
     //アニメーションID登録（中山が編集）
     static readonly int landingID = Animator.StringToHash("landing");
@@ -167,6 +168,12 @@ public class Player : MonoBehaviour
 
     private void StatusReset()
     {
+        if (PlayerPrefs.GetInt("SpeedLevel", 1) == 2)
+        {
+            isGotAttackSkill = true;
+            IsStunable = true;
+        }
+
         if (PlayerPrefs.GetInt("AttackLevel", 1) == 2)
         {
             attackReach *= attackReachMagnification;
@@ -182,11 +189,6 @@ public class Player : MonoBehaviour
             jumpForce *= jumpForceMagnification;
         }
 
-        // スプリントになったため削除
-        //if (PlayerPrefs.GetInt("SpeedLevel", 1) == 2)
-        //{
-        //    moveSpeed *= moveSpeedMangification;
-        //}
         health = maxHealth;
         attackCollider.transform.localScale = attackReach;
         sprintTimer = sprintSecond;
@@ -239,10 +241,10 @@ public class Player : MonoBehaviour
     }
     private void Update()
     {
-        if (!IsStunable)
+        if (!IsStunable && isGotAttackSkill)
         {
             stunTimer -= Time.deltaTime;
-            if ( stunTimer <= 0 )
+            if (stunTimer <= 0)
             {
                 stunTimer = 0;
                 IsStunable = true;
@@ -460,21 +462,6 @@ public class Player : MonoBehaviour
         }
         dashAttackCollider.enabled = false;
     }
-
-    //// Animation Eventから起動 (富里が編集)
-    //private void DashAttackAddForce()
-    //{
-    //    var pow = gameObject.transform.forward;
-    //    rigidbody.linearVelocity = pow * dashAttackSpeed;
-    //    dashAttackCollider.SetActive(true);
-    //}
-
-    //// Animation Eventから起動 (富里が編集)
-    //private void DashAttackEnd()
-    //{
-    //    motionState = MotionState.Walking;
-    //    dashAttackCollider.SetActive(false);
-    //}
 
     public void Hit()
     {
