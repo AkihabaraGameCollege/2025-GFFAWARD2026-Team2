@@ -20,9 +20,6 @@ public class BossMove2 : MonoBehaviour
     [SerializeField]
     [Tooltip("着地攻撃コライダー")]
     private Collider attackCollider;
-    [SerializeField]
-    [Tooltip("弱点コライダー")]
-    private Collider weakCollider;
 
     [Header("ボス固有の設定")]
     [SerializeField]
@@ -95,6 +92,10 @@ public class BossMove2 : MonoBehaviour
     [Tooltip("地面のレイヤー")]
     private LayerMask groundLayer;
 
+    [SerializeField]
+    [Tooltip("歩行時のSEを鳴らす間隔")]
+    private float walkSECooldown;
+
     Animator animator;//アニメーター（中山が編集）
 
     //アニメーションID登録（中山が編集）
@@ -122,7 +123,7 @@ public class BossMove2 : MonoBehaviour
         statusManager.OnDamageTaken += TakeDamage;
         statusManager.OnDeath += Die;
 
-        weakCollider.enabled = false;//弱点判定無効化（中山が編集）
+        statusManager.isInvincible = true;
         attackCollider.enabled = false;//攻撃判定無効化（中山が編集）
         StageScene.Instance.HideWeakText();
 
@@ -134,6 +135,7 @@ public class BossMove2 : MonoBehaviour
     public void TakeDamage()
     {
         damageCounter++;
+        AudioPlayer.instance.PlaySE(1);
         if (damageCounter >= damageCount2ZakoSummon)
         {
             StartCoroutine(SummonZako(zakoSummonCount));
@@ -176,9 +178,16 @@ public class BossMove2 : MonoBehaviour
     {
         // 2秒間の間歩く
         float timer = 0;
+        float SETimer = 0;
         while (timer < walkTime)
         {
             timer += Time.fixedDeltaTime;
+            SETimer += Time.fixedDeltaTime;
+            if (SETimer >= walkSECooldown)
+            {
+                SETimer = 0;
+                AudioPlayer.instance.PlaySE(0);
+            }
             Walk();
             yield return new WaitForFixedUpdate();
         }
@@ -190,7 +199,6 @@ public class BossMove2 : MonoBehaviour
 
     private void Walk()
     {
-        AudioPlayer.instance.PlaySE(0); // BossWalkを再生（中山が編集）
 
         // 移動方向を取得
         Vector3 moveDirection = (player.transform.position - transform.position).normalized;
@@ -252,13 +260,13 @@ public class BossMove2 : MonoBehaviour
     IEnumerator ArrivalWeakPoint()
     {
         // 弱点出現
-        weakCollider.enabled = true;
+        statusManager.isInvincible = false;
         StageScene.Instance.ShowWeakText();
         // 待つ
         yield return new WaitForSeconds(weakTime);
 
         // 弱点消滅
-        weakCollider.enabled = false;
+        statusManager.isInvincible = true;
         StageScene.Instance.HideWeakText();
     }
 
