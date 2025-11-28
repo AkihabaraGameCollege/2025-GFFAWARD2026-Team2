@@ -1,36 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &953446924693009079
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1103374623974592168}
-  m_Layer: 12
-  m_Name: TrailerRotateAxis
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1103374623974592168
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 953446924693009079}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 304434582918286733}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6201125170271412189
 GameObject:
   m_ObjectHideFlags: 0
@@ -184,6 +153,7 @@ MonoBehaviour:
   bossLastBGM: 5
   bossDamageSE: 99
   hitbox: {fileID: 7263840156042156604}
+  isInvincible: 0
 --- !u!65 &5402830461317789754
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -281,7 +251,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7608602248889472928}
-  - {fileID: 1103374623974592168}
   m_Father: {fileID: 5161792772889693995}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &4400895757186819555
@@ -435,7 +404,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 2595c53d97760dc4081f63e0ce311aac, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 10.040005
+      value: 9.9710045
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2595c53d97760dc4081f63e0ce311aac, type: 3}
       propertyPath: m_LocalPosition.y
@@ -443,7 +412,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2595c53d97760dc4081f63e0ce311aac, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.37
+      value: -1.3700002
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2595c53d97760dc4081f63e0ce311aac, type: 3}
       propertyPath: m_LocalRotation.w
@@ -505,7 +474,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 113b6cff880310543840c44ba9673419, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.39
+      value: 1.4400002
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 113b6cff880310543840c44ba9673419, type: 3}
       propertyPath: m_LocalPosition.y
@@ -513,7 +482,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 113b6cff880310543840c44ba9673419, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 113b6cff880310543840c44ba9673419, type: 3}
       propertyPath: m_LocalRotation.w
@@ -521,7 +490,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 113b6cff880310543840c44ba9673419, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 113b6cff880310543840c44ba9673419, type: 3}
       propertyPath: m_LocalRotation.y
