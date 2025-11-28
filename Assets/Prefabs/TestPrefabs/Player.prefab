@@ -271,6 +271,7 @@ MonoBehaviour:
   sprintSpeed: 10
   sprintSecond: 10
   jumpForce: 10
+  stunCooldownTime: 25
   groundCheckStartPoint: {x: 0, y: 0.5, z: 0}
   groundCheckEndPoint: {x: 0, y: -0.5, z: 0}
   requiredJumpSpeed: 0.1

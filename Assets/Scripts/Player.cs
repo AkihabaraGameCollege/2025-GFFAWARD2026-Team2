@@ -21,6 +21,9 @@ public class Player : MonoBehaviour
     [Tooltip("ジャンプ力")]
     private float jumpForce;
 
+    [SerializeField]
+    private float stunCooldownTime;
+
     // 地面判定用の線分の始点と終点を指定（中山が編集）
     [SerializeField]
     private Vector3 groundCheckStartPoint = new Vector3(0, 0.5f, 0);
@@ -120,9 +123,12 @@ public class Player : MonoBehaviour
 
     private bool isInvincible = false; //無敵状態かどうか(富里が編集)
 
-    public bool isSprinting { get; private set; } = false;
+    public bool IsSprinting { get; private set; } = false;
 
     private float sprintTimer;
+
+    private float stunTimer = 0;
+    public bool IsStunable { get; private set; } = true;
 
     //アニメーションID登録（中山が編集）
     static readonly int landingID = Animator.StringToHash("landing");
@@ -230,6 +236,18 @@ public class Player : MonoBehaviour
             ExitSprint();
         }
     }
+    private void Update()
+    {
+        if (!IsStunable)
+        {
+            stunTimer -= Time.deltaTime;
+            if ( stunTimer <= 0 )
+            {
+                stunTimer = 0;
+                IsStunable = true;
+            }
+        }
+    }
 
     // 固定フレームレートで呼び出される更新処理を移植（中山が編集）
     void FixedUpdate()
@@ -244,29 +262,29 @@ public class Player : MonoBehaviour
                 //移動入力がある場合は移動状態へ移行（中山が編集）
                 if (moveInput != Vector2.zero)
                 {
-                    if (isSprinting)
+                    if (IsSprinting)
                     {
                         motionState = MotionState.Sprinting;
                         // カエルかも
                         animator.SetFloat(speedID, rigidbody.linearVelocity.magnitude);// Runアニメーションを開始（中山が編集）
-                        Move(isSprinting);// カメラに準じた移動を呼び出し（富里が編集）
+                        Move(IsSprinting);// カメラに準じた移動を呼び出し（富里が編集）
                     }
                     else
                     {
                         motionState = MotionState.Walking;
                         animator.SetFloat(speedID, rigidbody.linearVelocity.magnitude);// Runアニメーションを開始（中山が編集）
-                        Move(isSprinting);// カメラに準じた移動を呼び出し（富里が編集）
+                        Move(IsSprinting);// カメラに準じた移動を呼び出し（富里が編集）
                     }
                 }
                 break;
             //移動入力がある場合は移動状態へ移行（中山が編集）
             case MotionState.Walking:
-                Move(isSprinting);// カメラに準じた移動を呼び出し（富里が編集）
+                Move(IsSprinting);// カメラに準じた移動を呼び出し（富里が編集）
                 animator.SetFloat(speedID, rigidbody.linearVelocity.magnitude);// Runアニメーションを継続（中山が編集）
                 break;
             //移動入力がなくなったら停止状態へ移行（中山が編集）
             case MotionState.JumpAnticipation:
-                Move(isSprinting);// カメラに準じた移動を呼び出し（富里が編集）
+                Move(IsSprinting);// カメラに準じた移動を呼び出し（富里が編集）
                 //地面から離れたらジャンピング状態へ移行（中山が編集）
                 if (!IsGrounded)
                 {
@@ -282,7 +300,7 @@ public class Player : MonoBehaviour
                 break;
             case MotionState.Jumping:
                 //地面に着地した判定（中山が編集）
-                Move(isSprinting);// カメラに準じた移動を呼び出し（富里が編集）
+                Move(IsSprinting);// カメラに準じた移動を呼び出し（富里が編集）
                 if (IsGrounded)
                 {
                     motionState = MotionState.Stopping;
@@ -290,7 +308,7 @@ public class Player : MonoBehaviour
                 }
                 break;
             case MotionState.Sprinting:
-                Move(isSprinting);// カメラに準じた移動を呼び出し（富里が編集）
+                Move(IsSprinting);// カメラに準じた移動を呼び出し（富里が編集）
                 animator.SetFloat(speedID, rigidbody.linearVelocity.magnitude);// Runアニメーションを継続（中山が編集）
                 sprintTimer -= Time.fixedDeltaTime;
                 if (sprintTimer <= 0)
@@ -355,7 +373,7 @@ public class Player : MonoBehaviour
             }
         }
 
-        if (isSprinting)
+        if (IsSprinting)
         {
             StageScene.Instance.ApplySprintGauge(sprintTimer, sprintSecond);
         }
@@ -402,6 +420,11 @@ public class Player : MonoBehaviour
         attackCollider.enabled = false;//攻撃判定を無効化（中山が編集）
         yield return new WaitForSeconds(playerWaitTime);//playerWaitTime秒待機（中山が編集）
         attackOK = true;//攻撃制限変数をtrueに設定（中山が編集）
+        if (IsStunable)
+        {
+            IsStunable = false;
+            stunTimer = stunCooldownTime;
+        }
     }
 
 
@@ -409,7 +432,7 @@ public class Player : MonoBehaviour
     {
         if (sprintTimer > 0)
         {
-            isSprinting = true;
+            IsSprinting = true;
             if (motionState == MotionState.Walking)
             {
                 motionState = MotionState.Sprinting;
@@ -429,7 +452,7 @@ public class Player : MonoBehaviour
 
     private void ExitSprint()
     {
-        isSprinting = false;
+        IsSprinting = false;
         if (motionState == MotionState.Sprinting)
         {
             motionState = MotionState.Walking;
