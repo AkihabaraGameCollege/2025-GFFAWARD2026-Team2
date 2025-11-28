@@ -238,7 +238,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5657802308847877884}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
-        m_MethodName: OnDashAttack
+        m_MethodName: OnSprint
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -268,6 +268,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
+  sprintSpeed: 10
+  sprintSecond: 10
   jumpForce: 10
   groundCheckStartPoint: {x: 0, y: 0.5, z: 0}
   groundCheckEndPoint: {x: 0, y: -0.5, z: 0}
@@ -275,7 +277,6 @@ MonoBehaviour:
   playerWaitTime: 0.3
   playerLittleWaitTime: 0.3
   playerAttackTime: 0.1
-  dashAttackSpeed: 20
   attackReach: {x: 1, y: 1, z: 1}
   maxHealth: 3
   invincibleTime: 1
@@ -283,8 +284,7 @@ MonoBehaviour:
   attackReachMagnification: 2
   damageMagnicifation: 2
   jumpForceMagnification: 1.5
-  moveSpeedMagnification: 1.5
-  animator: {fileID: 0}
+  animator: {fileID: 6379943498837059707}
   groundLayer:
     serializedVersion: 2
     m_Bits: 16448
@@ -534,5 +534,10 @@ PrefabInstance:
 --- !u!4 &1038695559977972225 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 621708e3abe09254e9901510b1889f69, type: 3}
+  m_PrefabInstance: {fileID: 711719815340774890}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &6379943498837059707 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 621708e3abe09254e9901510b1889f69, type: 3}
   m_PrefabInstance: {fileID: 711719815340774890}
   m_PrefabAsset: {fileID: 0}
