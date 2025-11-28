@@ -10,6 +10,14 @@ public class Player : MonoBehaviour
     private float moveSpeed;
 
     [SerializeField]
+    [Tooltip("スプリント時のスピード")]
+    private float sprintSpeed;
+
+    [SerializeField]
+    [Tooltip("スプリント可能秒数")]
+    private float sprintSecond;
+
+    [SerializeField]
     [Tooltip("ジャンプ力")]
     private float jumpForce;
 
@@ -33,10 +41,6 @@ public class Player : MonoBehaviour
     [SerializeField]
     [Tooltip("攻撃コライダー出現時間を指定")]
     private float playerAttackTime = 0.5f;
-
-    [SerializeField]
-    [Tooltip("ダッシュアタック機動力")]
-    private float dashAttackSpeed = 20;
 
     [SerializeField]
     [Tooltip("攻撃コライダーのサイズ")]
@@ -66,9 +70,6 @@ public class Player : MonoBehaviour
     [Tooltip("ジャンプ力")]
     private float jumpForceMagnification;
 
-    [SerializeField]
-    [Tooltip("移動速度")]
-    private float moveSpeedMagnification;
 
 
     [Header("参照関連")]
@@ -119,6 +120,9 @@ public class Player : MonoBehaviour
 
     private bool isInvincible = false; //無敵状態かどうか(富里が編集)
 
+    private bool isSprinting = false;
+
+    private float sprintTimer;
 
     //アニメーションID登録（中山が編集）
     static readonly int landingID = Animator.StringToHash("landing");
@@ -138,7 +142,7 @@ public class Player : MonoBehaviour
         Walking,
         JumpAnticipation,
         Jumping,
-        DashAttacking
+        Sprinting
     }
     MotionState motionState = MotionState.Stopping;// 現在のモーション状態（中山が編集）
 
@@ -171,12 +175,14 @@ public class Player : MonoBehaviour
             jumpForce *= jumpForceMagnification;
         }
 
-        if (PlayerPrefs.GetInt("SpeedLevel", 1) == 2)
-        {
-            moveSpeed *= moveSpeedMagnification;
-        }
+        // スプリントになったため削除
+        //if (PlayerPrefs.GetInt("SpeedLevel", 1) == 2)
+        //{
+        //    moveSpeed *= moveSpeedMangification;
+        //}
         health = maxHealth;
         attackCollider.transform.localScale = attackReach;
+        sprintTimer = sprintSecond;
     }
 
     public void Sleep()
@@ -213,16 +219,23 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void OnDashAttack(InputAction.CallbackContext context)
+    public void OnSprint(InputAction.CallbackContext context)
     {
         if (context.started)
         {
-            DashAttack();
+            Sprint();
+        }
+        else if (context.canceled)
+        {
+            ExitSprint();
         }
     }
 
-    void Update() //モーション状態に応じた処理（中山が編集）
+    // 固定フレームレートで呼び出される更新処理を移植（中山が編集）
+    void FixedUpdate()
     {
+        IsGrounded = Physics.Linecast(rigidbody.position + groundCheckStartPoint, rigidbody.position + groundCheckEndPoint, groundLayer);// 地面接地判定を更新
+
         if (IsSleeping) return;
 
         switch (motionState)
@@ -231,19 +244,29 @@ public class Player : MonoBehaviour
                 //移動入力がある場合は移動状態へ移行（中山が編集）
                 if (moveInput != Vector2.zero)
                 {
-                    motionState = MotionState.Walking;
-                    animator.SetFloat(speedID, rigidbody.linearVelocity.magnitude);// Runアニメーションを開始（中山が編集）
-                    Move();// カメラに準じた移動を呼び出し（富里が編集）
+                    if (isSprinting)
+                    {
+                        motionState = MotionState.Sprinting;
+                        // カエルかも
+                        animator.SetFloat(speedID, rigidbody.linearVelocity.magnitude);// Runアニメーションを開始（中山が編集）
+                        Move(isSprinting);// カメラに準じた移動を呼び出し（富里が編集）
+                    }
+                    else
+                    {
+                        motionState = MotionState.Walking;
+                        animator.SetFloat(speedID, rigidbody.linearVelocity.magnitude);// Runアニメーションを開始（中山が編集）
+                        Move(isSprinting);// カメラに準じた移動を呼び出し（富里が編集）
+                    }
                 }
                 break;
             //移動入力がある場合は移動状態へ移行（中山が編集）
             case MotionState.Walking:
-                Move();// カメラに準じた移動を呼び出し（富里が編集）
+                Move(isSprinting);// カメラに準じた移動を呼び出し（富里が編集）
                 animator.SetFloat(speedID, rigidbody.linearVelocity.magnitude);// Runアニメーションを継続（中山が編集）
                 break;
             //移動入力がなくなったら停止状態へ移行（中山が編集）
             case MotionState.JumpAnticipation:
-                Move();// カメラに準じた移動を呼び出し（富里が編集）
+                Move(isSprinting);// カメラに準じた移動を呼び出し（富里が編集）
                 //地面から離れたらジャンピング状態へ移行（中山が編集）
                 if (!IsGrounded)
                 {
@@ -259,28 +282,28 @@ public class Player : MonoBehaviour
                 break;
             case MotionState.Jumping:
                 //地面に着地した判定（中山が編集）
-                Move();// カメラに準じた移動を呼び出し（富里が編集）
+                Move(isSprinting);// カメラに準じた移動を呼び出し（富里が編集）
                 if (IsGrounded)
                 {
                     motionState = MotionState.Stopping;
                     animator.SetTrigger(landingID);// Jumpアニメーションを終了（中山が編集）
                 }
                 break;
-            case MotionState.DashAttacking:
+            case MotionState.Sprinting:
+                Move(isSprinting);// カメラに準じた移動を呼び出し（富里が編集）
+                animator.SetFloat(speedID, rigidbody.linearVelocity.magnitude);// Runアニメーションを継続（中山が編集）
+                sprintTimer -= Time.fixedDeltaTime;
+                if (sprintTimer <= 0)
+                {
+                    sprintTimer = 0;
+                    ExitSprint();
+                }
                 break;
         }
-
-    }
-
-    // 固定フレームレートで呼び出される更新処理を移植（中山が編集）
-    void FixedUpdate()
-    {
-        IsGrounded = Physics.Linecast(rigidbody.position + groundCheckStartPoint, rigidbody.position + groundCheckEndPoint, groundLayer);// 地面接地判定を更新
-
     }
 
     // 指定した速度で、このキャラクターを移動させるプログラムを移植（中山が編集）
-    public void Move()
+    public void Move(bool sprint)
     {
         // メインカメラが存在する場合のみ処理を行う
         if (Camera.main != null)
@@ -313,7 +336,7 @@ public class Player : MonoBehaviour
             // falseじゃないと発動しない
             if (!isCasted)
             {
-                rigidbody.linearVelocity = moveDirection * moveSpeed + new Vector3(0, rigidbody.linearVelocity.y, 0);//移動ベクトルを速度に設定
+                rigidbody.linearVelocity = moveDirection * ((sprint) ? sprintSpeed : moveSpeed) + new Vector3(0, rigidbody.linearVelocity.y, 0);//移動ベクトルを速度に設定
             }
 
             // キャラクターを移動する方向に向かせるための処理
@@ -331,6 +354,11 @@ public class Player : MonoBehaviour
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
             }
         }
+
+        if (isSprinting)
+        {
+            StageScene.Instance.ApplySprintGauge(sprintTimer, sprintSecond);
+        }
     }
 
     // ジャンプ処理（中山が編集）
@@ -338,7 +366,7 @@ public class Player : MonoBehaviour
     {
         if (IsSleeping) return;
 
-        if (motionState == MotionState.Walking || motionState == MotionState.Stopping)
+        if (motionState == MotionState.Walking || motionState == MotionState.Stopping || motionState == MotionState.Sprinting)
         {
             // ジャンプ(速度変更)
             Vector3 velocity = rigidbody.linearVelocity;
@@ -377,30 +405,50 @@ public class Player : MonoBehaviour
     }
 
 
-    private void DashAttack()
+    private void Sprint()
     {
-        if ((motionState == MotionState.Stopping || motionState == MotionState.Walking) &&
-            PlayerPrefs.GetInt("AttackLevel", 1) == 2)
+        if (sprintTimer > 0)
         {
-            motionState = MotionState.DashAttacking; // MotionState更新 (富里が編集)
-            animator.SetTrigger(dashAttackID); // アニメーター起動 (富里が編集)
+            isSprinting = true;
+            if (motionState == MotionState.Walking)
+            {
+                motionState = MotionState.Sprinting;
+            }
+        }
+
+
+        //if ((motionState == MotionState.Stopping || motionState == MotionState.Walking) &&
+        //    PlayerPrefs.GetInt("AttackLevel", 1) == 2)
+        //{
+        //    motionState = MotionState.Sprinting; // MotionState更新 (富里が編集)
+        //    // DashAttack用なためコメントアウト
+        //    //animator.SetTrigger(dashAttackID); // アニメーター起動 (富里が編集)
+        //}
+    }
+
+    private void ExitSprint()
+    {
+        isSprinting = false;
+        if (motionState == MotionState.Sprinting)
+        {
+            motionState = MotionState.Walking;
         }
     }
 
-    // Animation Eventから起動 (富里が編集)
-    private void DashAttackAddForce()
-    {
-        var pow = gameObject.transform.forward;
-        rigidbody.linearVelocity = pow * dashAttackSpeed;
-        dashAttackCollider.SetActive(true);
-    }
+    //// Animation Eventから起動 (富里が編集)
+    //private void DashAttackAddForce()
+    //{
+    //    var pow = gameObject.transform.forward;
+    //    rigidbody.linearVelocity = pow * dashAttackSpeed;
+    //    dashAttackCollider.SetActive(true);
+    //}
 
-    // Animation Eventから起動 (富里が編集)
-    private void DashAttackEnd()
-    {
-        motionState = MotionState.Walking;
-        dashAttackCollider.SetActive(false);
-    }
+    //// Animation Eventから起動 (富里が編集)
+    //private void DashAttackEnd()
+    //{
+    //    motionState = MotionState.Walking;
+    //    dashAttackCollider.SetActive(false);
+    //}
 
     public void Hit()
     {
@@ -423,7 +471,7 @@ public class Player : MonoBehaviour
         // HPを減少させ、ダメージエフェクトを発生させる
         health--;
 
-        StageScene.Instance.DecreaseHpPlayer();//HPゲージを減少させる（中山が編集）
+        StageScene.Instance.DecreaseHpPlayer(health,maxHealth);//HPゲージを減少させる（中山が編集）
 
         // エフェクトをインスタンス化
         GameObject effect = Instantiate(damageEffect);

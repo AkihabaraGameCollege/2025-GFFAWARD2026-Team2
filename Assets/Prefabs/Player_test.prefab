@@ -101,14 +101,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
+  sprintSpeed: 0
+  sprintSecond: 0
   jumpForce: 10
-  rotationOffset: 0
-  requiredJumpSpeed: 0.1
   groundCheckStartPoint: {x: 0, y: -0.5, z: 0}
   groundCheckEndPoint: {x: 0, y: -1.5, z: 0}
-  attackCollider: {fileID: 8263717616957561195}
-  pause: {fileID: 0}
+  requiredJumpSpeed: 0.1
+  playerWaitTime: 0
+  playerLittleWaitTime: 0.2
+  playerAttackTime: 0.5
+  attackReach: {x: 0, y: 0, z: 0}
   maxHealth: 0
+  invincibleTime: 1
+  damage: 0
+  attackReachMagnification: 0
+  damageMagnicifation: 0
+  jumpForceMagnification: 0
+  animator: {fileID: 0}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  attackCollider: {fileID: 2244614337812689752}
+  dashAttackCollider: {fileID: 0}
+  destroyEffect: {fileID: 0}
+  damageEffect: {fileID: 0}
+  wallCheckerPos: []
+  wallCheckerDistance: 0
 --- !u!114 &1676061408467678680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -519,4 +537,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93ea21f5e673c7f47b1421f66c9465c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPlayersScript: 0
+  onEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  targetTag: Player

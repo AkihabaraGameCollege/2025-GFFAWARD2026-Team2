@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerSkillUI : MonoBehaviour
+public class PlayerUI : MonoBehaviour
 {
     [SerializeField]
     [Tooltip("ブリキアームから順に入れてください")]
@@ -15,6 +15,16 @@ public class PlayerSkillUI : MonoBehaviour
     [Tooltip("ブリキアームから順に入れてください")]
     private Sprite[] notGotSprites = null;
 
+
+    [SerializeField]
+    [Tooltip("スプリントゲージ")]
+    private Image sprintGauge;
+
+    [SerializeField]
+    private Image lifeImage;
+    [SerializeField]
+    private Image damageImage;
+
     private void Start()
     {
         ReloadFlag();
@@ -26,5 +36,16 @@ public class PlayerSkillUI : MonoBehaviour
         images[0].sprite = (PlayerPrefs.GetInt("AttackLevel",1) == 2) ? gotSprites[0] : notGotSprites[0];
         images[1].sprite = (PlayerPrefs.GetInt("JumpLevel", 1) == 2) ? gotSprites[1] : notGotSprites[1];
         images[2].sprite = (PlayerPrefs.GetInt("SpeedLevel", 1) == 2) ? gotSprites[2] : notGotSprites[2];
+    }
+
+    public void ApplySprintGauge(float value)
+    {
+        sprintGauge.fillAmount = value;
+    }
+
+    public void Life(float value)
+    {
+        lifeImage.fillAmount = value;
+        damageImage.fillAmount = 1 - value;
     }
 }
