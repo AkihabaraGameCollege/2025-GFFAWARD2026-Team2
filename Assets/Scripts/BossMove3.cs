@@ -77,7 +77,7 @@ public class BossMove3 : MonoBehaviour
         StageScene.Instance.HideWeakText();
 
         // 行動のコルーチンを起動
-        StartCoroutine(MainLoop());//行動パターン開始（中山が編集）
+        StartCoroutine(StartMotion());
     }
 
     public void Die()
@@ -100,8 +100,6 @@ public class BossMove3 : MonoBehaviour
 
     IEnumerator MainLoop()
     {
-        // スタート時のモーション起動
-        yield return StartCoroutine(StartMotion());
 
         // 基本のループ
         while (true)
@@ -116,6 +114,7 @@ public class BossMove3 : MonoBehaviour
     IEnumerator StartMotion()
     {
         yield return null;
+        StartCoroutine(MainLoop());
     }
 
     IEnumerator MainMotion()

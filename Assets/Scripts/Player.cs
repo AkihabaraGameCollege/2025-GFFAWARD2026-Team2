@@ -168,20 +168,18 @@ public class Player : MonoBehaviour
 
     private void StatusReset()
     {
-        if (PlayerPrefs.GetInt("SpeedLevel", 1) == 2)
-        {
-            isGotAttackSkill = true;
-            IsStunable = true;
-        }
 
         if (PlayerPrefs.GetInt("AttackLevel", 1) == 2)
         {
             attackReach *= attackReachMagnification;
             var pos = attackCollider.transform.position;
-            pos.z += attackReachMagnification / 2;
+            pos.z += attackReachMagnification / 4;
             attackCollider.transform.position = pos;
 
             damage *= damageMagnicifation;
+
+            isGotAttackSkill = true;
+            IsStunable = true;
         }
 
         if (PlayerPrefs.GetInt("JumpLevel", 1) == 2)

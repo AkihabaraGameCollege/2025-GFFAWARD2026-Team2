@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Data.Common;
 using UnityEngine;
 
 public class BossMove2 : MonoBehaviour
@@ -14,6 +15,9 @@ public class BossMove2 : MonoBehaviour
     [SerializeField]
     [Tooltip("回転速度")]
     private float rotateSpeed = 11.1f;
+    [SerializeField]
+    [Tooltip("スタン時間")]
+    private float defaultStunTime = 15;
 
     //コライダー参照用（中山が編集）
     [Header("Collider")]
@@ -71,9 +75,6 @@ public class BossMove2 : MonoBehaviour
     [Tooltip("着地時コライダー出現継続時間")]
     private float dropAttackTime = 0.1f;
     [SerializeField]
-    [Tooltip("弱点出現時間")]
-    private float weakTime = 4;
-    [SerializeField]
     [Tooltip("立ち上がりにかかる時間")]
     private float standUpTime = 5;
 
@@ -110,6 +111,7 @@ public class BossMove2 : MonoBehaviour
 
     // 何回ダメージ食らったかのカウンター
     private int damageCounter = 0;
+    private float stunTimer = 0;
 
     void Start()
     {
@@ -122,13 +124,14 @@ public class BossMove2 : MonoBehaviour
 
         statusManager.OnDamageTaken += TakeDamage;
         statusManager.OnDeath += Die;
+        statusManager.OnStunTaken += TakeStun;
 
         statusManager.isInvincible = true;
         attackCollider.enabled = false;//攻撃判定無効化（中山が編集）
         StageScene.Instance.HideWeakText();
 
         // 行動のコルーチンを起動
-        StartCoroutine(MainLoop());//行動パターン開始（中山が編集）
+        StartCoroutine(StartMotion());
     }
 
     // StatusManagerBossから呼び出される
@@ -153,15 +156,13 @@ public class BossMove2 : MonoBehaviour
     {
         if (statusManager != null)
         {
+            statusManager.OnStunTaken -= TakeStun;
             statusManager.OnDamageTaken -= TakeDamage;
         }
     }
 
     IEnumerator MainLoop()
     {
-        // スタート時のモーション起動
-        yield return StartCoroutine(StartMotion());
-
         // 基本のループ
         while (true)
         {
@@ -172,6 +173,7 @@ public class BossMove2 : MonoBehaviour
     IEnumerator StartMotion()
     {
         yield return null;
+        StartCoroutine(MainLoop());
     }
 
     IEnumerator MainMotion()
@@ -193,7 +195,8 @@ public class BossMove2 : MonoBehaviour
         }
         // 一連の処理
         yield return HipDrop();
-        yield return ArrivalWeakPoint();
+        Debug.Log("ENDHIP");
+        yield return Stun(defaultStunTime);
         yield return StandUp();
     }
 
@@ -219,7 +222,7 @@ public class BossMove2 : MonoBehaviour
         // 方向を、回転情報に変換
         Quaternion rotation = Quaternion.LookRotation(relativePos);
         // 現在の回転情報と、ターゲット方向の回転情報を補完する
-        rigidbody.rotation = Quaternion.Slerp(transform.rotation, rotation, rotateSpeed);
+        rigidbody.rotation = Quaternion.Slerp(transform.rotation, rotation, rotateSpeed * Time.fixedDeltaTime);
     }
 
     IEnumerator HipDrop()
@@ -257,17 +260,21 @@ public class BossMove2 : MonoBehaviour
         attackCollider.enabled = false;
     }
 
-    IEnumerator ArrivalWeakPoint()
+    IEnumerator Stun(float weakTime)
     {
-        // 弱点出現
+        //Weak出現
         statusManager.isInvincible = false;
         StageScene.Instance.ShowWeakText();
-        // 待つ
-        yield return new WaitForSeconds(weakTime);
+        stunTimer = weakTime;
 
-        // 弱点消滅
-        statusManager.isInvincible = true;
+        while (stunTimer >= 0)
+        {
+            stunTimer -= Time.deltaTime;
+            yield return null;
+        }
+        //weak消滅
         StageScene.Instance.HideWeakText();
+        statusManager.isInvincible = true;
     }
 
     IEnumerator StandUp()
@@ -306,6 +313,30 @@ public class BossMove2 : MonoBehaviour
             statusManager.health++;
             StageScene.Instance.BossBarUpdate(statusManager.health, statusManager.maxHealth);
         }
+    }
+
+    private void TakeStun()
+    {
+        if (statusManager.isInvincible)
+        {
+            // ここで座り込むアニメーション再生が必要かも
+
+            StopAllCoroutines();
+            StartCoroutine(OnStunTaken());
+        }
+        else
+        {
+            // ひるむ時間を３秒くらいのばす
+            stunTimer += 3;
+        }
+    }
+
+    IEnumerator OnStunTaken()
+    {
+        attackCollider.enabled = false;
+        yield return StartCoroutine(Stun(defaultStunTime));
+        yield return StandUp();
+        StartCoroutine(MainLoop());
     }
 
     // 以下テスト
