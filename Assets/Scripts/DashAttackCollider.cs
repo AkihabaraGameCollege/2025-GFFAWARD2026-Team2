@@ -22,7 +22,7 @@ public class DashAttackCollider : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
 
-        if (playerScript.isSprinting)
+        if (playerScript.IsSprinting)
         {
             thiscollider.enabled = true;
         }

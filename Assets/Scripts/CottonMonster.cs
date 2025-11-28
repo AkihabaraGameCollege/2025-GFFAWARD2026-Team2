@@ -68,7 +68,7 @@ public class CottonMonster : MonoBehaviour
         }
     }
     
-    public void OnDamageTaken(int dummy = 0)
+    public void OnDamageTaken(int dummy = 0, bool dummybool = false)
     {
         hitbox.OnHit -= OnDamageTaken;
         Destroy(gameObject);

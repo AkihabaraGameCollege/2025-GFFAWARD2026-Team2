@@ -2153,28 +2153,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!1 &1587143719 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6763169638801987583, guid: c73bc8bc5706b564fb2f0151a2193c05, type: 3}
-  m_PrefabInstance: {fileID: 1642087309}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &1587143720 stripped
-BoxCollider:
-  m_CorrespondingSourceObject: {fileID: 6606404178022784316, guid: c73bc8bc5706b564fb2f0151a2193c05, type: 3}
-  m_PrefabInstance: {fileID: 1642087309}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1587143722
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1587143719}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cdcd751dfff4d1438ec4f1c05a48101, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1593121523
 GameObject:
   m_ObjectHideFlags: 0
@@ -2303,17 +2281,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5657802308847877884, guid: c73bc8bc5706b564fb2f0151a2193c05, type: 3}
-      propertyPath: dashAttackCollider
-      value: 
-      objectReference: {fileID: 1587143720}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6763169638801987583, guid: c73bc8bc5706b564fb2f0151a2193c05, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1587143722}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c73bc8bc5706b564fb2f0151a2193c05, type: 3}
 --- !u!4 &1642087310 stripped
 Transform:

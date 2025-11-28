@@ -8,7 +8,7 @@ public class HitboxEnemy : MonoBehaviour
     //       「Layer Collision Matrix」で設定されています。
     //       例: 「EnemyAttack」レイヤーは「PlayerHitbox」レイヤーのみ衝突が許可されている必要があります。
 
-    public event Action<int> OnHit;
+    public event Action<int,bool> OnHit;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -27,6 +27,6 @@ public class HitboxEnemy : MonoBehaviour
             colliderScript.Hit();
         }
 
-        OnHit?.Invoke(dam);
+        OnHit?.Invoke(dam, playerScript.IsStunable);
     }
 }

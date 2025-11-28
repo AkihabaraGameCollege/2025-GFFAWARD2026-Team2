@@ -32,8 +32,11 @@ public class StatusManagerBoss : MonoBehaviour
 
     private bool isAlreadyPlayed = false;//ラストスパートBGM再生判定用（中山が編集）
 
+    public bool isInvincible = false;
+
     public event Action OnDamageTaken;
     public event Action OnDeath;
+    public event Action OnStunTaken;
 
     // 登録用（中山が編集）
     void Awake()
@@ -41,40 +44,48 @@ public class StatusManagerBoss : MonoBehaviour
         destroyEffect.SetActive(false);// 撃破エフェクト非表示（中山が編集）
         damageEffect.SetActive(false);// 被弾エフェクト非表示（中山が編集）
 
-        hitbox.OnHit += Damage;
+        hitbox.OnHit += Hit;
 
         health = maxHealth;
     }
 
-    public void Damage(int damage)
+    public void Hit(int damage, bool stun)
     {
-        AudioPlayer.instance.PlaySE(bossDamageSE); // bossDamageを再生(中山が編集)
-
-        damageEffect.SetActive(true);// 被弾エフェクト表示（中山が編集）
-
-        // HPを減少させ、ダメージエフェクトを発生させる
-        health -= damage;
-
-        StageScene.Instance.BossBarUpdate(health,maxHealth);//HPゲージを減少させる（中山が編集）
-
-        // エフェクトをインスタンス化
-        GameObject effect = Instantiate(damageEffect);
-
-        effect.transform.parent = transform;
-        Destroy(effect, 5);// エフェクトを5秒後に破壊（中山が編集）
-
-        // ラストスパートBGM再生判定（中山が編集）
-        if (health <= lastSpurtHP && !isAlreadyPlayed)
+        if (!isInvincible)
         {
-            AudioPlayer.instance.PlayBGM(bossLastBGM);// ラストスパートBGM再生（中山が編集）
-            isAlreadyPlayed = true;// 2回目以降再生されないようにする（Tomisatoが編集）
+            AudioPlayer.instance.PlaySE(bossDamageSE); // bossDamageを再生(中山が編集)
+
+            damageEffect.SetActive(true);// 被弾エフェクト表示（中山が編集）
+
+            // HPを減少させ、ダメージエフェクトを発生させる
+            health -= damage;
+
+            StageScene.Instance.BossBarUpdate(health, maxHealth);//HPゲージを減少させる（中山が編集）
+
+            // エフェクトをインスタンス化
+            GameObject effect = Instantiate(damageEffect);
+
+            effect.transform.parent = transform;
+            Destroy(effect, 5);// エフェクトを5秒後に破壊（中山が編集）
+
+            // ラストスパートBGM再生判定（中山が編集）
+            if (health <= lastSpurtHP && !isAlreadyPlayed)
+            {
+                AudioPlayer.instance.PlayBGM(bossLastBGM);// ラストスパートBGM再生（中山が編集）
+                isAlreadyPlayed = true;// 2回目以降再生されないようにする（Tomisatoが編集）
+            }
+
+            OnDamageTaken?.Invoke();
+
+            if (health <= 0)
+            {
+                OnDeath?.Invoke();
+            }
         }
-
-        OnDamageTaken?.Invoke();
-
-        if (health <= 0)
+        
+        if (stun)
         {
-            OnDeath?.Invoke();
+            OnStunTaken?.Invoke();
         }
     }
 
@@ -82,18 +93,7 @@ public class StatusManagerBoss : MonoBehaviour
     {
         if (hitbox != null)
         {
-            hitbox.OnHit -= Damage;
+            hitbox.OnHit -= Hit;
         }
-    }
-
-    [ContextMenu("デバッグ用にダメージを食らわせる")]
-    void DamageForDebug()
-    {
-        if (!Application.isPlaying)
-        {
-            Debug.LogError("プレイ中のみ実行可能です");
-            return;
-        }
-        Damage(1);
     }
 }
