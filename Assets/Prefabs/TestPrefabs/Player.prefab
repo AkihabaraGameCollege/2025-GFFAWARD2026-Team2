@@ -238,7 +238,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5657802308847877884}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
-        m_MethodName: OnDashAttack
+        m_MethodName: OnSprint
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -268,6 +268,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
+  sprintSpeed: 8
   jumpForce: 10
   groundCheckStartPoint: {x: 0, y: 0.5, z: 0}
   groundCheckEndPoint: {x: 0, y: -0.5, z: 0}
@@ -275,7 +276,6 @@ MonoBehaviour:
   playerWaitTime: 0.3
   playerLittleWaitTime: 0.3
   playerAttackTime: 0.1
-  dashAttackSpeed: 20
   attackReach: {x: 1, y: 1, z: 1}
   maxHealth: 3
   invincibleTime: 1
@@ -283,7 +283,6 @@ MonoBehaviour:
   attackReachMagnification: 2
   damageMagnicifation: 2
   jumpForceMagnification: 1.5
-  moveSpeedMagnification: 1.5
   animator: {fileID: 7325439290136899504}
   groundLayer:
     serializedVersion: 2

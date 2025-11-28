@@ -19,6 +19,9 @@ public class StageScene : MonoBehaviour
     [SerializeField]
     private PauseUI pause = null;
 
+    [SerializeField]
+    private PlayerUI playerUI;
+
     public bool IsPaused { get; private set; } = false;// ポーズ状態の場合はtrue、プレイ状態の場合はfalse
 
     // このステージのプレイ時間を取得します。
@@ -57,19 +60,8 @@ public class StageScene : MonoBehaviour
 
     private bool isFullUpgraded = false;
 
-    // こちらにプレイヤーとボスのライフイメージをアタッチしてください（中山が編集）
-    [SerializeField]
-    Image playerLifeImage = null;
-    [SerializeField]
-    Image playerDamageImage = null;
     [SerializeField]
     Image bossLifeImage = null;
-
-    // プレイヤーとボスのHP減少量設定（中山が編集）
-    [SerializeField]
-    private float playerFillAmountNumberLife = 0.34f;
-    [SerializeField]
-    private float playerFillAmountNumberDamage = 0.34f;
 
     [SerializeField]
     private Image weakText = null;
@@ -293,10 +285,9 @@ public class StageScene : MonoBehaviour
         }
     }
 
-    public void DecreaseHpPlayer()
+    public void DecreaseHpPlayer(int value, int max)
     {
-        playerLifeImage.fillAmount -= playerFillAmountNumberLife;// 3回攻撃で0になるように調整
-        playerDamageImage.fillAmount += playerFillAmountNumberDamage;// 3回攻撃で0になるように調整
+        playerUI.Life((float)value / max);
     }
 
     // ボスのHPを減少させるメソッド（中山が編集）
@@ -319,5 +310,10 @@ public class StageScene : MonoBehaviour
         weakText.gameObject.SetActive(false);
         if (defeatBossText == null) return;
         defeatBossText.gameObject.SetActive(true);
+    }
+
+    public void ApplySprintGauge(float value,float max)
+    {
+        playerUI.ApplySprintGauge(value / max);
     }
 }
