@@ -195,7 +195,6 @@ public class BossMove2 : MonoBehaviour
         }
         // ˆê˜A‚Ìˆ—
         yield return HipDrop();
-        Debug.Log("ENDHIP");
         yield return Stun(defaultStunTime);
         yield return StandUp();
     }

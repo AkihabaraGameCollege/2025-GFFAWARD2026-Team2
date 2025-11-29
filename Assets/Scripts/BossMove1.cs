@@ -52,9 +52,6 @@ public class BossMove1 : MonoBehaviour
     // 歩行SE再生間隔時間設定（中山が編集）
     [SerializeField]
     private float moveSoundMTime = 1f;
-    // ボス開始時の効果音再生時間設定（中山が編集）
-    [SerializeField]
-    private float bossStartSoundMTime = 1.0f;
 
     // ボス本体判定（中山が編集）
     [SerializeField]
@@ -96,7 +93,9 @@ public class BossMove1 : MonoBehaviour
     private bool isTurning = false;// 攻撃中かどうか判定（中山が編集）
     private bool isJumping = false;// 攻撃中かどうか判定（中山が編集）
     private bool isWalking = false;// 歩行SE再生判定用（中山が編集）
-    private bool isDefeatSounding = false;// ボスがやられたときのSE再生判定用（中山が編集）
+    private bool isDefeatSounding = false;// ボスがやられたときのSE再生判定用（中山が編集)
+    private bool isAppeardWeak = false; // 弱点が露出したかどうか
+    private float stunTimer = 0;
 
     private StatusManagerBoss statusManager;
 
@@ -108,12 +107,12 @@ public class BossMove1 : MonoBehaviour
         targetObject = GameObject.FindWithTag("Player");
 
         statusManager.OnDeath += Die; // 死亡時実行の関数をいれとく 富里
+        statusManager.OnStunTaken += TakeStun; //スタン食らったとき
 
         isWalking = true;// 歩行SE再生判定用（中山が編集）
         isTurning = false;// 方向可能（中山が編集）
         isMoving = false;// 移動停止（中山が編集）
         isJumping = false;// 攻撃停止（中山が編集）
-        thisCollider.enabled = false;// ボス本体判定有効化（中山が編集）
         attackCollider.enabled = false;// 攻撃判定無効化（中山が編集）
         bodyAttackCollider.enabled = true;// ボス本体判定有効化（中山が編集）
         isDefeatSounding = true;// ボスがやられたときのSE再生判定用（中山が編集）
@@ -137,8 +136,6 @@ public class BossMove1 : MonoBehaviour
         AudioPlayer.instance.PlaySE(6, true);// ボスSE再生（中山が編集）
 
         yield return new WaitForSeconds(bossStartTime);// 待機（中山が編集）
-        AudioPlayer.instance.StopLoopSE();// ボスSE停止（中山が編集）
-        yield return new WaitForSeconds(bossStartSoundMTime);// 少し待機（中山が編集）
 
         isTurning = true;// 方向可能（中山が編集）
         isMoving = true;// 移動開始（中山が編集）
@@ -151,6 +148,18 @@ public class BossMove1 : MonoBehaviour
     // ボスの毎フレーム更新処理
     void FixedUpdate()
     {
+        // ボスがやられたらSE処理（中山が編集）
+        if (StatusManagerBoss.health <= 0 && isDefeatSounding)
+        {
+            AudioPlayer.instance.PlaySE(4, true);// 死亡SE再生（中山が編集）
+            isDefeatSounding = false;// 2回目以降再生されないようにする（中山が編集）
+        }
+
+        if (isAppeardWeak)
+        {
+            return;
+        }
+
         float distance = Vector3.Distance(targetObject.transform.position, bossObject.transform.position);// プレイヤーの近くにいたらジャンプ攻撃を仕掛ける処理（中山が編集）
 
         // 30秒たったらハンマー攻撃の関数を呼び出す（中山が編集）
@@ -187,12 +196,7 @@ public class BossMove1 : MonoBehaviour
             }
         }
 
-        // ボスがやられたらSE処理（中山が編集）
-        if (StatusManagerBoss.health <= 0 && isDefeatSounding)
-        {
-            AudioPlayer.instance.PlaySE(4, true);// 死亡SE再生（中山が編集）
-            isDefeatSounding = false;// 2回目以降再生されないようにする（中山が編集）
-        }
+        
     }
 
     // プレイヤーを追尾する（中山が編集）
@@ -299,10 +303,22 @@ public class BossMove1 : MonoBehaviour
         yield return new WaitForSeconds(bossAttackTime);// 攻撃する時間（中山が編集）
         attackCollider.enabled = false;// 攻撃判定無効化（中山が編集）
         yield return new WaitForSeconds(bossLittleWaitTime);// 少し待機（中山が編集）
+
+        StartCoroutine(OnWeak());
+    }
+
+    private IEnumerator OnWeak()
+    {
+        stunTimer = bossWeakTime;
         Weak();// 弱点出現（中山が編集）
         yield return new WaitForSeconds(bossWeakBeforTime);// 弱点タイム（中山が編集）
         Weaking();// 弱体化処理（中山が編集）
-        yield return new WaitForSeconds(bossWeakTime);// 弱点タイム（中山が編集）
+
+        while (stunTimer >= 0)
+        {
+            stunTimer -= Time.deltaTime;
+            yield return null;
+        }
 
         WakeUp();// 起き上がり（中山が編集）
         yield return new WaitForSeconds(bossWakeUpTime);// 待機（中山が編集）
@@ -311,9 +327,9 @@ public class BossMove1 : MonoBehaviour
 
         isTurning = true;// 攻撃停止（中山が編集）
         isMoving = true;// 移動開始（中山が編集）
+        isAppeardWeak = false;
 
         hammerAttackTime = hammerAttackTimeDefault;// ハンマー攻撃時間リセット（中山が編集）
-
     }
 
     // ハンマー攻撃処理（中山が編集）
@@ -327,16 +343,18 @@ public class BossMove1 : MonoBehaviour
     // 弱点タイム（中山が編集）
     private void Weak()
     {
-        thisCollider.enabled = false;// ボス本体判定無効化（中山が編集）
         animator.SetTrigger(weakID);// 弱体化アニメーション再生（中山が編集）
         collider2Player.enabled = true; // プレイヤーとのCollisionColliderを有効化 (富里が編集)
+        isAppeardWeak = true;
+
+        bodyAttackCollider.enabled = false;// ボス本体判定無効化（中山が編集）
     }
 
     // 弱体化処理（中山が編集）
     private void Weaking()
     {
         StageScene.Instance.ShowWeakText();
-        bodyAttackCollider.enabled = false;// ボス本体判定無効化（中山が編集）
+        statusManager.isInvincible = false;
     }
 
     // 起き上がり（中山が編集）
@@ -346,6 +364,7 @@ public class BossMove1 : MonoBehaviour
         StageScene.Instance.HideWeakText();
         thisCollider.enabled = true;// ボス本体判定有効化（中山が編集）
         collider2Player.enabled = false; // プレイヤーとのCollisionColliderを無効化 (富里が編集)
+        statusManager.isInvincible = true;
     }
 
     private void Die()
@@ -360,5 +379,22 @@ public class BossMove1 : MonoBehaviour
         AudioPlayer.instance.StopLoopSE();// ボス撃破SE再生（中山が編集）
         StageScene.Instance.StageClear();// ステージクリア処理（中山が編集）
         Destroy(gameObject);// ボスオブジェクトを破壊（中山が編集）
+    }
+
+    [ContextMenu("デバッグ用すぐスタン")]
+    private void TakeStun()
+    {
+        if (statusManager.isInvincible)
+        {
+            // これのために、アニメーションをanystate→倒れるにしとかないとダメかも
+
+            StopAllCoroutines();
+            StartCoroutine(OnWeak());
+        }
+        else
+        {
+            // ひるむ時間を３秒くらいのばす
+            stunTimer += 3;
+        }
     }
 }

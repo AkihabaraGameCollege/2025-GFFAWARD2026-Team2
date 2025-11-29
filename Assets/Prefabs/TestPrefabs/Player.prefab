@@ -283,7 +283,7 @@ MonoBehaviour:
   invincibleTime: 1
   damage: 1
   attackReachMagnification: 2
-  damageMagnicifation: 2
+  damageMagnicifation: 1
   jumpForceMagnification: 1.5
   animator: {fileID: 6379943498837059707}
   groundLayer:
