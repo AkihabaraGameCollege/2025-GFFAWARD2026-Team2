@@ -276,7 +276,7 @@ MonoBehaviour:
   groundCheckEndPoint: {x: 0, y: -0.5, z: 0}
   requiredJumpSpeed: 0.1
   playerWaitTime: 0.3
-  playerLittleWaitTime: 0.3
+  playerLittleWaitTime: 0.1
   playerAttackTime: 0.1
   attackReach: {x: 1, y: 1, z: 1}
   maxHealth: 3
