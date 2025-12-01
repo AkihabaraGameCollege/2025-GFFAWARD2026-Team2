@@ -160,7 +160,6 @@ public class Player : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();// Rigidbody コンポーネントを取得
 
 
-        OnApplicationFocus(true);
         attackOK = true;// 攻撃制限変数初期化（中山が編集）
         attackCollider.enabled = false;// 攻撃判定を無効化（中山が編集）
         dashAttackCollider.enabled = false; // ダッシュアタック判定を無効化 (富里が編集)
@@ -343,6 +342,8 @@ public class Player : MonoBehaviour
 
             Vector3 moveDirection = (cameraForward * moveInput.y + cameraRight * moveInput.x).normalized;//正規化して移動方向ベクトルを計算
 
+            Vector3 rotateDirection = moveDirection;
+
             // Wall Check
             bool isCasted = false;
 
@@ -352,25 +353,33 @@ public class Player : MonoBehaviour
                 Vector3 offset = transform.forward * wallCheckerPos[i].x + transform.right * wallCheckerPos[i].z;
                 offset.y = wallCheckerPos[i].y;
 
-                isCasted = Physics.Raycast(transform.position + offset, moveDirection, wallCheckerDistance, groundLayer);
+                isCasted = Physics.Raycast(transform.position + offset, moveDirection,out RaycastHit hit, wallCheckerDistance, groundLayer);
+
+
                 // 一個でもtrueがあったらbreakして
-                if (isCasted) break;
+                if (isCasted)
+                {
+                    if (hit.collider.gameObject.layer == 3)
+                    {
+                        moveDirection = Vector3.ProjectOnPlane(moveDirection, hit.normal);
+                    }
+                    break;
+                }
             }
+
 
 
             // falseじゃないと発動しない
-            if (!isCasted)
-            {
-                rigidbody.linearVelocity = moveDirection * ((sprint) ? sprintSpeed : moveSpeed) + new Vector3(0, rigidbody.linearVelocity.y, 0);//移動ベクトルを速度に設定
-            }
+            rigidbody.linearVelocity = moveDirection * ((sprint) ? sprintSpeed : moveSpeed) + new Vector3(0, rigidbody.linearVelocity.y, 0);//移動ベクトルを速度に設定
+
 
             // キャラクターを移動する方向に向かせるための処理
-            if (moveDirection != Vector3.zero)  // 何かしら移動が発生している場合のみ回転させる
+            if (rotateDirection != Vector3.zero)  // 何かしら移動が発生している場合のみ回転させる
             {
                 // Quaternion.LookRotationは、指定された方向（moveDirection）を向くための回転を計算します。
                 // moveDirectionはカメラの向きに基づいた移動方向です。
                 // つまり、キャラクターが進む方向に合わせてキャラクターの向きを変えるための回転を求めています。
-                Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+                Quaternion targetRotation = Quaternion.LookRotation(rotateDirection);
 
                 // transform.rotationはキャラクターの現在の回転を表します。
                 // Quaternion.Slerpは、現在の回転（transform.rotation）から目標の回転（targetRotation）までを滑らかに補間します。
@@ -545,18 +554,7 @@ public class Player : MonoBehaviour
     }
 
     // アプリケーションのフォーカスが変化したときに呼び出されるメソッド（中山が編集）
-    private void OnApplicationFocus(bool focus)
-    {
-        // フォーカスがある場合はカーソルをロックし、ない場合はロックを解除する（中山が編集）
-        if (focus)
-        {
-            Cursor.lockState = CursorLockMode.Locked;// カーソルをロック（中山が編集）
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.None;// カーソルのロックを解除（中山が編集）
-        }
-    }
+  
 
     private void OnDrawGizmos()
     {

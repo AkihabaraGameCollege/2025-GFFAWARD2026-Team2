@@ -27,16 +27,6 @@ public class StageScene : MonoBehaviour
 
     public bool IsPaused { get; private set; } = false;// ポーズ状態の場合はtrue、プレイ状態の場合はfalse
 
-    // このステージのプレイ時間を取得します。
-    public float PlayTime { get; private set; } = 0;
-    // このステージの残りプレイ時間を取得します。
-    public float RemainPlayTime => PlayTimeout - PlayTime;
-    // このステージのタイムアウト時間を取得します。
-    public float PlayTimeout => playTimeout;
-    // このステージのタイムアウト時間を指定します。
-    [SerializeField]
-    private float playTimeout = 100;
-
     // ゲームオーバー表示用のUIを指定します。(中山が編集)
     [SerializeField]
     private GameOverUI gameOverUI = null;
@@ -111,6 +101,8 @@ public class StageScene : MonoBehaviour
         player.enabled = true;// プレイヤーを無効化しておく(中山が編集)
         sceneState = SceneState.Play;// ステージプレイ中に変更(中山が編集)
 
+        OnApplicationFocus(true);
+
         // シーン名を取得
         string activeSceneName = SceneManager.GetActiveScene().name;
         // 各シーンに対応したBGMを再生
@@ -139,8 +131,6 @@ public class StageScene : MonoBehaviour
             case SceneState.Intro:
                 break;
             case SceneState.Play:
-                // プレイ時間を計測する
-                PlayTime += Time.deltaTime;
                 break;
             case SceneState.GameOver:
                 break;
@@ -314,5 +304,18 @@ public class StageScene : MonoBehaviour
     public void ApplySprintGauge(float value,float max)
     {
         playerUI.ApplySprintGauge(value / max);
+    }
+
+    private void OnApplicationFocus(bool focus)
+    {
+        // フォーカスがある場合はカーソルをロックし、ない場合はロックを解除する（中山が編集）
+        if (focus && sceneState == SceneState.Play && !IsPaused)
+        {
+            Cursor.lockState = CursorLockMode.Locked;// カーソルをロック（中山が編集）
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;// カーソルのロックを解除（中山が編集）
+        }
     }
 }

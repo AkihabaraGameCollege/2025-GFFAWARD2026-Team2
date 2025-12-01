@@ -1063,7 +1063,6 @@ MonoBehaviour:
   titleStage: Title
   pause: {fileID: 2009077501}
   playerUI: {fileID: 482055069}
-  playTimeout: 100
   gameOverUI: {fileID: 1821547072}
   player: {fileID: 2128186082}
   stageClearUI: {fileID: 877811904}
@@ -1147,6 +1146,50 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3676316549497983691, guid: c73bc8bc5706b564fb2f0151a2193c05, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5657802308847877884, guid: c73bc8bc5706b564fb2f0151a2193c05, type: 3}
+      propertyPath: wallCheckerPos.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5657802308847877884, guid: c73bc8bc5706b564fb2f0151a2193c05, type: 3}
+      propertyPath: wallCheckerPos.Array.data[0].y
+      value: 1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5657802308847877884, guid: c73bc8bc5706b564fb2f0151a2193c05, type: 3}
+      propertyPath: wallCheckerPos.Array.data[0].z
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5657802308847877884, guid: c73bc8bc5706b564fb2f0151a2193c05, type: 3}
+      propertyPath: wallCheckerPos.Array.data[1].x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5657802308847877884, guid: c73bc8bc5706b564fb2f0151a2193c05, type: 3}
+      propertyPath: wallCheckerPos.Array.data[1].z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5657802308847877884, guid: c73bc8bc5706b564fb2f0151a2193c05, type: 3}
+      propertyPath: wallCheckerPos.Array.data[2].y
+      value: 1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5657802308847877884, guid: c73bc8bc5706b564fb2f0151a2193c05, type: 3}
+      propertyPath: wallCheckerPos.Array.data[2].z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5657802308847877884, guid: c73bc8bc5706b564fb2f0151a2193c05, type: 3}
+      propertyPath: wallCheckerPos.Array.data[3].y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5657802308847877884, guid: c73bc8bc5706b564fb2f0151a2193c05, type: 3}
+      propertyPath: wallCheckerPos.Array.data[3].z
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5657802308847877884, guid: c73bc8bc5706b564fb2f0151a2193c05, type: 3}
+      propertyPath: wallCheckerPos.Array.data[4].y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5657802308847877884, guid: c73bc8bc5706b564fb2f0151a2193c05, type: 3}
+      propertyPath: wallCheckerPos.Array.data[4].z
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
