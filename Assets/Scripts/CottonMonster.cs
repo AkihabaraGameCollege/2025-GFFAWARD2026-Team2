@@ -1,3 +1,4 @@
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -62,8 +63,11 @@ public class CottonMonster : MonoBehaviour
                     bossScript.Heal();
                     OnDamageTaken();
                 }
+                diff.y = 0;
+                Vector3 direction = diff.normalized;
+                rb.linearVelocity = direction * moveSpeed;
+                transform.rotation = Quaternion.LookRotation(direction);
 
-                rb.linearVelocity = diff.normalized * moveSpeed;
                 break;
         }
     }

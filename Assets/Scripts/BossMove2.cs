@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Data.Common;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class BossMove2 : MonoBehaviour

@@ -132,7 +132,7 @@ MonoBehaviour:
   zakoMaxSpreadSpeed: 50
   zakoSpreadTime: 0.7
   zakoMoveSpeed: 1
-  zakoSpawnOffset: {x: 0, y: 2, z: 0}
+  zakoSpawnOffset: {x: 0, y: 1, z: 0}
   zakoAbsorbRadius: 2
   walkTime: 4
   jumpTargetOffsetY: 20
