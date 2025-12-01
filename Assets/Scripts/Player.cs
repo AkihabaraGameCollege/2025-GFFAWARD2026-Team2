@@ -127,10 +127,11 @@ public class Player : MonoBehaviour
 
     private float sprintTimer;
 
-    private float stunTimer = 0;
+    private float stunSkillTimer = 0;
     public bool IsStunable { get; private set; } = false;
 
     private bool isGotAttackSkill = false;
+    private bool isGotSpeedSkill = false;
 
     //アニメーションID登録（中山が編集）
     static readonly int landingID = Animator.StringToHash("landing");
@@ -187,6 +188,11 @@ public class Player : MonoBehaviour
             jumpForce *= jumpForceMagnification;
         }
 
+        if (PlayerPrefs.GetInt("SpeedLevel",1 ) == 2)
+        {
+            isGotSpeedSkill = true;
+        }
+
         health = maxHealth;
         attackCollider.transform.localScale = attackReach;
         sprintTimer = sprintSecond;
@@ -241,10 +247,10 @@ public class Player : MonoBehaviour
     {
         if (!IsStunable && isGotAttackSkill)
         {
-            stunTimer -= Time.deltaTime;
-            if (stunTimer <= 0)
+            stunSkillTimer -= Time.deltaTime;
+            if (stunSkillTimer <= 0)
             {
-                stunTimer = 0;
+                stunSkillTimer = 0;
                 IsStunable = true;
             }
         }
@@ -423,13 +429,16 @@ public class Player : MonoBehaviour
         if (IsStunable)
         {
             IsStunable = false;
-            stunTimer = stunCooldownTime;
+            stunSkillTimer = stunCooldownTime;
         }
     }
 
 
     private void Sprint()
     {
+        if (!isGotSpeedSkill) return;
+
+
         if (sprintTimer > 0)
         {
             IsSprinting = true;
@@ -452,6 +461,8 @@ public class Player : MonoBehaviour
 
     private void ExitSprint()
     {
+        if (!isGotSpeedSkill) return;
+
         IsSprinting = false;
         if (motionState == MotionState.Sprinting)
         {

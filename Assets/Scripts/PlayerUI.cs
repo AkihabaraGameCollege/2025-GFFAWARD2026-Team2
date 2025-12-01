@@ -19,6 +19,9 @@ public class PlayerUI : MonoBehaviour
     [SerializeField]
     [Tooltip("スプリントゲージ")]
     private Image sprintGauge;
+    [SerializeField]
+    [Tooltip("スプリントゲージの背景")]
+    private Image sprintBackGround;
 
     [SerializeField]
     private Image lifeImage;
@@ -28,12 +31,24 @@ public class PlayerUI : MonoBehaviour
     private void Start()
     {
         ReloadFlag();
+
+        bool isGotSpeedSkill = PlayerPrefs.GetInt("SpeedLevel", 1) == 2;
+        if (isGotSpeedSkill)
+        {
+            sprintBackGround.enabled = true;
+            sprintGauge.enabled = true;
+        }
+        else
+        {
+            sprintBackGround.enabled = false;
+            sprintGauge.enabled = false;
+        }
     }
 
     // 能力取得状態を更新 (富里が編集)
     private void ReloadFlag()
     {
-        images[0].sprite = (PlayerPrefs.GetInt("AttackLevel",1) == 2) ? gotSprites[0] : notGotSprites[0];
+        images[0].sprite = (PlayerPrefs.GetInt("AttackLevel", 1) == 2) ? gotSprites[0] : notGotSprites[0];
         images[1].sprite = (PlayerPrefs.GetInt("JumpLevel", 1) == 2) ? gotSprites[1] : notGotSprites[1];
         images[2].sprite = (PlayerPrefs.GetInt("SpeedLevel", 1) == 2) ? gotSprites[2] : notGotSprites[2];
     }

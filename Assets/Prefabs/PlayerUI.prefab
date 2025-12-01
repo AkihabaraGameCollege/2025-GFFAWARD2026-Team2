@@ -140,6 +140,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 8af083d801febcb459cbc33bb68427bf, type: 3}
   - {fileID: 21300000, guid: bf410ba0e814f6d4eb1b07c332d31672, type: 3}
   sprintGauge: {fileID: 8078853050110553660}
+  sprintBackGround: {fileID: 2510420425947190334}
   lifeImage: {fileID: 238256357315759289}
   damageImage: {fileID: 138634322065831700}
 --- !u!1 &4414008034901798781
