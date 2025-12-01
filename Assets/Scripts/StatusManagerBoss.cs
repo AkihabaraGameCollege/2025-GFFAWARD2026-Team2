@@ -7,9 +7,6 @@ public class StatusManagerBoss : MonoBehaviour
     //撃破エフェクト
     [SerializeField] 
     GameObject destroyEffect;
-    //被弾エフェクト
-    [SerializeField] 
-    GameObject damageEffect;
 
     //hp現在値
     [SerializeField]
@@ -39,7 +36,6 @@ public class StatusManagerBoss : MonoBehaviour
     void Awake()
     {
         destroyEffect.SetActive(false);// 撃破エフェクト非表示（中山が編集）
-        damageEffect.SetActive(false);// 被弾エフェクト非表示（中山が編集）
 
         hitbox.OnHit += Hit;
 
@@ -51,18 +47,12 @@ public class StatusManagerBoss : MonoBehaviour
         if (!isInvincible)
         {
 
-            damageEffect.SetActive(true);// 被弾エフェクト表示（中山が編集）
-
             // HPを減少させ、ダメージエフェクトを発生させる
             health -= damage;
 
             StageScene.Instance.BossBarUpdate(health, maxHealth);//HPゲージを減少させる（中山が編集）
 
-            // エフェクトをインスタンス化
-            GameObject effect = Instantiate(damageEffect);
-
-            effect.transform.parent = transform;
-            Destroy(effect, 5);// エフェクトを5秒後に破壊（中山が編集）
+            
 
             // ラストスパートBGM再生判定（中山が編集）
             if (health <= lastSpurtHP && !isAlreadyPlayed)
