@@ -393,7 +393,6 @@ public class Player : MonoBehaviour
             rigidbody.linearVelocity = velocity;
 
             motionState = MotionState.JumpAnticipation;// ジャンプ予備動作状態へ移行（中山が編集）
-            animator.SetTrigger(jumpID);// Jumpアニメーションを開始（中山が編集）
         }
     }
 
