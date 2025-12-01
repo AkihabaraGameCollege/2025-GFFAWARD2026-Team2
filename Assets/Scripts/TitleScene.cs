@@ -23,6 +23,11 @@ public class TitleScene : MonoBehaviour
     [SerializeField]
     private GameObject titleButtons;
 
+    [SerializeField]
+    private Button skipButton;
+
+    [SerializeField]
+    private float skipButtonAppearWaitTime;
 
     // Animatorコンポーネント
     Animator animator;
@@ -37,6 +42,7 @@ public class TitleScene : MonoBehaviour
         animator = GetComponent<Animator>();
         AudioPlayer.instance.PlayBGM(15); // titlemusicを再生(富里が編集)
         dataClearUI.Hide();
+        skipButton.gameObject.SetActive(false);
     }
 
     // スタートボタンが押されたときに呼び出されるメソッド
@@ -50,9 +56,19 @@ public class TitleScene : MonoBehaviour
     {
         // エフェクトを再生
         animator.SetTrigger(outroId);
+        yield return new WaitForSeconds(skipButtonAppearWaitTime);
+
+        skipButton.gameObject.SetActive(true);
+        skipButton.Select();
+
         // ウェイト
-        yield return new WaitForSeconds(stageTransitionDelay);
+        yield return new WaitForSeconds(stageTransitionDelay - skipButtonAppearWaitTime);
         // 次のシーンへ遷移
+        SceneManager.LoadScene(nextSceneName);
+    }
+
+    public void OnSkipButtonClick()
+    {
         SceneManager.LoadScene(nextSceneName);
     }
 

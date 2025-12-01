@@ -490,7 +490,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 728019285}
-  - {fileID: 1195070751}
   m_Father: {fileID: 782784926}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -1337,8 +1336,9 @@ RectTransform:
   - {fileID: 1831822947}
   - {fileID: 214867267}
   - {fileID: 292695399}
-  - {fileID: 1936897817}
+  - {fileID: 1195070751}
   - {fileID: 1053723191}
+  - {fileID: 1936897817}
   m_Father: {fileID: 1976859859}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2115,13 +2115,13 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 292695399}
+  m_Father: {fileID: 782784926}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2222, y: -641}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -100, y: -100}
   m_SizeDelta: {x: 265, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 1, y: 1}
 --- !u!114 &1195070752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2151,9 +2151,9 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 21300000, guid: 7e933d51189c8cc4488b660da16f93fa, type: 3}
+    m_HighlightedSprite: {fileID: 21300000, guid: f1e14d70e02c0cb48873640d7774ef42, type: 3}
     m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 21300000, guid: 7e933d51189c8cc4488b660da16f93fa, type: 3}
+    m_SelectedSprite: {fileID: 21300000, guid: f1e14d70e02c0cb48873640d7774ef42, type: 3}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -2165,7 +2165,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1195070753}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1976859858}
+        m_TargetAssemblyTypeName: TitleScene, Assembly-CSharp
+        m_MethodName: OnSkipButtonClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1195070753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2186,7 +2198,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1c758d9beb1c8ff4697cd95324d33b98, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6a231a41440d95146973a7afc7d1257b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3407,6 +3419,8 @@ MonoBehaviour:
   dataClearUI: {fileID: 1053723192}
   titleImage: {fileID: 1108288862}
   titleButtons: {fileID: 1651151922}
+  skipButton: {fileID: 1195070752}
+  skipButtonAppearWaitTime: 3
 --- !u!4 &1976859859
 Transform:
   m_ObjectHideFlags: 0
