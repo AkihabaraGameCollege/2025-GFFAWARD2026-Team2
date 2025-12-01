@@ -120,6 +120,16 @@ public class BossMove1 : MonoBehaviour
         StopBoss();// ボス停止処理（中山が編集）
     }
 
+    private void OnDestroy()
+    {
+        if (statusManager != null)
+        {
+            statusManager.OnDeath -= Die;
+            statusManager.OnStunTaken -= TakeStun;
+            statusManager.OnDamageTaken -= TakeDamage;
+        }
+    }
+
     // ボスの開始処理（中山が編集）
     void Start()
     {
