@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class BossMove3 : MonoBehaviour
 {
-    private Rigidbody rb;//Rigidbodyコンポーネント参照用（中山が編集）
+    private Rigidbody rb;
     [Header("ステータス")]
     [SerializeField]
     [Tooltip("移動速度")]
@@ -27,6 +27,8 @@ public class BossMove3 : MonoBehaviour
     [Header("ボス固有の設定")]
     [SerializeField]
     private float rushWaitTime = 1;
+    [SerializeField]
+    private float startMotionTime = 3;
 
     private Player player;
     private StatusManagerBoss statusManager;
@@ -43,16 +45,6 @@ public class BossMove3 : MonoBehaviour
     [Tooltip("地面のレイヤー")]
     private LayerMask groundLayer;
 
-    Animator animator;//アニメーター（中山が編集）
-
-    //アニメーションID登録（中山が編集）
-    static readonly int IsWalkingID = Animator.StringToHash("isWalking");
-    static readonly int jumpID = Animator.StringToHash("jump");
-    static readonly int landingID = Animator.StringToHash("landing");
-    static readonly int weakID = Animator.StringToHash("weak");
-    static readonly int grandID = Animator.StringToHash("grand");
-    static readonly int dieID = Animator.StringToHash("die");
-
 
     
     private bool isPlayerCheckColliderEntered = false;
@@ -61,8 +53,7 @@ public class BossMove3 : MonoBehaviour
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();//Rigidbodyコンポーネント取得（中山が編集）
-        animator = GetComponent<Animator>();//Animatorコンポーネント取得（中山が編集）
+        rb = GetComponent<Rigidbody>();
         statusManager = GetComponent<StatusManagerBoss>();
 
         // find with tagってやっていいのかな
@@ -82,10 +73,14 @@ public class BossMove3 : MonoBehaviour
 
     public void Die()
     {
+        AudioPlayer.instance.PlaySE(12); 
+        StartCoroutine(DeathTimer());
+    }
+    IEnumerator DeathTimer()
+    {
+        yield return new WaitForSeconds(2);
+        AudioPlayer.instance.PlaySE(13); // BossDestroyを再生（富里が編集）
         StageScene.Instance.StageClear();
-        //何が違うんこれ
-        AudioPlayer.instance.PlaySE(12); // BossDieを再生（富里が編集）
-        //AudioPlayer.instance.PlaySE(13); // BossDestroyを再生（富里が編集）
         Destroy(gameObject);
     }
 
@@ -113,7 +108,7 @@ public class BossMove3 : MonoBehaviour
 
     IEnumerator StartMotion()
     {
-        yield return null;
+        yield return new WaitForSeconds(startMotionTime);
         StartCoroutine(MainLoop());
     }
 
@@ -168,7 +163,7 @@ public class BossMove3 : MonoBehaviour
 
     IEnumerator Drift()
     {
-        AudioPlayer.instance.PlaySE(10); // BossDriftを再生（中山が編集）
+        AudioPlayer.instance.PlaySE(9); // BossDriftを再生（中山が編集）
         attackCollider.enabled = true;
         float rotatedDegree = 0;
         Quaternion startRot = rb.rotation;
@@ -188,7 +183,7 @@ public class BossMove3 : MonoBehaviour
 
     IEnumerator Rush()
     {
-        AudioPlayer.instance.PlaySE(9); // BossRushを再生（中山が編集）
+        AudioPlayer.instance.PlaySE(11,true); // BossRushを再生（中山が編集）
         float timer = 0;
         Vector3 rushDirection = transform.forward;
         bool isCasted = false;
@@ -223,6 +218,7 @@ public class BossMove3 : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
         attackCollider.enabled = false;
+        AudioPlayer.instance.StopLoopSE();
     }
 
     IEnumerator Stun(float stunTime)

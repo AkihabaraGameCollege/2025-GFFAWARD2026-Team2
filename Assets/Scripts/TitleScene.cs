@@ -60,6 +60,7 @@ public class TitleScene : MonoBehaviour
 
         skipButton.gameObject.SetActive(true);
         skipButton.Select();
+        AudioPlayer.instance.PlayBGM(9);
 
         // ウェイト
         yield return new WaitForSeconds(stageTransitionDelay - skipButtonAppearWaitTime);
