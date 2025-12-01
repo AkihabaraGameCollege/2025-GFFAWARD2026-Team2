@@ -1060,6 +1060,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextStage: StageSelect
   clearStage: GameClear
+  titleStage: Title
   pause: {fileID: 2009077501}
   playerUI: {fileID: 482055069}
   playTimeout: 100
@@ -1147,6 +1148,10 @@ PrefabInstance:
     - target: {fileID: 3676316549497983691, guid: c73bc8bc5706b564fb2f0151a2193c05, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5657802308847877884, guid: c73bc8bc5706b564fb2f0151a2193c05, type: 3}
+      propertyPath: damage
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1764,6 +1769,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 584909208}
     m_Modifications:
+    - target: {fileID: 490353238481721769, guid: 4ded2646c424dfe4ab8c9415d53bbc5c, type: 3}
+      propertyPath: bossAttackTime
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 490353238481721769, guid: 4ded2646c424dfe4ab8c9415d53bbc5c, type: 3}
+      propertyPath: bossWeakBeforTime
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4596725739751054584, guid: 4ded2646c424dfe4ab8c9415d53bbc5c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 123.5

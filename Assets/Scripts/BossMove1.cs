@@ -19,7 +19,7 @@ public class BossMove1 : MonoBehaviour
     [SerializeField]
     private float bossAttackTime = 1.5f;
     [SerializeField]
-    private float bossWeakBeforTime = 3f;
+    private float bossWeakBeforTime = 6;
     [SerializeField]
     private float bossWeakTime = 12f;
     [SerializeField]
@@ -82,12 +82,11 @@ public class BossMove1 : MonoBehaviour
     // アニメーションID登録（中山が編集）
     static readonly int isWalkingID = Animator.StringToHash("isWalking");
     static readonly int attackID = Animator.StringToHash("attack");
-    static readonly int weakID = Animator.StringToHash("weak");
+    static readonly int immediateryWeakID = Animator.StringToHash("ImmediateryWeak");
     static readonly int wakeUpID = Animator.StringToHash("wakeUp");
     static readonly int dieID = Animator.StringToHash("die");
-    static readonly int jumpID = Animator.StringToHash("jump");
     static readonly int landingID = Animator.StringToHash("landing");
-    static readonly int standID = Animator.StringToHash("stand");
+    static readonly int stumpID = Animator.StringToHash("Stump");
 
     private bool isMoving = false;// 移動中かどうか判定（中山が編集）
     private bool isTurning = false;// 攻撃中かどうか判定（中山が編集）
@@ -259,13 +258,14 @@ public class BossMove1 : MonoBehaviour
         isWalking = true;
         isJumping = true;
 
-        animator.SetTrigger(jumpID);// ジャンプアニメーション開始（中山が編集）
         isTurning = false;// 回転停止（中山が編集）
 
         // ジャンプの速度変更（中山が編集）
         Vector3 velocity = rigidbody.linearVelocity;
         velocity.y = jumpP;
         rigidbody.linearVelocity = velocity;
+
+        animator.SetTrigger(stumpID);// ジャンプ開始(多分何かを間違っている)
 
         this.rigidbody.constraints = RigidbodyConstraints.FreezeRotation;// 軸の回転固定（中山が編集）
         yield return new WaitForSeconds(upTime);// 少し待機（中山が編集）
@@ -275,9 +275,7 @@ public class BossMove1 : MonoBehaviour
         animator.SetTrigger(landingID);// 着地アニメーション開始（中山が編集）
         AudioPlayer.instance.PlaySE(7, false);// ジャンプ攻撃SE再生（中山が編集）
         yield return new WaitForSeconds(landTime);// 少し待機（中山が編集）
-        animator.SetTrigger(standID);// 立ち直り開始（中山が編集）
         isTurning = true;// 回転可能（中山が編集）
-        StopBoss();// ボス停止処理（中山が編集）
         yield return new WaitForSeconds(standTime);// 少し待機（中山が編集）
 
         // ジャンプ終了
@@ -296,7 +294,6 @@ public class BossMove1 : MonoBehaviour
     {
         isMoving = false;// 移動停止（中山が編集）
         isWalking = true;// 歩行SE再生判定用（中山が編集）
-
         AudioPlayer.instance.PlaySE(2, false);// 攻撃SE再生（中山が編集）
         yield return new WaitForSeconds(bossLittleWaitTime);// 少し待機（中山が編集）
         HammerAttackMove();// ハンマー攻撃（中山が編集）
@@ -314,6 +311,7 @@ public class BossMove1 : MonoBehaviour
         yield return new WaitForSeconds(bossWeakBeforTime);// 弱点タイム（中山が編集）
         Weaking();// 弱体化処理（中山が編集）
 
+        // 倒れる間のタイマー
         while (stunTimer >= 0)
         {
             stunTimer -= Time.deltaTime;
@@ -343,7 +341,6 @@ public class BossMove1 : MonoBehaviour
     // 弱点タイム（中山が編集）
     private void Weak()
     {
-        animator.SetTrigger(weakID);// 弱体化アニメーション再生（中山が編集）
         collider2Player.enabled = true; // プレイヤーとのCollisionColliderを有効化 (富里が編集)
         isAppeardWeak = true;
 
@@ -389,6 +386,8 @@ public class BossMove1 : MonoBehaviour
             // これのために、アニメーションをanystate→倒れるにしとかないとダメかも
 
             StopAllCoroutines();
+
+            animator.SetTrigger(immediateryWeakID); // これ専用の倒れるトランジション
             StartCoroutine(OnWeak());
         }
         else

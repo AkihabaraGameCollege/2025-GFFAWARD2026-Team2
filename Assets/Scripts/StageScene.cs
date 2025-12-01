@@ -15,6 +15,9 @@ public class StageScene : MonoBehaviour
     [SerializeField]
     private string clearStage = "GameClear";
 
+    [SerializeField]
+    private string titleStage ="Title";
+
     // ポーズUIを指定します。
     [SerializeField]
     private PauseUI pause = null;
@@ -44,8 +47,7 @@ public class StageScene : MonoBehaviour
 
     Animator animator;// コンポーネントを事前に参照しておく変数(中山が編集)
 
-    static readonly int outroId = Animator.StringToHash("Outro");// AnimatorパラメーターID(中山が編集)
-
+  
     // ステージクリアー表示用のUIを指定します。（中山が編集）
     [SerializeField]
     private StageClearUI stageClearUI = null;
@@ -189,13 +191,13 @@ public class StageScene : MonoBehaviour
     // このステージを再読み込みします。
     public void Retry()
     {
-        StartCoroutine(OnLoadScene(SceneManager.GetActiveScene().name));
+        OnLoadScene(SceneManager.GetActiveScene().name);
     }
 
     // このステージを抜けてタイトル画面を読み込みます。
     public void Title()
     {
-        StartCoroutine(OnLoadScene("Title"));
+        OnLoadScene(titleStage);
     }
 
     // 次のステージを読み込みます。
@@ -204,16 +206,16 @@ public class StageScene : MonoBehaviour
         // すべての強化を取得していたらクリアシーンに
         if (isFullUpgraded)
         {
-            StartCoroutine(OnLoadScene(clearStage));
+            OnLoadScene(clearStage);
         }
         else
         {
-            StartCoroutine(OnLoadScene(nextStage));
+            OnLoadScene(nextStage);
         }
     }
 
     // 指定したシーンを読み込みます。（中山が編集）
-    IEnumerator OnLoadScene(string sceneName)
+    private void OnLoadScene(string sceneName)
     {
         // ポーズ状態の場合は、コルーチン内で処理が流れなくなるためポーズ解除する
         if (IsPaused)
@@ -221,11 +223,8 @@ public class StageScene : MonoBehaviour
             Resume();
         }
 
-
-
-        animator.SetTrigger(outroId);// アウトロアニメーションを開始(中山が編集)
-        // アニメーションが終了するまで1秒待機
-        yield return new WaitForSeconds(1);
+        
+        
         // シーンをロードする
         SceneManager.LoadScene(sceneName);
     }
