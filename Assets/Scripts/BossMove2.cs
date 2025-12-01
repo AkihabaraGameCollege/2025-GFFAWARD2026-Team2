@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Data.Common;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BossMove2 : MonoBehaviour
@@ -19,13 +20,24 @@ public class BossMove2 : MonoBehaviour
     [Tooltip("スタン時間")]
     private float defaultStunTime = 15;
 
-    //コライダー参照用（中山が編集）
-    [Header("Collider")]
+    [Header("参照")]
     [SerializeField]
     [Tooltip("着地攻撃コライダー")]
     private Collider attackCollider;
+    [SerializeField]
+    [Tooltip("弱点コライダー")]
+    private Collider weakCollider;
+    [SerializeField]
+    [Tooltip("ダメージエフェクトのプレハブ")]
+    private GameObject damageEffect;
+    [SerializeField]
+    [Tooltip("モデルについてるアニメーター")]
+    private Animator animator;
 
     [Header("ボス固有の設定")]
+    [SerializeField]
+    [Tooltip("すたーともーしょん時間")]
+    private float startMotionTime = 4;
     [SerializeField]
     [Tooltip("何回ダメージを食らったら雑魚を召喚するか")]
     private int damageCount2ZakoSummon = 5;
@@ -77,6 +89,9 @@ public class BossMove2 : MonoBehaviour
     [SerializeField]
     [Tooltip("立ち上がりにかかる時間")]
     private float standUpTime = 5;
+    [SerializeField]
+    [Tooltip("死亡アニメーション時間")]
+    private float deathAnimTime = 3.5f;
 
     private Player player;
     private StatusManagerBoss statusManager;
@@ -97,16 +112,13 @@ public class BossMove2 : MonoBehaviour
     [Tooltip("歩行時のSEを鳴らす間隔")]
     private float walkSECooldown;
 
-    Animator animator;//アニメーター（中山が編集）
 
-    //アニメーションID登録（中山が編集）
-    static readonly int IsWalkingID = Animator.StringToHash("isWalking");
-    static readonly int jumpID = Animator.StringToHash("jump");
-    static readonly int landingID = Animator.StringToHash("landing");
-    static readonly int weakID = Animator.StringToHash("weak");
-    static readonly int grandID = Animator.StringToHash("grand");
-    static readonly int dieID = Animator.StringToHash("die");
-
+    //アニメーションID登録
+    static readonly int isWalkingID = Animator.StringToHash("IsWalking");
+    static readonly int standUpID = Animator.StringToHash("Stand");
+    static readonly int hipDropID = Animator.StringToHash("HipDrop");
+    static readonly int dieID = Animator.StringToHash("Die");
+    static readonly int immediatelyWeakID = Animator.StringToHash("ImmediatelyWeak");
 
 
     // 何回ダメージ食らったかのカウンター
@@ -115,8 +127,7 @@ public class BossMove2 : MonoBehaviour
 
     void Start()
     {
-        rigidbody = GetComponent<Rigidbody>();//Rigidbodyコンポーネント取得（中山が編集）
-        animator = GetComponent<Animator>();//Animatorコンポーネント取得（中山が編集）
+        rigidbody = GetComponent<Rigidbody>();//Rigidbodyコンポーネント取得
         statusManager = GetComponent<StatusManagerBoss>();
 
         // find with tagってやっていいのかな
@@ -127,7 +138,7 @@ public class BossMove2 : MonoBehaviour
         statusManager.OnStunTaken += TakeStun;
 
         statusManager.isInvincible = true;
-        attackCollider.enabled = false;//攻撃判定無効化（中山が編集）
+        attackCollider.enabled = false;//攻撃判定無効化
         StageScene.Instance.HideWeakText();
 
         // 行動のコルーチンを起動
@@ -144,10 +155,22 @@ public class BossMove2 : MonoBehaviour
             StartCoroutine(SummonZako(zakoSummonCount));
             damageCounter = 0;
         }
+        // エフェクトをインスタンス化
+        GameObject effect = Instantiate(damageEffect);
+
+        effect.transform.position = weakCollider.transform.position;
+        Destroy(effect, 5);// エフェクトを5秒後に破壊
     }
 
     public void Die()
     {
+        StartCoroutine(OnDeath());
+    }
+
+    IEnumerator OnDeath()
+    {
+        animator.SetTrigger(dieID);
+        yield return new WaitForSeconds(deathAnimTime);
         StageScene.Instance.StageClear();
         Destroy(gameObject);
     }
@@ -172,7 +195,7 @@ public class BossMove2 : MonoBehaviour
 
     IEnumerator StartMotion()
     {
-        yield return null;
+        yield return new WaitForSeconds(startMotionTime);
         StartCoroutine(MainLoop());
     }
 
@@ -201,7 +224,6 @@ public class BossMove2 : MonoBehaviour
 
     private void Walk()
     {
-
         // 移動方向を取得
         Vector3 moveDirection = (player.transform.position - transform.position).normalized;
 
@@ -216,12 +238,13 @@ public class BossMove2 : MonoBehaviour
         // ターゲット方向のベクトルを取得
         Vector3 relativePos = player.gameObject.transform.position - transform.position;
 
-        relativePos.y = 0; // X軸の回転は禁止する（中山が編集）
+        relativePos.y = 0; // X軸の回転は禁止する
 
         // 方向を、回転情報に変換
         Quaternion rotation = Quaternion.LookRotation(relativePos);
         // 現在の回転情報と、ターゲット方向の回転情報を補完する
         rigidbody.rotation = Quaternion.Slerp(transform.rotation, rotation, rotateSpeed * Time.fixedDeltaTime);
+        animator.SetFloat(isWalkingID, rigidbody.linearVelocity.magnitude);// 歩行アニメーション
     }
 
     IEnumerator HipDrop()
@@ -231,7 +254,7 @@ public class BossMove2 : MonoBehaviour
         // スピードに代入
         rigidbody.linearVelocity = direction * jumpForce;
         // アニメーション
-
+        animator.SetTrigger(hipDropID);
         // ちょっとまつ
         yield return new WaitForSeconds(jump2FreezeWaitTime);
 
@@ -279,7 +302,7 @@ public class BossMove2 : MonoBehaviour
     IEnumerator StandUp()
     {
         // どうするんだ？アニメーション？
-
+        animator.SetTrigger(standUpID);
         // 待つ(アニメーションイベントでもいいかも)
         yield return new WaitForSeconds(standUpTime);
     }
@@ -333,6 +356,7 @@ public class BossMove2 : MonoBehaviour
     IEnumerator OnStunTaken()
     {
         attackCollider.enabled = false;
+        animator.SetTrigger(immediatelyWeakID);
         yield return StartCoroutine(Stun(defaultStunTime));
         yield return StandUp();
         StartCoroutine(MainLoop());
