@@ -16,7 +16,7 @@ public class HitboxPlayer : MonoBehaviour
 
         if (playerScript == null)
         {
-            Debug.LogError("Hitboxの親にStatusManagerが見つかりません。");
+            Debug.LogError("Hitboxの親にPlayerScriptが見つかりません。");
             enabled = false;
         }
     }
@@ -29,6 +29,6 @@ public class HitboxPlayer : MonoBehaviour
         // もし意図しない衝突判定が起きた場合は最初にレイヤーマスクを確認してください。
 
         // 被弾側のStatusManagerに通知
-        playerScript.Hit();
+        playerScript.Hit(other.transform.position);
     }
 }

@@ -60,6 +60,22 @@ public class Player : MonoBehaviour
     [Tooltip("攻撃力")]
     public int damage;
 
+    [SerializeField]
+    [Tooltip("ノックバックの力")]
+    private float knockBackForce;
+
+    [SerializeField]
+    [Tooltip("ノックバック減衰")]
+    private float knockBackDecay;
+
+    [SerializeField]
+    [Tooltip("ノックバックの時の数値反転時の倍数\n説明：" +
+        "\n敵のコライダーオブジェクトには、縦長でY軸の中心が上にある場合があります" +
+        "\nその場合、下方向へ強い力がかかってしまうため、数値を反転させて対応しています" +
+        "\nその時、逆に上方向への力が強すぎてしまうため、この値を掛けて力を弱めています")]
+    private float knockBackInvertMultiplyNumber;
+
+
     [Header("強化倍率")]
     [SerializeField]
     [Tooltip("攻撃コライダーサイズ")]
@@ -72,7 +88,6 @@ public class Player : MonoBehaviour
     [SerializeField]
     [Tooltip("ジャンプ力")]
     private float jumpForceMagnification;
-
 
 
     [Header("参照関連")]
@@ -132,6 +147,10 @@ public class Player : MonoBehaviour
 
     private bool isGotAttackSkill = false;
     private bool isGotSpeedSkill = false;
+
+    private Vector3 knockBackVelocity = Vector3.zero;
+    private bool isKnockBacking = false;
+    
 
     //アニメーションID登録（中山が編集）
     static readonly int landingID = Animator.StringToHash("landing");
@@ -273,24 +292,28 @@ public class Player : MonoBehaviour
                         motionState = MotionState.Sprinting;
                         // カエルかも
                         animator.SetFloat(speedID, rigidbody.linearVelocity.magnitude);// Runアニメーションを開始（中山が編集）
-                        Move(IsSprinting);// カメラに準じた移動を呼び出し（富里が編集）
+                        Move(IsSprinting, true);// カメラに準じた移動を呼び出し（富里が編集）
                     }
                     else
                     {
                         motionState = MotionState.Walking;
                         animator.SetFloat(speedID, rigidbody.linearVelocity.magnitude);// Runアニメーションを開始（中山が編集）
-                        Move(IsSprinting);// カメラに準じた移動を呼び出し（富里が編集）
+                        Move(IsSprinting, true);// カメラに準じた移動を呼び出し（富里が編集）
                     }
+                }
+                else
+                {
+                    Move(IsSprinting, false);
                 }
                 break;
             //移動入力がある場合は移動状態へ移行（中山が編集）
             case MotionState.Walking:
-                Move(IsSprinting);// カメラに準じた移動を呼び出し（富里が編集）
+                Move(IsSprinting, true);// カメラに準じた移動を呼び出し（富里が編集）
                 animator.SetFloat(speedID, rigidbody.linearVelocity.magnitude);// Runアニメーションを継続（中山が編集）
                 break;
             //移動入力がなくなったら停止状態へ移行（中山が編集）
             case MotionState.JumpAnticipation:
-                Move(IsSprinting);// カメラに準じた移動を呼び出し（富里が編集）
+                Move(IsSprinting, true);// カメラに準じた移動を呼び出し（富里が編集）
                 //地面から離れたらジャンピング状態へ移行（中山が編集）
                 if (!IsGrounded)
                 {
@@ -306,7 +329,7 @@ public class Player : MonoBehaviour
                 break;
             case MotionState.Jumping:
                 //地面に着地した判定（中山が編集）
-                Move(IsSprinting);// カメラに準じた移動を呼び出し（富里が編集）
+                Move(IsSprinting, true);// カメラに準じた移動を呼び出し（富里が編集）
                 if (IsGrounded)
                 {
                     motionState = MotionState.Stopping;
@@ -314,7 +337,7 @@ public class Player : MonoBehaviour
                 }
                 break;
             case MotionState.Sprinting:
-                Move(IsSprinting);// カメラに準じた移動を呼び出し（富里が編集）
+                Move(IsSprinting,true);// カメラに準じた移動を呼び出し（富里が編集）
                 animator.SetFloat(speedID, rigidbody.linearVelocity.magnitude);// Runアニメーションを継続（中山が編集）
                 sprintTimer -= Time.fixedDeltaTime;
                 if (sprintTimer <= 0)
@@ -327,51 +350,70 @@ public class Player : MonoBehaviour
     }
 
     // 指定した速度で、このキャラクターを移動させるプログラムを移植（中山が編集）
-    public void Move(bool sprint)
+    public void Move(bool sprint, bool isEnableInputMove)
     {
         // メインカメラが存在する場合のみ処理を行う
         if (Camera.main != null)
         {
-            // メインカメラの前方と右方向を取得（カメラローカル座標でいうところのz軸とx軸）
-            Vector3 cameraForward = Camera.main.transform.forward;
-            Vector3 cameraRight = Camera.main.transform.right;
-
-            // カメラのy軸方向を無視して、地面に沿った移動にする
-            cameraForward.y = 0;
-            cameraRight.y = 0;
-
-            Vector3 moveDirection = (cameraForward * moveInput.y + cameraRight * moveInput.x).normalized;//正規化して移動方向ベクトルを計算
-
-            Vector3 rotateDirection = moveDirection;
-
-            // Wall Check
-            bool isCasted = false;
-
-            // すべてのoffsetで繰り返す
-            for (int i = 0; i < wallCheckerPos.Length; i++)
+            Vector3 moveDirection = Vector3.zero;
+            Vector3 rotateDirection = Vector3.zero;
+            if (isEnableInputMove)
             {
-                Vector3 offset = transform.forward * wallCheckerPos[i].x + transform.right * wallCheckerPos[i].z;
-                offset.y = wallCheckerPos[i].y;
+                // メインカメラの前方と右方向を取得（カメラローカル座標でいうところのz軸とx軸）
+                Vector3 cameraForward = Camera.main.transform.forward;
+                Vector3 cameraRight = Camera.main.transform.right;
 
-                isCasted = Physics.Raycast(transform.position + offset, moveDirection,out RaycastHit hit, wallCheckerDistance, groundLayer);
+                // カメラのy軸方向を無視して、地面に沿った移動にする
+                cameraForward.y = 0;
+                cameraRight.y = 0;
 
+                moveDirection = (cameraForward * moveInput.y + cameraRight * moveInput.x).normalized;//正規化して移動方向ベクトルを計算
 
-                // 一個でもtrueがあったらbreakして
-                if (isCasted)
+                rotateDirection = moveDirection;
+
+                // Wall Check
+                bool isCasted = false;
+
+                // すべてのoffsetで繰り返す
+                for (int i = 0; i < wallCheckerPos.Length; i++)
                 {
-                    if (hit.collider.gameObject.layer == 3)
+                    Vector3 offset = transform.forward * wallCheckerPos[i].x + transform.right * wallCheckerPos[i].z;
+                    offset.y = wallCheckerPos[i].y;
+
+                    isCasted = Physics.Raycast(transform.position + offset, moveDirection, out RaycastHit hit, wallCheckerDistance, groundLayer);
+
+
+                    // 一個でもtrueがあったらbreakして
+                    if (isCasted)
                     {
-                        moveDirection = Vector3.ProjectOnPlane(moveDirection, hit.normal);
+                        if (hit.collider.gameObject.layer == 3)
+                        {
+                            moveDirection = Vector3.ProjectOnPlane(moveDirection, hit.normal);
+                        }
+                        break;
                     }
-                    break;
                 }
             }
 
+            if (isKnockBacking)
+            {
+                knockBackVelocity = Vector3.Lerp(knockBackVelocity, Vector3.zero, knockBackDecay * Time.fixedDeltaTime);
+                if (knockBackVelocity == Vector3.zero)
+                {
+                    isKnockBacking = false;
+                }
+            }
 
+            // 移動実行！
+            rigidbody.linearVelocity = moveDirection * ((sprint) ? sprintSpeed : moveSpeed) + new Vector3(0, rigidbody.linearVelocity.y, 0) + knockBackVelocity;//移動ベクトルを速度に設定
+           
 
-            // falseじゃないと発動しない
-            rigidbody.linearVelocity = moveDirection * ((sprint) ? sprintSpeed : moveSpeed) + new Vector3(0, rigidbody.linearVelocity.y, 0);//移動ベクトルを速度に設定
-
+            // Y軸移動は上書きではなく加算なため
+            // 一度ノックバックさせたらそれ以降はY軸のノックバック速度をなくす
+            if (knockBackVelocity.y != 0)
+            {
+                knockBackVelocity.y = 0;
+            }
 
             // キャラクターを移動する方向に向かせるための処理
             if (rotateDirection != Vector3.zero)  // 何かしら移動が発生している場合のみ回転させる
@@ -480,12 +522,17 @@ public class Player : MonoBehaviour
         dashAttackCollider.enabled = false;
     }
 
-    public void Hit()
+    public void Hit(Vector3 enemyPos)
     {
         if (!isInvincible)
         {
             StartCoroutine(EnterInvinsicle());
             Damage();
+
+            // KnockBack
+            Vector3 diff = transform.position - enemyPos;
+            
+            KnockBack(diff, knockBackForce);
         }
     }
 
@@ -553,7 +600,15 @@ public class Player : MonoBehaviour
         StageScene.Instance.GameOver(); // ゲームオーバー処理を呼び出す
     }
 
-    // アプリケーションのフォーカスが変化したときに呼び出されるメソッド（中山が編集）
+    private void KnockBack(Vector3 diff,float force)
+    {
+        knockBackVelocity = diff.normalized * force;
+        if (knockBackVelocity.y < 0)
+        {
+            knockBackVelocity.y = -knockBackVelocity.y * knockBackInvertMultiplyNumber;
+        }
+        isKnockBacking = true;
+    }
   
 
     private void OnDrawGizmos()

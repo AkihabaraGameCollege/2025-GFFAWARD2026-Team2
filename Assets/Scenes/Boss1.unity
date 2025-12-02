@@ -1149,48 +1149,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5657802308847877884, guid: c73bc8bc5706b564fb2f0151a2193c05, type: 3}
-      propertyPath: wallCheckerPos.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5657802308847877884, guid: c73bc8bc5706b564fb2f0151a2193c05, type: 3}
-      propertyPath: wallCheckerPos.Array.data[0].y
-      value: 1.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 5657802308847877884, guid: c73bc8bc5706b564fb2f0151a2193c05, type: 3}
-      propertyPath: wallCheckerPos.Array.data[0].z
-      value: -0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5657802308847877884, guid: c73bc8bc5706b564fb2f0151a2193c05, type: 3}
-      propertyPath: wallCheckerPos.Array.data[1].x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5657802308847877884, guid: c73bc8bc5706b564fb2f0151a2193c05, type: 3}
-      propertyPath: wallCheckerPos.Array.data[1].z
+      propertyPath: knockBackInvertMultiplyNumber
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5657802308847877884, guid: c73bc8bc5706b564fb2f0151a2193c05, type: 3}
-      propertyPath: wallCheckerPos.Array.data[2].y
-      value: 1.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 5657802308847877884, guid: c73bc8bc5706b564fb2f0151a2193c05, type: 3}
-      propertyPath: wallCheckerPos.Array.data[2].z
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5657802308847877884, guid: c73bc8bc5706b564fb2f0151a2193c05, type: 3}
-      propertyPath: wallCheckerPos.Array.data[3].y
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5657802308847877884, guid: c73bc8bc5706b564fb2f0151a2193c05, type: 3}
-      propertyPath: wallCheckerPos.Array.data[3].z
-      value: -0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5657802308847877884, guid: c73bc8bc5706b564fb2f0151a2193c05, type: 3}
-      propertyPath: wallCheckerPos.Array.data[4].y
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5657802308847877884, guid: c73bc8bc5706b564fb2f0151a2193c05, type: 3}
-      propertyPath: wallCheckerPos.Array.data[4].z
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1808,6 +1768,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 584909208}
     m_Modifications:
+    - target: {fileID: 4456961885093067645, guid: 4ded2646c424dfe4ab8c9415d53bbc5c, type: 3}
+      propertyPath: m_Center.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4596725739751054584, guid: 4ded2646c424dfe4ab8c9415d53bbc5c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 123.5
@@ -1818,7 +1782,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4596725739751054584, guid: 4ded2646c424dfe4ab8c9415d53bbc5c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 13
+      value: 11.6
       objectReference: {fileID: 0}
     - target: {fileID: 4596725739751054584, guid: 4ded2646c424dfe4ab8c9415d53bbc5c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1847,6 +1811,18 @@ PrefabInstance:
     - target: {fileID: 4596725739751054584, guid: 4ded2646c424dfe4ab8c9415d53bbc5c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7120121970047611619, guid: 4ded2646c424dfe4ab8c9415d53bbc5c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 7120121970047611619, guid: 4ded2646c424dfe4ab8c9415d53bbc5c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7120121970047611619, guid: 4ded2646c424dfe4ab8c9415d53bbc5c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.08
       objectReference: {fileID: 0}
     - target: {fileID: 8451905351038115448, guid: 4ded2646c424dfe4ab8c9415d53bbc5c, type: 3}
       propertyPath: m_Name

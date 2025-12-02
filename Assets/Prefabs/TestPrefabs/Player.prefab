@@ -282,6 +282,9 @@ MonoBehaviour:
   maxHealth: 3
   invincibleTime: 1
   damage: 1
+  knockBackForce: 20
+  knockBackDecay: 2
+  knockBackInvertMultiplyNumber: 0.5
   attackReachMagnification: 2
   damageMagnicifation: 1
   jumpForceMagnification: 1.5
@@ -294,8 +297,11 @@ MonoBehaviour:
   destroyEffect: {fileID: 1430198582188953287, guid: 21b15d55fb362544fab3a70419757060, type: 3}
   damageEffect: {fileID: 1430198582188953287, guid: 21b15d55fb362544fab3a70419757060, type: 3}
   wallCheckerPos:
+  - {x: 0, y: 1.8, z: -0.5}
+  - {x: 0, y: 0.2, z: 0.5}
+  - {x: 0, y: 1.8, z: 0.5}
+  - {x: 0, y: 0.2, z: -0.5}
   - {x: 0, y: 2, z: 0}
-  - {x: 0, y: 0.2, z: 0}
   wallCheckerDistance: 2
 --- !u!1 &3685551863139672173
 GameObject:
