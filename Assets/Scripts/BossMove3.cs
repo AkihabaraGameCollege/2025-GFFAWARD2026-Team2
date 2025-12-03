@@ -45,8 +45,12 @@ public class BossMove3 : MonoBehaviour
     [Tooltip("地面のレイヤー")]
     private LayerMask groundLayer;
 
-
+    // Animator参照用（中山が編集）
+    [SerializeField]
+    private Animator animator;
     
+    static readonly int defeatId = Animator.StringToHash("defeat");//死亡モーション用パラメーターID（中山が編集）
+
     private bool isPlayerCheckColliderEntered = false;
     private float stunTimer = 0;
     private IEnumerator mainMotionRoutine;
@@ -73,6 +77,7 @@ public class BossMove3 : MonoBehaviour
 
     public void Die()
     {
+        animator.SetTrigger(defeatId);//死亡モーション再生（中山が編集）
         AudioPlayer.instance.PlaySE(12); 
         StartCoroutine(DeathTimer());
     }
