@@ -382,10 +382,7 @@ public class Player : MonoBehaviour
                     // ˆêŒÂ‚Å‚àtrue‚ª‚ ‚Á‚½‚çbreak‚µ‚Ä
                     if (isCasted)
                     {
-                        if (hit.collider.gameObject.layer == 3)
-                        {
-                            moveDirection = Vector3.ProjectOnPlane(moveDirection, hit.normal);
-                        }
+                        moveDirection = Vector3.ProjectOnPlane(moveDirection, hit.normal);
                         break;
                     }
                 }
