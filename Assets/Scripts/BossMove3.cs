@@ -64,7 +64,7 @@ public class BossMove3 : MonoBehaviour
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
         statusManager.OnDeath += Die;
         statusManager.OnStunTaken += TakeStun;
-        statusManager.isInvincible = true;
+        statusManager.isInvincible = false;
         playerCheckCollider.Enter += OnPlayerCheckColliderEnter;
 
         attackCollider.enabled = false;//攻撃判定無効化（中山が編集）
@@ -228,8 +228,6 @@ public class BossMove3 : MonoBehaviour
 
     IEnumerator Stun(float stunTime)
     {
-        //Weak出現
-        statusManager.isInvincible = false;
         stunTimer = stunTime;
 
         while (stunTimer >= 0)
@@ -237,8 +235,6 @@ public class BossMove3 : MonoBehaviour
             stunTimer -= Time.deltaTime;
             yield return null;
         }
-        //weak消滅
-        statusManager.isInvincible = true;
     }
 
     private void TakeStun()

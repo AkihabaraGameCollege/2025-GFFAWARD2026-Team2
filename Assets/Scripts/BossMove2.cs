@@ -135,7 +135,7 @@ public class BossMove2 : MonoBehaviour
         statusManager.OnDeath += Die;
         statusManager.OnStunTaken += TakeStun;
 
-        statusManager.isInvincible = true;
+        statusManager.isInvincible = false;
         attackCollider.enabled = false;//UŒ‚”»’è–³Œø‰»
         StageScene.Instance.HideWeakText();
 
@@ -282,8 +282,6 @@ public class BossMove2 : MonoBehaviour
 
     IEnumerator Stun(float weakTime)
     {
-        //WeakoŒ»
-        statusManager.isInvincible = false;
         StageScene.Instance.ShowWeakText();
         stunTimer = weakTime;
 
@@ -294,7 +292,6 @@ public class BossMove2 : MonoBehaviour
         }
         //weakÁ–Å
         StageScene.Instance.HideWeakText();
-        statusManager.isInvincible = true;
     }
 
     IEnumerator StandUp()

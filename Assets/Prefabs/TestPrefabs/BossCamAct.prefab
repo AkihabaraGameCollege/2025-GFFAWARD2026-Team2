@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3767772052781304387}
   - component: {fileID: 6402239867710393730}
-  - component: {fileID: 4831823764421636781}
   - component: {fileID: 393655809388417582}
   m_Layer: 0
   m_Name: BossCamera
@@ -85,14 +84,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &4831823764421636781
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3190952795149245745}
-  m_Enabled: 1
 --- !u!114 &393655809388417582
 MonoBehaviour:
   m_ObjectHideFlags: 0

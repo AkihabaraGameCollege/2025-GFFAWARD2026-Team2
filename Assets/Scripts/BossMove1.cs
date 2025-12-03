@@ -108,7 +108,7 @@ public class BossMove1 : MonoBehaviour
         statusManager.OnStunTaken += TakeStun; //スタン食らったとき
         statusManager.OnDamageTaken += TakeDamage;
 
-        statusManager.isInvincible = true;
+        statusManager.isInvincible = false;
         isWalking = true;// 歩行SE再生判定用（中山が編集）
         isTurning = false;// 方向可能（中山が編集）
         isMoving = false;// 移動停止（中山が編集）
@@ -191,8 +191,7 @@ public class BossMove1 : MonoBehaviour
             // 移動停止処理（中山が編集）
             else if (!isMoving)
             {
-                // [TEST]
-                // テストでなくしてみてる
+                // テストでなくしてみてるけど大丈夫そう
                 //StopBoss();// ボス停止処理（中山が編集）
             }
         }
@@ -353,7 +352,6 @@ public class BossMove1 : MonoBehaviour
     private void Weaking()
     {
         StageScene.Instance.ShowWeakText();
-        statusManager.isInvincible = false;
     }
 
     // 起き上がり（中山が編集）
@@ -362,7 +360,6 @@ public class BossMove1 : MonoBehaviour
         animator.SetTrigger(wakeUpID);// 起き上がりアニメーション再生（中山が編集）
         StageScene.Instance.HideWeakText();
         collider2Player.enabled = false; // プレイヤーとのCollisionColliderを無効化 (富里が編集)
-        statusManager.isInvincible = true;
     }
 
     private void Die()

@@ -153,13 +153,11 @@ public class Player : MonoBehaviour
     
 
     //アニメーションID登録（中山が編集）
-    static readonly int landingID = Animator.StringToHash("landing");
     static readonly int jumpID = Animator.StringToHash("jump");
     static readonly int attackID = Animator.StringToHash("attack");
     static readonly int speedID = Animator.StringToHash("speed");
     static readonly int hitID = Animator.StringToHash("hit");
     static readonly int dieID = Animator.StringToHash("die");
-    static readonly int dashAttackID = Animator.StringToHash("DashAttack");
 
 
 
@@ -324,7 +322,6 @@ public class Player : MonoBehaviour
                 else if (rigidbody.linearVelocity.y < requiredJumpSpeed)
                 {
                     motionState = MotionState.Stopping;
-                    animator.SetTrigger(landingID);// Jumpアニメーションを終了（中山が編集）
                 }
                 break;
             case MotionState.Jumping:
@@ -333,7 +330,6 @@ public class Player : MonoBehaviour
                 if (IsGrounded)
                 {
                     motionState = MotionState.Stopping;
-                    animator.SetTrigger(landingID);// Jumpアニメーションを終了（中山が編集）
                 }
                 break;
             case MotionState.Sprinting:
@@ -533,6 +529,9 @@ public class Player : MonoBehaviour
             Vector3 diff = transform.position - enemyPos;
             
             KnockBack(diff, knockBackForce);
+
+            // aniim
+            animator.SetTrigger(hitID);
         }
     }
 
@@ -565,8 +564,6 @@ public class Player : MonoBehaviour
         // エフェクトのサイズを少し大きくする（中山が編集）
         effect.transform.localScale *= 2f;
 
-        // エフェクトを5秒後に破壊（中山が編集）
-        Destroy(effect, 5);
 
         if (health <= 0)
         {
