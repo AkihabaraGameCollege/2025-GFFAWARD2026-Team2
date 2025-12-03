@@ -162,12 +162,14 @@ public class BossMove2 : MonoBehaviour
 
     public void Die()
     {
+        StopAllCoroutines();
         StartCoroutine(OnDeath());
     }
 
     IEnumerator OnDeath()
     {
         animator.SetTrigger(dieID);
+        attackCollider.enabled = false;
         yield return new WaitForSeconds(deathAnimTime);
         StageScene.Instance.StageClear();
         Destroy(gameObject);

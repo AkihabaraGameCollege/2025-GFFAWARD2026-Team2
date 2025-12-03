@@ -78,7 +78,9 @@ public class BossMove3 : MonoBehaviour
     public void Die()
     {
         animator.SetTrigger(defeatId);//死亡モーション再生（中山が編集）
-        AudioPlayer.instance.PlaySE(12); 
+        AudioPlayer.instance.PlaySE(12);
+        attackCollider.enabled = false;
+        StopAllCoroutines();
         StartCoroutine(DeathTimer());
     }
     IEnumerator DeathTimer()

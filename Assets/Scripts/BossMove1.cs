@@ -364,6 +364,7 @@ public class BossMove1 : MonoBehaviour
 
     private void Die()
     {
+        StopAllCoroutines();
         StartCoroutine(OnDeath());
     }
 
@@ -371,6 +372,9 @@ public class BossMove1 : MonoBehaviour
     {
         animator.SetTrigger(dieID);// 死亡アニメーション再生（中山が編集）
         AudioPlayer.instance.PlaySE(4);
+        attackCollider.enabled = false;
+        bodyAttackCollider.enabled = false;
+
         yield return new WaitForSeconds(bossDieTime);// 少し待機（中山が編集）
         AudioPlayer.instance.StopLoopSE();// ボス撃破SE再生（中山が編集）
         StageScene.Instance.StageClear();// ステージクリア処理（中山が編集）
