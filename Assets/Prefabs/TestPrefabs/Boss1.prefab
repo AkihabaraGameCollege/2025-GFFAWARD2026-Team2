@@ -119,6 +119,59 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 6, y: 14, z: 3.5}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &4873721559866495513
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1339586268298294658}
+  - component: {fileID: 1080257831239132051}
+  m_Layer: 8
+  m_Name: StumpCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1339586268298294658
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4873721559866495513}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 10, y: 1, z: 10}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4596725739751054584}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1080257831239132051
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4873721559866495513}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7827408241301411663
 GameObject:
   m_ObjectHideFlags: 0
@@ -207,6 +260,7 @@ Transform:
   m_Children:
   - {fileID: 9207437380908150639}
   - {fileID: 8301027832342687276}
+  - {fileID: 1339586268298294658}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!54 &270066449238854736
@@ -268,7 +322,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveP: 4
-  jumpP: 15
   speedNumber: 3.01
   bossLittleWaitTime: 0.5
   bossAttackTime: 3
@@ -276,9 +329,7 @@ MonoBehaviour:
   bossWeakTime: 10
   bossWakeUpTime: 5
   bossWaitTime: 5
-  upTime: 1
-  jumpAirTime: 2
-  landTime: 4
+  stumpAttackTime: 0.5
   standTime: 1
   distanceNumber: 5
   hammerAttackTime: 30
@@ -286,6 +337,9 @@ MonoBehaviour:
   bossStartTime: 5
   hammerAttackTimeDefault: 10
   moveSoundMTime: 1.5
+  stumpWaitTime: 3
+  stumpColliderArriveCooldown: 1
+  stumpCollider: {fileID: 1080257831239132051}
   attackCollider: {fileID: 4021223916108292216}
   bodyAttackCollider: {fileID: 4456961885093067645}
   weakCollider: {fileID: 3131120092741834984}

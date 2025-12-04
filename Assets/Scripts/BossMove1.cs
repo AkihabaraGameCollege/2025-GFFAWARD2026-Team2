@@ -7,9 +7,6 @@ public class BossMove1 : MonoBehaviour
     // 移動速度設定（中山が編集）
     [SerializeField]
     private float moveP = 3;
-    // ジャンプ力設定（中山が編集）
-    [SerializeField]
-    private float jumpP = 7;
     // 回転速度設定（中山が編集）
     [SerializeField]
     private float speedNumber = 11.1f;
@@ -27,11 +24,7 @@ public class BossMove1 : MonoBehaviour
     [SerializeField]
     private float bossWaitTime = 3f;
     [SerializeField]
-    private float upTime = 0.7f;
-    [SerializeField]
-    private float jumpAirTime = 0.5f;
-    [SerializeField]
-    private float landTime = 0.5f;
+    private float stumpAttackTime = 0.5f;
     [SerializeField]
     private float standTime = 1.0f;
     // ジャンプ攻撃を仕掛ける距離設定（中山が編集）
@@ -52,6 +45,17 @@ public class BossMove1 : MonoBehaviour
     // 歩行SE再生間隔時間設定（中山が編集）
     [SerializeField]
     private float moveSoundMTime = 1f;
+
+    [SerializeField]
+    [Tooltip("ボス足上げる時間")]
+    private float stumpWaitTime = 1;
+    [SerializeField]
+    [Tooltip("足下げアニメーションの後の攻撃までの時間")]
+    private float stumpColliderArriveCooldown = 1;
+
+    [SerializeField]
+    [Tooltip("スタンプ攻撃用コライダー")]
+    private Collider stumpCollider;
 
     // 攻撃判定（中山が編集）
     [SerializeField]
@@ -115,6 +119,7 @@ public class BossMove1 : MonoBehaviour
         isJumping = false;// 攻撃停止（中山が編集）
         attackCollider.enabled = false;// 攻撃判定無効化（中山が編集）
         bodyAttackCollider.enabled = true;// ボス本体判定有効化（中山が編集）
+        stumpCollider.enabled = false;
         collider2Player.enabled = false; // プレイヤーとのCollisionColliderを無効化 (富里が編集)
 
         StopBoss();// ボス停止処理（中山が編集）
@@ -183,7 +188,7 @@ public class BossMove1 : MonoBehaviour
                 // プレイヤーとボスの距離を取得（中山が編集）
                 if (distance <= distanceNumber)
                 {
-                    JumpAttack();// ジャンプ攻撃処理（中山が編集）
+                    StumpAttack();// ジャンプ攻撃処理（中山が編集）
                 }
             }
             // 移動停止処理（中山が編集）
@@ -244,13 +249,13 @@ public class BossMove1 : MonoBehaviour
     }
 
     // ジャンプ攻撃処理（中山が編集）
-    private void JumpAttack()
+    private void StumpAttack()
     {
-        StartCoroutine(OnJump());// ジャンプ攻撃処理開始（中山が編集）
+        StartCoroutine(OnStump());// ジャンプ攻撃処理開始（中山が編集）
     }
 
     // ジャンプ攻撃処理（中山が編集）
-    IEnumerator OnJump()
+    IEnumerator OnStump()
     {
         // ジャンプ開始
         isMoving = false;
@@ -259,21 +264,16 @@ public class BossMove1 : MonoBehaviour
 
         isTurning = false;// 回転停止（中山が編集）
 
-        // ジャンプの速度変更（中山が編集）
-        Vector3 velocity = rigidbody.linearVelocity;
-        velocity.y = jumpP;
-        rigidbody.linearVelocity = velocity;
+        
 
-        animator.SetTrigger(stumpID);// ジャンプ開始(多分何かを間違っている)
-
-        this.rigidbody.constraints = RigidbodyConstraints.FreezeRotation;// 軸の回転固定（中山が編集）
-        yield return new WaitForSeconds(upTime);// 少し待機（中山が編集）
-        this.rigidbody.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;//軸回転と移動を固定（中山が編集）
-        yield return new WaitForSeconds(jumpAirTime);// 少し待機（中山が編集）
-        this.rigidbody.constraints = RigidbodyConstraints.FreezeRotation;// 軸の回転固定（中山が編集）
-        animator.SetTrigger(landingID);// 着地アニメーション開始（中山が編集）
+        animator.SetTrigger(stumpID);// ジャンプ開始
+        yield return new WaitForSeconds(stumpWaitTime);
+        animator.SetTrigger(landingID);
+        yield return new WaitForSeconds(stumpColliderArriveCooldown);
         AudioPlayer.instance.PlaySE(7, false);// ジャンプ攻撃SE再生（中山が編集）
-        yield return new WaitForSeconds(landTime);// 少し待機（中山が編集）
+        stumpCollider.enabled = true;
+        yield return new WaitForSeconds(stumpAttackTime);
+        stumpCollider.enabled = false;
         isTurning = true;// 回転可能（中山が編集）
         yield return new WaitForSeconds(standTime);// 少し待機（中山が編集）
 
