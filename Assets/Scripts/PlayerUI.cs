@@ -22,6 +22,9 @@ public class PlayerUI : MonoBehaviour
     [SerializeField]
     [Tooltip("スプリントゲージの背景")]
     private Image sprintBackGround;
+    [SerializeField]
+    [Tooltip("スプリントゲージの下にあるshiftってやつ")]
+    private Image sprintShiftImage;
 
     [SerializeField]
     private Image lifeImage;
@@ -42,11 +45,13 @@ public class PlayerUI : MonoBehaviour
         {
             sprintBackGround.enabled = true;
             sprintGauge.enabled = true;
+            sprintShiftImage.enabled = true;
         }
         else
         {
             sprintBackGround.enabled = false;
             sprintGauge.enabled = false;
+            sprintShiftImage.enabled = false;
         }
 
         if (PlayerPrefs.GetInt("AttackLevel", 1) == 2)
