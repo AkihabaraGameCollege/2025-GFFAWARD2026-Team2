@@ -105,7 +105,7 @@ public class StageSelect : MonoBehaviour
         abilityImageButton.enabled = false;
 
         ruleButton.onClick.AddListener(OnClickTutorialButton);
-        abilityButton.onClick.AddListener(OnClickTutorialButton);
+        abilityButton.onClick.AddListener(OnClickAbilityButton);
 
         tutorialImageButton.onClick.AddListener(OnClickBack);
         abilityImageButton.onClick.AddListener (OnClickBack);
@@ -155,6 +155,5 @@ public class StageSelect : MonoBehaviour
         secretAbility1.enabled = false;
         secretAbility2.enabled = false;
         secretAbility3.enabled = false;
-        
     }
 }
