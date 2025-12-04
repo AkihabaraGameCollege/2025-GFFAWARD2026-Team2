@@ -33,6 +33,7 @@ public class GameClearScene : MonoBehaviour
         AudioPlayer.instance.PlayBGM(7); // Gameclear1を再生（富里が編集）
         Cursor.lockState = CursorLockMode.None;// カーソルのロックを解除（富里が編集）
         StartCoroutine(OnStart());
+        nextButton.onClick.AddListener(OnTitleButtonClick);
     }
 
     IEnumerator OnStart()
@@ -57,7 +58,6 @@ public class GameClearScene : MonoBehaviour
     // 次のシーンを読み込むコルーチン（中山が編集）
     IEnumerator LoadNextScene()
     {
-        Debug.Log("Loading Next Scene...");
         animator.SetTrigger(outroId);// アウトロアニメーションを再生（中山が編集）
         yield return new WaitForSeconds(outroTime);// アニメーションの再生時間分待機（中山が編集）
         SceneManager.LoadScene(nextScene);
