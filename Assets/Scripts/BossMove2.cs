@@ -94,6 +94,12 @@ public class BossMove2 : MonoBehaviour
     [SerializeField]
     [Tooltip("€–SƒAƒjƒ[ƒVƒ‡ƒ“ŠÔ")]
     private float deathAnimTime = 3.5f;
+    [SerializeField]
+    [Tooltip("€–SSE‚ğ–Â‚ç‚·‰ñ”")]
+    private float deathScreamCount = 12;
+    [SerializeField]
+    [Tooltip("€–SSE‚ğ–Â‚ç‚µ‘±‚¯‚éŠÔ")]
+    private float deathScreamTime = 2.5f;
 
     private Player player;
     private StatusManagerBoss statusManager;
@@ -174,6 +180,15 @@ public class BossMove2 : MonoBehaviour
     {
         animator.SetTrigger(dieID);
         attackCollider.enabled = false;
+
+        int counter = 0;
+        while (counter < deathScreamCount)
+        {
+            counter++;
+            yield return new WaitForSeconds(deathScreamTime/deathScreamCount);
+            AudioPlayer.instance.PlaySE(1);
+        }
+
         yield return new WaitForSeconds(deathAnimTime);
         StageScene.Instance.StageClear();
         Destroy(gameObject);
