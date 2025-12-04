@@ -29,6 +29,10 @@ public class TitleScene : MonoBehaviour
     [SerializeField]
     private float skipButtonAppearWaitTime;
 
+    // アウトロアニメーションの再生時間を指定（中山が編集）
+    [SerializeField]
+    private float outroTime;
+
     // Animatorコンポーネント
     Animator animator;
     // AnimatorのパラメーターID
@@ -42,7 +46,6 @@ public class TitleScene : MonoBehaviour
         animator = GetComponent<Animator>();
         AudioPlayer.instance.PlayBGM(15); // titlemusicを再生(富里が編集)
         dataClearUI.Hide();
-        skipButton.gameObject.SetActive(false);
     }
 
     // スタートボタンが押されたときに呼び出されるメソッド
@@ -56,12 +59,12 @@ public class TitleScene : MonoBehaviour
     {
         // エフェクトを再生
         animator.SetTrigger(outroId);
+        yield return new WaitForSeconds(outroTime);// アニメーションの再生時間分待機（中山が編集）
+        AudioPlayer.instance.StopBGM(); // BGMを停止(中山が編集)
+        // ウェイト
         yield return new WaitForSeconds(skipButtonAppearWaitTime);
-
-        skipButton.gameObject.SetActive(true);
+        // スキップボタンをセレクトする
         skipButton.Select();
-        AudioPlayer.instance.PlayBGM(9);
-
         // ウェイト
         yield return new WaitForSeconds(stageTransitionDelay - skipButtonAppearWaitTime);
         // 次のシーンへ遷移
