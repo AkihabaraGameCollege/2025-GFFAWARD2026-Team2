@@ -7,12 +7,19 @@ public class StageClearUI : MonoBehaviour
 {
     // 「NEXT」ボタンが押されたときに発生する UnityEvent を取得または設定します。
     public UnityEvent OnNextButtonClick => onNextButtonClick;
-    [SerializeField]
+    [SerializeField,HideInInspector]
     private UnityEvent onNextButtonClick = null;
+
+    public UnityEvent OnTitleButtonClick => onTitleButtonClick;
+    [SerializeField,HideInInspector]
+    private UnityEvent onTitleButtonClick = null;
 
     // 「NEXT」ボタンを指定します。
     [SerializeField]
     private Button nextButton = null;
+
+    [SerializeField]
+    private Button titleButton;
 
 
     // コンポーネントを事前に参照しておく変数
@@ -30,6 +37,12 @@ public class StageClearUI : MonoBehaviour
         {
             animator.SetTrigger(outroId);
             OnNextButtonClick.Invoke();
+        });
+
+        titleButton.onClick.AddListener(() =>
+        {
+            animator.SetTrigger(outroId);
+            OnTitleButtonClick.Invoke();
         });
     }
 

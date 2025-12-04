@@ -42,7 +42,6 @@ public class StageScene : MonoBehaviour
     // チュートリアル画像（中山が編集）
     [SerializeField]
     private Image tutorialImage = null;
-    [SerializeField]
     private Button tutorialImageButton = null;
 
     // ステージ名での現在のステージ数検知用
@@ -57,10 +56,6 @@ public class StageScene : MonoBehaviour
 
     [SerializeField]
     Image bossLifeImage = null;
-
-    // Animatorコンポーネントの参照（中山が編集）
-    [SerializeField]
-    private Animator animator;
 
     // イントロ演出の時間を指定（中山が編集）
     [SerializeField]
@@ -99,6 +94,8 @@ public class StageScene : MonoBehaviour
     // Start is called before the first frame update（中山が編集）
     private void Start()
     {
+        tutorialImageButton = tutorialImage.GetComponent<Button>();
+
         // ポーズUIの各ボタンが押されたときのイベントを登録
         pause.OnResumeButtonClick.AddListener(Resume);
         pause.OnRetryButtonClick.AddListener(Retry);
@@ -110,7 +107,7 @@ public class StageScene : MonoBehaviour
         gameOverUI.OnTitleButtonClick.AddListener(Title);
 
         stageClearUI.OnNextButtonClick.AddListener(LoadNextStage);// ステージクリアーUIのNEXTボタンにイベントを登録（中山が編集）
-        animator = GetComponent<Animator>();// コンポーネントを参照しておく(中山が編集)
+        stageClearUI.OnTitleButtonClick.AddListener(Title);
         player.enabled = true;// プレイヤーを有効化しておく(中山が編集)
 
         OnApplicationFocus(true);
@@ -257,6 +254,7 @@ public class StageScene : MonoBehaviour
             OnLoadScene(nextStage);
         }
     }
+
 
     // 指定したシーンを読み込みます。（中山が編集）
     private void OnLoadScene(string sceneName)

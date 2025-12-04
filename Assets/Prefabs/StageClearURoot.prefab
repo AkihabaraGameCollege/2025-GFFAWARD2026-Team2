@@ -305,7 +305,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b2cf1ea1fa808124582b4a092c16d7ee, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 941567c9c6e29a34ba16bf29a7e6de86, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -389,21 +389,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   onNextButtonClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
+  onTitleButtonClick:
+    m_PersistentCalls:
+      m_Calls: []
   nextButton: {fileID: 6202851419003302733}
-  musicAudio: {fileID: 0}
+  titleButton: {fileID: 8701311717828585976}
 --- !u!1 &7028006610776704159
 GameObject:
   m_ObjectHideFlags: 0
