@@ -160,7 +160,7 @@ GameObject:
   - component: {fileID: 5250098318207632126}
   - component: {fileID: 7746875081848661970}
   - component: {fileID: 6590718024829173994}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: WeakCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
