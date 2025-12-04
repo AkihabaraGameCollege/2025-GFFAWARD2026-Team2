@@ -28,6 +28,11 @@ public class PlayerUI : MonoBehaviour
     [SerializeField]
     private Image damageImage;
 
+    [SerializeField]
+    private Image strongArmCooldown;
+    [SerializeField]
+    private Image strongArmOverlay;
+
     private void Start()
     {
         ReloadFlag();
@@ -42,6 +47,17 @@ public class PlayerUI : MonoBehaviour
         {
             sprintBackGround.enabled = false;
             sprintGauge.enabled = false;
+        }
+
+        if (PlayerPrefs.GetInt("AttackLevel", 1) == 2)
+        {
+            strongArmCooldown.enabled = true;
+            strongArmOverlay.enabled = true;
+        }
+        else
+        {
+            strongArmCooldown.enabled = false;
+            strongArmOverlay.enabled = false;
         }
     }
 
@@ -62,5 +78,10 @@ public class PlayerUI : MonoBehaviour
     {
         lifeImage.fillAmount = value;
         damageImage.fillAmount = 1 - value;
+    }
+
+    public void StrongArmCooldown(float amount)
+    {
+        strongArmOverlay.fillAmount = amount;
     }
 }

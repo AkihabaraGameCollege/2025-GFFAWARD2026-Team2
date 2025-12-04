@@ -214,6 +214,11 @@ public class Player : MonoBehaviour
         sprintTimer = sprintSecond;
     }
 
+    private void Start()
+    {
+        StageScene.Instance.OnUpdateStrongArmCooldown(stunSkillTimer, stunCooldownTime);
+    }
+
     public void Sleep()
     {
         IsSleeping = true;
@@ -269,6 +274,7 @@ public class Player : MonoBehaviour
                 stunSkillTimer = 0;
                 IsStunable = true;
             }
+            StageScene.Instance.OnUpdateStrongArmCooldown(stunSkillTimer,stunCooldownTime);
         }
     }
 

@@ -657,6 +657,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1098848701}
     m_Modifications:
+    - target: {fileID: 811193901095020406, guid: f1c6a631104695c458ffedf6fd961476, type: 3}
+      propertyPath: m_Color.a
+      value: 0.5019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 811193901095020406, guid: f1c6a631104695c458ffedf6fd961476, type: 3}
+      propertyPath: m_Color.b
+      value: 0.5018867
+      objectReference: {fileID: 0}
+    - target: {fileID: 811193901095020406, guid: f1c6a631104695c458ffedf6fd961476, type: 3}
+      propertyPath: m_Color.g
+      value: 0.5018867
+      objectReference: {fileID: 0}
+    - target: {fileID: 811193901095020406, guid: f1c6a631104695c458ffedf6fd961476, type: 3}
+      propertyPath: m_Color.r
+      value: 0.5018867
+      objectReference: {fileID: 0}
     - target: {fileID: 4399409490839178474, guid: f1c6a631104695c458ffedf6fd961476, type: 3}
       propertyPath: m_Name
       value: PlayerUI

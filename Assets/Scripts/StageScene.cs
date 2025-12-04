@@ -318,4 +318,9 @@ public class StageScene : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;// カーソルのロックを解除（中山が編集）
         }
     }
+
+    public void OnUpdateStrongArmCooldown(float value,float max)
+    {
+        playerUI.StrongArmCooldown(value / max);
+    }
 }
