@@ -132,6 +132,7 @@ public class BossMove2 : MonoBehaviour
     // 何回ダメージ食らったかのカウンター
     private int damageCounter = 0;
     private float stunTimer = 0;
+    private bool isStunning = false;
 
     void Start()
     {
@@ -298,12 +299,14 @@ public class BossMove2 : MonoBehaviour
     IEnumerator Stun(float weakTime)
     {
         stunTimer = weakTime;
+        isStunning = true;
 
         while (stunTimer >= 0)
         {
             stunTimer -= Time.deltaTime;
             yield return null;
         }
+        isStunning = false;
     }
 
     IEnumerator StandUp()
@@ -347,7 +350,7 @@ public class BossMove2 : MonoBehaviour
 
     private void TakeStun()
     {
-        if (statusManager.isInvincible)
+        if (!isStunning)
         {
             // ここで座り込むアニメーション再生が必要かも
 

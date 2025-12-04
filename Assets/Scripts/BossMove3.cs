@@ -29,6 +29,12 @@ public class BossMove3 : MonoBehaviour
     private float rushWaitTime = 1;
     [SerializeField]
     private float startMotionTime = 3;
+    [SerializeField]
+    [Tooltip("スタン終了後のアニメーションタイム")]
+    private float stunEndAnimTime = 2;
+    [SerializeField]
+    [Tooltip("スタン終了時のジャンプ力")]
+    private float stunEndJumpForce = 10;
 
     private Player player;
     private StatusManagerBoss statusManager;
@@ -53,7 +59,7 @@ public class BossMove3 : MonoBehaviour
 
     private bool isPlayerCheckColliderEntered = false;
     private float stunTimer = 0;
-
+    private bool isStunning;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -232,17 +238,21 @@ public class BossMove3 : MonoBehaviour
     IEnumerator Stun(float stunTime)
     {
         stunTimer = stunTime;
-
+        isStunning = true;
         while (stunTimer >= 0)
         {
             stunTimer -= Time.deltaTime;
             yield return null;
         }
+        rb.linearVelocity = new Vector3(0, stunEndJumpForce, 0);
+        yield return new WaitForSeconds(stunEndAnimTime);
+        isStunning = false;
     }
 
+    [ContextMenu("デバッグ用すぐすたーん")]
     private void TakeStun()
     {
-        if (statusManager.isInvincible)
+        if (!isStunning)
         {
             // 現在のコルーチンを止めてひるむ
             StopAllCoroutines();
@@ -259,7 +269,7 @@ public class BossMove3 : MonoBehaviour
     {
         playerCheckCollider.Hide();
         attackCollider.enabled = false;
-        rb.rotation = Quaternion.identity;
+        rb.angularVelocity = Vector3.zero;
         rb.linearVelocity = Vector3.zero;
         yield return StartCoroutine(Stun(defaultStunTime));
         StartCoroutine(MainLoop());

@@ -102,6 +102,7 @@ public class BossMove1 : MonoBehaviour
     private bool isWalking = false;// 歩行SE再生判定用（中山が編集）
     private bool isAppeardWeak = false; // 弱点が露出したかどうか
     private float stunTimer = 0;
+    private bool isStunning = false;
 
     private StatusManagerBoss statusManager;
 
@@ -303,6 +304,7 @@ public class BossMove1 : MonoBehaviour
     private IEnumerator OnWeak()
     {
         stunTimer = bossWeakTime;
+        isStunning = true;
         Weak();// 弱点出現（中山が編集）
         yield return new WaitForSeconds(bossWeakBeforTime);// 弱点タイム（中山が編集）
 
@@ -321,7 +323,7 @@ public class BossMove1 : MonoBehaviour
         isTurning = true;// 攻撃停止（中山が編集）
         isMoving = true;// 移動開始（中山が編集）
         isAppeardWeak = false;
-
+        isStunning = false;
         hammerAttackTime = hammerAttackTimeDefault;// ハンマー攻撃時間リセット（中山が編集）
     }
 
@@ -378,7 +380,7 @@ public class BossMove1 : MonoBehaviour
     [ContextMenu("デバッグ用すぐスタン")]
     private void TakeStun()
     {
-        if (statusManager.isInvincible)
+        if (!isStunning)
         {
             // これのために、アニメーションをanystate→倒れるにしとかないとダメかも
 
