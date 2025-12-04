@@ -2302,14 +2302,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2056259508}
     m_Modifications:
-    - target: {fileID: 4400895757186819555, guid: cd038fbc0352e2f48bbe3fe066a7cefe, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 13ff5c46da250844ebc6d0c5d215dafc, type: 2}
-    - target: {fileID: 4645506599113787390, guid: cd038fbc0352e2f48bbe3fe066a7cefe, type: 3}
-      propertyPath: startMotionTime
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 5161792772889693995, guid: cd038fbc0352e2f48bbe3fe066a7cefe, type: 3}
       propertyPath: m_LocalPosition.x
       value: 123.5

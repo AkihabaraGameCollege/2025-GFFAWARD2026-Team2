@@ -145,7 +145,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destroyEffect: {fileID: 8962295279383145195, guid: 7cdd99d9641263e498d658cb227be266, type: 3}
-  damageEffect: {fileID: 1430198582188953287, guid: 21b15d55fb362544fab3a70419757060, type: 3}
   maxHealth: 15
   health: 0
   lastSpurtHP: 5
@@ -191,12 +190,14 @@ MonoBehaviour:
   attackCollider: {fileID: 8395592529065250450}
   playerCheckCollider: {fileID: 3535352282109380067}
   rushWaitTime: 1
+  startMotionTime: 7
   wallCheckerPos:
   - {x: 4, y: 2, z: 0}
   wallCheckerDistance: 3
   groundLayer:
     serializedVersion: 2
     m_Bits: 72
+  animator: {fileID: 4400895757186819555}
 --- !u!1 &6890887516328271781
 GameObject:
   m_ObjectHideFlags: 0
@@ -240,7 +241,7 @@ Animator:
   m_GameObject: {fileID: 6890887516328271781}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: e6d67519f95b84248a9883f5e489d6d8, type: 2}
+  m_Controller: {fileID: 9100000, guid: 13ff5c46da250844ebc6d0c5d215dafc, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

@@ -106,8 +106,7 @@ public class BossMove3 : MonoBehaviour
         // Šî–{‚Ìƒ‹[ƒv
         while (true)
         {
-            mainMotionRoutine = MainMotion();
-            yield return mainMotionRoutine;
+            yield return StartCoroutine(MainMotion());
 
             yield return StartCoroutine(Stun(defaultStunTime));
         }
