@@ -69,7 +69,6 @@ public class BossMove3 : MonoBehaviour
 
         attackCollider.enabled = false;//攻撃判定無効化（中山が編集）
         playerCheckCollider.Hide();
-        StageScene.Instance.HideWeakText();
 
         // 行動のコルーチンを起動
         StartCoroutine(StartMotion());

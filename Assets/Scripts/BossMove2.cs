@@ -137,7 +137,6 @@ public class BossMove2 : MonoBehaviour
 
         statusManager.isInvincible = false;
         attackCollider.enabled = false;//攻撃判定無効化
-        StageScene.Instance.HideWeakText();
 
         // 行動のコルーチンを起動
         StartCoroutine(StartMotion());
@@ -284,7 +283,6 @@ public class BossMove2 : MonoBehaviour
 
     IEnumerator Stun(float weakTime)
     {
-        StageScene.Instance.ShowWeakText();
         stunTimer = weakTime;
 
         while (stunTimer >= 0)
@@ -292,8 +290,6 @@ public class BossMove2 : MonoBehaviour
             stunTimer -= Time.deltaTime;
             yield return null;
         }
-        //weak消滅
-        StageScene.Instance.HideWeakText();
     }
 
     IEnumerator StandUp()

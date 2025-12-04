@@ -34,13 +34,16 @@ public class StageScene : MonoBehaviour
     //プレイヤーを指定(中山が編集)
     [SerializeField]
     private Player player = null;
-
-    Animator animator;// コンポーネントを事前に参照しておく変数(中山が編集)
-
   
     // ステージクリアー表示用のUIを指定します。（中山が編集）
     [SerializeField]
     private StageClearUI stageClearUI = null;
+
+    // チュートリアル画像（中山が編集）
+    [SerializeField]
+    private Image tutorialImage = null;
+    [SerializeField]
+    private Button tutorialImageButton = null;
 
     // ステージ名での現在のステージ数検知用
     [SerializeField]
@@ -55,10 +58,19 @@ public class StageScene : MonoBehaviour
     [SerializeField]
     Image bossLifeImage = null;
 
+    // Animatorコンポーネントの参照（中山が編集）
     [SerializeField]
-    private Image weakText = null;
+    private Animator animator;
+
+    // イントロ演出の時間を指定（中山が編集）
     [SerializeField]
-    private Image defeatBossText = null;
+    private float introTime = 5.0f;
+    // 音声再生までの待機時間を指定（中山が編集）
+    [SerializeField]
+    private float waitTime = 1.0f;
+
+    private int bGMID;// BGMのIDを指定する変数（中山が編集）
+    private int sEID;// SEのIDを指定する変数（中山が編集）
 
     // ステージ画面内の進行状態を表します。
     enum SceneState
@@ -90,6 +102,7 @@ public class StageScene : MonoBehaviour
         // ポーズUIの各ボタンが押されたときのイベントを登録
         pause.OnResumeButtonClick.AddListener(Resume);
         pause.OnRetryButtonClick.AddListener(Retry);
+        pause.OnTutorialButtonClick.AddListener(Tutorial); // とりあえずタイトルに戻るように設定（中山が編集）
         pause.OnExitButtonClick.AddListener(Title);
 
         // ゲームオーバーUIの各ボタンが押されたときのイベントを登録(中山が編集)
@@ -98,8 +111,7 @@ public class StageScene : MonoBehaviour
 
         stageClearUI.OnNextButtonClick.AddListener(LoadNextStage);// ステージクリアーUIのNEXTボタンにイベントを登録（中山が編集）
         animator = GetComponent<Animator>();// コンポーネントを参照しておく(中山が編集)
-        player.enabled = true;// プレイヤーを無効化しておく(中山が編集)
-        sceneState = SceneState.Play;// ステージプレイ中に変更(中山が編集)
+        player.enabled = true;// プレイヤーを有効化しておく(中山が編集)
 
         OnApplicationFocus(true);
 
@@ -108,20 +120,41 @@ public class StageScene : MonoBehaviour
         // 各シーンに対応したBGMを再生
         if (activeSceneName == boss1StageName)
         {
-            AudioPlayer.instance.PlayBGM(0);//boss1Musicを再生(富里が編集)
+            bGMID = 0;// boss1MusicのIDを指定（中山が編集）
+            sEID = 4;// introMusicのIDを指定（中山が編集）
+            StartCoroutine(OnIntro());// イントロ演出コルーチンを開始（中山が編集）
         }
         else if (activeSceneName == boss2StageName)
         {
-            AudioPlayer.instance.PlayBGM(2);//boss2Musicを再生(富里が編集)
+            bGMID = 2;// boss2MusicのIDを指定（中山が編集）
+            sEID = 1;// introMusicのIDを指定（中山が編集）
+            StartCoroutine(OnIntro());// イントロ演出コルーチンを開始（中山が編集）
         }
         else if (activeSceneName == boss3StageName)
         {
-            AudioPlayer.instance.PlayBGM(4);//boss3Musicを再生(富里が編集)
+            bGMID = 4;// boss3MusicのIDを指定（中山が編集）
+            sEID = 10;// introMusicのIDを指定（中山が編集）
+            StartCoroutine(OnIntro());// イントロ演出コルーチンを開始（中山が編集）
         }
         else
         {
             Debug.LogError("現在のsceneが、どのstageNameとも一致しません");
         }
+
+        tutorialImage.enabled = false;
+        tutorialImageButton.enabled = false;
+        tutorialImageButton.onClick.AddListener(OnClickBack);
+    }
+
+    // イントロ演出を処理するコルーチン（中山が編集）
+    IEnumerator OnIntro()
+    {
+        yield return new WaitForSeconds(waitTime);// 待機してから音声再生（中山が編集）
+        AudioPlayer.instance.PlaySE(sEID);// introMusicを再生（中山が編集）
+        yield return new WaitForSeconds(introTime);// イントロ演出の時間待機（中山が編集）
+        AudioPlayer.instance.StopSE();// SEを停止（中山が編集）
+        AudioPlayer.instance.PlayBGM(bGMID);// boss1Musicを再生（中山が編集）
+        sceneState = SceneState.Play;// シーン状態をPlayに変更（中山が編集）
     }
 
     void Update()
@@ -174,6 +207,7 @@ public class StageScene : MonoBehaviour
             IsPaused = false;
             Time.timeScale = 1;
             pause.Hide();
+            OnClickBack(); // チュートリアル画像を閉じる（中山が編集）
             Cursor.lockState = CursorLockMode.Locked;
         }
     }
@@ -181,7 +215,24 @@ public class StageScene : MonoBehaviour
     // このステージを再読み込みします。
     public void Retry()
     {
+        AudioPlayer.instance.StopBGM(); // BGMを停止(中山が編集)
+        AudioPlayer.instance.StopSE();// SEを停止（中山が編集）
         OnLoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    // チュートリアルボタンが押されたときの処理（中山が編集）
+    public void Tutorial()
+    {
+        tutorialImage.enabled = true;
+        tutorialImageButton.enabled = true;
+        tutorialImageButton.Select();
+    }
+
+    // チュートリアル画像を閉じるボタンが押されたときの処理（中山が編集）
+    public void OnClickBack()
+    {
+        tutorialImage.enabled = false;// チュートリアル画像を非表示にする（中山が編集）
+        tutorialImageButton.enabled = false;// チュートリアル画像のボタンを無効化する（中山が編集）
     }
 
     // このステージを抜けてタイトル画面を読み込みます。
@@ -283,22 +334,6 @@ public class StageScene : MonoBehaviour
     public void BossBarUpdate(float health, int maxhealth)
     {
         bossLifeImage.fillAmount = health / maxhealth;// 15回攻撃で0になるように調整
-    }
-
-    public void ShowWeakText()
-    {
-        if (weakText == null) return;
-        weakText.gameObject.SetActive(true);
-        if (defeatBossText == null) return;
-        defeatBossText.gameObject.SetActive(false);
-    }
-
-    public void HideWeakText()
-    {
-        if (weakText == null) return;
-        weakText.gameObject.SetActive(false);
-        if (defeatBossText == null) return;
-        defeatBossText.gameObject.SetActive(true);
     }
 
     public void ApplySprintGauge(float value,float max)

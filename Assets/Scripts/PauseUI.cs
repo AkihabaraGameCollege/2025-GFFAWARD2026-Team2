@@ -13,6 +13,10 @@ public class PauseUI : MonoBehaviour
     public UnityEvent OnRetryButtonClick => onRetryButtonClick;
     [SerializeField]
     private UnityEvent onRetryButtonClick = null;
+    // Tutorial Button が押されたときに発生する UnityEvent を取得または設定します。（中山が編集）
+    public UnityEvent OnTutorialButtonClick => onTutorialButtonClick;
+    [SerializeField]
+    private UnityEvent onTutorialButtonClick = null;
     // Exit Button が押されたときに発生する UnityEvent を取得または設定します。
     public UnityEvent OnExitButtonClick => onExitButtonClick;
     [SerializeField]
@@ -24,6 +28,9 @@ public class PauseUI : MonoBehaviour
     // Retry Button を指定します。
     [SerializeField]
     private Button retryButton = null;
+    // Tutorial Button を指定します。（中山が編集）
+    [SerializeField]
+    private Button tutorialButton = null;
     // Exit Button を指定します。
     [SerializeField]
     private Button exitButton = null;
@@ -33,6 +40,7 @@ public class PauseUI : MonoBehaviour
         // UnityEvent を追加
         resumeButton.onClick.AddListener(() => { onResumeButtonClick.Invoke(); });
         retryButton.onClick.AddListener(() => { onRetryButtonClick.Invoke(); });
+        tutorialButton.onClick.AddListener(() => { onTutorialButtonClick.Invoke(); });
         exitButton.onClick.AddListener(() => { onExitButtonClick.Invoke(); });
 
         Hide();

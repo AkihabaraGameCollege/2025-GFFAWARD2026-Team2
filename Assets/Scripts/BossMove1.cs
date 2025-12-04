@@ -133,8 +133,6 @@ public class BossMove1 : MonoBehaviour
     // ボスの開始処理（中山が編集）
     void Start()
     {
-
-        StageScene.Instance.HideWeakText();
         StartCoroutine(OnMove());// 初動行動開始（中山が編集）
     }
 
@@ -310,7 +308,6 @@ public class BossMove1 : MonoBehaviour
         stunTimer = bossWeakTime;
         Weak();// 弱点出現（中山が編集）
         yield return new WaitForSeconds(bossWeakBeforTime);// 弱点タイム（中山が編集）
-        Weaking();// 弱体化処理（中山が編集）
 
         // 倒れる間のタイマー
         while (stunTimer >= 0)
@@ -347,18 +344,10 @@ public class BossMove1 : MonoBehaviour
 
         bodyAttackCollider.enabled = false;// ボス本体判定無効化（中山が編集）
     }
-
-    // 弱体化処理（中山が編集）
-    private void Weaking()
-    {
-        StageScene.Instance.ShowWeakText();
-    }
-
     // 起き上がり（中山が編集）
     private void WakeUp()
     {
         animator.SetTrigger(wakeUpID);// 起き上がりアニメーション再生（中山が編集）
-        StageScene.Instance.HideWeakText();
         collider2Player.enabled = false; // プレイヤーとのCollisionColliderを無効化 (富里が編集)
     }
 
