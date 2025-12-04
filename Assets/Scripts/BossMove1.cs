@@ -42,9 +42,6 @@ public class BossMove1 : MonoBehaviour
     // ハンマー攻撃時間初期値設定（中山が編集）
     [SerializeField]
     private float hammerAttackTimeDefault = 30.0f;
-    // 歩行SE再生間隔時間設定（中山が編集）
-    [SerializeField]
-    private float moveSoundMTime = 1f;
     [SerializeField]
     [Tooltip("ボスのアニメーションしてからコライダー出るまでの時間")]
     private float meleeAttackAnimTime = 1.5f;
@@ -86,6 +83,10 @@ public class BossMove1 : MonoBehaviour
     [SerializeField]
     Animator animator;// アニメーター（中山が編集）
 
+    [SerializeField]
+    [Tooltip("モデルについてるScript")]
+    private ModelScript modelScript;
+
     // アニメーションID登録（中山が編集）
     static readonly int isWalkingID = Animator.StringToHash("isWalking");
     static readonly int attackID = Animator.StringToHash("attack");
@@ -114,6 +115,7 @@ public class BossMove1 : MonoBehaviour
         statusManager.OnDeath += Die; // 死亡時実行の関数をいれとく 富里
         statusManager.OnStunTaken += TakeStun; //スタン食らったとき
         statusManager.OnDamageTaken += TakeDamage;
+        modelScript.PlayWalkSE += PlayWalkSE;
 
         statusManager.isInvincible = false;
         isWalking = true;// 歩行SE再生判定用（中山が編集）
@@ -135,6 +137,7 @@ public class BossMove1 : MonoBehaviour
             statusManager.OnDeath -= Die;
             statusManager.OnStunTaken -= TakeStun;
             statusManager.OnDamageTaken -= TakeDamage;
+            modelScript.PlayWalkSE -= PlayWalkSE;
         }
     }
 
@@ -227,22 +230,10 @@ public class BossMove1 : MonoBehaviour
         // 歩行SE再生処理開始（中山が編集）
         if (isWalking)
         {
-            StartCoroutine(OnMoveSound());// 歩行SE再生処理開始（中山が編集）
             isWalking = false;// 歩行SE再生判定用（中山が編集）
         }
     }
 
-    // 歩行SE再生処理（中山が編集）
-    IEnumerator OnMoveSound()
-    {
-        // 歩行SE再生ループ（中山が編集）
-        while (true && isMoving)
-        {
-            AudioPlayer.instance.PlaySE(5, false);// 歩行足踏みSE再生（中山が編集）
-            AudioPlayer.instance.PlaySE(6);// 歩行動作SE再生（中山が編集）
-            yield return new WaitForSeconds(moveSoundMTime);// 少し待機（中山が編集）
-        }
-    }
 
     // ボスが止まる（中山が編集）
     private void StopBoss()
@@ -377,6 +368,12 @@ public class BossMove1 : MonoBehaviour
 
         effect.transform.position = weakCollider.transform.position;
         Destroy(effect, 5);// エフェクトを5秒後に破壊（中山が編集）
+    }
+
+    public void PlayWalkSE()
+    {
+        AudioPlayer.instance.PlaySE(6);
+        AudioPlayer.instance.PlaySE(5);
     }
 
     [ContextMenu("デバッグ用すぐスタン")]

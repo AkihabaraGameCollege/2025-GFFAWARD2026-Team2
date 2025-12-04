@@ -32,6 +32,10 @@ public class BossMove2 : MonoBehaviour
     [Tooltip("モデルについてるアニメーター")]
     private Animator animator;
 
+    [SerializeField]
+    [Tooltip("モデルについてるScript")]
+    private ModelScript modelScript;
+
     [Header("ボス固有の設定")]
     [SerializeField]
     [Tooltip("すたーともーしょん時間")]
@@ -134,6 +138,7 @@ public class BossMove2 : MonoBehaviour
         statusManager.OnDamageTaken += TakeDamage;
         statusManager.OnDeath += Die;
         statusManager.OnStunTaken += TakeStun;
+        modelScript.PlayWalkSE += PlayWalkSE;
 
         statusManager.isInvincible = false;
         attackCollider.enabled = false;//攻撃判定無効化
@@ -202,16 +207,10 @@ public class BossMove2 : MonoBehaviour
     {
         // 2秒間の間歩く
         float timer = 0;
-        float SETimer = 0;
         while (timer < walkTime)
         {
             timer += Time.fixedDeltaTime;
-            SETimer += Time.fixedDeltaTime;
-            if (SETimer >= walkSECooldown)
-            {
-                SETimer = 0;
-                AudioPlayer.instance.PlaySE(0);
-            }
+            
             Walk();
             yield return new WaitForFixedUpdate();
         }
@@ -353,6 +352,12 @@ public class BossMove2 : MonoBehaviour
         yield return StartCoroutine(Stun(defaultStunTime));
         yield return StandUp();
         StartCoroutine(MainLoop());
+    }
+
+    public void PlayWalkSE()
+    {
+        AudioPlayer.instance.PlaySE(0);
+        Debug.Log("YEAH");
     }
 
     // 以下テスト
