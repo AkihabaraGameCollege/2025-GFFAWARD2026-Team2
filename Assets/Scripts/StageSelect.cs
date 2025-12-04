@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Collections;
 
 // ステージセレクト画面からステージへ遷移するスクリプト（中山が編集）
 public class StageSelect : MonoBehaviour
@@ -48,10 +49,21 @@ public class StageSelect : MonoBehaviour
     [SerializeField]
     private Button abilityButton;
 
+    // アウトロアニメーションの再生時間を指定（中山が編集）
+    [SerializeField]
+    private float outroTime;
+
     private bool isDefeatedBoss1;
     private bool isDefeatedBoss2;
     private bool isDefeatedBoss3;
 
+    // Animatorコンポーネントの参照（中山が編集）
+    [SerializeField]
+    private Animator animator;
+
+    static readonly int outro1Id = Animator.StringToHash("outro1");// AnimatorのパラメーターID（中山が編集）
+    static readonly int outro2Id = Animator.StringToHash("outro2");// AnimatorのパラメーターID（中山が編集）
+    static readonly int outro3Id = Animator.StringToHash("outro3");// AnimatorのパラメーターID（中山が編集）
 
     // 登録・音楽再生用（中山が編集）
     void Start()
@@ -114,18 +126,45 @@ public class StageSelect : MonoBehaviour
     // ボス戦1へ行くボタンが押されたときに呼び出されるメソッド（中山が編集）
     public void PressBoss1Button()
     {
+        StartCoroutine(LoadBoss1Scene());// コルーチンを開始（中山が編集）
+    }
+
+    // ボス戦1へ行くコルーチン（中山が編集）
+    IEnumerator LoadBoss1Scene()
+    {
+        AudioPlayer.instance.StopBGM(); // BGMを停止(中山が編集)
+        animator.SetTrigger(outro1Id);// エフェクトを再生（中山が編集）
+        yield return new WaitForSeconds(outroTime);// アニメーションの再生時間分待機（中山が編集）
         SceneManager.LoadScene(nextSceneName1);// 次のシーンへ遷移（中山が編集）
     }
 
     // ボス戦2へ行くボタンが押されたときに呼び出されるメソッド（中山が編集）
     public void PressBoss2Button()
     {
+        StartCoroutine(LoadBoss2Scene());// コルーチンを開始（中山が編集）
+    }
+
+    // ボス戦2へ行くコルーチン（中山が編集）
+    IEnumerator LoadBoss2Scene()
+    {
+        AudioPlayer.instance.StopBGM(); // BGMを停止(中山が編集)
+        animator.SetTrigger(outro2Id);// エフェクトを再生（中山が編集）
+        yield return new WaitForSeconds(outroTime);// アニメーションの再生時間分待機（中山が編集）
         SceneManager.LoadScene(nextSceneName2);// 次のシーンへ遷移（中山が編集）
     }
 
     // ボス戦3へ行くボタンが押されたときに呼び出されるメソッド（中山が編集）
     public void PressBoss3Button()
     {
+        StartCoroutine(LoadBoss3Scene());// コルーチンを開始（中山が編集）
+    }
+
+    // ボス戦3へ行くコルーチン（中山が編集）
+    IEnumerator LoadBoss3Scene()
+    {
+        AudioPlayer.instance.StopBGM(); // BGMを停止(中山が編集)
+        animator.SetTrigger(outro3Id);// エフェクトを再生（中山が編集）
+        yield return new WaitForSeconds(outroTime);// アニメーションの再生時間分待機（中山が編集）
         SceneManager.LoadScene(nextSceneName3);// 次のシーンへ遷移（中山が編集）
     }
 
