@@ -56,6 +56,15 @@ public class StageSelect : MonoBehaviour
     private bool isDefeatedBoss1;
     private bool isDefeatedBoss2;
     private bool isDefeatedBoss3;
+    [SerializeField]
+    [Tooltip("背景のimage")]
+    private Image backGroundImage;
+    [SerializeField]
+    [Tooltip("通常の背景スプライト")]
+    private Sprite normalBackGroundSprite;
+    [SerializeField]
+    [Tooltip("クリア後の背景スプライト")]
+    private Sprite clearedBackGroundSprite;
 
     // Animatorコンポーネントの参照（中山が編集）
     [SerializeField]
@@ -106,7 +115,16 @@ public class StageSelect : MonoBehaviour
             buttonBoss3.onClick.AddListener(PressBoss3Button);
         }
 
-        abilityImage.enabled = false;
+        if (isDefeatedBoss1 && isDefeatedBoss2 && isDefeatedBoss3)
+        {
+            backGroundImage.sprite = clearedBackGroundSprite;
+        }
+        else
+        {
+            backGroundImage.sprite = normalBackGroundSprite;
+        }
+
+            abilityImage.enabled = false;
         tutorialImage.enabled = false;
 
         secretAbility1.enabled = false;
