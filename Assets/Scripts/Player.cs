@@ -115,6 +115,10 @@ public class Player : MonoBehaviour
     [Tooltip("被弾エフェクト")]
     GameObject damageEffect;
 
+    [SerializeField]
+    [Tooltip("ダッシュパーティクル")]
+    private ParticleSystem dashParticle;
+
     [Header("その他")]
     [SerializeField]
     [Tooltip("Offset")]
@@ -181,6 +185,8 @@ public class Player : MonoBehaviour
         attackCollider.enabled = false;// 攻撃判定を無効化（中山が編集）
         dashAttackCollider.enabled = false; // ダッシュアタック判定を無効化 (富里が編集)
         StatusReset();// ステータス初期化（中山が編集）
+        dashParticle.gameObject.SetActive(false);
+        dashParticle.Stop();
     }
 
     private void StatusReset()
@@ -497,6 +503,9 @@ public class Player : MonoBehaviour
                 motionState = MotionState.Sprinting;
             }
             dashAttackCollider.enabled = true;
+
+            dashParticle.gameObject.SetActive(true);
+            dashParticle.Play();
         }
 
 
@@ -520,6 +529,8 @@ public class Player : MonoBehaviour
             motionState = MotionState.Walking;
         }
         dashAttackCollider.enabled = false;
+        dashParticle.gameObject.SetActive(false);
+        dashParticle.Stop();
     }
 
     public void Hit(Vector3 enemyPos)
