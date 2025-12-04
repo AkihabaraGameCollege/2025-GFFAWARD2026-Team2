@@ -192,6 +192,8 @@ public class StageScene : MonoBehaviour
     {
         if (sceneState == SceneState.Play && !IsPaused)
         {
+            AudioPlayer.instance.StopSE();// SEを停止（中山が編集）
+            player.enabled = false;// プレイヤー操作を無効化(中山が編集)
             IsPaused = true;
             Time.timeScale = 0;
             pause.Show();
@@ -209,6 +211,7 @@ public class StageScene : MonoBehaviour
             pause.Hide();
             OnClickBack(); // チュートリアル画像を閉じる（中山が編集）
             Cursor.lockState = CursorLockMode.Locked;
+            player.enabled = true;// プレイヤー操作を有効化(中山が編集)
         }
     }
 
