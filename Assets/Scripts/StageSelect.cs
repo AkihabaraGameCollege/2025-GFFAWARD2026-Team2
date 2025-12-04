@@ -1,7 +1,4 @@
-using System;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -30,9 +27,34 @@ public class StageSelect : MonoBehaviour
     [SerializeField]
     private Button buttonBoss3;
 
+    [SerializeField]
+    private Image secretAbility1;
+    [SerializeField]
+    private Image secretAbility2;
+    [SerializeField]
+    private Image secretAbility3;
+
+    [SerializeField]
+    private Image tutorialImage;
+    private Button tutorialImageButton;
+
+
+    [SerializeField]
+    private Image abilityImage;
+    private Button abilityImageButton;
+
+    [SerializeField]
+    private Button ruleButton;
+    [SerializeField]
+    private Button abilityButton;
+
+    private bool isDefeatedBoss1;
+    private bool isDefeatedBoss2;
+    private bool isDefeatedBoss3;
+
 
     // 登録・音楽再生用（中山が編集）
-    void Awake()
+    void Start()
     {
         AudioPlayer.instance.PlayBGM(13); // stageSelectMusicを再生(中山が編集)
 
@@ -40,6 +62,7 @@ public class StageSelect : MonoBehaviour
         {
             buttonBoss1.GetComponent<Image>().sprite = defeatedSprite1;
             buttonBoss1.enabled = false;
+            isDefeatedBoss1 = true;
         }
         else
         {
@@ -50,6 +73,7 @@ public class StageSelect : MonoBehaviour
         {
             buttonBoss2.GetComponent<Image>().sprite = defeatedSprite2;
             buttonBoss2.enabled = false;
+            isDefeatedBoss2 = true;
         }
         else
         {
@@ -60,11 +84,31 @@ public class StageSelect : MonoBehaviour
         {
             buttonBoss3.GetComponent<Image>().sprite = defeatedSprite3;
             buttonBoss3.enabled = false;
+            isDefeatedBoss3 = true;
         }
         else
         {
             buttonBoss3.onClick.AddListener(PressBoss3Button);
         }
+
+        abilityImage.enabled = false;
+        tutorialImage.enabled = false;
+
+        secretAbility1.enabled = false;
+        secretAbility2.enabled = false;
+        secretAbility3.enabled = false;
+
+        tutorialImageButton = tutorialImage.gameObject.GetComponent<Button>();
+        abilityImageButton = abilityImage.gameObject.GetComponent<Button>();
+
+        tutorialImageButton.enabled = false;
+        abilityImageButton.enabled = false;
+
+        ruleButton.onClick.AddListener(OnClickTutorialButton);
+        abilityButton.onClick.AddListener(OnClickTutorialButton);
+
+        tutorialImageButton.onClick.AddListener(OnClickBack);
+        abilityImageButton.onClick.AddListener (OnClickBack);
     }
 
     // ボス戦1へ行くボタンが押されたときに呼び出されるメソッド（中山が編集）
@@ -83,5 +127,34 @@ public class StageSelect : MonoBehaviour
     public void PressBoss3Button()
     {
         SceneManager.LoadScene(nextSceneName3);// 次のシーンへ遷移（中山が編集）
+    }
+
+    public void OnClickTutorialButton()
+    {
+        tutorialImage.enabled = true;
+        tutorialImageButton.enabled=true;
+        tutorialImageButton.Select();
+    }
+
+    public void OnClickAbilityButton()
+    {
+        abilityImage.enabled = true;
+        secretAbility1.enabled = !isDefeatedBoss1;
+        secretAbility2.enabled = !isDefeatedBoss2;
+        secretAbility3.enabled = !isDefeatedBoss3;
+        abilityImageButton.enabled = true;
+        abilityImageButton.Select();
+    }
+
+    public void OnClickBack()
+    {
+        tutorialImage.enabled = false;
+        abilityImage.enabled = false;
+        tutorialImageButton.enabled = false;
+        abilityImageButton.enabled = false;
+        secretAbility1.enabled = false;
+        secretAbility2.enabled = false;
+        secretAbility3.enabled = false;
+        
     }
 }
