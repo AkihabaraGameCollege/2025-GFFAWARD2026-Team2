@@ -357,7 +357,6 @@ public class BossMove2 : MonoBehaviour
     public void PlayWalkSE()
     {
         AudioPlayer.instance.PlaySE(0);
-        Debug.Log("YEAH");
     }
 
     // ˆÈ‰ºƒeƒXƒg
