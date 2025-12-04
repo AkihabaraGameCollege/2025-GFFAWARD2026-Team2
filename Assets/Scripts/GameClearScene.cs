@@ -15,9 +15,18 @@ public class GameClearScene : MonoBehaviour
     private float musicWaitTime = 24;
 
     [SerializeField]
+    private float outroTime = 2;
+
+    [SerializeField]
     private Button nextButton = null;
 
     private bool isLoadable = false;
+
+    // Animatorコンポーネントの参照
+    [SerializeField]
+    private Animator animator;
+
+    static readonly int outroId = Animator.StringToHash("outroGamCle");
 
     private void Start()
     {
@@ -40,8 +49,17 @@ public class GameClearScene : MonoBehaviour
     {
         if (isLoadable)
         {
-            SceneManager.LoadScene(nextScene);
-
+            StopCoroutine(OnStart());
+            StartCoroutine(LoadNextScene());// コルーチンを開始（中山が編集）
         }
+    }
+
+    // 次のシーンを読み込むコルーチン（中山が編集）
+    IEnumerator LoadNextScene()
+    {
+        Debug.Log("Loading Next Scene...");
+        animator.SetTrigger(outroId);// アウトロアニメーションを再生（中山が編集）
+        yield return new WaitForSeconds(outroTime);// アニメーションの再生時間分待機（中山が編集）
+        SceneManager.LoadScene(nextScene);
     }
 }
