@@ -378,7 +378,7 @@ MonoBehaviour:
   moveP: 4
   speedNumber: 3.01
   bossLittleWaitTime: 0.5
-  bossAttackTime: 3
+  bossAttackTime: 1
   bossWeakBeforTime: 2
   bossWeakTime: 10
   bossWakeUpTime: 5
@@ -391,6 +391,7 @@ MonoBehaviour:
   bossStartTime: 5
   hammerAttackTimeDefault: 10
   moveSoundMTime: 1.5
+  meleeAttackAnimTime: 1.5
   stumpWaitTime: 3
   stumpColliderArriveCooldown: 1
   stumpCollider: {fileID: 1080257831239132051}
