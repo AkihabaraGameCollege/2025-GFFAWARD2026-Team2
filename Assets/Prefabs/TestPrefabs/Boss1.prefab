@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 1339586268298294658}
   - component: {fileID: 1080257831239132051}
   m_Layer: 8
-  m_Name: StumpCollider
+  m_Name: AttackCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -339,8 +339,7 @@ MonoBehaviour:
   moveSoundMTime: 1.5
   stumpWaitTime: 3
   stumpColliderArriveCooldown: 1
-  stumpCollider: {fileID: 1080257831239132051}
-  attackCollider: {fileID: 4021223916108292216}
+  attackCollider: {fileID: 1080257831239132051}
   bodyAttackCollider: {fileID: 4456961885093067645}
   weakCollider: {fileID: 3131120092741834984}
   damageEffect: {fileID: 1430198582188953287, guid: 21b15d55fb362544fab3a70419757060, type: 3}
@@ -453,7 +452,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 5befdf8b347199b46bd30fc3a7e497f6, type: 2}
     - target: {fileID: -4728426434207774260, guid: fc15ab7394f791044b646c33db41bf86, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4589498120553424099, guid: fc15ab7394f791044b646c33db41bf86, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -568,9 +567,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -1703473491307067327, guid: fc15ab7394f791044b646c33db41bf86, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4304022924416988650}
-    - targetCorrespondingSourceObject: {fileID: -4728426434207774260, guid: fc15ab7394f791044b646c33db41bf86, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4021223916108292216}
     - targetCorrespondingSourceObject: {fileID: 2715566404302941441, guid: fc15ab7394f791044b646c33db41bf86, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8975055503667052005}
@@ -611,32 +607,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5465940246521907071, guid: fc15ab7394f791044b646c33db41bf86, type: 3}
   m_PrefabInstance: {fileID: 8410918329217698247}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &5393294327062282251 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -4728426434207774260, guid: fc15ab7394f791044b646c33db41bf86, type: 3}
-  m_PrefabInstance: {fileID: 8410918329217698247}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &4021223916108292216
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5393294327062282251}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.28, y: 0.5, z: 0.21}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5842915744100246726 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2715566404302941441, guid: fc15ab7394f791044b646c33db41bf86, type: 3}
