@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -64,6 +65,10 @@ public class StageScene : MonoBehaviour
     [SerializeField]
     private float waitTime = 1.0f;
 
+    [SerializeField]
+    [Tooltip("プレイヤーに追従するfreelookカメラ")]
+    private CinemachineInputAxisController freelookCamera;
+
     private int bGMID;// BGMのIDを指定する変数（中山が編集）
     private int sEID;// SEのIDを指定する変数（中山が編集）
 
@@ -108,7 +113,6 @@ public class StageScene : MonoBehaviour
 
         stageClearUI.OnNextButtonClick.AddListener(LoadNextStage);// ステージクリアーUIのNEXTボタンにイベントを登録（中山が編集）
         stageClearUI.OnTitleButtonClick.AddListener(Title);
-        player.enabled = true;// プレイヤーを有効化しておく(中山が編集)
 
         OnApplicationFocus(true);
 
@@ -190,7 +194,7 @@ public class StageScene : MonoBehaviour
         if (sceneState == SceneState.Play && !IsPaused)
         {
             AudioPlayer.instance.StopSE();// SEを停止（中山が編集）
-            player.enabled = false;// プレイヤー操作を無効化(中山が編集)
+            player.Sleep();
             IsPaused = true;
             Time.timeScale = 0;
             pause.Show();
@@ -208,7 +212,7 @@ public class StageScene : MonoBehaviour
             pause.Hide();
             OnClickBack(); // チュートリアル画像を閉じる（中山が編集）
             Cursor.lockState = CursorLockMode.Locked;
-            player.enabled = true;// プレイヤー操作を有効化(中山が編集)
+            player.WakeUp();
         }
     }
 
@@ -278,9 +282,10 @@ public class StageScene : MonoBehaviour
         if (sceneState == SceneState.Play)
         {
             sceneState = SceneState.GameOver;
-            player.enabled = false;// プレイヤー操作を無効化(中山が編集)
+            player.Sleep();
             AudioPlayer.instance.PlayBGM(8); // gameoverを再生(富里が編集)
             gameOverUI.Show();// ゲームオーバーUIを表示(中山が編集)
+            freelookCamera.enabled = false;
         }
     }
 
@@ -292,10 +297,11 @@ public class StageScene : MonoBehaviour
         {
             sceneState = SceneState.StageClear;
             AudioPlayer.instance.PlayBGM(12); // stageclearを再生 (富里が編集)
-            player.enabled = false;// プレイヤー操作を無効化(中山が編集)
+            player.Sleep();// プレイヤー操作を無効化(中山が編集)
             // ステージクリアーUIを表示
             stageClearUI.Show();
             Cursor.lockState = CursorLockMode.Confined;
+            freelookCamera.enabled = false;
 
             // 装備強化フラグに応じて装備強化を行う(富里が編集)
             var thisSceneName = SceneManager.GetActiveScene().name;

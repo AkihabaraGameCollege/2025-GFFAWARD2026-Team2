@@ -308,6 +308,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5830815541940380236, guid: b85461b88e7c5a1409740cdf35789089, type: 3}
   m_PrefabInstance: {fileID: 358456349}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &358456352 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5510125990464931087, guid: b85461b88e7c5a1409740cdf35789089, type: 3}
+  m_PrefabInstance: {fileID: 358456349}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 358456351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89875cdc57c54474a8a74efd9b2a3b5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &426655274
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1816,6 +1827,7 @@ MonoBehaviour:
   bossLifeImage: {fileID: 1843085072}
   introTime: 5
   waitTime: 1
+  freelookCamera: {fileID: 358456352}
 --- !u!4 &2056259508
 Transform:
   m_ObjectHideFlags: 0
