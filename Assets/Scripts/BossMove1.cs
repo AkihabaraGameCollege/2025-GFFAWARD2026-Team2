@@ -72,6 +72,10 @@ public class BossMove1 : MonoBehaviour
     [Tooltip("ダメージ時のエフェクト")]
     private GameObject damageEffect;
 
+    [SerializeField]
+    [Tooltip("ヘイローエフェクト")]
+    private GameObject haloEffect;
+
     private GameObject targetObject;
 
     // プレイヤーとのCollisionCollider参照用 (富里が編集)
@@ -347,6 +351,10 @@ public class BossMove1 : MonoBehaviour
     {
         StopAllCoroutines();
         StartCoroutine(OnDeath());
+        if (haloEffect != null)
+        {
+            haloEffect.SetActive(false);
+        }
     }
 
     IEnumerator OnDeath()

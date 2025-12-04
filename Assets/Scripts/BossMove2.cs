@@ -33,6 +33,9 @@ public class BossMove2 : MonoBehaviour
     private Animator animator;
 
     [SerializeField]
+    [Tooltip("ヘイローエフェクト")]
+    private GameObject haloEffect;
+    [SerializeField]
     [Tooltip("モデルについてるScript")]
     private ModelScript modelScript;
 
@@ -175,6 +178,8 @@ public class BossMove2 : MonoBehaviour
     {
         StopAllCoroutines();
         StartCoroutine(OnDeath());
+        haloEffect.SetActive(false);
+
     }
 
     IEnumerator OnDeath()
