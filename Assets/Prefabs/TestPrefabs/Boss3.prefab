@@ -145,7 +145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destroyEffect: {fileID: 8962295279383145195, guid: 7cdd99d9641263e498d658cb227be266, type: 3}
-  maxHealth: 15
+  maxHealth: 36
   health: 0
   lastSpurtHP: 5
   bossLastBGM: 5

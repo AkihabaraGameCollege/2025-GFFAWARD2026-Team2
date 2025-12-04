@@ -783,9 +783,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1976136780}
     - target: {fileID: 8861387274812307262, guid: 7e92c35bcfc906f4081787c08e265444, type: 3}
+      propertyPath: waitTime
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8861387274812307262, guid: 7e92c35bcfc906f4081787c08e265444, type: 3}
       propertyPath: playerCam
       value: 
       objectReference: {fileID: 358456351}
+    - target: {fileID: 8861387274812307262, guid: 7e92c35bcfc906f4081787c08e265444, type: 3}
+      propertyPath: switchTime
+      value: 3.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
