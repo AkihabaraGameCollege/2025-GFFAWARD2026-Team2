@@ -27,12 +27,11 @@ public class CamController : MonoBehaviour
     bool isSwitched;
 
     // オンオフ切り替え用フラグ（中山が編集）
-    void Awake()
+    void Start()
     {
         // 初期設定（中山が編集）
         isSwitched = false;
         playerCam.SetActive(false);
-        player.enabled = false;
         player.Sleep();
 
         particle.Stop();// パーティクル停止（中山が編集）
@@ -55,7 +54,6 @@ public class CamController : MonoBehaviour
 
         // フラグを立ててカメラを切り替える（中山が編集）
         isSwitched = true;
-        player.enabled = true;
         player.WakeUp();
     }
 

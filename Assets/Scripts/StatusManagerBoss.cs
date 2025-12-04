@@ -4,9 +4,6 @@ using UnityEngine;
 // ボスのステータスに関するスクリプト（中山が別プロジェクトから移植）
 public class StatusManagerBoss : MonoBehaviour
 {
-    //撃破エフェクト
-    [SerializeField] 
-    GameObject destroyEffect;
 
     //hp現在値
     [SerializeField]
@@ -35,7 +32,6 @@ public class StatusManagerBoss : MonoBehaviour
     // 登録用（中山が編集）
     void Awake()
     {
-        destroyEffect.SetActive(false);// 撃破エフェクト非表示（中山が編集）
 
         hitbox.OnHit += Hit;
 

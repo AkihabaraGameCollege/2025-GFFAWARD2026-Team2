@@ -48,20 +48,24 @@ public class BossMove3 : MonoBehaviour
     // Animator参照用（中山が編集）
     [SerializeField]
     private Animator animator;
-    
+
     static readonly int defeatId = Animator.StringToHash("defeat");//死亡モーション用パラメーターID（中山が編集）
 
     private bool isPlayerCheckColliderEntered = false;
     private float stunTimer = 0;
-    private IEnumerator mainMotionRoutine;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+
+
         statusManager = GetComponent<StatusManagerBoss>();
+
 
         // find with tagってやっていいのかな
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
+
+
         statusManager.OnDeath += Die;
         statusManager.OnStunTaken += TakeStun;
         statusManager.isInvincible = false;
@@ -143,7 +147,7 @@ public class BossMove3 : MonoBehaviour
         float timer = 0;
         isPlayerCheckColliderEntered = false;
         playerCheckCollider.Show();
-        while (timer <= rushWaitTime/* && !isPlayerCheckColliderEntered*/)
+        while (timer <= rushWaitTime)
         {
             // ここでプレイヤーの方を向いてる
             // 移動方向を取得
@@ -177,7 +181,7 @@ public class BossMove3 : MonoBehaviour
             float delta = 180f * Time.fixedDeltaTime;
             rotatedDegree += delta;
 
-            Quaternion rotation = Quaternion.Euler( 0f,rotatedDegree,0f );
+            Quaternion rotation = Quaternion.Euler(0f, rotatedDegree, 0f);
 
             rb.MoveRotation(startRot * rotation);
 
@@ -188,7 +192,7 @@ public class BossMove3 : MonoBehaviour
 
     IEnumerator Rush()
     {
-        AudioPlayer.instance.PlaySE(11,true); // BossRushを再生（中山が編集）
+        AudioPlayer.instance.PlaySE(11, true); // BossRushを再生（中山が編集）
         float timer = 0;
         Vector3 rushDirection = transform.forward;
         bool isCasted = false;

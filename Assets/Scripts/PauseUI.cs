@@ -35,7 +35,7 @@ public class PauseUI : MonoBehaviour
     [SerializeField]
     private Button exitButton = null;
 
-    void Awake()
+    void Start()
     {
         // UnityEvent ‚ð’Ç‰Á
         resumeButton.onClick.AddListener(() => { onResumeButtonClick.Invoke(); });

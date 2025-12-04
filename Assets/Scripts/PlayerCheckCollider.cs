@@ -5,7 +5,7 @@ public class PlayerCheckCollider : MonoBehaviour
 {
     public event Action Enter;
     private Collider thisCollider;
-    private void Start()
+    private void Awake()
     {
         thisCollider = GetComponent<Collider>();
     }
