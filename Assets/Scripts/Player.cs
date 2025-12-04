@@ -487,7 +487,7 @@ public class Player : MonoBehaviour
     private void Sprint()
     {
         if (!isGotSpeedSkill) return;
-
+        if (IsSleeping) return;
 
         if (sprintTimer > 0)
         {
@@ -513,6 +513,7 @@ public class Player : MonoBehaviour
     {
         if (!isGotSpeedSkill) return;
 
+
         IsSprinting = false;
         if (motionState == MotionState.Sprinting)
         {
@@ -523,6 +524,8 @@ public class Player : MonoBehaviour
 
     public void Hit(Vector3 enemyPos)
     {
+        if (IsSleeping) return;
+
         if (!isInvincible)
         {
             StartCoroutine(EnterInvinsicle());

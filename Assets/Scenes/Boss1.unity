@@ -657,22 +657,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1098848701}
     m_Modifications:
-    - target: {fileID: 811193901095020406, guid: f1c6a631104695c458ffedf6fd961476, type: 3}
-      propertyPath: m_Color.a
-      value: 0.5019608
-      objectReference: {fileID: 0}
-    - target: {fileID: 811193901095020406, guid: f1c6a631104695c458ffedf6fd961476, type: 3}
-      propertyPath: m_Color.b
-      value: 0.5018867
-      objectReference: {fileID: 0}
-    - target: {fileID: 811193901095020406, guid: f1c6a631104695c458ffedf6fd961476, type: 3}
-      propertyPath: m_Color.g
-      value: 0.5018867
-      objectReference: {fileID: 0}
-    - target: {fileID: 811193901095020406, guid: f1c6a631104695c458ffedf6fd961476, type: 3}
-      propertyPath: m_Color.r
-      value: 0.5018867
-      objectReference: {fileID: 0}
     - target: {fileID: 4399409490839178474, guid: f1c6a631104695c458ffedf6fd961476, type: 3}
       propertyPath: m_Name
       value: PlayerUI
@@ -756,6 +740,18 @@ PrefabInstance:
     - target: {fileID: 5103914914208907526, guid: f1c6a631104695c458ffedf6fd961476, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8078853050110553660, guid: f1c6a631104695c458ffedf6fd961476, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8078853050110553660, guid: f1c6a631104695c458ffedf6fd961476, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8078853050110553660, guid: f1c6a631104695c458ffedf6fd961476, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1262,6 +1258,10 @@ PrefabInstance:
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 584909204}
+    - target: {fileID: 1255891026238647754, guid: 49bc269f736198841bf115e54a09a5f1, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 941567c9c6e29a34ba16bf29a7e6de86, type: 3}
     - target: {fileID: 3187221981936706732, guid: 49bc269f736198841bf115e54a09a5f1, type: 3}
       propertyPath: Loop
       value: 1

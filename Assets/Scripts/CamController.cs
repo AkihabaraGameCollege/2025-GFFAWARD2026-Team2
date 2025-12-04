@@ -33,6 +33,7 @@ public class CamController : MonoBehaviour
         isSwitched = false;
         playerCam.SetActive(false);
         player.enabled = false;
+        player.Sleep();
 
         particle.Stop();// パーティクル停止（中山が編集）
 
@@ -55,6 +56,7 @@ public class CamController : MonoBehaviour
         // フラグを立ててカメラを切り替える（中山が編集）
         isSwitched = true;
         player.enabled = true;
+        player.WakeUp();
     }
 
     // 毎フレームの更新処理（中山が編集）
