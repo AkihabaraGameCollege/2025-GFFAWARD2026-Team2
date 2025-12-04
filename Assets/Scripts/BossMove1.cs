@@ -45,6 +45,9 @@ public class BossMove1 : MonoBehaviour
     // 歩行SE再生間隔時間設定（中山が編集）
     [SerializeField]
     private float moveSoundMTime = 1f;
+    [SerializeField]
+    [Tooltip("ボスのアニメーションしてからコライダー出るまでの時間")]
+    private float meleeAttackAnimTime = 1.5f;
 
     [SerializeField]
     [Tooltip("ボス足上げる時間")]
@@ -55,8 +58,11 @@ public class BossMove1 : MonoBehaviour
 
     [SerializeField]
     [Tooltip("スタンプ攻撃用コライダー")]
-    private Collider attackCollider;
+    private Collider stumpCollider;
 
+    // 攻撃判定（中山が編集）
+    [SerializeField]
+    private Collider attackCollider;
     // ボスの体に当たった時の判定（中山が編集）
     [SerializeField]
     private Collider bodyAttackCollider;
@@ -114,8 +120,9 @@ public class BossMove1 : MonoBehaviour
         isTurning = false;// 方向可能（中山が編集）
         isMoving = false;// 移動停止（中山が編集）
         isJumping = false;// 攻撃停止（中山が編集）
+        attackCollider.enabled = false;// 攻撃判定無効化（中山が編集）
         bodyAttackCollider.enabled = true;// ボス本体判定有効化（中山が編集）
-        attackCollider.enabled = false;
+        stumpCollider.enabled = false;
         collider2Player.enabled = false; // プレイヤーとのCollisionColliderを無効化 (富里が編集)
 
         StopBoss();// ボス停止処理（中山が編集）
@@ -267,9 +274,9 @@ public class BossMove1 : MonoBehaviour
         animator.SetTrigger(landingID);
         yield return new WaitForSeconds(stumpColliderArriveCooldown);
         AudioPlayer.instance.PlaySE(7, false);// ジャンプ攻撃SE再生（中山が編集）
-        attackCollider.enabled = true;
+        stumpCollider.enabled = true;
         yield return new WaitForSeconds(stumpAttackTime);
-        attackCollider.enabled = false;
+        stumpCollider.enabled = false;
         isTurning = true;// 回転可能（中山が編集）
         yield return new WaitForSeconds(standTime);// 少し待機（中山が編集）
 
@@ -289,9 +296,12 @@ public class BossMove1 : MonoBehaviour
     {
         isMoving = false;// 移動停止（中山が編集）
         isWalking = true;// 歩行SE再生判定用（中山が編集）
+
+        isTurning = false;// 攻撃開始（中山が編集）
+        animator.SetTrigger(attackID);// ジャンプアニメーション開始（中山が編集）
         AudioPlayer.instance.PlaySE(2, false);// 攻撃SE再生（中山が編集）
-        yield return new WaitForSeconds(bossLittleWaitTime);// 少し待機（中山が編集）
-        HammerAttackMove();// ハンマー攻撃（中山が編集）
+        yield return new WaitForSeconds(meleeAttackAnimTime);
+        attackCollider.enabled = true;// 攻撃判定有効化（中山が編集）
         yield return new WaitForSeconds(bossAttackTime);// 攻撃する時間（中山が編集）
         attackCollider.enabled = false;// 攻撃判定無効化（中山が編集）
         yield return new WaitForSeconds(bossLittleWaitTime);// 少し待機（中山が編集）
@@ -324,13 +334,6 @@ public class BossMove1 : MonoBehaviour
         hammerAttackTime = hammerAttackTimeDefault;// ハンマー攻撃時間リセット（中山が編集）
     }
 
-    // ハンマー攻撃処理（中山が編集）
-    private void HammerAttackMove()
-    {
-        isTurning = false;// 攻撃開始（中山が編集）
-        animator.SetTrigger(attackID);// ジャンプアニメーション開始（中山が編集）
-        attackCollider.enabled = true;// 攻撃判定有効化（中山が編集）
-    }
 
     // 弱点タイム（中山が編集）
     private void Weak()
