@@ -61,6 +61,9 @@ public class StageSelect : MonoBehaviour
     [SerializeField]
     private Animator animator;
 
+    [SerializeField]
+    private string titleScene = "Title";
+
     static readonly int outro1Id = Animator.StringToHash("outro1");// AnimatorのパラメーターID（中山が編集）
     static readonly int outro2Id = Animator.StringToHash("outro2");// AnimatorのパラメーターID（中山が編集）
     static readonly int outro3Id = Animator.StringToHash("outro3");// AnimatorのパラメーターID（中山が編集）
@@ -194,5 +197,11 @@ public class StageSelect : MonoBehaviour
         secretAbility1.enabled = false;
         secretAbility2.enabled = false;
         secretAbility3.enabled = false;
+    }
+
+    public void OnClickTitleButton()
+    {
+        AudioPlayer.instance.StopBGM(); // BGMを停止(中山が編集)
+        SceneManager.LoadScene(titleScene);
     }
 }
