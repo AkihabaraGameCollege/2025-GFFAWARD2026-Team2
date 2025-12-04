@@ -1638,7 +1638,7 @@ PrefabInstance:
     - target: {fileID: 1255891026238647754, guid: 49bc269f736198841bf115e54a09a5f1, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: e19ce8e4af17fc3499a30b96f969d8f5, type: 3}
+      objectReference: {fileID: 21300000, guid: 226b480b233719248844a6a61b656f7f, type: 3}
     - target: {fileID: 6697740530733593895, guid: 49bc269f736198841bf115e54a09a5f1, type: 3}
       propertyPath: m_Name
       value: StageClearUI
@@ -1989,7 +1989,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5161792772889693995, guid: cd038fbc0352e2f48bbe3fe066a7cefe, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 0.76772475
       objectReference: {fileID: 0}
     - target: {fileID: 5161792772889693995, guid: cd038fbc0352e2f48bbe3fe066a7cefe, type: 3}
       propertyPath: m_LocalRotation.x
@@ -1997,7 +1997,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5161792772889693995, guid: cd038fbc0352e2f48bbe3fe066a7cefe, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7071068
+      value: 0.64077973
       objectReference: {fileID: 0}
     - target: {fileID: 5161792772889693995, guid: cd038fbc0352e2f48bbe3fe066a7cefe, type: 3}
       propertyPath: m_LocalRotation.z
@@ -2009,7 +2009,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5161792772889693995, guid: cd038fbc0352e2f48bbe3fe066a7cefe, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
+      value: 799.7
       objectReference: {fileID: 0}
     - target: {fileID: 5161792772889693995, guid: cd038fbc0352e2f48bbe3fe066a7cefe, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
