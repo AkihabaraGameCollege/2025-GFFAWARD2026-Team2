@@ -77,6 +77,8 @@ MonoBehaviour:
   dropAttackTime: 0.1
   standUpTime: 4.5
   deathAnimTime: 3.5
+  deathScreamCount: 12
+  deathScreamTime: 2.5
   groundCheckStartPoint: {x: 0, y: 0.5, z: 0}
   groundCheckEndPoint: {x: 0, y: -0.5, z: 0}
   groundLayer:
@@ -122,8 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a73be9bc8e9ee934c9a649f079631af9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyEffect: {fileID: 8962295279383145195, guid: 7cdd99d9641263e498d658cb227be266, type: 3}
-  maxHealth: 24
+  maxHealth: 21
   health: 0
   lastSpurtHP: 5
   bossLastBGM: 3
