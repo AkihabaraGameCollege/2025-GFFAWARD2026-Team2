@@ -125,7 +125,7 @@ MonoBehaviour:
   maxHealth: 24
   health: 0
   lastSpurtHP: 5
-  bossLastBGM: 1
+  bossLastBGM: 3
   hitbox: {fileID: 6590718024829173994}
   isInvincible: 0
 --- !u!65 &5136587341775904474
