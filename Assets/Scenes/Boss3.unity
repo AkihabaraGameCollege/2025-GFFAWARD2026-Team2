@@ -1755,7 +1755,7 @@ PrefabInstance:
     - target: {fileID: 1255891026238647754, guid: 49bc269f736198841bf115e54a09a5f1, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 901280452, guid: e19ce8e4af17fc3499a30b96f969d8f5, type: 3}
+      objectReference: {fileID: 21300000, guid: e19ce8e4af17fc3499a30b96f969d8f5, type: 3}
     - target: {fileID: 6697740530733593895, guid: 49bc269f736198841bf115e54a09a5f1, type: 3}
       propertyPath: m_Name
       value: StageClearUI
