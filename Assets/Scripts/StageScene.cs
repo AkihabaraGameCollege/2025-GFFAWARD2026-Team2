@@ -347,7 +347,7 @@ public class StageScene : MonoBehaviour
     private void OnApplicationFocus(bool focus)
     {
         // フォーカスがある場合はカーソルをロックし、ない場合はロックを解除する（中山が編集）
-        if (focus && sceneState == SceneState.Play && !IsPaused)
+        if (focus && (sceneState == SceneState.Play ||sceneState == SceneState.Intro) && !IsPaused)
         {
             Cursor.lockState = CursorLockMode.Locked;// カーソルをロック（中山が編集）
         }
