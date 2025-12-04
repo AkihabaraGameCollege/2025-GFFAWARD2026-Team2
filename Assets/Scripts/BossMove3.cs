@@ -192,7 +192,7 @@ public class BossMove3 : MonoBehaviour
 
     IEnumerator Rush()
     {
-        AudioPlayer.instance.PlaySE(11, true); // BossRushを再生（中山が編集）
+        AudioPlayer.instance.PlaySE(11); // BossRushを再生（中山が編集）
         float timer = 0;
         Vector3 rushDirection = transform.forward;
         bool isCasted = false;
@@ -227,7 +227,6 @@ public class BossMove3 : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
         attackCollider.enabled = false;
-        AudioPlayer.instance.StopLoopSE();
     }
 
     IEnumerator Stun(float stunTime)

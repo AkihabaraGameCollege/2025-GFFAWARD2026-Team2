@@ -264,7 +264,7 @@ public class BossMove1 : MonoBehaviour
         yield return new WaitForSeconds(stumpWaitTime);
         animator.SetTrigger(landingID);
         yield return new WaitForSeconds(stumpColliderArriveCooldown);
-        AudioPlayer.instance.PlaySE(7, false);// ジャンプ攻撃SE再生（中山が編集）
+        AudioPlayer.instance.PlaySE(7);// ジャンプ攻撃SE再生（中山が編集）
         stumpCollider.enabled = true;
         yield return new WaitForSeconds(stumpAttackTime);
         stumpCollider.enabled = false;
@@ -290,7 +290,7 @@ public class BossMove1 : MonoBehaviour
 
         isTurning = false;// 攻撃開始（中山が編集）
         animator.SetTrigger(attackID);// ジャンプアニメーション開始（中山が編集）
-        AudioPlayer.instance.PlaySE(2, false);// 攻撃SE再生（中山が編集）
+        AudioPlayer.instance.PlaySE(2);// 攻撃SE再生（中山が編集）
         yield return new WaitForSeconds(meleeAttackAnimTime);
         attackCollider.enabled = true;// 攻撃判定有効化（中山が編集）
         yield return new WaitForSeconds(bossAttackTime);// 攻撃する時間（中山が編集）
@@ -355,7 +355,6 @@ public class BossMove1 : MonoBehaviour
         bodyAttackCollider.enabled = false;
 
         yield return new WaitForSeconds(bossDieTime);// 少し待機（中山が編集）
-        AudioPlayer.instance.StopLoopSE();// ボス撃破SE再生（中山が編集）
         StageScene.Instance.StageClear();// ステージクリア処理（中山が編集）
         Destroy(gameObject);// ボスオブジェクトを破壊（中山が編集）
     }

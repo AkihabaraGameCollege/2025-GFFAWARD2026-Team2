@@ -25,9 +25,6 @@ public class AudioPlayer : MonoBehaviour
     [Tooltip("SEを再生するAudioSource")]
     private AudioSource seSource = null;
 
-    [SerializeField]
-    [Tooltip("ループするSEを再生するAudioSource")]
-    private AudioSource loopSeSource = null;
 
     //====================================================================
     //初期化処理
@@ -99,7 +96,7 @@ public class AudioPlayer : MonoBehaviour
     /// SEを再生する
     /// </summary>
     /// <param name="seIndex">SEの配列インデックス</param>
-    public void PlaySE(int seIndex, bool isLoop = false)
+    public void PlaySE(int seIndex)
     {
         if (seIndex < 0 || seIndex >= seClips.Length)
         {
@@ -107,23 +104,11 @@ public class AudioPlayer : MonoBehaviour
             return;
         }
 
-        if (isLoop)
-        {
-            //BGMが再生中なら停止する
-            if (loopSeSource.isPlaying)
-            {
-                loopSeSource.Stop();
-            }
-
-            //BGMを再生する
-            loopSeSource.clip = seClips[seIndex];
-            loopSeSource.Play();
-        }
-        else
-        {
+       
+        
             //SEを再生する
             seSource.PlayOneShot(seClips[seIndex]);
-        }
+        
     }
 
     /// <summary>
@@ -134,9 +119,4 @@ public class AudioPlayer : MonoBehaviour
         seSource.Stop();
     }
 
-
-    public void StopLoopSE()
-    {
-        loopSeSource.Stop();
-    }
 }
