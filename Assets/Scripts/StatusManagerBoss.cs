@@ -61,6 +61,7 @@ public class StatusManagerBoss : MonoBehaviour
 
             if (health <= 0)
             {
+                isInvincible = true;
                 OnDeath?.Invoke();
             }
         }
