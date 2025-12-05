@@ -96,19 +96,18 @@ public class AudioPlayer : MonoBehaviour
     /// SEを再生する
     /// </summary>
     /// <param name="seIndex">SEの配列インデックス</param>
-    public void PlaySE(int seIndex)
+    /// 音量指定用の引数を追加（中山が編集）
+    public void PlaySE(int seIndex, float volume = 0.2f)
     {
         if (seIndex < 0 || seIndex >= seClips.Length)
         {
-            Debug.LogError("SEのインデックスが範囲外です\n呼び出されたIndex:"+seIndex);
+            Debug.LogError("SEのインデックスが範囲外です\n呼び出されたIndex:" + seIndex);
             return;
         }
 
-       
-        
-            //SEを再生する
-            seSource.PlayOneShot(seClips[seIndex]);
-        
+        seSource.volume = volume;// 音量設定（中山が編集）
+
+        seSource.PlayOneShot(seClips[seIndex]);
     }
 
     /// <summary>

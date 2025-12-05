@@ -64,6 +64,9 @@ public class StageScene : MonoBehaviour
     // 音声再生までの待機時間を指定（中山が編集）
     [SerializeField]
     private float waitTime = 1.0f;
+    // SEの音量を指定（中山が編集）
+    [SerializeField]
+    private float seVolume = 0.5f;
 
     [SerializeField]
     [Tooltip("プレイヤーに追従するfreelookカメラ")]
@@ -128,7 +131,7 @@ public class StageScene : MonoBehaviour
         else if (activeSceneName == boss2StageName)
         {
             bGMID = 2;// boss2MusicのIDを指定（中山が編集）
-            sEID = 1;// introMusicのIDを指定（中山が編集）
+            sEID = 15;// introMusicのIDを指定（中山が編集）
             StartCoroutine(OnIntro());// イントロ演出コルーチンを開始（中山が編集）
         }
         else if (activeSceneName == boss3StageName)
@@ -151,7 +154,7 @@ public class StageScene : MonoBehaviour
     IEnumerator OnIntro()
     {
         yield return new WaitForSeconds(waitTime);// 待機してから音声再生（中山が編集）
-        AudioPlayer.instance.PlaySE(sEID);// introMusicを再生（中山が編集）
+        AudioPlayer.instance.PlaySE(sEID, seVolume);// introMusicを再生（中山が編集）
         yield return new WaitForSeconds(introTime);// イントロ演出の時間待機（中山が編集）
         AudioPlayer.instance.StopSE();// SEを停止（中山が編集）
         AudioPlayer.instance.PlayBGM(bGMID);// boss1Musicを再生（中山が編集）

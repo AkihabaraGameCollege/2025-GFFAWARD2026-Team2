@@ -215,8 +215,9 @@ MonoBehaviour:
   boss2StageName: Boss2
   boss3StageName: Boss3
   bossLifeImage: {fileID: 605680671}
-  introTime: 5
-  waitTime: 1
+  introTime: 4
+  waitTime: 2
+  seVolume: 1
   freelookCamera: {fileID: 703490106}
 --- !u!4 &169873332
 Transform:
@@ -1438,6 +1439,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6698327382501558890, guid: 24cbea4bce7577349aa70d96ce267123, type: 3}
+      propertyPath: seClips.Array.size
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 6698327382501558890, guid: 24cbea4bce7577349aa70d96ce267123, type: 3}
+      propertyPath: 'seClips.Array.data[15]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 73ea78a699ec2b649913ac9b6159516f, type: 3}
     - target: {fileID: 7706057275111955898, guid: 24cbea4bce7577349aa70d96ce267123, type: 3}
       propertyPath: m_Name
       value: AudioPlayer
@@ -1662,7 +1671,7 @@ PrefabInstance:
       objectReference: {fileID: 1502927755}
     - target: {fileID: 8861387274812307262, guid: 7e92c35bcfc906f4081787c08e265444, type: 3}
       propertyPath: waitTime
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8861387274812307262, guid: 7e92c35bcfc906f4081787c08e265444, type: 3}
       propertyPath: playerCam
@@ -2046,6 +2055,10 @@ PrefabInstance:
     - target: {fileID: 1352516279024142512, guid: d9ddf0c4528c0a9479a9b5bae2e6cffe, type: 3}
       propertyPath: m_Name
       value: Boss2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930712198133939179, guid: d9ddf0c4528c0a9479a9b5bae2e6cffe, type: 3}
+      propertyPath: startMotionTime
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

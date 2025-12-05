@@ -348,7 +348,7 @@ public class BossMove2 : MonoBehaviour
         {
             statusManager.health++;
             StageScene.Instance.BossBarUpdate(statusManager.health, statusManager.maxHealth);
-            AudioPlayer.instance.PlaySE(14);
+            AudioPlayer.instance.PlaySE(14, 1);
         }
     }
 
