@@ -91,6 +91,10 @@ public class BossMove1 : MonoBehaviour
     [Tooltip("モデルについてるScript")]
     private ModelScript modelScript;
 
+    // プレイヤースクリプト参照用（中山が編集）
+    [SerializeField]
+    private Player player;
+
     // アニメーションID登録（中山が編集）
     static readonly int isWalkingID = Animator.StringToHash("isWalking");
     static readonly int attackID = Animator.StringToHash("attack");
@@ -375,7 +379,8 @@ public class BossMove1 : MonoBehaviour
         // エフェクトをインスタンス化
         GameObject effect = Instantiate(damageEffect);
 
-        effect.transform.position = weakCollider.transform.position;
+        effect.transform.position = player.PlayerHand.transform.position;// 攻撃コライダーの位置にエフェクトを出す（中山が編集）
+
         Destroy(effect, 5);// エフェクトを5秒後に破壊（中山が編集）
     }
 

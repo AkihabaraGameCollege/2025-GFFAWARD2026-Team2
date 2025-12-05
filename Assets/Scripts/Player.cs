@@ -103,7 +103,11 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Collider attackCollider = null;
 
-    public Collider AttackCollider { get { return attackCollider; } }// 攻撃コライダーの公開用プロパティ（中山が編集）
+    // プレイヤーの手のオブジェクトを指定（中山が編集）
+    [SerializeField]
+    private GameObject playerHand;
+
+    public GameObject PlayerHand { get { return playerHand; } }// プレイヤーの手のオブジェクト取得用プロパティ（中山が編集）
 
     // ダッシュアタック用のコライダーを指定 (富里が編集)
     [SerializeField]

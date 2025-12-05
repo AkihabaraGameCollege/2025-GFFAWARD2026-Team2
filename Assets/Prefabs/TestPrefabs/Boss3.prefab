@@ -189,13 +189,17 @@ MonoBehaviour:
   attackCollider: {fileID: 8395592529065250450}
   playerCheckCollider: {fileID: 3535352282109380067}
   rushWaitTime: 1
-  startMotionTime: 7
+  startMotionTime: 6.5
+  stunEndAnimTime: 2
+  deathTime: 4
+  stunEndJumpForce: 10
   wallCheckerPos:
   - {x: 4, y: 2, z: 0}
   wallCheckerDistance: 3
   groundLayer:
     serializedVersion: 2
     m_Bits: 72
+  damageEffect: {fileID: 1430198582188953287, guid: 4801ca8d539a2814f9e9cabc40dbe909, type: 3}
   animator: {fileID: 4400895757186819555}
 --- !u!1 &6890887516328271781
 GameObject:
@@ -389,7 +393,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2595c53d97760dc4081f63e0ce311aac, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.37
+      value: -0.97
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2595c53d97760dc4081f63e0ce311aac, type: 3}
       propertyPath: m_LocalRotation.w
@@ -455,7 +459,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 113b6cff880310543840c44ba9673419, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.95
+      value: 3.56
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 113b6cff880310543840c44ba9673419, type: 3}
       propertyPath: m_LocalPosition.z

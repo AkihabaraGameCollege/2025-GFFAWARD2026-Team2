@@ -294,9 +294,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 16456
   attackCollider: {fileID: 3546354141878389678}
+  playerHand: {fileID: 3192814810820016363}
   dashAttackCollider: {fileID: 6606404178022784316}
-  destroyEffect: {fileID: 1430198582188953287, guid: 21b15d55fb362544fab3a70419757060, type: 3}
-  damageEffect: {fileID: 1430198582188953287, guid: 21b15d55fb362544fab3a70419757060, type: 3}
+  destroyEffect: {fileID: 8962295279383145195, guid: a9a3a41e85d307c44bdbd96113c106a8, type: 3}
+  damageEffect: {fileID: 984632943932866720, guid: 11dfd7216367e95469d904539004cf9b, type: 3}
   dashParticle: {fileID: 1960582634240380626}
   wallCheckerPos:
   - {x: 0, y: 1.8, z: -0.5}
@@ -556,6 +557,11 @@ PrefabInstance:
 --- !u!4 &1038695559977972225 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 621708e3abe09254e9901510b1889f69, type: 3}
+  m_PrefabInstance: {fileID: 711719815340774890}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3192814810820016363 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2715566404302941441, guid: 621708e3abe09254e9901510b1889f69, type: 3}
   m_PrefabInstance: {fileID: 711719815340774890}
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &6379943498837059707 stripped
