@@ -9,8 +9,7 @@ public class StatusManagerBoss : MonoBehaviour
     public int maxHealth = 15;
     public int health;
     //ラストスパートHP（中山が編集）
-    [SerializeField]
-    private int lastSpurtHP = 5;
+    private int lastSpurtHP;
     //ラストスパートBGM（中山が編集）
     [SerializeField]
     private int bossLastBGM = 1;
@@ -35,6 +34,8 @@ public class StatusManagerBoss : MonoBehaviour
         hitbox.OnHit += Hit;
 
         health = maxHealth;
+
+        lastSpurtHP = maxHealth / 3;
     }
 
     public void Hit(int damage, bool stun)
