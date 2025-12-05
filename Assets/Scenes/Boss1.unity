@@ -93,7 +93,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: dc2e9db3739ff96469cf6c10449413b2, type: 2}
+  m_LightingDataAsset: {fileID: 112000000, guid: 9653299e44e5f12448e79e7a577b8072, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -1809,6 +1809,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 584909208}
     m_Modifications:
+    - target: {fileID: 1085600576840409982, guid: 7e92c35bcfc906f4081787c08e265444, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 66348d85974be27488fc3f5141736b95, type: 3}
     - target: {fileID: 7158986679227232956, guid: 7e92c35bcfc906f4081787c08e265444, type: 3}
       propertyPath: m_Name
       value: BossCamAct
@@ -1857,6 +1861,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 2128186082}
+    - target: {fileID: 8861387274812307262, guid: 7e92c35bcfc906f4081787c08e265444, type: 3}
+      propertyPath: waitTime
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8861387274812307262, guid: 7e92c35bcfc906f4081787c08e265444, type: 3}
       propertyPath: playerCam
       value: 

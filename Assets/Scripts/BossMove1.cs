@@ -379,7 +379,7 @@ public class BossMove1 : MonoBehaviour
         // エフェクトをインスタンス化
         GameObject effect = Instantiate(damageEffect);
 
-        effect.transform.position = player.PlayerHand.transform.position;// 攻撃コライダーの位置にエフェクトを出す（中山が編集）
+        effect.transform.position = weakCollider.transform.position;// 弱点コライダーの位置にエフェクトを出す（中山が編集）
 
         Destroy(effect, 5);// エフェクトを5秒後に破壊（中山が編集）
     }

@@ -93,7 +93,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: c725b2b6df5ae3e4f9a2bc2b7e1b3f82, type: 2}
+  m_LightingDataAsset: {fileID: 112000000, guid: c02e4196e56a3f3428766c81b9037574, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -730,6 +730,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2056259508}
     m_Modifications:
+    - target: {fileID: 393655809388417582, guid: 7e92c35bcfc906f4081787c08e265444, type: 3}
+      propertyPath: m_Cameras.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 393655809388417582, guid: 7e92c35bcfc906f4081787c08e265444, type: 3}
+      propertyPath: 'm_Cameras.Array.data[0]'
+      value: 
+      objectReference: {fileID: 858153796}
     - target: {fileID: 7158986679227232956, guid: 7e92c35bcfc906f4081787c08e265444, type: 3}
       propertyPath: m_Name
       value: BossCamAct
