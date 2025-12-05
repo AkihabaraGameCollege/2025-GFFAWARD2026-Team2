@@ -33,6 +33,8 @@ public class BossMove3 : MonoBehaviour
     [Tooltip("スタン終了後のアニメーションタイム")]
     private float stunEndAnimTime = 2;
     [SerializeField]
+    private float deathTime = 3;
+    [SerializeField]
     [Tooltip("スタン終了時のジャンプ力")]
     private float stunEndJumpForce = 10;
 
@@ -50,6 +52,10 @@ public class BossMove3 : MonoBehaviour
     [SerializeField]
     [Tooltip("地面のレイヤー")]
     private LayerMask groundLayer;
+
+    // ダメージエフェクト（中山が編集）
+    [SerializeField]
+    private GameObject damageEffect;
 
     // Animator参照用（中山が編集）
     [SerializeField]
@@ -76,6 +82,7 @@ public class BossMove3 : MonoBehaviour
         statusManager.OnStunTaken += TakeStun;
         statusManager.isInvincible = false;
         playerCheckCollider.Enter += OnPlayerCheckColliderEnter;
+        statusManager.OnDamageTaken += TakeDamage;//ダメージエフェクト再生用（中山が編集）
 
         attackCollider.enabled = false;//攻撃判定無効化（中山が編集）
         playerCheckCollider.Hide();
@@ -94,7 +101,7 @@ public class BossMove3 : MonoBehaviour
     }
     IEnumerator DeathTimer()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(deathTime);
         AudioPlayer.instance.PlaySE(13); // BossDestroyを再生（富里が編集）
         StageScene.Instance.StageClear();
         Destroy(gameObject);
@@ -104,6 +111,8 @@ public class BossMove3 : MonoBehaviour
     {
         if (statusManager != null)
         {
+            statusManager.OnDeath -= Die;// 死亡時の処理解除（中山が編集）
+            statusManager.OnDamageTaken -= TakeDamage;// ダメージエフェクト用（中山が編集）
             playerCheckCollider.Enter -= OnPlayerCheckColliderEnter;
             statusManager.OnStunTaken -= TakeStun;
         }
@@ -223,7 +232,6 @@ public class BossMove3 : MonoBehaviour
             {
                 // trueならwaittimeを短くする上にwhileを抜ける
                 rushWaitTime = 0.5f;
-                Debug.Log("CAST");
             }
             else
             {
@@ -288,5 +296,14 @@ public class BossMove3 : MonoBehaviour
 
             Gizmos.DrawLine(transform.position + offset, transform.position + offset + rushDirection * wallCheckerDistance);
         }
+    }
+
+    private void TakeDamage()
+    {
+        // エフェクトをインスタンス化
+        GameObject effect = Instantiate(damageEffect);
+
+        effect.transform.position = player.AttackCollider.transform.position;
+        Destroy(effect, 5);// エフェクトを5秒後に破壊（中山が編集）
     }
 }

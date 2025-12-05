@@ -682,6 +682,7 @@ MonoBehaviour:
   bossLifeImage: {fileID: 1042071781}
   introTime: 3.5
   waitTime: 1.5
+  seVolume: 0.5
   freelookCamera: {fileID: 1518626939}
 --- !u!4 &584909208
 Transform:
@@ -1269,6 +1270,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 584909208}
     m_Modifications:
+    - target: {fileID: 490353238481721769, guid: 4ded2646c424dfe4ab8c9415d53bbc5c, type: 3}
+      propertyPath: damageEffect
+      value: 
+      objectReference: {fileID: 984632943932866720, guid: 27b2306cc6ca5f945b2e126dc644f677, type: 3}
     - target: {fileID: 4596725739751054584, guid: 4ded2646c424dfe4ab8c9415d53bbc5c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 123.5

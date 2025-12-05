@@ -466,9 +466,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   images:
+  - {fileID: 914779926910917284}
   - {fileID: 4977877864917461197}
   - {fileID: 7047406577611909707}
-  - {fileID: 914779926910917284}
   gotSprites:
   - {fileID: 21300000, guid: b3ce60a1376e1aa448b9132b0672395b, type: 3}
   - {fileID: 21300000, guid: 2f4661e99480df84cbd1087602e96cf6, type: 3}
