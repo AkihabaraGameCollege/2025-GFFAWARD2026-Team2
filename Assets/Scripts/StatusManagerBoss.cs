@@ -4,7 +4,6 @@ using UnityEngine;
 // ボスのステータスに関するスクリプト（中山が別プロジェクトから移植）
 public class StatusManagerBoss : MonoBehaviour
 {
-
     //hp現在値
     [SerializeField]
     public int maxHealth = 15;

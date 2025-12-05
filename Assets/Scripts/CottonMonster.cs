@@ -18,6 +18,10 @@ public class CottonMonster : MonoBehaviour
     [Tooltip("HitBox")]
     private HitboxEnemy hitbox;
 
+    // ダメージエフェクト（中山が編集）
+    [SerializeField]
+    private GameObject defeatEffect;
+
     enum MotionState
     {
         // スポーン直後の拡散している状態
@@ -72,6 +76,9 @@ public class CottonMonster : MonoBehaviour
     
     public void OnDamageTaken(int dummy = 0, bool dummybool = false)
     {
+        GameObject effect = Instantiate(defeatEffect);// ダメージエフェクト生成（中山が編集）
+        effect.transform.position = transform.position;// エフェクト位置設定（中山が編集）
+
         hitbox.OnHit -= OnDamageTaken;
         Destroy(gameObject);
     }

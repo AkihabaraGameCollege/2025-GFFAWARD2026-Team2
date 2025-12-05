@@ -344,7 +344,6 @@ public class BossMove2 : MonoBehaviour
 
     public void Heal()
     {
-        Debug.Log(statusManager.health % (statusManager.maxHealth / 3));
         if (statusManager.health % (statusManager.maxHealth / 3) != 0)
         {
             statusManager.health++;
