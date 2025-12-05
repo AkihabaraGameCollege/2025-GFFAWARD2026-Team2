@@ -27,6 +27,9 @@ public class TitleScene : MonoBehaviour
     private Button skipButton;
 
     [SerializeField]
+    private Button StartButton;
+
+    [SerializeField]
     private float skipButtonAppearWaitTime;
 
     // アウトロアニメーションの再生時間を指定（中山が編集）
@@ -88,6 +91,7 @@ public class TitleScene : MonoBehaviour
         dataClearUI.Hide();
         titleImage.enabled = true;
         titleButtons.SetActive(true);
+        StartButton.Select();
     }
 
     public void OnClickYesButton()

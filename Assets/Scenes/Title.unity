@@ -2273,6 +2273,7 @@ MonoBehaviour:
   titleImage: {fileID: 1108288862}
   titleButtons: {fileID: 1651151922}
   skipButton: {fileID: 1195070752}
+  StartButton: {fileID: 1004716220}
   skipButtonAppearWaitTime: 1.1
   outroTime: 4
 --- !u!4 &1976859859
