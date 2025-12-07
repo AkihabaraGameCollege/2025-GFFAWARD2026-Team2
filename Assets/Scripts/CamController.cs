@@ -32,8 +32,8 @@ public class CamController : MonoBehaviour
         // 初期設定（中山が編集）
         isSwitched = false;
         playerCam.SetActive(false);
-        player.Sleep();
 
+        player.Sleep();// プレイヤーを行動不能（中山が編集）
         particle.Stop();// パーティクル停止（中山が編集）
 
         StartAction();// アクション開始（中山が編集）
