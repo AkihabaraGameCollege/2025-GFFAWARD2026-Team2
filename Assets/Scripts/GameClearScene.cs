@@ -8,17 +8,23 @@ public class GameClearScene : MonoBehaviour
     [SerializeField]
     private string nextScene = "Title";
 
+    // 各種待機時間の設定（中山が編集）
     [SerializeField]
     private float loadWaitTime = 1;
-
     [SerializeField]
     private float musicWaitTime = 24;
-
     [SerializeField]
     private float outroTime = 2;
+    [SerializeField]
+    private float skipButtonAppearWaitTime = 2.0f;
+    [SerializeField]
+    private float stageTransitionDelay = 5.0f;
 
+    // ボタンの参照（中山が編集）
     [SerializeField]
     private Button nextButton = null;
+    [SerializeField]
+    private Button skipButton;
 
     private bool isLoadable = false;
 
@@ -60,6 +66,20 @@ public class GameClearScene : MonoBehaviour
     {
         animator.SetTrigger(outroId);// アウトロアニメーションを再生（中山が編集）
         yield return new WaitForSeconds(outroTime);// アニメーションの再生時間分待機（中山が編集）
+        AudioPlayer.instance.StopBGM(); // BGMを停止(中山が編集)
+        // ウェイト
+        yield return new WaitForSeconds(skipButtonAppearWaitTime);
+        // スキップボタンをセレクトする
+        skipButton.Select();
+        // ウェイト
+        yield return new WaitForSeconds(stageTransitionDelay - skipButtonAppearWaitTime);
+        // 次のシーンへ遷移
         SceneManager.LoadScene(nextScene);
+    }
+
+    // スキップボタンが押されたときの処理（中山が編集）
+    public void OnSkipButtonClick()
+    {
+        SceneManager.LoadScene(nextScene);// 次のシーンへ遷移（中山が編集）
     }
 }
