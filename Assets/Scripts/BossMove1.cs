@@ -54,6 +54,10 @@ public class BossMove1 : MonoBehaviour
     private float stumpColliderArriveCooldown = 1;
 
     [SerializeField]
+    [Tooltip("ボス死亡コライダー出現までの時間")]
+    private float deathColliderTime;
+
+    [SerializeField]
     [Tooltip("スタンプ攻撃用コライダー")]
     private Collider stumpCollider;
 
@@ -367,8 +371,11 @@ public class BossMove1 : MonoBehaviour
         AudioPlayer.instance.PlaySE(4);
         attackCollider.enabled = false;
         bodyAttackCollider.enabled = false;
+        collider2Player.enabled = false;
+        yield return new WaitForSeconds(deathColliderTime);
+        collider2Player.enabled = true;
 
-        yield return new WaitForSeconds(bossDieTime);// 少し待機（中山が編集）
+        yield return new WaitForSeconds(bossDieTime - deathColliderTime);// 少し待機（中山が編集）
         StageScene.Instance.StageClear();// ステージクリア処理（中山が編集）
         Destroy(gameObject);// ボスオブジェクトを破壊（中山が編集）
     }
