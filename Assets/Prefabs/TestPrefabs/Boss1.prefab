@@ -396,7 +396,7 @@ MonoBehaviour:
   attackCollider: {fileID: 3380108006041403848}
   bodyAttackCollider: {fileID: 4456961885093067645}
   weakCollider: {fileID: 3131120092741834984}
-  damageEffect: {fileID: 1430198582188953287, guid: 21b15d55fb362544fab3a70419757060, type: 3}
+  damageEffect: {fileID: 984632943932866720, guid: 27b2306cc6ca5f945b2e126dc644f677, type: 3}
   haloEffect: {fileID: 294778641911174086}
   collider2Player: {fileID: 2608743836962661204}
   animator: {fileID: 2725522206805685334}
