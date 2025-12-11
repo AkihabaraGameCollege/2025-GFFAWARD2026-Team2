@@ -378,7 +378,7 @@ MonoBehaviour:
   speedNumber: 0.1
   bossLittleWaitTime: 0.5
   bossAttackTime: 1
-  bossWeakBeforTime: 2
+  bossWeakBeforeTime: 3
   bossWeakTime: 10
   bossWakeUpTime: 8
   bossWaitTime: 5

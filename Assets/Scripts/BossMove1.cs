@@ -16,7 +16,7 @@ public class BossMove1 : MonoBehaviour
     [SerializeField]
     private float bossAttackTime = 1.5f;
     [SerializeField]
-    private float bossWeakBeforTime = 6;
+    private float bossWeakBeforeTime = 6;
     [SerializeField]
     private float bossWeakTime = 12f;
     [SerializeField]
@@ -313,7 +313,9 @@ public class BossMove1 : MonoBehaviour
         stunTimer = bossWeakTime;
         isStunning = true;
         Weak();// 弱点出現（中山が編集）
-        yield return new WaitForSeconds(bossWeakBeforTime);// 弱点タイム（中山が編集）
+        yield return new WaitForSeconds(bossWeakBeforeTime);// 弱点タイム（中山が編集）
+
+        collider2Player.enabled = true; // プレイヤーとのCollisionColliderを有効化 (富里が編集)
 
         // 倒れる間のタイマー
         while (stunTimer >= 0)
@@ -338,7 +340,6 @@ public class BossMove1 : MonoBehaviour
     // 弱点タイム（中山が編集）
     private void Weak()
     {
-        collider2Player.enabled = true; // プレイヤーとのCollisionColliderを有効化 (富里が編集)
         isAppeardWeak = true;
 
         bodyAttackCollider.enabled = false;// ボス本体判定無効化（中山が編集）
@@ -392,7 +393,6 @@ public class BossMove1 : MonoBehaviour
         }
     }
 
-    [ContextMenu("デバッグ用すぐスタン")]
     private void TakeStun()
     {
         if (!isStunning)
