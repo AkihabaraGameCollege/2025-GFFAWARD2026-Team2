@@ -146,7 +146,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 36
   health: 0
-  lastSpurtHP: 5
   bossLastBGM: 5
   hitbox: {fileID: 7263840156042156604}
   isInvincible: 0
@@ -189,7 +188,7 @@ MonoBehaviour:
   attackCollider: {fileID: 8395592529065250450}
   playerCheckCollider: {fileID: 3535352282109380067}
   rushWaitTime: 1
-  startMotionTime: 6.5
+  startMotionTime: 7
   stunEndAnimTime: 2
   deathTime: 4
   stunEndJumpForce: 10
@@ -201,6 +200,9 @@ MonoBehaviour:
     m_Bits: 72
   damageEffect: {fileID: 1430198582188953287, guid: 4801ca8d539a2814f9e9cabc40dbe909, type: 3}
   animator: {fileID: 4400895757186819555}
+  stunEffect: {fileID: 4806935534255810713, guid: a5a9000de95266b4ea9fe0c59e556186, type: 3}
+  stunEffectPos: {x: 0, y: 6, z: 0}
+  stunEffectScale: {x: 2, y: 2, z: 2}
 --- !u!1 &6890887516328271781
 GameObject:
   m_ObjectHideFlags: 0

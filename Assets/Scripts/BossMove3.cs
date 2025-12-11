@@ -61,6 +61,17 @@ public class BossMove3 : MonoBehaviour
     [SerializeField]
     private Animator animator;
 
+    [SerializeField]
+    GameObject stunEffect;
+
+    [SerializeField]
+    Vector3 stunEffectPos;
+
+    [SerializeField]
+    Vector3 stunEffectScale;
+
+    private GameObject stunEffectObject;
+
     static readonly int defeatId = Animator.StringToHash("defeat");//死亡モーション用パラメーターID（中山が編集）
 
     private bool isPlayerCheckColliderEntered = false;
@@ -252,6 +263,10 @@ public class BossMove3 : MonoBehaviour
             stunTimer -= Time.deltaTime;
             yield return null;
         }
+        if (stunEffectObject != null)
+        {
+            Destroy(stunEffectObject);
+        }
         rb.linearVelocity = new Vector3(0, stunEndJumpForce, 0);
         yield return new WaitForSeconds(stunEndAnimTime);
         isStunning = false;
@@ -279,6 +294,8 @@ public class BossMove3 : MonoBehaviour
         attackCollider.enabled = false;
         rb.angularVelocity = Vector3.zero;
         rb.linearVelocity = Vector3.zero;
+        stunEffectObject = Instantiate(stunEffect,this.transform.localPosition + stunEffectPos, Quaternion.identity);
+        stunEffectObject.transform.localScale = stunEffectScale; 
         yield return StartCoroutine(Stun(defaultStunTime));
         StartCoroutine(MainLoop());
     }

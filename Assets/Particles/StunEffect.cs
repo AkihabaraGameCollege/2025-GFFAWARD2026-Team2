@@ -13,7 +13,7 @@ public class StunEffect : MonoBehaviour
         for (int i = 0; i < stars.Length; i++)
         {
             float radian = Mathf.PI * 2 / stars.Length * i;
-            stars[i].transform.position = new Vector3
+            stars[i].transform.localPosition = new Vector3
                 (
                     Mathf.Cos(radian),
                     0,
