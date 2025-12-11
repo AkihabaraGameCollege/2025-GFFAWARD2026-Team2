@@ -380,7 +380,7 @@ MonoBehaviour:
   bossAttackTime: 1
   bossWeakBeforTime: 2
   bossWeakTime: 10
-  bossWakeUpTime: 5
+  bossWakeUpTime: 8
   bossWaitTime: 5
   stumpAttackTime: 0.5
   standTime: 1
@@ -391,7 +391,7 @@ MonoBehaviour:
   hammerAttackTimeDefault: 10
   meleeAttackAnimTime: 1.5
   stumpWaitTime: 2
-  stumpColliderArriveCooldown: 1
+  stumpColliderArriveCooldown: 0.5
   stumpCollider: {fileID: 1080257831239132051}
   attackCollider: {fileID: 3380108006041403848}
   bodyAttackCollider: {fileID: 4456961885093067645}
