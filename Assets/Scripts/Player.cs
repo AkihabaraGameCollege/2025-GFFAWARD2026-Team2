@@ -300,6 +300,7 @@ public class Player : MonoBehaviour
         switch (motionState)
         {
             case MotionState.Stopping:
+                animator.SetFloat(speedID, rigidbody.linearVelocity.magnitude);// Runアニメーションを継続（中山が編集）
                 //移動入力がある場合は移動状態へ移行（中山が編集）
                 if (moveInput != Vector2.zero)
                 {
