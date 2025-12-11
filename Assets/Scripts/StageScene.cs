@@ -107,7 +107,7 @@ public class StageScene : MonoBehaviour
         // ポーズUIの各ボタンが押されたときのイベントを登録
         pause.OnResumeButtonClick.AddListener(Resume);
         pause.OnRetryButtonClick.AddListener(Retry);
-        pause.OnTutorialButtonClick.AddListener(Tutorial); // とりあえずタイトルに戻るように設定（中山が編集）
+        pause.OnTutorialButtonClick.AddListener(Tutorial);
         pause.OnExitButtonClick.AddListener(Title);
 
         // ゲームオーバーUIの各ボタンが押されたときのイベントを登録(中山が編集)
