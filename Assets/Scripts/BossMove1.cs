@@ -385,8 +385,11 @@ public class BossMove1 : MonoBehaviour
 
     public void PlayWalkSE()
     {
-        AudioPlayer.instance.PlaySE(6);
-        AudioPlayer.instance.PlaySE(5);
+        if (!isWalking)
+        {
+            AudioPlayer.instance.PlaySE(6);
+            AudioPlayer.instance.PlaySE(5);
+        }
     }
 
     [ContextMenu("デバッグ用すぐスタン")]
