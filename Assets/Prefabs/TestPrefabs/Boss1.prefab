@@ -359,7 +359,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 15
   health: 15
-  lastSpurtHP: 5
   bossLastBGM: 1
   hitbox: {fileID: 8252114688693135505}
   isInvincible: 0
@@ -391,7 +390,7 @@ MonoBehaviour:
   bossStartTime: 5
   hammerAttackTimeDefault: 10
   meleeAttackAnimTime: 1.5
-  stumpWaitTime: 3
+  stumpWaitTime: 2
   stumpColliderArriveCooldown: 1
   stumpCollider: {fileID: 1080257831239132051}
   attackCollider: {fileID: 3380108006041403848}

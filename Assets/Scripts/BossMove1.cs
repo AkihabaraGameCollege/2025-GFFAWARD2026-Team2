@@ -91,8 +91,6 @@ public class BossMove1 : MonoBehaviour
     [Tooltip("モデルについてるScript")]
     private ModelScript modelScript;
 
-    // プレイヤースクリプト参照用（中山が編集）
-    [SerializeField]
     private Player player;
 
     // アニメーションID登録（中山が編集）
@@ -120,6 +118,7 @@ public class BossMove1 : MonoBehaviour
         statusManager = GetComponent<StatusManagerBoss>();
         rigidbody = GetComponent<Rigidbody>();
         targetObject = GameObject.FindWithTag("Player");
+        player = targetObject.GetComponent<Player>();
 
         statusManager.OnDeath += Die; // 死亡時実行の関数をいれとく 富里
         statusManager.OnStunTaken += TakeStun; //スタン食らったとき
