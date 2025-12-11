@@ -45,7 +45,7 @@ public class StageSelect : MonoBehaviour
     private Button abilityImageButton;
 
     [SerializeField]
-    private Button ruleButton;
+    private Button tutorialButton;
     [SerializeField]
     private Button abilityButton;
 
@@ -123,8 +123,8 @@ public class StageSelect : MonoBehaviour
         {
             backGroundImage.sprite = normalBackGroundSprite;
         }
-
-            abilityImage.enabled = false;
+        
+        abilityImage.enabled = false;
         tutorialImage.enabled = false;
 
         secretAbility1.enabled = false;
@@ -137,7 +137,7 @@ public class StageSelect : MonoBehaviour
         tutorialImageButton.enabled = false;
         abilityImageButton.enabled = false;
 
-        ruleButton.onClick.AddListener(OnClickTutorialButton);
+        tutorialButton.onClick.AddListener(OnClickTutorialButton);
         abilityButton.onClick.AddListener(OnClickAbilityButton);
 
         tutorialImageButton.onClick.AddListener(OnClickBack);
@@ -215,6 +215,7 @@ public class StageSelect : MonoBehaviour
         secretAbility1.enabled = false;
         secretAbility2.enabled = false;
         secretAbility3.enabled = false;
+        tutorialButton.Select();// 戻った後、チュートリアルボタンを選択状態にする（中山が編集）
     }
 
     public void OnClickTitleButton()
