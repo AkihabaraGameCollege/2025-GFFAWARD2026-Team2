@@ -46,6 +46,11 @@ public class PauseUI : MonoBehaviour
         Hide();
     }
 
+    public void Select()
+    {
+        resumeButton.Select();
+    }
+
     // Ç±ÇÃUIÇï\é¶ÇµÇ‹Ç∑ÅB
     public void Show()
     {

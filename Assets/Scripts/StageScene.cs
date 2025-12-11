@@ -240,6 +240,7 @@ public class StageScene : MonoBehaviour
     {
         tutorialImage.enabled = false;// チュートリアル画像を非表示にする（中山が編集）
         tutorialImageButton.enabled = false;// チュートリアル画像のボタンを無効化する（中山が編集）
+        pause.Select();
     }
 
     // このステージを抜けてタイトル画面を読み込みます。
