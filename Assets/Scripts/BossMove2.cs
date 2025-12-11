@@ -124,6 +124,18 @@ public class BossMove2 : MonoBehaviour
     private float walkSECooldown;
 
 
+    [SerializeField]
+    GameObject stunEffect;
+
+    [SerializeField]
+    Vector3 stunEffectPos;
+
+    [SerializeField]
+    Vector3 stunEffectScale;
+
+    private GameObject stunEffectObject;
+
+
     //アニメーションID登録
     static readonly int isWalkingID = Animator.StringToHash("IsWalking");
     static readonly int standUpID = Animator.StringToHash("Stand");
@@ -352,7 +364,8 @@ public class BossMove2 : MonoBehaviour
             AudioPlayer.instance.PlaySE(14, 1);
         }
     }
-
+    
+    [ContextMenu("STUN")]
     private void TakeStun()
     {
         if (!isStunning)
@@ -368,12 +381,14 @@ public class BossMove2 : MonoBehaviour
             stunTimer += 3;
         }
     }
-
     IEnumerator OnStunTaken()
     {
         attackCollider.enabled = false;
         animator.SetTrigger(immediatelyWeakID);
+        stunEffectObject = Instantiate(stunEffect, this.transform.localPosition + stunEffectPos, Quaternion.identity);
+        stunEffectObject.transform.localScale = stunEffectScale;
         yield return StartCoroutine(Stun(defaultStunTime));
+        Destroy(stunEffectObject);
         yield return StandUp();
         StartCoroutine(MainLoop());
     }

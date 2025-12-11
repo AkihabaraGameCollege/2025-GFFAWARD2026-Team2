@@ -6827,17 +6827,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boss2
       objectReference: {fileID: 0}
-    - target: {fileID: 1443830462702634993, guid: d9ddf0c4528c0a9479a9b5bae2e6cffe, type: 3}
-      propertyPath: m_Depth
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9084346388049670265, guid: d9ddf0c4528c0a9479a9b5bae2e6cffe, type: 3}
-      propertyPath: 'm_Cameras.Array.data[0]'
-      value: 
-      objectReference: {fileID: 294067303}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 4626761150507955881, guid: d9ddf0c4528c0a9479a9b5bae2e6cffe, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d9ddf0c4528c0a9479a9b5bae2e6cffe, type: 3}
