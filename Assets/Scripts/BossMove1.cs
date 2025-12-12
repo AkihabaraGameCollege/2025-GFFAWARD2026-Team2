@@ -316,9 +316,11 @@ public class BossMove1 : MonoBehaviour
     {
         stunTimer = bossWeakTime;
         isStunning = true;
+        
         Weak();// 弱点出現（中山が編集）
         yield return new WaitForSeconds(bossWeakBeforeTime);// 弱点タイム（中山が編集）
-
+        bodyAttackCollider.enabled = false;
+        yield return new WaitForSeconds(0.1f);
         collider2Player.enabled = true; // プレイヤーとのCollisionColliderを有効化 (富里が編集)
 
         // 倒れる間のタイマー
@@ -337,6 +339,7 @@ public class BossMove1 : MonoBehaviour
         isMoving = true;// 移動開始（中山が編集）
         isAppeardWeak = false;
         isStunning = false;
+        //rigidbody.isKinematic = false;
         hammerAttackTime = hammerAttackTimeDefault;// ハンマー攻撃時間リセット（中山が編集）
     }
 
@@ -345,8 +348,6 @@ public class BossMove1 : MonoBehaviour
     private void Weak()
     {
         isAppeardWeak = true;
-
-        bodyAttackCollider.enabled = false;// ボス本体判定無効化（中山が編集）
     }
     // 起き上がり（中山が編集）
     private void WakeUp()
