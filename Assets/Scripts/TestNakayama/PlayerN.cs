@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Windows;
 
 [RequireComponent(typeof(CharacterController))]// CharacterController コンポーネントを必須にする（ChatGPTから引用By中山）
 
