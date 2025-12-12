@@ -1764,10 +1764,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 129334436}
     m_Modifications:
-    - target: {fileID: 2759312577438447402, guid: c7504c53f353dc649bb9cd9f7cedd9b3, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 02a39ece64aa949439928f447cac64cf, type: 3}
     - target: {fileID: 3123722847013099908, guid: c7504c53f353dc649bb9cd9f7cedd9b3, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1794,11 +1790,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3123722847013099908, guid: c7504c53f353dc649bb9cd9f7cedd9b3, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 2740
+      value: 819.2
       objectReference: {fileID: 0}
     - target: {fileID: 3123722847013099908, guid: c7504c53f353dc649bb9cd9f7cedd9b3, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 230.1172
+      value: 73.2
       objectReference: {fileID: 0}
     - target: {fileID: 3123722847013099908, guid: c7504c53f353dc649bb9cd9f7cedd9b3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1852,6 +1848,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BossHPBaseImage
       objectReference: {fileID: 0}
+    - target: {fileID: 8240235347470107641, guid: c7504c53f353dc649bb9cd9f7cedd9b3, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 02a39ece64aa949439928f447cac64cf, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
