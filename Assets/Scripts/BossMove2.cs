@@ -293,7 +293,12 @@ public class BossMove2 : MonoBehaviour
         // フリーズ
         rigidbody.linearVelocity = Vector3.zero;
         rigidbody.useGravity = false;
-        yield return new WaitForSeconds(jumpFreezeTime);
+        yield return new WaitForSeconds(jumpFreezeTime/2);
+
+        // ピッチ下げてる影響で、着地後に鳴らすと遅すぎる為ここで鳴らす
+        AudioPlayer.instance.PlaySE(0, 1f, 0.2f);
+
+        yield return new WaitForSeconds(jumpFreezeTime / 2);
 
         // ドロップ
         rigidbody.useGravity = true;

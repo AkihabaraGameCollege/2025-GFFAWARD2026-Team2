@@ -81,9 +81,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 039a164368829b54eb0e888d62f01103, type: 3}
   - {fileID: 8300000, guid: b160e77e750736842be5a823e943c390, type: 3}
   - {fileID: 8300000, guid: 7535542c7f064e54195095501f1543f8, type: 3}
+  - {fileID: 8300000, guid: 73ea78a699ec2b649913ac9b6159516f, type: 3}
   bgmSource: {fileID: 1175352549287661820}
   seSource: {fileID: 7479978559394380311}
-  loopSeSource: {fileID: 2108518947670037537}
 --- !u!82 &1175352549287661820
 AudioSource:
   m_ObjectHideFlags: 0
