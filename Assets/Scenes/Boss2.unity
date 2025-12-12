@@ -1030,10 +1030,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1255891026238647754, guid: 49bc269f736198841bf115e54a09a5f1, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 1262616372, guid: 8c4bf863be5d85541943f3cb08ae2221, type: 3}
     - target: {fileID: 6697740530733593895, guid: 49bc269f736198841bf115e54a09a5f1, type: 3}
       propertyPath: m_Name
       value: StageClearUI
@@ -1771,7 +1767,7 @@ PrefabInstance:
     - target: {fileID: 2759312577438447402, guid: c7504c53f353dc649bb9cd9f7cedd9b3, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 1556680064, guid: 95b816f964c8d374e9399f1ee08d8fdb, type: 3}
+      objectReference: {fileID: 21300000, guid: 02a39ece64aa949439928f447cac64cf, type: 3}
     - target: {fileID: 3123722847013099908, guid: c7504c53f353dc649bb9cd9f7cedd9b3, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

@@ -939,7 +939,7 @@ PrefabInstance:
     - target: {fileID: 2759312577438447402, guid: c7504c53f353dc649bb9cd9f7cedd9b3, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 795393294, guid: 3317e76076777a84cac12da6c0c312e7, type: 3}
+      objectReference: {fileID: 21300000, guid: ff48cb169390f9049b9466788d093dd6, type: 3}
     - target: {fileID: 3123722847013099908, guid: c7504c53f353dc649bb9cd9f7cedd9b3, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -6744,7 +6744,7 @@ PrefabInstance:
     - target: {fileID: 1255891026238647754, guid: 49bc269f736198841bf115e54a09a5f1, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 226b480b233719248844a6a61b656f7f, type: 3}
+      objectReference: {fileID: 21300000, guid: 28845520a29d7ad4aaf0006615010109, type: 3}
     - target: {fileID: 6697740530733593895, guid: 49bc269f736198841bf115e54a09a5f1, type: 3}
       propertyPath: m_Name
       value: StageClearUI
