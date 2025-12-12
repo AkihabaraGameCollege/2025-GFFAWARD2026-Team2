@@ -261,29 +261,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
+  sprintSpeed: 0
+  sprintSecond: 0
   jumpForce: 10
+  stunCooldownTime: 0
   groundCheckStartPoint: {x: 0, y: 0.5, z: 0}
   groundCheckEndPoint: {x: 0, y: -0.5, z: 0}
   requiredJumpSpeed: 0.1
   playerWaitTime: 0.3
   playerLittleWaitTime: 0.3
   playerAttackTime: 0.1
-  dashAttackSpeed: 20
   attackReach: {x: 1, y: 1, z: 1}
   maxHealth: 3
   invincibleTime: 1
   damage: 1
+  knockBackForce: 0
+  knockBackDecay: 0
+  knockBackInvertMultiplyNumber: 0
   attackReachMagnification: 2
   damageMagnicifation: 2
   jumpForceMagnification: 1.5
-  moveSpeedMagnification: 1.5
+  animator: {fileID: 0}
   groundLayer:
     serializedVersion: 2
     m_Bits: 16448
   attackCollider: {fileID: 9135191589690067075}
-  dashAttackCollider: {fileID: 1525174610445278448}
+  playerHand: {fileID: 0}
+  dashAttackCollider: {fileID: 6791532657955559284}
   destroyEffect: {fileID: 1430198582188953287, guid: 21b15d55fb362544fab3a70419757060, type: 3}
   damageEffect: {fileID: 1430198582188953287, guid: 21b15d55fb362544fab3a70419757060, type: 3}
+  dashParticle: {fileID: 0}
   wallCheckerPos:
   - {x: 0, y: 2, z: 0}
   - {x: 0, y: 0.2, z: 0}
