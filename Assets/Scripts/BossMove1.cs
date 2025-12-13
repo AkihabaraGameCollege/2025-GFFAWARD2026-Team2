@@ -72,6 +72,10 @@ public class BossMove1 : MonoBehaviour
     [Tooltip("弱点のコライダー")]
     private Collider weakCollider;
 
+    // プレイヤーとのCollisionCollider参照用 (富里が編集)
+    [SerializeField]
+    private Collider collider2Player = null;
+
     [SerializeField]
     [Tooltip("ダメージ時のエフェクト")]
     private GameObject damageEffect;
@@ -80,20 +84,22 @@ public class BossMove1 : MonoBehaviour
     [Tooltip("ヘイローエフェクト")]
     private GameObject haloEffect;
 
-    private GameObject targetObject;
-
-    // プレイヤーとのCollisionCollider参照用 (富里が編集)
-    [SerializeField]
-    private Collider collider2Player = null;
-
-    new private Rigidbody rigidbody;// Rigidbodyコンポーネント参照用（中山が編集）
-
     [SerializeField]
     Animator animator;// アニメーター（中山が編集）
 
     [SerializeField]
     [Tooltip("モデルについてるScript")]
     private ModelScript modelScript;
+
+    // パーティクルシステム（中山が編集）
+    [SerializeField]
+    private ParticleSystem particleStump;
+    [SerializeField]
+    private ParticleSystem particleSledge;
+
+    private GameObject targetObject;
+
+    new private Rigidbody rigidbody;// Rigidbodyコンポーネント参照用（中山が編集）
 
     private Player player;
 
@@ -138,6 +144,9 @@ public class BossMove1 : MonoBehaviour
         bodyAttackCollider.enabled = true;// ボス本体判定有効化（中山が編集）
         stumpCollider.enabled = false;
         collider2Player.enabled = false; // プレイヤーとのCollisionColliderを無効化 (富里が編集)
+
+        particleStump.Stop();// スタンプ攻撃エフェクト停止（中山が編集）
+        particleSledge.Stop();// ハンマー攻撃エフェクト停止（中山が編集）
 
         StopBoss();// ボス停止処理（中山が編集）
     }
@@ -278,6 +287,7 @@ public class BossMove1 : MonoBehaviour
         yield return new WaitForSeconds(stumpColliderArriveCooldown);
         AudioPlayer.instance.PlaySE(7);// ジャンプ攻撃SE再生（中山が編集）
         stumpCollider.enabled = true;
+        particleStump.Play();// スタンプ攻撃エフェクト再生（中山が編集）
         yield return new WaitForSeconds(stumpAttackTime);
         stumpCollider.enabled = false;
         isTurning = true;// 回転可能（中山が編集）
@@ -305,6 +315,7 @@ public class BossMove1 : MonoBehaviour
         AudioPlayer.instance.PlaySE(2);// 攻撃SE再生（中山が編集）
         yield return new WaitForSeconds(meleeAttackAnimTime);
         attackCollider.enabled = true;// 攻撃判定有効化（中山が編集）
+        particleSledge.Play();// ハンマー攻撃エフェクト再生（中山が編集）
         yield return new WaitForSeconds(bossAttackTime);// 攻撃する時間（中山が編集）
         attackCollider.enabled = false;// 攻撃判定無効化（中山が編集）
         yield return new WaitForSeconds(bossLittleWaitTime);// 少し待機（中山が編集）
