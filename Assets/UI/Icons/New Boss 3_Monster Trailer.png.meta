@@ -138,8 +138,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 05dc053e39d796d4e9dc10fab99139e6
-      internalID: -772567682
+      spriteID: b9866e7d95f0fd244a4fbd49efc86e00
+      internalID: 1535510044
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 20be1ba43564a034698f4cbee6f2390c
+    spriteID: fa96703bcb8e44844ae30eaa453b2a2f
     internalID: 0
     vertices: []
     indices: 
@@ -158,7 +158,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      New Boss 3_Monster Trailer_0: -772567682
+      New Boss 3_Monster Trailer_0: 1535510044
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
