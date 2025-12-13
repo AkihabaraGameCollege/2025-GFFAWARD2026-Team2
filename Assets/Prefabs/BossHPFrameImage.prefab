@@ -36,7 +36,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 819.2, y: 68.8}
+  m_SizeDelta: {x: 800, y: 67}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4984409804345435332
 CanvasRenderer:
@@ -66,11 +66,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -614558804, guid: bf0a29883a0befe439b3d68741bda1f9, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 653906941, guid: bf0a29883a0befe439b3d68741bda1f9, type: 3}
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 0
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 1897211763799910210}
   - component: {fileID: 8240235347470107641}
   m_Layer: 5
-  m_Name: BossHPTopImage (1)
+  m_Name: BossHPNameImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -111,7 +111,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 819.2, y: 68.8}
+  m_SizeDelta: {x: 800, y: 67}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1897211763799910210
 CanvasRenderer:
@@ -141,7 +141,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 54fb269800ecb774887ec77ad44bd214, type: 3}
+  m_Sprite: {fileID: 804345453, guid: 5088f34d6fb5bd748bcc32a20549d856, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -163,7 +163,7 @@ GameObject:
   - component: {fileID: 1470833842443965961}
   - component: {fileID: 6362102062406985834}
   m_Layer: 5
-  m_Name: BossHPBaseImage
+  m_Name: BossHPFrameImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -217,7 +217,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 990278f66a5c72d4fb15ae8e09013cf9, type: 3}
+  m_Sprite: {fileID: 514416102, guid: f2b05ced7b4f30448a8f57989548ff46, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -239,7 +239,7 @@ GameObject:
   - component: {fileID: 4219712365160832619}
   - component: {fileID: 653042404398092859}
   m_Layer: 5
-  m_Name: BossHPImage
+  m_Name: BossHPBaseImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -263,7 +263,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 819.2, y: 68.8}
+  m_SizeDelta: {x: 800, y: 67}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4219712365160832619
 CanvasRenderer:
@@ -293,8 +293,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 634968744, guid: fbef8716aadfc894594fb43135cda460, type: 3}
-  m_Type: 3
+  m_Sprite: {fileID: -1868041961, guid: fbef8716aadfc894594fb43135cda460, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0

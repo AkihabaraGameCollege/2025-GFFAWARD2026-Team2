@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: bf0a29883a0befe439b3d68741bda1f9
+guid: f2b05ced7b4f30448a8f57989548ff46
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -123,13 +123,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Boss HP Bar_Top_0
+      name: Boss HP Bar_Frame_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 800
-        height: 67
+        width: 813
+        height: 73
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -138,8 +138,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3a0eb856c77017a4aba64629cfe5c8ca
-      internalID: 653906941
+      spriteID: 5c26d7455ac48e449adf3287f395be26
+      internalID: 514416102
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: c1298fd19780afa44bfd515856c8d768
+    spriteID: a852b5d8c1b633244bdb2acf4f9489a4
     internalID: 0
     vertices: []
     indices: 
@@ -158,7 +158,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Boss HP Bar_Top_0: 653906941
+      Boss HP Bar_Frame_0: 514416102
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
