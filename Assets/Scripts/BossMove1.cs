@@ -57,6 +57,10 @@ public class BossMove1 : MonoBehaviour
     [Tooltip("ボス死亡コライダー出現までの時間")]
     private float deathColliderTime;
 
+    // スタンプ攻撃エフェクト再生までの待機時間（中山が編集）
+    [SerializeField]
+    private float particleWaitTime = 0.5f;
+
     [SerializeField]
     [Tooltip("スタンプ攻撃用コライダー")]
     private Collider stumpCollider;
@@ -93,9 +97,9 @@ public class BossMove1 : MonoBehaviour
 
     // パーティクルシステム（中山が編集）
     [SerializeField]
-    private ParticleSystem particleStump;
+    private ParticleSystem particleStump1, particleStump2, particleStump3, particleStump4;
     [SerializeField]
-    private ParticleSystem particleSledge;
+    private ParticleSystem particleBigStump1, particleBigStump2, particleBigStump3, particleBigStump4;
 
     private GameObject targetObject;
 
@@ -145,8 +149,14 @@ public class BossMove1 : MonoBehaviour
         stumpCollider.enabled = false;
         collider2Player.enabled = false; // プレイヤーとのCollisionColliderを無効化 (富里が編集)
 
-        particleStump.Stop();// スタンプ攻撃エフェクト停止（中山が編集）
-        particleSledge.Stop();// ハンマー攻撃エフェクト停止（中山が編集）
+        particleStump1.Stop();// スタンプ攻撃エフェクト停止（中山が編集）
+        particleStump2.Stop();// スタンプ攻撃エフェクト停止（中山が編集）
+        particleStump3.Stop();// スタンプ攻撃エフェクト停止（中山が編集）
+        particleStump4.Stop();// スタンプ攻撃エフェクト停止（中山が編集）
+        particleBigStump1.Stop();// 大スタンプ攻撃エフェクト停止（中山が編集）
+        particleBigStump2.Stop();// 大スタンプ攻撃エフェクト停止（中山が編集）
+        particleBigStump3.Stop();// 大スタンプ攻撃エフェクト停止（中山が編集）
+        particleBigStump4.Stop();// 大スタンプ攻撃エフェクト停止（中山が編集）
 
         StopBoss();// ボス停止処理（中山が編集）
     }
@@ -287,7 +297,11 @@ public class BossMove1 : MonoBehaviour
         yield return new WaitForSeconds(stumpColliderArriveCooldown);
         AudioPlayer.instance.PlaySE(7);// ジャンプ攻撃SE再生（中山が編集）
         stumpCollider.enabled = true;
-        particleStump.Play();// スタンプ攻撃エフェクト再生（中山が編集）
+        yield return new WaitForSeconds(particleWaitTime);
+        particleStump1.Play();// スタンプ攻撃エフェクト再生（中山が編集）
+        particleStump2.Play();// スタンプ攻撃エフェクト再生（中山が編集）
+        particleStump3.Play();// スタンプ攻撃エフェクト再生（中山が編集）
+        particleStump4.Play();// スタンプ攻撃エフェクト再生（中山が編集）
         yield return new WaitForSeconds(stumpAttackTime);
         stumpCollider.enabled = false;
         isTurning = true;// 回転可能（中山が編集）
@@ -315,7 +329,10 @@ public class BossMove1 : MonoBehaviour
         AudioPlayer.instance.PlaySE(2);// 攻撃SE再生（中山が編集）
         yield return new WaitForSeconds(meleeAttackAnimTime);
         attackCollider.enabled = true;// 攻撃判定有効化（中山が編集）
-        particleSledge.Play();// ハンマー攻撃エフェクト再生（中山が編集）
+        particleBigStump1.Play();// 大スタンプ攻撃エフェクト再生（中山が編集）
+        particleBigStump2.Play();// 大スタンプ攻撃エフェクト再生（中山が編集）
+        particleBigStump3.Play();// 大スタンプ攻撃エフェクト再生（中山が編集）
+        particleBigStump4.Play();// 大スタンプ攻撃エフェクト再生（中山が編集）
         yield return new WaitForSeconds(bossAttackTime);// 攻撃する時間（中山が編集）
         attackCollider.enabled = false;// 攻撃判定無効化（中山が編集）
         yield return new WaitForSeconds(bossLittleWaitTime);// 少し待機（中山が編集）

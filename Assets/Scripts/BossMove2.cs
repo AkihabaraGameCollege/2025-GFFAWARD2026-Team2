@@ -133,6 +133,10 @@ public class BossMove2 : MonoBehaviour
     [SerializeField]
     Vector3 stunEffectScale;
 
+    // 攻撃エフェクト（中山が編集）
+    [SerializeField]
+    private ParticleSystem stumpParticle1, stumpParticle2, stumpParticle3, stumpParticle4;
+
     private GameObject stunEffectObject;
 
 
@@ -164,6 +168,11 @@ public class BossMove2 : MonoBehaviour
 
         statusManager.isInvincible = false;
         attackCollider.enabled = false;//攻撃判定無効化
+
+        stumpParticle1.Stop();// 攻撃エフェクト停止（中山が編集）
+        stumpParticle2.Stop();// 攻撃エフェクト停止（中山が編集）
+        stumpParticle3.Stop();// 攻撃エフェクト停止（中山が編集）
+        stumpParticle4.Stop();// 攻撃エフェクト停止（中山が編集）
 
         // 行動のコルーチンを起動
         StartCoroutine(StartMotion());
@@ -311,6 +320,10 @@ public class BossMove2 : MonoBehaviour
             isGrounded = Physics.Linecast(transform.position + groundCheckStartPoint, transform.position + groundCheckEndPoint, groundLayer);
             yield return new WaitForFixedUpdate();
         }
+        stumpParticle1.Play();// 攻撃エフェクト再生（中山が編集）
+        stumpParticle2.Play();// 攻撃エフェクト再生（中山が編集）
+        stumpParticle3.Play();// 攻撃エフェクト再生（中山が編集）
+        stumpParticle4.Play();// 攻撃エフェクト再生（中山が編集）
         // 着地攻撃判定を出す
         attackCollider.enabled = true;
         // 攻撃時間待つ
