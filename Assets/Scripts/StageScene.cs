@@ -53,8 +53,6 @@ public class StageScene : MonoBehaviour
     [SerializeField]
     private string boss3StageName = "Boss2";
 
-    private bool isFullUpgraded = false;
-
     [SerializeField]
     Image bossLifeImage = null;
 
@@ -74,6 +72,8 @@ public class StageScene : MonoBehaviour
 
     private int bGMID;// BGMのIDを指定する変数（中山が編集）
     private int sEID;// SEのIDを指定する変数（中山が編集）
+
+    private bool isFullUpgraded = false;
 
     // ステージ画面内の進行状態を表します。
     enum SceneState
