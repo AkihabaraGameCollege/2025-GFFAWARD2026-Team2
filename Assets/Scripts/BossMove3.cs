@@ -74,7 +74,7 @@ public class BossMove3 : MonoBehaviour
     [SerializeField]
     private ParticleSystem driftParticle1, driftParticle2, driftParticle3, driftParticle4;
     [SerializeField]
-    private ParticleSystem rushParticle1, rushParticle2, rushParticle3, rushParticle4;
+    private ParticleSystem rushParticle1, rushParticle2, rushParticle3, rushParticle4, rushParticle5, rushParticle6, rushParticle7, rushParticle8;
 
     private GameObject stunEffectObject;
 
@@ -112,6 +112,10 @@ public class BossMove3 : MonoBehaviour
         rushParticle2.Stop();//突進エフェクト停止（中山が編集）
         rushParticle3.Stop();//突進エフェクト停止（中山が編集）
         rushParticle4.Stop();//突進エフェクト停止（中山が編集）
+        rushParticle5.Stop();//突進エフェクト停止（中山が編集）
+        rushParticle6.Stop();//突進エフェクト停止（中山が編集）
+        rushParticle7.Stop();//突進エフェクト停止（中山が編集）
+        rushParticle8.Stop();//突進エフェクト停止（中山が編集）
 
         // 行動のコルーチンを起動
         StartCoroutine(StartMotion());
@@ -246,6 +250,10 @@ public class BossMove3 : MonoBehaviour
         rushParticle2.Play();//突進エフェクト再生（中山が編集）
         rushParticle3.Play();//突進エフェクト再生（中山が編集）
         rushParticle4.Play();//突進エフェクト再生（中山が編集）
+        rushParticle5.Play();//突進エフェクト再生（中山が編集）
+        rushParticle6.Play();//突進エフェクト再生（中山が編集）
+        rushParticle7.Play();//突進エフェクト再生（中山が編集）
+        rushParticle8.Play();//突進エフェクト再生（中山が編集）
         while (timer <= 2 && !isCasted)
         {
             // ここで力を加える
