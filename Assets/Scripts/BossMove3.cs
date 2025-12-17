@@ -70,6 +70,12 @@ public class BossMove3 : MonoBehaviour
     [SerializeField]
     Vector3 stunEffectScale;
 
+    // 攻撃エフェクトオブジェクト参照用（中山が編集）
+    [SerializeField]
+    private ParticleSystem driftParticle1, driftParticle2, driftParticle3, driftParticle4;
+    [SerializeField]
+    private ParticleSystem rushParticle1, rushParticle2, rushParticle3, rushParticle4;
+
     private GameObject stunEffectObject;
 
     static readonly int defeatId = Animator.StringToHash("defeat");//死亡モーション用パラメーターID（中山が編集）
@@ -97,6 +103,15 @@ public class BossMove3 : MonoBehaviour
 
         attackCollider.enabled = false;//攻撃判定無効化（中山が編集）
         playerCheckCollider.Hide();
+
+        driftParticle1.Stop();//ドリブルエフェクト停止（中山が編集）
+        driftParticle2.Stop();//ドリブルエフェクト停止（中山が編集）
+        driftParticle3.Stop();//ドリブルエフェクト停止（中山が編集）
+        driftParticle4.Stop();//ドリブルエフェクト停止（中山が編集）
+        rushParticle1.Stop();//突進エフェクト停止（中山が編集）
+        rushParticle2.Stop();//突進エフェクト停止（中山が編集）
+        rushParticle3.Stop();//突進エフェクト停止（中山が編集）
+        rushParticle4.Stop();//突進エフェクト停止（中山が編集）
 
         // 行動のコルーチンを起動
         StartCoroutine(StartMotion());
@@ -202,6 +217,10 @@ public class BossMove3 : MonoBehaviour
         attackCollider.enabled = true;
         float rotatedDegree = 0;
         Quaternion startRot = rb.rotation;
+        driftParticle1.Play();//ドリブルエフェクト再生（中山が編集）
+        driftParticle2.Play();//ドリブルエフェクト再生（中山が編集）
+        driftParticle3.Play();//ドリブルエフェクト再生（中山が編集）
+        driftParticle4.Play();//ドリブルエフェクト再生（中山が編集）
         while (rotatedDegree <= 360)
         {
             float delta = 180f * Time.fixedDeltaTime;
@@ -223,6 +242,10 @@ public class BossMove3 : MonoBehaviour
         Vector3 rushDirection = transform.forward;
         bool isCasted = false;
         attackCollider.enabled = true;
+        rushParticle1.Play();//突進エフェクト再生（中山が編集）
+        rushParticle2.Play();//突進エフェクト再生（中山が編集）
+        rushParticle3.Play();//突進エフェクト再生（中山が編集）
+        rushParticle4.Play();//突進エフェクト再生（中山が編集）
         while (timer <= 2 && !isCasted)
         {
             // ここで力を加える
