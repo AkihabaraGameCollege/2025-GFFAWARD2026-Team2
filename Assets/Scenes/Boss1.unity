@@ -948,18 +948,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 293355261}
     m_Modifications:
-    - target: {fileID: 421090399341490571, guid: 4ded2646c424dfe4ab8c9415d53bbc5c, type: 3}
-      propertyPath: InitialModule.startSize.scalar
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 489643450474243515, guid: 4ded2646c424dfe4ab8c9415d53bbc5c, type: 3}
-      propertyPath: InitialModule.startSize.scalar
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 1114222877184761813, guid: 4ded2646c424dfe4ab8c9415d53bbc5c, type: 3}
-      propertyPath: InitialModule.startSize.scalar
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 4596725739751054584, guid: 4ded2646c424dfe4ab8c9415d53bbc5c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 123.5
@@ -1000,29 +988,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6596043890183259556, guid: 4ded2646c424dfe4ab8c9415d53bbc5c, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6596043890183259556, guid: 4ded2646c424dfe4ab8c9415d53bbc5c, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6596043890183259556, guid: 4ded2646c424dfe4ab8c9415d53bbc5c, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6596043890183259556, guid: 4ded2646c424dfe4ab8c9415d53bbc5c, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8451905351038115448, guid: 4ded2646c424dfe4ab8c9415d53bbc5c, type: 3}
       propertyPath: m_Name
       value: Boss1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9124710461297965395, guid: 4ded2646c424dfe4ab8c9415d53bbc5c, type: 3}
-      propertyPath: InitialModule.startSize.scalar
-      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
