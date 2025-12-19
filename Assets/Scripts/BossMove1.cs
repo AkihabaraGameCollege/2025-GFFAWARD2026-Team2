@@ -400,6 +400,7 @@ public class BossMove1 : MonoBehaviour
         AudioPlayer.instance.PlaySE(4);
         attackCollider.enabled = false;
         bodyAttackCollider.enabled = false;
+        stumpCollider.enabled = false;
         yield return new WaitForSeconds(deathColliderTime);
 
         yield return new WaitForSeconds(bossDieTime - deathColliderTime);// 少し待機（中山が編集）
