@@ -605,7 +605,7 @@ MonoBehaviour:
   musicWaitTime: 23
   outroTime: 3
   skipButtonAppearWaitTime: 1.1
-  stageTransitionDelay: 86
+  stageTransitionDelay: 225
   nextButton: {fileID: 1004716220}
   skipButton: {fileID: 2139111412}
   animator: {fileID: 562259294}
@@ -748,8 +748,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 194260030}
-  - {fileID: 2040728844}
   - {fileID: 1822231798}
+  - {fileID: 2040728844}
   - {fileID: 2139111411}
   m_Father: {fileID: 562259293}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1095,7 +1095,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1470895331}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: a67faee2fe1872149a3faeb4dd418adc, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: 821430bbda46cf64dba2e22bc0247a85, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}

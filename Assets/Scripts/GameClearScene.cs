@@ -57,7 +57,7 @@ public class GameClearScene : MonoBehaviour
     {
         if (isLoadable)
         {
-            StopCoroutine(OnStart());
+            StopAllCoroutines();// すべてのコルーチンを停止（中山が編集）
             StartCoroutine(LoadNextScene());// コルーチンを開始（中山が編集）
         }
     }
