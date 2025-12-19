@@ -32,8 +32,13 @@ public class BossMove3 : MonoBehaviour
     [SerializeField]
     [Tooltip("スタン終了後のアニメーションタイム")]
     private float stunEndAnimTime = 2;
+
+    // 死亡関連設定（中山が編集）
     [SerializeField]
     private float deathTime = 3;
+    [SerializeField]
+    private float deathLittleTime = 2;
+
     [SerializeField]
     [Tooltip("スタン終了時のジャンプ力")]
     private float stunEndJumpForce = 10;
@@ -131,8 +136,11 @@ public class BossMove3 : MonoBehaviour
     }
     IEnumerator DeathTimer()
     {
+        AudioPlayer.instance.StopSE(); // BossSE停止（中山が編集）
+        AudioPlayer.instance.PlaySE(10); // BossDefeatを再生（中山が編集）
         yield return new WaitForSeconds(deathTime);
         AudioPlayer.instance.PlaySE(13); // BossDestroyを再生（富里が編集）
+        yield return new WaitForSeconds(deathLittleTime);
         StageScene.Instance.StageClear();
         Destroy(gameObject);
     }

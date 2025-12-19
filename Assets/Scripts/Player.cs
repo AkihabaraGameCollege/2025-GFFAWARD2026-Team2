@@ -546,7 +546,6 @@ public class Player : MonoBehaviour
             dashParticle4.Play();// ダッシュエフェクト再生（中山が編集）
         }
 
-
         //if ((motionState == MotionState.Stopping || motionState == MotionState.Walking) &&
         //    PlayerPrefs.GetInt("AttackLevel", 1) == 2)
         //{
@@ -664,7 +663,6 @@ public class Player : MonoBehaviour
         isKnockBacking = true;
     }
   
-
     private void OnDrawGizmos()
     {
         Vector3 rushDirection = transform.forward;
