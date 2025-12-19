@@ -36,8 +36,6 @@ public class BossMove3 : MonoBehaviour
     // 死亡関連設定（中山が編集）
     [SerializeField]
     private float deathTime = 3;
-    [SerializeField]
-    private float deathLittleTime = 2;
 
     [SerializeField]
     [Tooltip("スタン終了時のジャンプ力")]
@@ -109,18 +107,21 @@ public class BossMove3 : MonoBehaviour
         attackCollider.enabled = false;//攻撃判定無効化（中山が編集）
         playerCheckCollider.Hide();
 
-        driftParticle1.Stop();//ドリブルエフェクト停止（中山が編集）
-        driftParticle2.Stop();//ドリブルエフェクト停止（中山が編集）
-        driftParticle3.Stop();//ドリブルエフェクト停止（中山が編集）
-        driftParticle4.Stop();//ドリブルエフェクト停止（中山が編集）
-        rushParticle1.Stop();//突進エフェクト停止（中山が編集）
-        rushParticle2.Stop();//突進エフェクト停止（中山が編集）
-        rushParticle3.Stop();//突進エフェクト停止（中山が編集）
-        rushParticle4.Stop();//突進エフェクト停止（中山が編集）
-        rushParticle5.Stop();//突進エフェクト停止（中山が編集）
-        rushParticle6.Stop();//突進エフェクト停止（中山が編集）
-        rushParticle7.Stop();//突進エフェクト停止（中山が編集）
-        rushParticle8.Stop();//突進エフェクト停止（中山が編集）
+        //ドリブルエフェクト停止（中山が編集）
+        driftParticle1.Stop();
+        driftParticle2.Stop();
+        driftParticle3.Stop();
+        driftParticle4.Stop();
+
+        //突進エフェクト停止（中山が編集）
+        rushParticle1.Stop();
+        rushParticle2.Stop();
+        rushParticle3.Stop();
+        rushParticle4.Stop();
+        rushParticle5.Stop();
+        rushParticle6.Stop();
+        rushParticle7.Stop();
+        rushParticle8.Stop();
 
         // 行動のコルーチンを起動
         StartCoroutine(StartMotion());
@@ -128,6 +129,7 @@ public class BossMove3 : MonoBehaviour
 
     public void Die()
     {
+        AudioPlayer.instance.StopSE(); // BossSE停止（中山が編集）
         animator.SetTrigger(defeatId);//死亡モーション再生（中山が編集）
         AudioPlayer.instance.PlaySE(12);
         attackCollider.enabled = false;
@@ -136,12 +138,10 @@ public class BossMove3 : MonoBehaviour
     }
     IEnumerator DeathTimer()
     {
-        AudioPlayer.instance.StopSE(); // BossSE停止（中山が編集）
         AudioPlayer.instance.PlaySE(10); // BossDefeatを再生（中山が編集）
         yield return new WaitForSeconds(deathTime);
-        AudioPlayer.instance.PlaySE(13); // BossDestroyを再生（富里が編集）
-        yield return new WaitForSeconds(deathLittleTime);
         StageScene.Instance.StageClear();
+        AudioPlayer.instance.PlaySE(13); // BossDestroyを再生（富里が編集）
         Destroy(gameObject);
     }
 
@@ -229,10 +229,13 @@ public class BossMove3 : MonoBehaviour
         attackCollider.enabled = true;
         float rotatedDegree = 0;
         Quaternion startRot = rb.rotation;
-        driftParticle1.Play();//ドリブルエフェクト再生（中山が編集）
-        driftParticle2.Play();//ドリブルエフェクト再生（中山が編集）
-        driftParticle3.Play();//ドリブルエフェクト再生（中山が編集）
-        driftParticle4.Play();//ドリブルエフェクト再生（中山が編集）
+
+        // ドリブルエフェクト再生（中山が編集）
+        driftParticle1.Play();
+        driftParticle2.Play();
+        driftParticle3.Play();
+        driftParticle4.Play();
+
         while (rotatedDegree <= 360)
         {
             float delta = 180f * Time.fixedDeltaTime;
@@ -254,14 +257,17 @@ public class BossMove3 : MonoBehaviour
         Vector3 rushDirection = transform.forward;
         bool isCasted = false;
         attackCollider.enabled = true;
-        rushParticle1.Play();//突進エフェクト再生（中山が編集）
-        rushParticle2.Play();//突進エフェクト再生（中山が編集）
-        rushParticle3.Play();//突進エフェクト再生（中山が編集）
-        rushParticle4.Play();//突進エフェクト再生（中山が編集）
-        rushParticle5.Play();//突進エフェクト再生（中山が編集）
-        rushParticle6.Play();//突進エフェクト再生（中山が編集）
-        rushParticle7.Play();//突進エフェクト再生（中山が編集）
-        rushParticle8.Play();//突進エフェクト再生（中山が編集）
+
+        // 突進エフェクト再生（中山が編集）
+        rushParticle1.Play();
+        rushParticle2.Play();
+        rushParticle3.Play();
+        rushParticle4.Play();
+        rushParticle5.Play();
+        rushParticle6.Play();
+        rushParticle7.Play();
+        rushParticle8.Play();
+
         while (timer <= 2 && !isCasted)
         {
             // ここで力を加える
