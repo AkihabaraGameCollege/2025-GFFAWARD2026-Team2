@@ -20,13 +20,22 @@ public class HitboxEnemy : MonoBehaviour
         // 被弾側のStatusManagerに通知
         Player playerScript = other.GetComponentInParent<Player>();
         int dam = playerScript.damage;
+
+        // ダッシュアタックかどうかを検知
         DashAttackCollider colliderScript = other.GetComponent<DashAttackCollider>();
+        
         
         if (colliderScript != null)
         {
+            // ダッシュアタックならダッシュアタックコライダー側にヒットを送る
             colliderScript.Hit();
+            // かつスタンを強制オフ
+            OnHit?.Invoke(dam, false);
         }
-
-        OnHit?.Invoke(dam, playerScript.IsStunable);
+        else
+        {
+            // ダッシュアタックでないなら通常攻撃
+            OnHit?.Invoke(dam, playerScript.IsStunable);
+        }
     }
 }
