@@ -295,7 +295,8 @@ MonoBehaviour:
   rushWaitTime: 1
   startMotionTime: 7
   stunEndAnimTime: 2
-  deathTime: 4
+  deathTime: 3
+  deathLittleTime: 3
   stunEndJumpForce: 10
   wallCheckerPos:
   - {x: 4, y: 2, z: 0}

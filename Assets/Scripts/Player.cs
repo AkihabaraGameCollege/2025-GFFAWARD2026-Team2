@@ -167,6 +167,11 @@ public class Player : MonoBehaviour
     private Vector3 knockBackVelocity = Vector3.zero;
     private bool isKnockBacking = false;
 
+    [SerializeField]
+    private float stunSkillTime = 5;
+
+    public float StunSkillTime { get { return stunSkillTime; } }
+
 
     //アニメーションID登録（中山が編集）
     static readonly int jumpID = Animator.StringToHash("jump");

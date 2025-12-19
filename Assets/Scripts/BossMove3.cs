@@ -36,6 +36,8 @@ public class BossMove3 : MonoBehaviour
     // 死亡関連設定（中山が編集）
     [SerializeField]
     private float deathTime = 3;
+    [SerializeField]
+    private float deathLittleTime = 2;
 
     [SerializeField]
     [Tooltip("スタン終了時のジャンプ力")]
@@ -131,17 +133,19 @@ public class BossMove3 : MonoBehaviour
     {
         AudioPlayer.instance.StopSE(); // BossSE停止（中山が編集）
         animator.SetTrigger(defeatId);//死亡モーション再生（中山が編集）
-        AudioPlayer.instance.PlaySE(12);
+        AudioPlayer.instance.PlaySE(12,1);
         attackCollider.enabled = false;
         StopAllCoroutines();
         StartCoroutine(DeathTimer());
     }
     IEnumerator DeathTimer()
     {
-        AudioPlayer.instance.PlaySE(10); // BossDefeatを再生（中山が編集）
+        AudioPlayer.instance.PlaySE(10,0.5f); // BossDefeatを再生（中山が編集）
         yield return new WaitForSeconds(deathTime);
+        AudioPlayer.instance.StopSE();
+        yield return new WaitForSeconds(deathLittleTime);
         StageScene.Instance.StageClear();
-        AudioPlayer.instance.PlaySE(13); // BossDestroyを再生（富里が編集）
+        AudioPlayer.instance.PlaySE(13,0.5f); // BossDestroyを再生（富里が編集）
         Destroy(gameObject);
     }
 
@@ -329,7 +333,7 @@ public class BossMove3 : MonoBehaviour
         else
         {
             // ひるむ時間を３秒くらいのばす
-            stunTimer += 3;
+            stunTimer = player.StunSkillTime;
         }
     }
 
@@ -341,7 +345,7 @@ public class BossMove3 : MonoBehaviour
         rb.linearVelocity = Vector3.zero;
         stunEffectObject = Instantiate(stunEffect,this.transform.localPosition + stunEffectPos, Quaternion.identity);
         stunEffectObject.transform.localScale = stunEffectScale; 
-        yield return StartCoroutine(Stun(defaultStunTime));
+        yield return StartCoroutine(Stun(player.StunSkillTime));
         StartCoroutine(MainLoop());
     }
 

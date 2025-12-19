@@ -337,12 +337,12 @@ public class BossMove1 : MonoBehaviour
         attackCollider.enabled = false;// 攻撃判定無効化（中山が編集）
         yield return new WaitForSeconds(bossLittleWaitTime);// 少し待機（中山が編集）
 
-        StartCoroutine(OnWeak());
+        StartCoroutine(OnWeak(bossWeakTime));
     }
 
-    private IEnumerator OnWeak()
+    private IEnumerator OnWeak(float stun)
     {
-        stunTimer = bossWeakTime;
+        stunTimer = stun;
         isStunning = true;
         
         Weak();// 弱点出現（中山が編集）
@@ -436,12 +436,12 @@ public class BossMove1 : MonoBehaviour
             StopAllCoroutines();
 
             animator.SetTrigger(immediateryWeakID); // これ専用の倒れるトランジション
-            StartCoroutine(OnWeak());
+            StartCoroutine(OnWeak(player.StunSkillTime));
         }
         else
         {
-            // ひるむ時間を３秒くらいのばす
-            stunTimer += 3;
+            // ひるむ時間を5秒にする
+            stunTimer = player.StunSkillTime;
         }
     }
 }
