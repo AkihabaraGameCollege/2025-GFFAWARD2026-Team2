@@ -28,10 +28,6 @@ public class AudioPlayer : MonoBehaviour
     private AudioSource seSource = null;
 
 
-    //====================================================================
-    //初期化処理
-    //====================================================================
-
     private void Awake()
     {
         //シングルトン
@@ -46,12 +42,8 @@ public class AudioPlayer : MonoBehaviour
         }
     }
 
-    //====================================================================
-    //BGM処理
-    //====================================================================
-
     /// <summary>
-    /// BGMを再生する。フェード中は再生できない
+    /// BGMを再生する
     /// </summary>
     /// <param name="bgmIndex">BGMの配列インデックス</param>
     public void PlayBGM(int bgmIndex)
@@ -74,6 +66,9 @@ public class AudioPlayer : MonoBehaviour
         bgmSource.Play();
     }
 
+    /// <summary>
+    /// BGMを一時停止
+    /// </summary>
     public void PauseBGM()
     {
         bgmSource.Pause();
@@ -84,15 +79,8 @@ public class AudioPlayer : MonoBehaviour
     /// </summary>
     public void StopBGM()
     {
-
-
         bgmSource.Stop();
     }
-
-
-    //====================================================================
-    //SE処理
-    //====================================================================
 
     /// <summary>
     /// SEを再生する
@@ -119,5 +107,4 @@ public class AudioPlayer : MonoBehaviour
     {
         seSource.Stop();
     }
-
 }

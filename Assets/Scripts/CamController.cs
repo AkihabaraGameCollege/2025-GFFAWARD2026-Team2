@@ -6,20 +6,24 @@ using System.Collections;
 /// </summary>
 public class CamController : MonoBehaviour
 {
-    // オブジェクト参照用（中山が編集）
+    [Header("オブジェクト参照")]
     [SerializeField]
+    [Tooltip("プレイヤーの三人称カメラ")]
     private GameObject playerCam;
     [SerializeField]
+    [Tooltip("ボスを見ている演出用カメラ")]
     private GameObject bossCam;
 
-    // パーティクル参照用（中山が編集）
     [SerializeField]
+    [Tooltip("ボス登場のParticleEffect")]
     private ParticleSystem particle;
 
-    // 時間指定用変数（中山が編集）
+    [Header("各種数値設定")]
     [SerializeField]
+    [Tooltip("ボス登場エフェクトまでの待機時間")]
     private float waitTime = 3f;
     [SerializeField]
+    [Tooltip("ボス登場エフェクトからプレイヤー操作可能までの遷移時間")]
     private float switchTime = 3f;
 
     // スクリプト参照用（中山が編集）

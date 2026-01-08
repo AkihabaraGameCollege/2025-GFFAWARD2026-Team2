@@ -29,46 +29,37 @@ public class PlayerUI : MonoBehaviour
     private Image sprintShiftImage;
 
     [SerializeField]
+    [Tooltip("HPの画像")]
     private Image lifeImage;
     [SerializeField]
+    [Tooltip("ダメージを食らったHP画像")]
     private Image damageImage;
 
     [SerializeField]
+    [Tooltip("スタン攻撃のクールダウン表示の基礎画像")]
     private Image strongArmCooldown;
     [SerializeField]
+    [Tooltip("スタン攻撃のクールダウン表示基礎画像の上にかぶせる画像")]
     private Image strongArmOverlay;
 
     private void Start()
     {
         ReloadFlag();
 
+        // Skillの有無に応じて画像表示を切り替え
         bool isGotSpeedSkill = PlayerPrefs.GetInt("SpeedLevel", 1) == 2;
-        if (isGotSpeedSkill)
-        {
-            sprintBackGround.enabled = true;
-            sprintGauge.enabled = true;
-            sprintShiftImage.enabled = true;
-        }
-        else
-        {
-            sprintBackGround.enabled = false;
-            sprintGauge.enabled = false;
-            sprintShiftImage.enabled = false;
-        }
+        sprintBackGround.enabled = isGotSpeedSkill;
+        sprintGauge.enabled = isGotSpeedSkill;
+        sprintShiftImage.enabled = isGotSpeedSkill;
 
-        if (PlayerPrefs.GetInt("AttackLevel", 1) == 2)
-        {
-            strongArmCooldown.enabled = true;
-            strongArmOverlay.enabled = true;
-        }
-        else
-        {
-            strongArmCooldown.enabled = false;
-            strongArmOverlay.enabled = false;
-        }
+        bool isGotAttackSkill = PlayerPrefs.GetInt("AttackLevel", 1) == 2;
+        strongArmCooldown.enabled = isGotAttackSkill;
+        strongArmOverlay.enabled = isGotAttackSkill;
     }
 
-    // 能力取得状態を更新 (富里が編集)
+    /// <summary>
+    /// 能力取得状態画像の更新
+    /// </summary>
     private void ReloadFlag()
     {
         images[0].sprite = (PlayerPrefs.GetInt("AttackLevel", 1) == 2) ? gotSprites[0] : notGotSprites[0];
@@ -76,17 +67,29 @@ public class PlayerUI : MonoBehaviour
         images[2].sprite = (PlayerPrefs.GetInt("SpeedLevel", 1) == 2) ? gotSprites[2] : notGotSprites[2];
     }
 
+    /// <summary>
+    /// sprintGaugeUIの更新
+    /// </summary>
+    /// <param name="value">0-1で設定する表示割合</param>
     public void ApplySprintGauge(float value)
     {
         sprintGauge.fillAmount = value;
     }
 
+    /// <summary>
+    /// HP UIの更新
+    /// </summary>
+    /// <param name="value">0-1で設定する表示割合 1がMaxHP</param>
     public void Life(float value)
     {
         lifeImage.fillAmount = value;
         damageImage.fillAmount = 1 - value;
     }
 
+    /// <summary>
+    /// スタン攻撃UIの更新
+    /// </summary>
+    /// <param name="amount">0-1で設定する表示割合</param>
     public void StrongArmCooldown(float amount)
     {
         strongArmOverlay.fillAmount = amount;
