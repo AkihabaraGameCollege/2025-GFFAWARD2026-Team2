@@ -23,16 +23,12 @@ public class PauseUI : MonoBehaviour
     [SerializeField, HideInInspector]
     private UnityEvent onExitButtonClick = null;
 
-    // Resume Button を指定します。
     [SerializeField]
     private Button resumeButton = null;
-    // Retry Button を指定します。
     [SerializeField]
     private Button retryButton = null;
-    // Tutorial Button を指定します。（中山が編集）
     [SerializeField]
     private Button tutorialButton = null;
-    // Exit Button を指定します。
     [SerializeField]
     private Button exitButton = null;
 
@@ -47,12 +43,17 @@ public class PauseUI : MonoBehaviour
         Hide();
     }
 
+    /// <summary>
+    /// ResumeButtonをSelectする
+    /// </summary>
     public void Select()
     {
         resumeButton.Select();
     }
 
-    // このUIを表示します。
+    /// <summary>
+    /// UIを表示
+    /// </summary>
     public void Show()
     {
         // 子オブジェクトをすべてアクティブ化
@@ -60,10 +61,12 @@ public class PauseUI : MonoBehaviour
         {
             child.gameObject.SetActive(true);
         }
-        resumeButton.Select();
+        Select();
     }
 
-    // このUIを非表示に設定します。
+    /// <summary>
+    /// UI非表示
+    /// </summary>
     public void Hide()
     {
         // 子オブジェクトをすべて非アクティブ化
