@@ -14,18 +14,27 @@ public class DataClearUI : MonoBehaviour
     [SerializeField]
     private Button BackButton;
 
+    /// <summary>
+    /// UI非表示
+    /// </summary>
     public void Hide()
     {
         AskUI.gameObject.SetActive(false);
         ConfirmUI.gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// 削除確認画面を表示
+    /// </summary>
     public void ShowAsk()
     {
         AskUI.gameObject.SetActive(true);
         NoButton.Select();
     }
 
+    /// <summary>
+    /// 削除済み画面を表示
+    /// </summary>
     public void ShowConfirm()
     {
         AskUI.gameObject.SetActive(false);
