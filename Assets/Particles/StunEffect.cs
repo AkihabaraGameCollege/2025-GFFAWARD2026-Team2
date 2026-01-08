@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// “G‚Ì‹­§ƒXƒ^ƒ“‚Ìeffect‚ğŠÇ—
+/// </summary>
 public class StunEffect : MonoBehaviour
 {
     [SerializeField]

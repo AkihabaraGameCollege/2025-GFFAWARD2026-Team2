@@ -1,5 +1,8 @@
-// HaloFollow.cs
 using UnityEngine;
+
+/// <summary>
+/// 敵のスタン中に出てくるヘイローエフェクトを管理
+/// </summary>
 
 public class HaloFollow : MonoBehaviour
 {
