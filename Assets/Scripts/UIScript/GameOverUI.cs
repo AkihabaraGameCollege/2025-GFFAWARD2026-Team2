@@ -2,11 +2,13 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-// ゲームオーバーUIの進行制御を管理します。
+/// <summary>
+/// GameOverUIのRootObjectにアタッチし、UIの進行管理をする
+/// </summary>
 public class GameOverUI : MonoBehaviour
 {
     // Retry Button が押されたときに発生する UnityEvent を取得または設定します。
-    public UnityEvent OnRetryButtonClick => onRetryButtonClick;
+    public UnityEvent OnRetryButtonClicka=> onRetryButtonClick;
     [SerializeField]
     private UnityEvent onRetryButtonClick = null;
     // Exit Button が押されたときに発生する UnityEvent を取得または設定します。

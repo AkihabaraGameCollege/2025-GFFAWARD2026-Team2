@@ -4,7 +4,9 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-// ステージセレクト画面からステージへ遷移するスクリプト（中山が編集）
+/// <summary>
+/// StageSelectSceneの管理をする
+/// </summary>
 public class StageSelect : MonoBehaviour
 {
     // 次のシーン名を指定（中山が編集）

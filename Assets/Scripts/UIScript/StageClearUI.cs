@@ -2,7 +2,9 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-// ステージクリアーUIの進行制御を管理します。
+/// <summary>
+/// StageClearUIのRootObjectにアタッチし、UIの進行管理をする
+/// </summary>
 public class StageClearUI : MonoBehaviour
 {
     // 「NEXT」ボタンが押されたときに発生する UnityEvent を取得または設定します。

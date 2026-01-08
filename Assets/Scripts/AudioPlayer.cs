@@ -1,7 +1,9 @@
 using UnityEngine;
 
-//BGMとSEの再生、停止を行うクラス
-//BGMのフェードイン、フェードアウトができる
+/// <summary>
+/// BGMとSEの再生、停止を行うクラス。
+/// BGMのフェードイン、フェードアウトができる
+/// </summary>
 public class AudioPlayer : MonoBehaviour
 {
     public static AudioPlayer instance;

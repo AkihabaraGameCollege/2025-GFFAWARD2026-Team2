@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/// <summary>
+/// GameClearScene‚ÌŠÇ—‚ğ‚·‚é
+/// </summary>
 public class GameClearScene : MonoBehaviour
 {
     [SerializeField]

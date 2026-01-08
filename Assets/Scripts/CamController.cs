@@ -1,7 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
-// カメラのコントロールを行うスクリプト（中山が編集）
+/// <summary>
+/// カメラの切り替え制御を行う
+/// </summary>
 public class CamController : MonoBehaviour
 {
     // オブジェクト参照用（中山が編集）

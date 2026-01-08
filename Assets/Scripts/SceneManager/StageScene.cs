@@ -5,6 +5,9 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/// <summary>
+/// StageSceneの管理をする
+/// </summary>
 public class StageScene : MonoBehaviour
 {
     // 自分自身のインスタンスを取得します。

@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
-
+/// <summary>
+/// PlayerUIのRootObjectにアタッチし、UIの進行管理をする
+/// </summary>
 public class PlayerUI : MonoBehaviour
 {
     [SerializeField]

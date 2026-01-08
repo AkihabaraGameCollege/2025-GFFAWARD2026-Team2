@@ -1,7 +1,9 @@
 using System.Collections;
 using UnityEngine;
 
-// ボス1の移動・攻撃パターン制御クラス（中山が編集）
+/// <summary>
+/// Boss1の行動制御
+/// </summary>
 public class BossMove1 : MonoBehaviour
 {
     // 移動速度設定（中山が編集）

@@ -2,6 +2,9 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// Playerの操作やその後の移動、ステータスなどを管理する
+/// </summary>
 public class Player : MonoBehaviour
 {
     [Header("Default Status")]

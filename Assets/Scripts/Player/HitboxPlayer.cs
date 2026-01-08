@@ -1,6 +1,9 @@
 using UnityEngine;
 
-// プレイヤーの当たり判定のスクリプト（中山が移植）
+
+/// <summary>
+/// Playerのダメージを受けたeventを送る
+/// </summary>
 public class HitboxPlayer : MonoBehaviour
 {
     // 注意: このColliderが衝突する条件は、Unityの「Project Settings」->「Physics」の

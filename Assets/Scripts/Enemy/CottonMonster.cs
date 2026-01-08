@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// CottonMonster‚Ìs“®§Œä
+/// </summary>
 public class CottonMonster : MonoBehaviour
 {
     private BossMove2 bossScript = null;

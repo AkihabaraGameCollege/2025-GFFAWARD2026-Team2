@@ -1,6 +1,9 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Boss3ÇÃçsìÆêßå‰
+/// </summary>
 public class BossMove3 : MonoBehaviour
 {
     private Rigidbody rb;

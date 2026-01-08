@@ -1,6 +1,9 @@
 using System;
 using UnityEngine;
 
+/// <summary>
+/// “G‘¤‚©‚çPlayer‚ª‚¢‚é‚©ŒŸ’m‚·‚é
+/// </summary>
 public class PlayerCheckCollider : MonoBehaviour
 {
     public event Action Enter;

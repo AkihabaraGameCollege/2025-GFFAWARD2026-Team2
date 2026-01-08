@@ -1,6 +1,9 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// DashAttackCollider‚ÌƒIƒ“ƒIƒt‚È‚Ç‚ğŠÇ—‚·‚é
+/// </summary>
 public class DashAttackCollider : MonoBehaviour
 {
     Collider thiscollider;

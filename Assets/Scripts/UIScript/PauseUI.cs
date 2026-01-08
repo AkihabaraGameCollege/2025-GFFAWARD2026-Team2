@@ -2,7 +2,9 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-// ポーズUIの進行制御を管理します。
+/// <summary>
+/// PauseUIのRootObjectにアタッチし、UIの進行管理をする
+/// </summary>
 public class PauseUI : MonoBehaviour
 {
     // Resume Button が押されたときに発生する UnityEvent を取得または設定します。

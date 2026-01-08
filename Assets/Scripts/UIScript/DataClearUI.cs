@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
-
+/// <summary>
+/// DataClearUIのRootObjectにアタッチし、UIの進行管理をする
+/// </summary>
 public class DataClearUI : MonoBehaviour
 {
     [SerializeField]

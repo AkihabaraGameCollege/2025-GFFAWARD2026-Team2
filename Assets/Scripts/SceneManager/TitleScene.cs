@@ -4,7 +4,9 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-//タイトルのアニメーション・ステージ画面への遷移・ボタン機能・音響を制御するスクリプト
+/// <summary>
+/// TitleSceneの管理をする
+/// </summary>
 public class TitleScene : MonoBehaviour
 {
     // ステージ画面に遷移するまでの時間を指定（中山が編集）

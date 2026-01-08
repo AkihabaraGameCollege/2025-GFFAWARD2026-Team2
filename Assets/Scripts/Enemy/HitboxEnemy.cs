@@ -1,7 +1,10 @@
 using System;
 using UnityEngine;
 
-// ボスの当たり判定のスクリプト（中山が移植）
+
+/// <summary>
+/// 敵の被ダメージEventを送る
+/// </summary>
 public class HitboxEnemy : MonoBehaviour
 {
     // 注意: このColliderが衝突する条件は、Unityの「Project Settings」->「Physics」の

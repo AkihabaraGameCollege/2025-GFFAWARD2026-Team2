@@ -1,7 +1,9 @@
 using System;
 using UnityEngine;
 
-// ボスのステータスに関するスクリプト（中山が別プロジェクトから移植）
+/// <summary>
+/// Boss用のステータス管理Class
+/// </summary>
 public class StatusManagerBoss : MonoBehaviour
 {
     //hp現在値
