@@ -1,7 +1,8 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using System.Collections;
 
 // ステージセレクト画面からステージへ遷移するスクリプト（中山が編集）
 public class StageSelect : MonoBehaviour
@@ -142,6 +143,8 @@ public class StageSelect : MonoBehaviour
 
         tutorialImageButton.onClick.AddListener(OnClickBack);
         abilityImageButton.onClick.AddListener (OnClickBack);
+
+        CursorUnLockJudge(false);
     }
 
     // ボス戦1へ行くボタンが押されたときに呼び出されるメソッド（中山が編集）
@@ -222,5 +225,27 @@ public class StageSelect : MonoBehaviour
     {
         AudioPlayer.instance.StopBGM(); // BGMを停止(中山が編集)
         SceneManager.LoadScene(titleScene);
+    }
+
+    public void CursorUnLockJudge(bool isConfine = false)
+    {
+        // ゲームパッドを使っていないのであればロック解除
+        if (Gamepad.current == null)
+        {
+            // ウィンドウ枠から出ないようにするか設定可能
+            if (isConfine)
+            {
+                Cursor.lockState = CursorLockMode.Confined;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.None;
+            }
+            Debug.Log("YEAH");
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
     }
 }

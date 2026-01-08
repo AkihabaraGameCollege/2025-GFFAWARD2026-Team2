@@ -36,6 +36,7 @@ public class GameClearScene : MonoBehaviour
 
     private void Start()
     {
+        AudioPlayer.instance.StopSE(); // SEを停止(中山が編集)
         AudioPlayer.instance.PlayBGM(7); // Gameclear1を再生（富里が編集）
         Cursor.lockState = CursorLockMode.None;// カーソルのロックを解除（富里が編集）
         StartCoroutine(OnStart());
@@ -56,7 +57,7 @@ public class GameClearScene : MonoBehaviour
     {
         if (isLoadable)
         {
-            StopCoroutine(OnStart());
+            StopAllCoroutines();// すべてのコルーチンを停止（中山が編集）
             StartCoroutine(LoadNextScene());// コルーチンを開始（中山が編集）
         }
     }

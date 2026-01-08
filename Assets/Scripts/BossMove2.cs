@@ -396,7 +396,7 @@ public class BossMove2 : MonoBehaviour
         else
         {
             // ‚Ð‚é‚ÞŽžŠÔ‚ð‚R•b‚­‚ç‚¢‚Ì‚Î‚·
-            stunTimer += 3;
+            stunTimer = player.StunSkillTime;
         }
     }
     IEnumerator OnStunTaken()
@@ -405,7 +405,7 @@ public class BossMove2 : MonoBehaviour
         animator.SetTrigger(immediatelyWeakID);
         stunEffectObject = Instantiate(stunEffect, this.transform.localPosition + stunEffectPos, Quaternion.identity);
         stunEffectObject.transform.localScale = stunEffectScale;
-        yield return StartCoroutine(Stun(defaultStunTime));
+        yield return StartCoroutine(Stun(player.StunSkillTime));
         Destroy(stunEffectObject);
         yield return StandUp();
         StartCoroutine(MainLoop());

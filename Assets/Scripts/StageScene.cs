@@ -1,6 +1,7 @@
 using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -19,6 +20,7 @@ public class StageScene : MonoBehaviour
     [SerializeField]
     private string titleStage ="Title";
 
+
     // ポーズUIを指定します。
     [SerializeField]
     private PauseUI pause = null;
@@ -35,6 +37,9 @@ public class StageScene : MonoBehaviour
     //プレイヤーを指定(中山が編集)
     [SerializeField]
     private Player player = null;
+
+    [Tooltip("プレイヤーの操作を司るコンポーネント")]
+    private PlayerInput playerInput;
   
     // ステージクリアー表示用のUIを指定します。（中山が編集）
     [SerializeField]
@@ -75,6 +80,7 @@ public class StageScene : MonoBehaviour
 
     private bool isFullUpgraded = false;
 
+
     // ステージ画面内の進行状態を表します。
     enum SceneState
     {
@@ -88,6 +94,13 @@ public class StageScene : MonoBehaviour
         StageClear,
     }
     SceneState sceneState = SceneState.Intro;// 現在のステージ画面内の進行状態
+
+    // プレイヤーがゲームパッドを使っているかどうかを返す関数
+    private bool IsUsingGamepad()
+    {
+        return playerInput.currentControlScheme == "Gamepad";
+    }
+
 
     // Awake is called when the script instance is being loaded（中山が編集）
     private void Awake()
@@ -148,6 +161,8 @@ public class StageScene : MonoBehaviour
         tutorialImage.enabled = false;
         tutorialImageButton.enabled = false;
         tutorialImageButton.onClick.AddListener(OnClickBack);
+
+        playerInput = player.GetComponent<PlayerInput>();
     }
 
     // イントロ演出を処理するコルーチン（中山が編集）
@@ -201,7 +216,7 @@ public class StageScene : MonoBehaviour
             IsPaused = true;
             Time.timeScale = 0;
             pause.Show();
-            Cursor.lockState = CursorLockMode.Confined;
+            CursorUnLockJudge(true);
         }
     }
 
@@ -290,6 +305,7 @@ public class StageScene : MonoBehaviour
             AudioPlayer.instance.PlayBGM(8); // gameoverを再生(富里が編集)
             gameOverUI.Show();// ゲームオーバーUIを表示(中山が編集)
             freelookCamera.enabled = false;
+            CursorUnLockJudge(true);
         }
     }
 
@@ -304,7 +320,7 @@ public class StageScene : MonoBehaviour
             player.Sleep();// プレイヤー操作を無効化(中山が編集)
             // ステージクリアーUIを表示
             stageClearUI.Show();
-            Cursor.lockState = CursorLockMode.Confined;
+            CursorUnLockJudge(true);
             freelookCamera.enabled = false;
 
             // 装備強化フラグに応じて装備強化を行う(富里が編集)
@@ -361,12 +377,31 @@ public class StageScene : MonoBehaviour
         }
         else
         {
-            Cursor.lockState = CursorLockMode.None;// カーソルのロックを解除（中山が編集）
+            CursorUnLockJudge(false);
         }
     }
 
     public void OnUpdateStrongArmCooldown(float value,float max)
     {
         playerUI.StrongArmCooldown(value / max);
+    }
+
+
+    // UIの表示時などに、カーソルのロックを外すかどうか判断する
+    public void CursorUnLockJudge(bool isConfine = false)
+    {
+        // ゲームパッドを使っていないのであればロック解除
+        if (!IsUsingGamepad())
+        {
+            // ウィンドウ枠から出ないようにするか設定可能
+            if (isConfine)
+            {
+                Cursor.lockState = CursorLockMode.Confined;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.None;
+            }
+        }
     }
 }

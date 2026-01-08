@@ -6827,6 +6827,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -2
       objectReference: {fileID: 0}
+    - target: {fileID: 8930712198133939179, guid: d9ddf0c4528c0a9479a9b5bae2e6cffe, type: 3}
+      propertyPath: deathAnimTime
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

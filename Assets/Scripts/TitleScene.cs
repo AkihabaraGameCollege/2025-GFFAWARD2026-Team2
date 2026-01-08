@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -44,7 +45,7 @@ public class TitleScene : MonoBehaviour
     //スタート時に呼び出されるメソッド
     void Start()
     {
-        Cursor.lockState = CursorLockMode.None;// カーソルのロックを解除（富里が編集）
+        CursorUnLockJudge(false);
         // Animatorコンポーネントを取得
         animator = GetComponent<Animator>();
         AudioPlayer.instance.PlayBGM(15); // titlemusicを再生(富里が編集)
@@ -113,5 +114,26 @@ public class TitleScene : MonoBehaviour
         PlayerPrefs.SetInt("AttackLevel", 1);
         PlayerPrefs.SetInt("JumpLevel", 1);
         PlayerPrefs.SetInt("SpeedLevel", 1);
+    }
+
+    public void CursorUnLockJudge(bool isConfine = false)
+    {
+        // ゲームパッドを使っていないのであればロック解除
+        if (Gamepad.current == null)
+        {
+            // ウィンドウ枠から出ないようにするか設定可能
+            if (isConfine)
+            {
+                Cursor.lockState = CursorLockMode.Confined;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.None;
+            }
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
     }
 }

@@ -167,6 +167,11 @@ public class Player : MonoBehaviour
     private Vector3 knockBackVelocity = Vector3.zero;
     private bool isKnockBacking = false;
 
+    [SerializeField]
+    private float stunSkillTime = 5;
+
+    public float StunSkillTime { get { return stunSkillTime; } }
+
 
     //アニメーションID登録（中山が編集）
     static readonly int jumpID = Animator.StringToHash("jump");
@@ -546,7 +551,6 @@ public class Player : MonoBehaviour
             dashParticle4.Play();// ダッシュエフェクト再生（中山が編集）
         }
 
-
         //if ((motionState == MotionState.Stopping || motionState == MotionState.Walking) &&
         //    PlayerPrefs.GetInt("AttackLevel", 1) == 2)
         //{
@@ -664,7 +668,6 @@ public class Player : MonoBehaviour
         isKnockBacking = true;
     }
   
-
     private void OnDrawGizmos()
     {
         Vector3 rushDirection = transform.forward;
