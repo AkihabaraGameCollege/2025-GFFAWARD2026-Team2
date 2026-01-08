@@ -1,6 +1,9 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Boss2の行動制御
+/// </summary>
 public class BossMove2 : MonoBehaviour
 {
     new private Rigidbody rigidbody;//Rigidbodyコンポーネント参照用（中山が編集）

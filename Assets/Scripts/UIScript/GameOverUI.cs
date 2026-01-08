@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class GameOverUI : MonoBehaviour
 {
     // Retry Button ‚ª‰Ÿ‚³‚ê‚½‚Æ‚«‚É”­¶‚·‚é UnityEvent ‚ğæ“¾‚Ü‚½‚Íİ’è‚µ‚Ü‚·B
-    public UnityEvent OnRetryButtonClicka=> onRetryButtonClick;
+    public UnityEvent OnRetryButtonClick=> onRetryButtonClick;
     [SerializeField]
     private UnityEvent onRetryButtonClick = null;
     // Exit Button ‚ª‰Ÿ‚³‚ê‚½‚Æ‚«‚É”­¶‚·‚é UnityEvent ‚ğæ“¾‚Ü‚½‚Íİ’è‚µ‚Ü‚·B
