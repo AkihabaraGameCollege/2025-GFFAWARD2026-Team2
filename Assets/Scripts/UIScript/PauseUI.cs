@@ -7,21 +7,20 @@ using UnityEngine.UI;
 /// </summary>
 public class PauseUI : MonoBehaviour
 {
-    // Resume Button が押されたときに発生する UnityEvent を取得または設定します。
     public UnityEvent OnResumeButtonClick => onResumeButtonClick;
-    [SerializeField]
+    [SerializeField, HideInInspector]
     private UnityEvent onResumeButtonClick = null;
-    // Restart Button が押されたときに発生する UnityEvent を取得または設定します。
+
     public UnityEvent OnRetryButtonClick => onRetryButtonClick;
-    [SerializeField]
+    [SerializeField, HideInInspector]
     private UnityEvent onRetryButtonClick = null;
-    // Tutorial Button が押されたときに発生する UnityEvent を取得または設定します。（中山が編集）
+
     public UnityEvent OnTutorialButtonClick => onTutorialButtonClick;
-    [SerializeField]
+    [SerializeField, HideInInspector]
     private UnityEvent onTutorialButtonClick = null;
-    // Exit Button が押されたときに発生する UnityEvent を取得または設定します。
+
     public UnityEvent OnExitButtonClick => onExitButtonClick;
-    [SerializeField]
+    [SerializeField, HideInInspector]
     private UnityEvent onExitButtonClick = null;
 
     // Resume Button を指定します。

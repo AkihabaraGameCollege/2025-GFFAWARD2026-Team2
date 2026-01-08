@@ -9,9 +9,11 @@ public class StageClearUI : MonoBehaviour
 {
     // 「NEXT」ボタンが押されたときに発生する UnityEvent を取得または設定します。
     public UnityEvent OnNextButtonClick => onNextButtonClick;
+    [SerializeField,HideInInspector]
     private UnityEvent onNextButtonClick = null;
 
     public UnityEvent OnTitleButtonClick => onTitleButtonClick;
+    [SerializeField,HideInInspector]
     private UnityEvent onTitleButtonClick = null;
 
     [SerializeField]
