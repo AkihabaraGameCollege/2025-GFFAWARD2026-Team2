@@ -1,16 +1,19 @@
 using System.Collections;
 using UnityEngine;
 
-// ボス1の移動・攻撃パターン制御クラス（中山が編集）
+/// <summary>
+/// ボスの移動・攻撃処理クラス
+/// </summary>
 public class BossMove1 : MonoBehaviour
 {
-    // 移動速度設定（中山が編集）
+    // 移動速度設定
     [SerializeField]
     private float moveP = 3;
-    // 回転速度設定（中山が編集）
+    // 回転速度設定
     [SerializeField]
     private float speedNumber = 11.1f;
-    // ボス行動時間設定（中山が編集）
+
+    // ボス行動時間設定
     [SerializeField]
     private float bossLittleWaitTime = 0.5f;
     [SerializeField]
@@ -27,104 +30,104 @@ public class BossMove1 : MonoBehaviour
     private float stumpAttackTime = 0.5f;
     [SerializeField]
     private float standTime = 1.0f;
-    // ジャンプ攻撃を仕掛ける距離設定（中山が編集）
+    // ジャンプ攻撃を仕掛ける距離設定
     [SerializeField]
     private float distanceNumber = 8.0f;
-    // ハンマー攻撃を仕掛ける時間設定（中山が編集）
+    // ハンマー攻撃を仕掛ける時間設定
     [SerializeField]
     private float hammerAttackTime = 30.0f;
-    // ボスがやられる時間設定（中山が編集）
+    // ボスがやられる時間設定
     [SerializeField]
     private float bossDieTime = 3.0f;
-    // ボス開始待機時間設定（中山が編集）
+    // ボス開始待機時間設定
     [SerializeField]
     private float bossStartTime = 3.0f;
-    // ハンマー攻撃時間初期値設定（中山が編集）
+    // ハンマー攻撃時間初期値設定
     [SerializeField]
     private float hammerAttackTimeDefault = 30.0f;
     [SerializeField]
     [Tooltip("ボスのアニメーションしてからコライダー出るまでの時間")]
     private float meleeAttackAnimTime = 1.5f;
-
     [SerializeField]
     [Tooltip("ボス足上げる時間")]
     private float stumpWaitTime = 1;
     [SerializeField]
     [Tooltip("足下げアニメーションの後の攻撃までの時間")]
     private float stumpColliderArriveCooldown = 1;
-
     [SerializeField]
     [Tooltip("ボス死亡コライダー出現までの時間")]
     private float deathColliderTime;
 
-    // スタンプ攻撃エフェクト再生までの待機時間（中山が編集）
+    // 踏みつけ攻撃エフェクト再生までの待機時間
     [SerializeField]
     private float particleWaitTime = 0.5f;
 
+    // 踏みつけ攻撃用コライダー
     [SerializeField]
-    [Tooltip("スタンプ攻撃用コライダー")]
+    [Tooltip("踏みつけ攻撃用コライダー")]
     private Collider stumpCollider;
-
-    // 攻撃判定（中山が編集）
+    // 攻撃判定
     [SerializeField]
     private Collider attackCollider;
-    // ボスの体に当たった時の判定（中山が編集）
+    // ボスの体に当たった時の判定
     [SerializeField]
     private Collider bodyAttackCollider;
-
+    // 弱点コライダーの参照
     [SerializeField]
     [Tooltip("弱点のコライダー")]
     private Collider weakCollider;
-
-    // プレイヤーとのCollisionCollider参照用 (富里が編集)
+    // プレイヤーとのCollisionCollider参照用
     [SerializeField]
     private Collider collider2Player = null;
 
+    // ダメージエフェクトの参照
     [SerializeField]
     [Tooltip("ダメージ時のエフェクト")]
     private GameObject damageEffect;
-
+    // ターゲットエフェクトの参照
     [SerializeField]
     [Tooltip("ヘイローエフェクト")]
     private GameObject haloEffect;
 
+    // アニメーターの参照
     [SerializeField]
-    Animator animator;// アニメーター（中山が編集）
+    Animator animator;
 
+    // ボスモデルについてるScriptの参照
     [SerializeField]
     [Tooltip("モデルについてるScript")]
     private ActionSounds modelScript;
 
-    // パーティクルシステム（中山が編集）
+    // パーティクルシステムの参照
     [SerializeField]
     private ParticleSystem particleStump1, particleStump2, particleStump3, particleStump4;
     [SerializeField]
     private ParticleSystem particleBigStump1, particleBigStump2, particleBigStump3, particleBigStump4;
 
-    private GameObject targetObject;
+    private GameObject targetObject;// プレイヤーオブジェクト参照用
+    new private Rigidbody rigidbody;// Rigidbodyコンポーネント参照用
+    private float stunTimer = 0;// スタンタイマー
 
-    new private Rigidbody rigidbody;// Rigidbodyコンポーネント参照用（中山が編集）
+    // スクリプト参照用変数
+    private Player player;// プレイヤースクリプト参照用
+    private StatusManagerBoss statusManager;// ステータスマネージャーボス参照用
 
-    private Player player;
-
-    // アニメーションID登録（中山が編集）
+    // アニメーションID登録
     static readonly int isWalkingID = Animator.StringToHash("isWalking");
     static readonly int attackID = Animator.StringToHash("attack");
-    static readonly int immediateryWeakID = Animator.StringToHash("ImmediatelyWeak");
+    static readonly int immediateryWeakID = Animator.StringToHash("ImmediatelyWeak");// スタン食らったとき用トランジション
     static readonly int wakeUpID = Animator.StringToHash("wakeUp");
     static readonly int dieID = Animator.StringToHash("die");
-    static readonly int landingID = Animator.StringToHash("landing");
+    static readonly int landingID = Animator.StringToHash("landing");// ジャンプ攻撃着地用
     static readonly int stumpID = Animator.StringToHash("Stump");
 
-    private bool isMoving = false;// 移動中かどうか判定（中山が編集）
-    private bool isTurning = false;// 攻撃中かどうか判定（中山が編集）
-    private bool isJumping = false;// 攻撃中かどうか判定（中山が編集）
-    private bool isWalking = false;// 歩行SE再生判定用（中山が編集）
-    private bool isAppeardWeak = false; // 弱点が露出したかどうか
-    private float stunTimer = 0;
-    private bool isStunning = false;
-
-    private StatusManagerBoss statusManager;
+    // 判定用フラグ
+    private bool isMoving = false;// 移動中かどうか判定
+    private bool isTurning = false;// 攻撃中かどうか判定
+    private bool isJumping = false;// 攻撃中かどうか判定
+    private bool isWalking = false;// 歩行SE再生判定用
+    private bool isAppeardWeak = false;// 弱点が露出したかどうか
+    private bool isStunning = false;// スタン中かどうか判定
 
     // 初期設定・登録等（中山が編集）
     void Awake()

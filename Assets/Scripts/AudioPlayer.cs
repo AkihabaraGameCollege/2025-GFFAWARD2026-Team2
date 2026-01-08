@@ -1,73 +1,72 @@
 using UnityEngine;
 
-//BGMとSEの再生、停止を行うクラス
-//BGMのフェードイン、フェードアウトができる
+/// <summary>
+/// BGMとSEを管理するシングルトンクラス
+/// </summary>
 public class AudioPlayer : MonoBehaviour
 {
-    public static AudioPlayer instance;
+    public static AudioPlayer instance;// シングルトンインスタンス
 
+    // オーディオクリップ
     [Header("AudioClips")]
-
+    // BGMの配列
     [SerializeField]
     [Tooltip("BGMを格納する")]
     private AudioClip[] bgmClips = null;
-
+    // SEの配列
     [SerializeField]
     [Tooltip("SEを格納する")]
     private AudioClip[] seClips = null;
 
+    // オーディオソース
     [Header("AudioSources\n上はBGM,下はSE")]
+    // BGM用オーディオソースの参照
     [SerializeField]
     [Tooltip("BGMを再生するAudioSource")]
     private AudioSource bgmSource = null;
-
+    // SE用オーディオソースの参照
     [SerializeField]
     [Tooltip("SEを再生するAudioSource")]
     private AudioSource seSource = null;
 
-
-    //====================================================================
-    //初期化処理
-    //====================================================================
-
+    /// <summary>
+    /// 初期の設定を行う関数
+    /// </summary>
     private void Awake()
     {
-        //シングルトン
+        // シングルトンの設定
         if (instance == null)
         {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
+            instance = this;// インスタンスを設定
+            DontDestroyOnLoad(gameObject);// シーン切り替え時に破棄しない
         }
+        // すでにインスタンスが存在する場合は破棄する
         else
         {
             Destroy(gameObject);
         }
     }
 
-    //====================================================================
-    //BGM処理
-    //====================================================================
-
     /// <summary>
-    /// BGMを再生する。フェード中は再生できない
+    /// BGMを再生するための関数（フェード中は再生できない）
     /// </summary>
     /// <param name="bgmIndex">BGMの配列インデックス</param>
     public void PlayBGM(int bgmIndex)
     {
-
+        // インデックスの範囲チェック
         if (bgmIndex < 0 || bgmIndex >= bgmClips.Length)
         {
-            Debug.LogError("BGMのインデックスが範囲外です");
-            return;
+            Debug.LogError("BGMのインデックスが範囲外です");// エラーログ出力
+            return;// この関数を抜ける
         }
 
-        //BGMが再生中なら停止する
+        // BGMが再生中なら停止する
         if (bgmSource.isPlaying)
         {
-            bgmSource.Stop();
+            bgmSource.Stop();// BGM停止
         }
 
-        //BGMを再生する
+        // BGMを再生する
         bgmSource.clip = bgmClips[bgmIndex];
         bgmSource.Play();
     }
@@ -77,45 +76,32 @@ public class AudioPlayer : MonoBehaviour
         bgmSource.Pause();
     }
 
-    /// <summary>
-    /// BGMを停止する。
-    /// </summary>
     public void StopBGM()
     {
-
-
         bgmSource.Stop();
     }
 
-
-    //====================================================================
-    //SE処理
-    //====================================================================
-
     /// <summary>
-    /// SEを再生する
+    /// SEを再生する関数
     /// </summary>
     /// <param name="seIndex">SEの配列インデックス</param>
-    /// 音量指定用の引数を追加（中山が編集）
     public void PlaySE(int seIndex, float volume = 0.2f, float pitch = 1)
     {
+        // インデックスの範囲チェック
         if (seIndex < 0 || seIndex >= seClips.Length)
         {
-            Debug.LogError("SEのインデックスが範囲外です\n呼び出されたIndex:" + seIndex);
-            return;
+            Debug.LogError("SEのインデックスが範囲外です\n呼び出されたIndex:" + seIndex);// エラーログ出力
+            return;// この関数を抜ける
         }
-        seSource.pitch = pitch;
-        seSource.volume = volume;// 音量設定（中山が編集）
 
-        seSource.PlayOneShot(seClips[seIndex]);
+        seSource.pitch = pitch;
+        seSource.volume = volume;
+
+        seSource.PlayOneShot(seClips[seIndex]);// インデックスに対応するSEを再生
     }
 
-    /// <summary>
-    /// SEを停止する
-    /// </summary>
     public void StopSE()
     {
         seSource.Stop();
     }
-
 }

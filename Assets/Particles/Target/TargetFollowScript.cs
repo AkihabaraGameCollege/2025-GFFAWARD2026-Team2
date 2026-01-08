@@ -1,34 +1,46 @@
-// HaloFollow.cs
 using UnityEngine;
 
+/// <summary>
+/// ターゲットに追従し、回転・脈動するエフェクトのクラス
+/// </summary>
 public class TargetFollowScript : MonoBehaviour
 {
+    // 追従ターゲット
     [Header("Target (set to weakpoint Transform)")]
     public Transform target;
 
+    // エフェクトの見た目設定
     [Header("Appearance")]
-    public Vector3 localOffset = Vector3.zero; // weakpointに対するローカルオフセット
-    public float baseScale = 1f;
-    public bool faceCamera = true; // 3Dならカメラに常に面する（billboard）
+    public Vector3 localOffset = Vector3.zero;// weakpointに対するローカルオフセット
+    public float baseScale = 1f;// 基本スケール
+    public bool faceCamera = true;// 3Dならカメラに常に面する（ON/OFF）
 
+    // モーション設定
     [Header("Motion")]
-    public float rotationSpeed = 90f; // deg/sec
-    public float pulseAmount = 0.12f; // 拡大率
-    public float pulseSpeed = 2f; // 1秒での脈動回数（速さ）
+    public float rotationSpeed = 90f;// 回転速度（度/秒）
+    public float pulseAmount = 0.12f;// 拡大率
+    public float pulseSpeed = 2f;// 1秒での脈動回数（速さ）
 
+    // 内部参照
     SpriteRenderer sr;
 
+    /// <summary>
+    /// 変数srにコンポーネントを取得して格納する関数
+    /// </summary>
     void Awake()
     {
-        sr = GetComponent<SpriteRenderer>();
+        sr = GetComponent<SpriteRenderer>();// SpriteRendererコンポーネント取得
     }
 
+    /// <summary>
+    /// ターゲットエフェクトの位置追従、回転、脈動処理の関数
+    /// </summary>
     void Update()
     {
+        // ターゲット追従
         if (target != null)
         {
-            // 位置追従（ターゲットのローカル座標系にオフセットで追従）
-            transform.position = target.position + target.TransformVector(localOffset);
+            transform.position = target.position + target.TransformVector(localOffset);// 位置追従
 
             // オプション: カメラに面させる（3Dシーンの場合）
             if (faceCamera && Camera.main != null)
@@ -37,10 +49,9 @@ public class TargetFollowScript : MonoBehaviour
             }
         }
 
-        // 回転
-        transform.Rotate(Vector3.forward, rotationSpeed * Time.deltaTime);
+        transform.Rotate(Vector3.forward, rotationSpeed * Time.deltaTime);// 回転
 
-        // 脈動（sin波）
+        // 脈動
         float pulse = 1f + Mathf.Sin(Time.time * pulseSpeed * Mathf.PI * 2f) * pulseAmount;
         transform.localScale = baseScale * pulse * Vector3.one;
     }
