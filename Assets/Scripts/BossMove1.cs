@@ -93,7 +93,7 @@ public class BossMove1 : MonoBehaviour
 
     [SerializeField]
     [Tooltip("モデルについてるScript")]
-    private ModelScript modelScript;
+    private ActionSounds modelScript;
 
     // パーティクルシステム（中山が編集）
     [SerializeField]

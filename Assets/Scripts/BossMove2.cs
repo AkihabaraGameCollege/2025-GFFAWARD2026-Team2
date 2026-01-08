@@ -37,7 +37,7 @@ public class BossMove2 : MonoBehaviour
     private GameObject haloEffect;
     [SerializeField]
     [Tooltip("モデルについてるScript")]
-    private ModelScript modelScript;
+    private ActionSounds modelScript;
 
     [Header("ボス固有の設定")]
     [SerializeField]
