@@ -1246,6 +1246,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6698327382501558890, guid: 24cbea4bce7577349aa70d96ce267123, type: 3}
+      propertyPath: 'bgmClips.Array.data[6]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 6bb645b08d4c89b4bab87e7d67aebd36, type: 3}
+    - target: {fileID: 6698327382501558890, guid: 24cbea4bce7577349aa70d96ce267123, type: 3}
+      propertyPath: 'bgmClips.Array.data[7]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 35548ef3aac216b4da1cfb1974a5c39b, type: 3}
     - target: {fileID: 7706057275111955898, guid: 24cbea4bce7577349aa70d96ce267123, type: 3}
       propertyPath: m_Name
       value: AudioPlayer
