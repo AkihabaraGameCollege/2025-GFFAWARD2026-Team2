@@ -388,7 +388,7 @@ MonoBehaviour:
   standTime: 1
   distanceNumber: 5
   hammerAttackTime: 30
-  bossDieTime: 9
+  bossDieTime: 6
   bossStartTime: 5
   hammerAttackTimeDefault: 10
   meleeAttackAnimTime: 1.5
