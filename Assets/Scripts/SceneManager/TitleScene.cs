@@ -9,12 +9,12 @@ using UnityEngine.UI;
 /// </summary>
 public class TitleScene : MonoBehaviour
 {
-    // ステージ画面に遷移するまでの時間を指定（中山が編集）
     [SerializeField]
+    [Tooltip("次のシーンへ遷移する時間")]
     private float stageTransitionDelay;
 
-    // 次のシーン名を指定（中山が編集）
     [SerializeField]
+    [Tooltip("次のシーンの名前")]
     private string nextSceneName;
 
     [SerializeField]
@@ -33,62 +33,75 @@ public class TitleScene : MonoBehaviour
     private Button StartButton;
 
     [SerializeField]
+    [Tooltip("Startが押されてからSkipButtonが出てくるまでの時間")]
     private float skipButtonAppearWaitTime;
 
-    // アウトロアニメーションの再生時間を指定（中山が編集）
     [SerializeField]
+    [Tooltip("暗転のアニメーション時間")]
     private float outroTime;
 
-    // Animatorコンポーネント
     Animator animator;
-    // AnimatorのパラメーターID
     static readonly int outroId = Animator.StringToHash("Outro");
 
-    //スタート時に呼び出されるメソッド
     void Start()
     {
+        //カーソルの表示
         CursorUnLockJudge(false);
-        // Animatorコンポーネントを取得
+        
         animator = GetComponent<Animator>();
-        AudioPlayer.instance.PlayBGM(15); // titlemusicを再生(富里が編集)
+        AudioPlayer.instance.PlayBGM(15); // titlemusicを再生
+
+        // UIの非表示
         dataClearUI.Hide();
     }
 
-    // スタートボタンが押されたときに呼び出されるメソッド
+    /// <summary>
+    /// StartのCoroutineを実行 ボタンから設定
+    /// </summary>
     public void PressStartButton()
     {
-        // エフェクトを再生
         StartCoroutine(OnStart());
     }
-    // スタートボタンが押されたときの処理を行うコルーチン
+    /// <summary>
+    /// スタート時に実行される処理
+    /// </summary>
     IEnumerator OnStart()
     {
-        // エフェクトを再生
+        // 処理の合間で待機時間を挟みながら次のシーンへ遷移する
         animator.SetTrigger(outroId);
-        yield return new WaitForSeconds(outroTime);// アニメーションの再生時間分待機（中山が編集）
-        AudioPlayer.instance.StopBGM(); // BGMを停止(中山が編集)
-        // ウェイト
+        yield return new WaitForSeconds(outroTime);
+        AudioPlayer.instance.StopBGM();
+        
         yield return new WaitForSeconds(skipButtonAppearWaitTime);
-        // スキップボタンをセレクトする
+        
         skipButton.Select();
-        // ウェイト
+        
         yield return new WaitForSeconds(stageTransitionDelay - skipButtonAppearWaitTime);
-        // 次のシーンへ遷移
+        
         SceneManager.LoadScene(nextSceneName);
     }
 
+    /// <summary>
+    /// オープニング中のスキップボタンの関数 ボタンから設定
+    /// </summary>
     public void OnSkipButtonClick()
     {
         SceneManager.LoadScene(nextSceneName);
     }
 
-    // クイットボタンが押されたときに呼び出されるメソッド（中山が編集）
+    /// <summary>
+    /// 即座にゲームを終了
+    /// ボタンから設定
+    /// </summary>
     public void QuitGame()
     {
         Debug.Log("ゲームを終了します");// コンソールに終了メッセージを表示（中山が編集）
         Application.Quit();// ゲーム終了（中山が編集）
     }
 
+    /// <summary>
+    /// データ削除画面から通常のTitle画面へ遷移 ボタンから設定
+    /// </summary>
     public void OnClickBackButton()
     {
         dataClearUI.Hide();
@@ -97,12 +110,18 @@ public class TitleScene : MonoBehaviour
         StartButton.Select();
     }
 
+    /// <summary>
+    /// データ削除の関数を実行 ボタンから設定
+    /// </summary>
     public void OnClickYesButton()
     {
         dataClearUI.ShowConfirm();
-        SaveDataClear();
+        ClearSaveData();
     }
 
+    /// <summary>
+    /// データ削除の確認画像表示 ボタンから設定
+    /// </summary>
     public void OnClickDataClearButton()
     {
         dataClearUI.ShowAsk();
@@ -110,7 +129,10 @@ public class TitleScene : MonoBehaviour
         titleButtons.SetActive(false);
     }
 
-    private void SaveDataClear()
+    /// <summary>
+    /// セーブデータの削除
+    /// </summary>
+    private void ClearSaveData()
     {
         // ステージランクのリセット
         PlayerPrefs.SetInt("AttackLevel", 1);
@@ -118,6 +140,10 @@ public class TitleScene : MonoBehaviour
         PlayerPrefs.SetInt("SpeedLevel", 1);
     }
 
+    /// <summary>
+    /// ゲームパッド対応版のカーソル出現関数
+    /// </summary>
+    /// <param name="isConfine">ウィンドウ枠から出ないようにするかどうか</param>
     public void CursorUnLockJudge(bool isConfine = false)
     {
         // ゲームパッドを使っていないのであればロック解除
