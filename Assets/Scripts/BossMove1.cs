@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -98,11 +100,17 @@ public class BossMove1 : MonoBehaviour
     [Tooltip("モデルについてるScript")]
     private ActionSounds modelScript;
 
-    // パーティクルシステムの参照
+    // パーティクルシステムの構造体
+    [Serializable]
+    private struct ParticleSystems
+    {
+        public ParticleSystem[] stump;// 踏みつけ攻撃エフェクト配列
+        public ParticleSystem[] bigStump;// ダブルスレッジハンマー攻撃エフェクト配列
+    }
+
+    // 攻撃エフェクト参照
     [SerializeField]
-    private ParticleSystem particleStump1, particleStump2, particleStump3, particleStump4;
-    [SerializeField]
-    private ParticleSystem particleBigStump1, particleBigStump2, particleBigStump3, particleBigStump4;
+    private ParticleSystems particles;
 
     private GameObject targetObject;// プレイヤーオブジェクト参照用
     new private Rigidbody rigidbody;// Rigidbodyコンポーネント参照用
@@ -129,98 +137,113 @@ public class BossMove1 : MonoBehaviour
     private bool isAppeardWeak = false;// 弱点が露出したかどうか
     private bool isStunning = false;// スタン中かどうか判定
 
-    // 初期設定・登録等（中山が編集）
+    /// <summary>
+    /// 初期化処理を行う関数
+    /// </summary>
     void Awake()
     {
-        statusManager = GetComponent<StatusManagerBoss>();
-        rigidbody = GetComponent<Rigidbody>();
-        targetObject = GameObject.FindWithTag("Player");
-        player = targetObject.GetComponent<Player>();
+        // スクリプト参照用変数初期化
+        statusManager = GetComponent<StatusManagerBoss>();// ステータスマネージャーボス参照用
+        rigidbody = GetComponent<Rigidbody>();// Rigidbodyコンポーネント参照用
+        targetObject = GameObject.FindWithTag("Player");// プレイヤーオブジェクト参照用
+        player = targetObject.GetComponent<Player>();// プレイヤースクリプト参照用
 
-        statusManager.OnDeath += Die; // 死亡時実行の関数をいれとく 富里
+        // イベント登録
+        statusManager.OnDeath += Die; // 死亡時実行の関数をいれとく
         statusManager.OnStunTaken += TakeStun; //スタン食らったとき
-        statusManager.OnDamageTaken += TakeDamage;
-        modelScript.PlayWalkSE += PlayWalkSE;
+        statusManager.OnDamageTaken += TakeDamage;// ダメージ食らったとき
+        modelScript.PlayWalkSE += PlayWalkSE;// 歩行SE再生関数登録
 
-        statusManager.isInvincible = false;
-        isWalking = true;// 歩行SE再生判定用（中山が編集）
-        isTurning = false;// 方向可能（中山が編集）
-        isMoving = false;// 移動停止（中山が編集）
-        isJumping = false;// 攻撃停止（中山が編集）
-        attackCollider.enabled = false;// 攻撃判定無効化（中山が編集）
-        bodyAttackCollider.enabled = true;// ボス本体判定有効化（中山が編集）
-        stumpCollider.enabled = false;
-        collider2Player.enabled = false; // プレイヤーとのCollisionColliderを無効化 (富里が編集)
+        // フラグ初期化
+        statusManager.isInvincible = false;// 無敵解除
+        isWalking = true;// 歩行SE再生判定用
+        isTurning = false;// 方向可能
+        isMoving = false;// 移動停止
+        isJumping = false;// 攻撃停止
+        attackCollider.enabled = false;// 攻撃判定無効化
+        bodyAttackCollider.enabled = true;// ボス本体判定有効化
+        stumpCollider.enabled = false;// 踏みつけ攻撃用コライダー無効化
+        collider2Player.enabled = false; // プレイヤーとのCollisionColliderを無効化
 
-        particleStump1.Stop();// スタンプ攻撃エフェクト停止（中山が編集）
-        particleStump2.Stop();// スタンプ攻撃エフェクト停止（中山が編集）
-        particleStump3.Stop();// スタンプ攻撃エフェクト停止（中山が編集）
-        particleStump4.Stop();// スタンプ攻撃エフェクト停止（中山が編集）
-        particleBigStump1.Stop();// 大スタンプ攻撃エフェクト停止（中山が編集）
-        particleBigStump2.Stop();// 大スタンプ攻撃エフェクト停止（中山が編集）
-        particleBigStump3.Stop();// 大スタンプ攻撃エフェクト停止（中山が編集）
-        particleBigStump4.Stop();// 大スタンプ攻撃エフェクト停止（中山が編集）
+        // すべての攻撃パーティクル停止
+        foreach (ParticleSystem stump in particles.stump)
+        {
+            stump.Stop();
+        }
+        foreach (ParticleSystem bigStump in particles.bigStump)
+        {
+            bigStump.Stop();
+        }
 
-        StopBoss();// ボス停止処理（中山が編集）
+        StopBoss();
     }
 
+    /// <summary>
+    /// オブジェクト破棄時の処理を行う関数
+    /// </summary>
     private void OnDestroy()
     {
+        // イベント登録解除
         if (statusManager != null)
         {
-            statusManager.OnDeath -= Die;
-            statusManager.OnStunTaken -= TakeStun;
-            statusManager.OnDamageTaken -= TakeDamage;
-            modelScript.PlayWalkSE -= PlayWalkSE;
+            statusManager.OnDeath -= Die;// 死亡時実行の関数を消す
+            statusManager.OnStunTaken -= TakeStun;// スタン食らったときの関数を消す
+            statusManager.OnDamageTaken -= TakeDamage;// ダメージ食らったときの関数を消す
+            modelScript.PlayWalkSE -= PlayWalkSE;// 歩行SE再生関数解除
         }
     }
 
-    // ボスの開始処理（中山が編集）
+    /// <summary>
+    /// スタート時の処理を行う関数
+    /// </summary>
     void Start()
     {
-        StartCoroutine(OnMove());// 初動行動開始（中山が編集）
+        StartCoroutine(OnMove());// 初動行動開始
     }
 
-    // 初動行動（中山が編集）
+    // 初動行動
     IEnumerator OnMove()
     {
+        yield return new WaitForSeconds(bossStartTime);// ボス開始時間待機
 
-        yield return new WaitForSeconds(bossStartTime);// 待機（中山が編集）
+        // フラグ変更
+        isTurning = true;// 回転可能
+        isMoving = true;// 移動開始
 
-        isTurning = true;// 方向可能（中山が編集）
-        isMoving = true;// 移動開始（中山が編集）
-
-        hammerAttackTime = hammerAttackTimeDefault;// ハンマー攻撃時間リセット（中山が編集）
+        hammerAttackTime = hammerAttackTimeDefault;// ハンマー攻撃時間リセット
     }
 
-    // ボスの毎フレーム更新処理
+    /// <summary>
+    /// ボスの行動処理を行う関数
+    /// </summary>
     void FixedUpdate()
     {
-
+        // もし弱点出現中であれば
         if (isAppeardWeak)
         {
-            return;
+            return;// 弱点出現中は処理終了
         }
 
-        float distance = Vector3.Distance(targetObject.transform.position, this.transform.position);// プレイヤーの近くにいたらジャンプ攻撃を仕掛ける処理（中山が編集）
+        float distance = Vector3.Distance(targetObject.transform.position, this.transform.position);// プレイヤーの近くにいたらジャンプ攻撃を仕掛ける処理
 
-        // 30秒たったらハンマー攻撃の関数を呼び出す（中山が編集）
+        // もしハンマー攻撃時間が来ていて、ジャンプ攻撃中でなければ
         if (hammerAttackTime <= 0 && !isJumping)
         {
-            HammerAttack();// ハンマー攻撃処理（中山が編集）
-            hammerAttackTime = hammerAttackTimeDefault;// ハンマー攻撃時間リセット（中山が編集）
+            HammerAttack();// ハンマー攻撃処理
+            hammerAttackTime = hammerAttackTimeDefault;// ハンマー攻撃時間リセット
         }
+        // そうでなければ
         else
         {
-            hammerAttackTime -= Time.fixedDeltaTime;// ハンマー攻撃時間カウントダウン（中山が編集）
+            hammerAttackTime -= Time.fixedDeltaTime;// ハンマー攻撃時間カウントダウン
         }
 
-        // 弱点出現していないときの処理（中山が編集）
+        // もし回転可能であれば
         if (isTurning)
         {
-            Turn();// 回転処理（中山が編集）
+            Turn();// 回転処理
 
-            // 移動処理（中山が編集）
+            // もし移動中であれば
             if (isMoving)
             {
                 MoveBoss();// ボス移動処理（中山が編集）
@@ -301,10 +324,13 @@ public class BossMove1 : MonoBehaviour
         AudioPlayer.instance.PlaySE(7);// ジャンプ攻撃SE再生（中山が編集）
         stumpCollider.enabled = true;
         yield return new WaitForSeconds(particleWaitTime);
-        particleStump1.Play();// スタンプ攻撃エフェクト再生（中山が編集）
-        particleStump2.Play();// スタンプ攻撃エフェクト再生（中山が編集）
-        particleStump3.Play();// スタンプ攻撃エフェクト再生（中山が編集）
-        particleStump4.Play();// スタンプ攻撃エフェクト再生（中山が編集）
+
+        // 踏みつけ攻撃エフェクト再生
+        foreach (ParticleSystem stump in particles.stump)
+        {
+            stump.Play();
+        }
+
         yield return new WaitForSeconds(stumpAttackTime);
         stumpCollider.enabled = false;
         isTurning = true;// 回転可能（中山が編集）
@@ -332,10 +358,13 @@ public class BossMove1 : MonoBehaviour
         AudioPlayer.instance.PlaySE(2);// 攻撃SE再生（中山が編集）
         yield return new WaitForSeconds(meleeAttackAnimTime);
         attackCollider.enabled = true;// 攻撃判定有効化（中山が編集）
-        particleBigStump1.Play();// 大スタンプ攻撃エフェクト再生（中山が編集）
-        particleBigStump2.Play();// 大スタンプ攻撃エフェクト再生（中山が編集）
-        particleBigStump3.Play();// 大スタンプ攻撃エフェクト再生（中山が編集）
-        particleBigStump4.Play();// 大スタンプ攻撃エフェクト再生（中山が編集）
+
+        // ダブルスレッジハンマー攻撃エフェクト再生
+        foreach (ParticleSystem bigStump in particles.bigStump)
+        {
+            bigStump.Play();
+        }
+
         yield return new WaitForSeconds(bossAttackTime);// 攻撃する時間（中山が編集）
         attackCollider.enabled = false;// 攻撃判定無効化（中山が編集）
         yield return new WaitForSeconds(bossLittleWaitTime);// 少し待機（中山が編集）

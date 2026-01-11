@@ -56,7 +56,7 @@ public class StageScene : MonoBehaviour
     [SerializeField]
     private string boss2StageName = "Boss2";
     [SerializeField]
-    private string boss3StageName = "Boss2";
+    private string boss3StageName = "Boss3";
 
     [SerializeField]
     Image bossLifeImage = null;

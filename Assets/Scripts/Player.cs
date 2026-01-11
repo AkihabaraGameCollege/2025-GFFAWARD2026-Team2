@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -121,16 +122,18 @@ public class Player : MonoBehaviour
     [Tooltip("被弾エフェクト")]
     GameObject damageEffect;
 
-    // エフェクト関連（中山が編集）
+    // パーティクルの配列
+    [Serializable]
+    private struct Particles
+    {
+        public ParticleSystem[] attack;// 攻撃エフェクトの配列
+        public ParticleSystem[] jump;// ジャンプエフェクトの配列
+        public ParticleSystem[] dashAttack;// ダッシュエフェクトの配列
+    }
+
+    // 攻撃エフェクト参照用
     [SerializeField]
-    [Tooltip("アタックエフェクト")]
-    private ParticleSystem attackEffect1, attackEffect2, attackEffect3;
-    [SerializeField]
-    [Tooltip("ジャンプエフェクト")]
-    private ParticleSystem jumpEffect1, jumpEffect2, jumpEffect3;
-    [SerializeField]
-    [Tooltip("ダッシュパーティクル")]
-    private ParticleSystem dashParticle1, dashParticle2, dashParticle3, dashParticle4;
+    private Particles particles;
 
     [Header("その他")]
     [SerializeField]
@@ -201,16 +204,20 @@ public class Player : MonoBehaviour
         attackCollider.enabled = false;// 攻撃判定を無効化（中山が編集）
         dashAttackCollider.enabled = false; // ダッシュアタック判定を無効化 (富里が編集)
         StatusReset();// ステータス初期化（中山が編集）
-        attackEffect1.Stop();// 攻撃エフェクト停止（中山が編集）
-        attackEffect2.Stop();// 攻撃エフェクト停止（中山が編集）
-        attackEffect3.Stop();// 攻撃エフェクト停止（中山が編集）
-        jumpEffect1.Stop();// ジャンプエフェクト停止（中山が編集）
-        jumpEffect2.Stop();// ジャンプエフェクト停止（中山が編集）
-        jumpEffect3.Stop();// ジャンプエフェクト停止（中山が編集）
-        dashParticle1.Stop();// ダッシュエフェクト停止（中山が編集）
-        dashParticle2.Stop();// ダッシュエフェクト停止（中山が編集）
-        dashParticle3.Stop();// ダッシュエフェクト停止（中山が編集）
-        dashParticle4.Stop();// ダッシュエフェクト停止（中山が編集）
+
+        // 全てのエフェクトを停止
+        foreach (var attack in particles.attack)
+            {
+            attack.Stop();
+        }
+        foreach (var jump in particles.jump)
+        {
+            jump.Stop();
+        }
+        foreach (var dash in particles.dashAttack)
+        {
+            dash.Stop();
+        }
     }
 
     private void StatusReset()
@@ -484,9 +491,11 @@ public class Player : MonoBehaviour
             // PlayerPrefsのJumpLevelが2の場合、ジャンプエフェクトを再生（中山が編集）
             if (PlayerPrefs.GetInt("JumpLevel", 1) == 2)
             {
-                jumpEffect1.Play();// ジャンプエフェクト再生（中山が編集）
-                jumpEffect2.Play();// ジャンプエフェクト再生（中山が編集）
-                jumpEffect3.Play();// ジャンプエフェクト再生（中山が編集）
+                // ジャンプエフェクト再生
+                foreach (var jump in particles.jump)
+                {
+                    jump.Play();
+                }
             }
         }
     }
@@ -513,9 +522,11 @@ public class Player : MonoBehaviour
         // PlayerPrefsのAttackLevelが2かつスタン可能の場合、攻撃エフェクトを再生（中山が編集）
         if (PlayerPrefs.GetInt("AttackLevel", 1) == 2 && IsStunable)
         {
-            attackEffect1.Play();// 攻撃エフェクト再生（中山が編集）
-            attackEffect2.Play();// 攻撃エフェクト再生（中山が編集）
-            attackEffect3.Play();// 攻撃エフェクト再生（中山が編集）
+           // 攻撃エフェクト再生
+            foreach (var attack in particles.attack)
+            {
+                attack.Play();
+            }
         }
 
         yield return new WaitForSeconds(playerLittleWaitTime);//playerLittleWaitTime秒待機（中山が編集）
@@ -545,10 +556,12 @@ public class Player : MonoBehaviour
                 motionState = MotionState.Sprinting;
             }
             dashAttackCollider.enabled = true;
-            dashParticle1.Play();// ダッシュエフェクト再生（中山が編集）
-            dashParticle2.Play();// ダッシュエフェクト再生（中山が編集）
-            dashParticle3.Play();// ダッシュエフェクト再生（中山が編集）
-            dashParticle4.Play();// ダッシュエフェクト再生（中山が編集）
+
+            // ダッシュエフェクト再生
+            foreach (var dash in particles.dashAttack)
+            {
+                dash.Play();
+            }
         }
 
         //if ((motionState == MotionState.Stopping || motionState == MotionState.Walking) &&
@@ -571,10 +584,12 @@ public class Player : MonoBehaviour
             motionState = MotionState.Walking;
         }
         dashAttackCollider.enabled = false;
-        dashParticle1.Stop();// ダッシュエフェクト停止（中山が編集）
-        dashParticle2.Stop();// ダッシュエフェクト停止（中山が編集）
-        dashParticle3.Stop();// ダッシュエフェクト停止（中山が編集）
-        dashParticle4.Stop();// ダッシュエフェクト停止（中山が編集）
+
+        // ダッシュエフェクト停止
+        foreach (var dash in particles.dashAttack)
+        {
+            dash.Stop();
+        }
     }
 
     public void Hit(Vector3 enemyPos)

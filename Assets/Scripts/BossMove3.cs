@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -75,11 +76,17 @@ public class BossMove3 : MonoBehaviour
     [SerializeField]
     Vector3 stunEffectScale;
 
-    // 攻撃エフェクトオブジェクト参照用（中山が編集）
+    // 攻撃エフェクトオブジェクト参照用
+    [Serializable]
+    private struct ParticleSystems
+    {
+        public ParticleSystem[] drift;//ドリブルエフェクト配列
+        public ParticleSystem[] rush;//突進エフェクト配列
+    }
+
+    // ドリブルエフェクト参照用
     [SerializeField]
-    private ParticleSystem driftParticle1, driftParticle2, driftParticle3, driftParticle4;
-    [SerializeField]
-    private ParticleSystem rushParticle1, rushParticle2, rushParticle3, rushParticle4, rushParticle5, rushParticle6, rushParticle7, rushParticle8;
+    private ParticleSystems particleSystems;
 
     private GameObject stunEffectObject;
 
@@ -109,21 +116,15 @@ public class BossMove3 : MonoBehaviour
         attackCollider.enabled = false;//攻撃判定無効化（中山が編集）
         playerCheckCollider.Hide();
 
-        //ドリブルエフェクト停止（中山が編集）
-        driftParticle1.Stop();
-        driftParticle2.Stop();
-        driftParticle3.Stop();
-        driftParticle4.Stop();
-
-        //突進エフェクト停止（中山が編集）
-        rushParticle1.Stop();
-        rushParticle2.Stop();
-        rushParticle3.Stop();
-        rushParticle4.Stop();
-        rushParticle5.Stop();
-        rushParticle6.Stop();
-        rushParticle7.Stop();
-        rushParticle8.Stop();
+        // エフェクト停止
+        foreach (ParticleSystem drift in particleSystems.drift)
+        {
+            drift.Stop();
+        }
+        foreach (ParticleSystem rush in particleSystems.rush)
+        {
+            rush.Stop();
+        }
 
         // 行動のコルーチンを起動
         StartCoroutine(StartMotion());
@@ -234,11 +235,11 @@ public class BossMove3 : MonoBehaviour
         float rotatedDegree = 0;
         Quaternion startRot = rb.rotation;
 
-        // ドリブルエフェクト再生（中山が編集）
-        driftParticle1.Play();
-        driftParticle2.Play();
-        driftParticle3.Play();
-        driftParticle4.Play();
+        // ドリブルエフェクト再生
+        foreach (ParticleSystem drift in particleSystems.drift)
+        {
+            drift.Play();
+        }
 
         while (rotatedDegree <= 360)
         {
@@ -262,15 +263,11 @@ public class BossMove3 : MonoBehaviour
         bool isCasted = false;
         attackCollider.enabled = true;
 
-        // 突進エフェクト再生（中山が編集）
-        rushParticle1.Play();
-        rushParticle2.Play();
-        rushParticle3.Play();
-        rushParticle4.Play();
-        rushParticle5.Play();
-        rushParticle6.Play();
-        rushParticle7.Play();
-        rushParticle8.Play();
+        // 突進エフェクト再生
+        foreach (ParticleSystem rush in particleSystems.rush)
+        {
+            rush.Play();
+        }
 
         while (timer <= 2 && !isCasted)
         {

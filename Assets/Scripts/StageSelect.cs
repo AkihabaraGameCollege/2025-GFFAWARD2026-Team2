@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System;
 
 // ステージセレクト画面からステージへ遷移するスクリプト（中山が編集）
 public class StageSelect : MonoBehaviour
@@ -74,9 +75,13 @@ public class StageSelect : MonoBehaviour
     [SerializeField]
     private string titleScene = "Title";
 
-    static readonly int outro1Id = Animator.StringToHash("outro1");// AnimatorのパラメーターID（中山が編集）
-    static readonly int outro2Id = Animator.StringToHash("outro2");// AnimatorのパラメーターID（中山が編集）
-    static readonly int outro3Id = Animator.StringToHash("outro3");// AnimatorのパラメーターID（中山が編集）
+    // AnimatorのパラメーターIDの配列
+    private struct OutroTriggerIds
+    {
+        public static readonly int outro1Id = Animator.StringToHash("Outro1");
+        public static readonly int outro2Id = Animator.StringToHash("Outro2");
+        public static readonly int outro3Id = Animator.StringToHash("Outro3");
+    }
 
     // 登録・音楽再生用（中山が編集）
     void Start()
@@ -157,7 +162,7 @@ public class StageSelect : MonoBehaviour
     IEnumerator LoadBoss1Scene()
     {
         AudioPlayer.instance.StopBGM(); // BGMを停止(中山が編集)
-        animator.SetTrigger(outro1Id);// エフェクトを再生（中山が編集）
+        animator.SetTrigger(OutroTriggerIds.outro1Id);// アウトロアニメーションを再生
         yield return new WaitForSeconds(outroTime);// アニメーションの再生時間分待機（中山が編集）
         SceneManager.LoadScene(nextSceneName1);// 次のシーンへ遷移（中山が編集）
     }
@@ -172,7 +177,7 @@ public class StageSelect : MonoBehaviour
     IEnumerator LoadBoss2Scene()
     {
         AudioPlayer.instance.StopBGM(); // BGMを停止(中山が編集)
-        animator.SetTrigger(outro2Id);// エフェクトを再生（中山が編集）
+        animator.SetTrigger(OutroTriggerIds.outro2Id);// アウトロアニメーションを再生
         yield return new WaitForSeconds(outroTime);// アニメーションの再生時間分待機（中山が編集）
         SceneManager.LoadScene(nextSceneName2);// 次のシーンへ遷移（中山が編集）
     }
@@ -187,7 +192,7 @@ public class StageSelect : MonoBehaviour
     IEnumerator LoadBoss3Scene()
     {
         AudioPlayer.instance.StopBGM(); // BGMを停止(中山が編集)
-        animator.SetTrigger(outro3Id);// エフェクトを再生（中山が編集）
+        animator.SetTrigger(OutroTriggerIds.outro3Id);// アウトロアニメーションを再生
         yield return new WaitForSeconds(outroTime);// アニメーションの再生時間分待機（中山が編集）
         SceneManager.LoadScene(nextSceneName3);// 次のシーンへ遷移（中山が編集）
     }

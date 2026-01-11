@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -133,9 +134,16 @@ public class BossMove2 : MonoBehaviour
     [SerializeField]
     Vector3 stunEffectScale;
 
-    // 攻撃エフェクト（中山が編集）
+    // ヒップドロップ攻撃のエフェクト
+    [Serializable]
+    private struct ParticleSystems
+    {
+        public ParticleSystem[] stump;
+    }
+
+    // structの配列を使うとInspectorで編集できないので個別に宣言
     [SerializeField]
-    private ParticleSystem stumpParticle1, stumpParticle2, stumpParticle3, stumpParticle4;
+    private ParticleSystems particles;
 
     private GameObject stunEffectObject;
 
@@ -169,13 +177,13 @@ public class BossMove2 : MonoBehaviour
         statusManager.isInvincible = false;
         attackCollider.enabled = false;//攻撃判定無効化
 
-        stumpParticle1.Stop();// 攻撃エフェクト停止（中山が編集）
-        stumpParticle2.Stop();// 攻撃エフェクト停止（中山が編集）
-        stumpParticle3.Stop();// 攻撃エフェクト停止（中山が編集）
-        stumpParticle4.Stop();// 攻撃エフェクト停止（中山が編集）
+        // ヒップドロップ攻撃エフェクト停止
+        foreach (ParticleSystem stump in particles.stump)
+        {
+            stump.Stop();
+        }
 
-        // 行動のコルーチンを起動
-        StartCoroutine(StartMotion());
+        StartCoroutine(StartMotion());// スタートモーション開始
     }
 
     // StatusManagerBossから呼び出される
@@ -320,10 +328,13 @@ public class BossMove2 : MonoBehaviour
             isGrounded = Physics.Linecast(transform.position + groundCheckStartPoint, transform.position + groundCheckEndPoint, groundLayer);
             yield return new WaitForFixedUpdate();
         }
-        stumpParticle1.Play();// 攻撃エフェクト再生（中山が編集）
-        stumpParticle2.Play();// 攻撃エフェクト再生（中山が編集）
-        stumpParticle3.Play();// 攻撃エフェクト再生（中山が編集）
-        stumpParticle4.Play();// 攻撃エフェクト再生（中山が編集）
+
+        // ヒップドロップ攻撃エフェクト再生
+        foreach (ParticleSystem stump in particles.stump)
+        {
+            stump.Play();
+        }
+
         // 着地攻撃判定を出す
         attackCollider.enabled = true;
         // 攻撃時間待つ
