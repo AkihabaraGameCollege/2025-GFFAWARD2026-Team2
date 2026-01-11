@@ -246,35 +246,31 @@ public class BossMove1 : MonoBehaviour
             // もし移動中であれば
             if (isMoving)
             {
-                MoveBoss();// ボス移動処理（中山が編集）
+                MoveBoss();
 
-                // プレイヤーとボスの距離を取得（中山が編集）
+                // もしプレイヤーが近くにいたら
                 if (distance <= distanceNumber)
                 {
-                    StumpAttack();// ジャンプ攻撃処理（中山が編集）
+                    StumpAttack();
                 }
             }
-            // 移動停止処理（中山が編集）
-            else if (!isMoving)
-            {
-                // テストでなくしてみてるけど大丈夫そう
-                //StopBoss();// ボス停止処理（中山が編集）
-            }
         }
-
-        
     }
 
-    // プレイヤーを追尾する（中山が編集）
+    /// <summary>
+    /// 回転処理を行う関数
+    /// </summary>
     private void Turn()
     {
-        float speed = speedNumber;// 補完スピードを決める（中山が編集）
-        Vector3 relativePos = targetObject.transform.position - transform.position;// ターゲット方向のベクトルを取得（中山が編集）
+        // 回転処理
+        float speed = speedNumber;// 補完スピードを決める
+        Vector3 relativePos = targetObject.transform.position - transform.position;// ターゲット方向のベクトルを取得
 
-        relativePos.y = 0;// X軸の回転は禁止する（中山が編集）
+        relativePos.y = 0;// X軸の回転は禁止する
 
-        Quaternion rotation = Quaternion.LookRotation(relativePos);// 方向を、回転情報に変換（中山が編集）
-        transform.rotation = Quaternion.Slerp(this.transform.rotation, rotation, speed);// 現在の回転情報と、ターゲット方向の回転情報を補完する（中山が編集）
+        // 方向を向く処理
+        Quaternion rotation = Quaternion.LookRotation(relativePos);// 方向を、回転情報に変換
+        transform.rotation = Quaternion.Slerp(this.transform.rotation, rotation, speed);// 現在の回転情報と、ターゲット方向の回転情報を補完する
     }
 
     // ボスが移動する（中山が編集）
