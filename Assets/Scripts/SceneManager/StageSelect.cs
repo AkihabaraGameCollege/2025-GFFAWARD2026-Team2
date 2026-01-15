@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -9,42 +10,30 @@ using UnityEngine.UI;
 /// </summary>
 public class StageSelect : MonoBehaviour
 {
-    // 次のシーン名を指定（中山が編集）
-    [SerializeField]
-    private string nextSceneName1;
-    [SerializeField]
-    private string nextSceneName2;
-    [SerializeField]
-    private string nextSceneName3;
+    [Serializable]
+    private struct StageSelectSceneData
+    {
+        public string skillName;
+        public string sceneName;
+        public Sprite defeatedSprite;
+        public Button button;
+        public Image hideSkillImage;
+        public bool isGotSkill;
+    }
 
     [SerializeField]
-    private Sprite defeatedSprite1;
-    [SerializeField]
-    private Sprite defeatedSprite2;
-    [SerializeField]
-    private Sprite defeatedSprite3;
+    private StageSelectSceneData[] sceneData;
 
     [SerializeField]
-    private Button buttonBoss1;
-    [SerializeField]
-    private Button buttonBoss2;
-    [SerializeField]
-    private Button buttonBoss3;
-
-    [SerializeField]
-    private Image secretAbility1;
-    [SerializeField]
-    private Image secretAbility2;
-    [SerializeField]
-    private Image secretAbility3;
-
-    [SerializeField]
+    [Tooltip("操作説明画像")]
     private Image tutorialImage;
+    //Start()時にGetComponentされる
     private Button tutorialImageButton;
 
-
     [SerializeField]
+    [Tooltip("能力説明画像")]
     private Image abilityImage;
+    //Start()時にGetComponentされる
     private Button abilityImageButton;
 
     [SerializeField]
@@ -56,9 +45,7 @@ public class StageSelect : MonoBehaviour
     [SerializeField]
     private float outroTime;
 
-    private bool isDefeatedBoss1;
-    private bool isDefeatedBoss2;
-    private bool isDefeatedBoss3;
+
     [SerializeField]
     [Tooltip("背景のimage")]
     private Image backGroundImage;
@@ -69,56 +56,52 @@ public class StageSelect : MonoBehaviour
     [Tooltip("クリア後の背景スプライト")]
     private Sprite clearedBackGroundSprite;
 
-    // Animatorコンポーネントの参照（中山が編集）
-    [SerializeField]
     private Animator animator;
 
     [SerializeField]
     private string titleScene = "Title";
 
-    static readonly int outro1Id = Animator.StringToHash("outro1");// AnimatorのパラメーターID（中山が編集）
-    static readonly int outro2Id = Animator.StringToHash("outro2");// AnimatorのパラメーターID（中山が編集）
-    static readonly int outro3Id = Animator.StringToHash("outro3");// AnimatorのパラメーターID（中山が編集）
+    static readonly int[] outroID =
+    {
+        Animator.StringToHash("outro1"),
+        Animator.StringToHash("outro2"),
+        Animator.StringToHash("outro3")
+    };
 
-    // 登録・音楽再生用（中山が編集）
     void Start()
     {
-        AudioPlayer.instance.PlayBGM(13); // stageSelectMusicを再生(中山が編集)
+        AudioPlayer.instance.PlayBGM(13); // stageSelectMusicを再生
 
-        if (PlayerPrefs.GetInt("AttackLevel", 1) == 2)
-        {
-            buttonBoss1.GetComponent<Image>().sprite = defeatedSprite1;
-            buttonBoss1.enabled = false;
-            isDefeatedBoss1 = true;
-        }
-        else
-        {
-            buttonBoss1.onClick.AddListener(PressBoss1Button);
-        }
+        bool isThereFalse = false;
+        animator = GetComponent<Animator>();
 
-        if (PlayerPrefs.GetInt("JumpLevel", 1) == 2)
+        // シーンの初期化
+        for (int i = 0; i < sceneData.Length; i++)
         {
-            buttonBoss2.GetComponent<Image>().sprite = defeatedSprite2;
-            buttonBoss2.enabled = false;
-            isDefeatedBoss2 = true;
-        }
-        else
-        {
-            buttonBoss2.onClick.AddListener(PressBoss2Button);
-        }
-
-        if (PlayerPrefs.GetInt("SpeedLevel", 1) == 2)
-        {
-            buttonBoss3.GetComponent<Image>().sprite = defeatedSprite3;
-            buttonBoss3.enabled = false;
-            isDefeatedBoss3 = true;
-        }
-        else
-        {
-            buttonBoss3.onClick.AddListener(PressBoss3Button);
+            int index = i;
+            // そのボスを討伐しているかどうかを判定
+            if (PlayerPrefs.GetInt(sceneData[i].skillName, 1) == 2)
+            {
+                // 討伐済みの画像に
+                sceneData[i].button.GetComponent<Image>().sprite = sceneData[i].defeatedSprite;
+                sceneData[i].button.enabled = true;
+                sceneData[i].isGotSkill = true;
+            }
+            else
+            {
+                // 未討伐の場合ボタンにメソッド割り当て
+                sceneData[i].isGotSkill = false;
+                sceneData[i].button.onClick.AddListener(() =>
+                {
+                    LoadScene(index);
+                });
+                isThereFalse = true;
+            }
+            sceneData[i].hideSkillImage.enabled = false;
         }
 
-        if (isDefeatedBoss1 && isDefeatedBoss2 && isDefeatedBoss3)
+        // すべてクリアしていた場合は背景を変更
+        if (!isThereFalse)
         {
             backGroundImage.sprite = clearedBackGroundSprite;
         }
@@ -126,109 +109,111 @@ public class StageSelect : MonoBehaviour
         {
             backGroundImage.sprite = normalBackGroundSprite;
         }
-        
+
+        // 説明画像の非表示
         abilityImage.enabled = false;
         tutorialImage.enabled = false;
 
-        secretAbility1.enabled = false;
-        secretAbility2.enabled = false;
-        secretAbility3.enabled = false;
-
+        // ボタンのComponent取得
         tutorialImageButton = tutorialImage.gameObject.GetComponent<Button>();
         abilityImageButton = abilityImage.gameObject.GetComponent<Button>();
 
+        // 説明画面のボタンのdisable
         tutorialImageButton.enabled = false;
         abilityImageButton.enabled = false;
 
+        // ボタンにメソッド割り当て
         tutorialButton.onClick.AddListener(OnClickTutorialButton);
         abilityButton.onClick.AddListener(OnClickAbilityButton);
-
         tutorialImageButton.onClick.AddListener(OnClickBack);
-        abilityImageButton.onClick.AddListener (OnClickBack);
+        abilityImageButton.onClick.AddListener(OnClickBack);
 
+        // カーソルをロック解除
         CursorUnLockJudge(false);
     }
 
-    // ボス戦1へ行くボタンが押されたときに呼び出されるメソッド（中山が編集）
-    public void PressBoss1Button()
+    /// <summary>
+    /// 次のシーンを読み込む
+    /// </summary>
+    /// <param name="sceneIndex">シーンの番号 最小値0</param>
+    public void LoadScene(int sceneIndex)
     {
-        StartCoroutine(LoadBoss1Scene());// コルーチンを開始（中山が編集）
+        StartCoroutine(LoadStageScene(sceneIndex));
     }
 
-    // ボス戦1へ行くコルーチン（中山が編集）
-    IEnumerator LoadBoss1Scene()
+    /// <summary>
+    /// 次のシーンの読み込みコルーチン
+    /// </summary>
+    /// <param name="stageNumber">シーンの番号 最小値0</param>
+    IEnumerator LoadStageScene(int stageNumber)
     {
+        // 存在しないシーン番号ならエラー
+        if (stageNumber < 0 || stageNumber >= sceneData.Length)
+        {
+            Debug.LogError("指定された番号のステージが存在しません"+stageNumber);
+            yield break;
+        }
+
         AudioPlayer.instance.StopBGM(); // BGMを停止(中山が編集)
-        animator.SetTrigger(outro1Id);// エフェクトを再生（中山が編集）
+        animator.SetTrigger(outroID[stageNumber]);// エフェクトを再生（中山が編集）
         yield return new WaitForSeconds(outroTime);// アニメーションの再生時間分待機（中山が編集）
-        SceneManager.LoadScene(nextSceneName1);// 次のシーンへ遷移（中山が編集）
+        SceneManager.LoadScene(sceneData[stageNumber].sceneName);// 次のシーンへ遷移（中山が編集）
     }
 
-    // ボス戦2へ行くボタンが押されたときに呼び出されるメソッド（中山が編集）
-    public void PressBoss2Button()
-    {
-        StartCoroutine(LoadBoss2Scene());// コルーチンを開始（中山が編集）
-    }
-
-    // ボス戦2へ行くコルーチン（中山が編集）
-    IEnumerator LoadBoss2Scene()
-    {
-        AudioPlayer.instance.StopBGM(); // BGMを停止(中山が編集)
-        animator.SetTrigger(outro2Id);// エフェクトを再生（中山が編集）
-        yield return new WaitForSeconds(outroTime);// アニメーションの再生時間分待機（中山が編集）
-        SceneManager.LoadScene(nextSceneName2);// 次のシーンへ遷移（中山が編集）
-    }
-
-    // ボス戦3へ行くボタンが押されたときに呼び出されるメソッド（中山が編集）
-    public void PressBoss3Button()
-    {
-        StartCoroutine(LoadBoss3Scene());// コルーチンを開始（中山が編集）
-    }
-
-    // ボス戦3へ行くコルーチン（中山が編集）
-    IEnumerator LoadBoss3Scene()
-    {
-        AudioPlayer.instance.StopBGM(); // BGMを停止(中山が編集)
-        animator.SetTrigger(outro3Id);// エフェクトを再生（中山が編集）
-        yield return new WaitForSeconds(outroTime);// アニメーションの再生時間分待機（中山が編集）
-        SceneManager.LoadScene(nextSceneName3);// 次のシーンへ遷移（中山が編集）
-    }
-
+    /// <summary>
+    /// 操作説明画面に遷移
+    /// </summary>
     public void OnClickTutorialButton()
     {
         tutorialImage.enabled = true;
-        tutorialImageButton.enabled=true;
+        tutorialImageButton.enabled = true;
         tutorialImageButton.Select();
     }
 
+    /// <summary>
+    /// 能力説明画面に遷移
+    /// </summary>
     public void OnClickAbilityButton()
     {
         abilityImage.enabled = true;
-        secretAbility1.enabled = !isDefeatedBoss1;
-        secretAbility2.enabled = !isDefeatedBoss2;
-        secretAbility3.enabled = !isDefeatedBoss3;
+        for (int i = 0; i < sceneData.Length; i++)
+        {
+            sceneData[i].hideSkillImage.enabled = sceneData[i].isGotSkill;
+        }
         abilityImageButton.enabled = true;
         abilityImageButton.Select();
     }
 
+    /// <summary>
+    /// 能力説明画面または操作説明画面から戻る
+    /// </summary>
     public void OnClickBack()
     {
         tutorialImage.enabled = false;
         abilityImage.enabled = false;
         tutorialImageButton.enabled = false;
         abilityImageButton.enabled = false;
-        secretAbility1.enabled = false;
-        secretAbility2.enabled = false;
-        secretAbility3.enabled = false;
+
+        for (int i = 0; i < sceneData.Length; i++)
+        {
+            sceneData[i].hideSkillImage.enabled = false;
+        }
         tutorialButton.Select();// 戻った後、チュートリアルボタンを選択状態にする（中山が編集）
     }
 
+    /// <summary>
+    /// タイトルへ戻る
+    /// </summary>
     public void OnClickTitleButton()
     {
         AudioPlayer.instance.StopBGM(); // BGMを停止(中山が編集)
         SceneManager.LoadScene(titleScene);
     }
 
+    /// <summary>
+    /// ゲームパッドに対応した、カーソルをロック解除するメソッド
+    /// </summary>
+    /// <param name="isConfine">ウィンドウ枠から出ないConfineモードにするかどうか</param>
     public void CursorUnLockJudge(bool isConfine = false)
     {
         // ゲームパッドを使っていないのであればロック解除
@@ -243,7 +228,6 @@ public class StageSelect : MonoBehaviour
             {
                 Cursor.lockState = CursorLockMode.None;
             }
-            Debug.Log("YEAH");
         }
         else
         {

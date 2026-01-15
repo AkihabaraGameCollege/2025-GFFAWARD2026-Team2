@@ -1761,18 +1761,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5cb0ee7729130c4983afc2fd8009f33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextSceneName1: Boss1
-  nextSceneName2: Boss2
-  nextSceneName3: Boss3
-  defeatedSprite1: {fileID: 21300000, guid: e0357316c3899014889254ed5097c951, type: 3}
-  defeatedSprite2: {fileID: 21300000, guid: f6a8fee99d452bc48a65395c3f7bc713, type: 3}
-  defeatedSprite3: {fileID: 21300000, guid: e1facb23cdd096e40b2e2b7ed9fe9392, type: 3}
-  buttonBoss1: {fileID: 1669486120}
-  buttonBoss2: {fileID: 353895126}
-  buttonBoss3: {fileID: 6056024}
-  secretAbility1: {fileID: 1980873957}
-  secretAbility2: {fileID: 866864825}
-  secretAbility3: {fileID: 235266606}
+  sceneData:
+  - skillName: AttackSkill
+    sceneName: Boss1
+    defeatedSprite: {fileID: 21300000, guid: e0357316c3899014889254ed5097c951, type: 3}
+    button: {fileID: 1669486120}
+    hideSkillImage: {fileID: 1980873957}
+    isGotSkill: 0
+  - skillName: JumpSkill
+    sceneName: Boss2
+    defeatedSprite: {fileID: 21300000, guid: f6a8fee99d452bc48a65395c3f7bc713, type: 3}
+    button: {fileID: 353895126}
+    hideSkillImage: {fileID: 866864825}
+    isGotSkill: 0
+  - skillName: SpeedSkill
+    sceneName: Boss3
+    defeatedSprite: {fileID: 21300000, guid: e1facb23cdd096e40b2e2b7ed9fe9392, type: 3}
+    button: {fileID: 6056024}
+    hideSkillImage: {fileID: 235266606}
+    isGotSkill: 0
   tutorialImage: {fileID: 305486546}
   abilityImage: {fileID: 864078352}
   tutorialButton: {fileID: 912375296}
