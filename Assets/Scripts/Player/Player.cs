@@ -128,26 +128,34 @@ public class Player : MonoBehaviour
     [Serializable]
     private struct Effect
     {
-        public ParticleSystem[] attackEffects;
-        public ParticleSystem[] jumpEffects;
-        public ParticleSystem[] dashParticles;
-        public void AllStop()
+        public GameObject objectParent;
+        private ParticleSystem[] particleSystems;
+        public readonly void Init()
         {
-            foreach (var effect in attackEffects)
+            foreach(Transform childs in objectParent.GetComponent<Transform>())
             {
-                effect.Stop();
+                particleSystems[particleSystems.Length] = childs.GetComponent<ParticleSystem>();
+                particleSystems[particleSystems.Length].Stop();
             }
+        }
 
-            foreach (var effect in jumpEffects)
-            { effect.Stop(); }
-
-            foreach (var effect in dashParticles)
-            { effect.Stop(); }
+        public readonly void Play()
+        {
+            foreach(var particle in  particleSystems)
+            {
+                particle.Play();
+            }
         }
     }
 
     [SerializeField]
-    Effect effects;
+    Effect dashEffect;
+
+    [SerializeField]
+    Effect jumpEffect;
+
+    [SerializeField]
+    Effect attackEffect;
 
 
     [Header("その他")]
@@ -181,6 +189,7 @@ public class Player : MonoBehaviour
 
     private bool isGotAttackSkill = false;
     private bool isGotSpeedSkill = false;
+    private bool isGotJumpSkill = false;
 
     private Vector3 knockBackVelocity = Vector3.zero;
     private bool isKnockBacking = false;
@@ -220,7 +229,9 @@ public class Player : MonoBehaviour
         dashAttackCollider.enabled = false; // ダッシュアタック判定を無効化 (富里が編集)
         StatusReset();// ステータス初期化（中山が編集）
 
-
+        dashEffect.Init();
+        jumpEffect.Init();
+        attackEffect.Init();
     }
 
     private void StatusReset()
@@ -242,6 +253,7 @@ public class Player : MonoBehaviour
         if (PlayerPrefs.GetInt("JumpLevel", 1) == 2)
         {
             jumpForce *= jumpForceMagnification;
+            isGotJumpSkill = true;
         }
 
         if (PlayerPrefs.GetInt("SpeedLevel", 1) == 2)
@@ -495,11 +507,9 @@ public class Player : MonoBehaviour
             motionState = MotionState.JumpAnticipation;// ジャンプ予備動作状態へ移行（中山が編集）
 
             // PlayerPrefsのJumpLevelが2の場合、ジャンプエフェクトを再生（中山が編集）
-            if (PlayerPrefs.GetInt("JumpLevel", 1) == 2)
+            if (isGotJumpSkill)
             {
-                //jumpEffect1.Play();// ジャンプエフェクト再生（中山が編集）
-                //jumpEffect2.Play();// ジャンプエフェクト再生（中山が編集）
-                //jumpEffect3.Play();// ジャンプエフェクト再生（中山が編集）
+                jumpEffect.Play();
             }
         }
     }
@@ -524,11 +534,9 @@ public class Player : MonoBehaviour
         AudioPlayer.instance.PlaySE(3);// PlayerClawAttackを再生 (富里が編集)
 
         // PlayerPrefsのAttackLevelが2かつスタン可能の場合、攻撃エフェクトを再生（中山が編集）
-        if (PlayerPrefs.GetInt("AttackLevel", 1) == 2 && IsStunable)
+        if (isGotAttackSkill && IsStunable)
         {
-            //attackEffect1.Play();// 攻撃エフェクト再生（中山が編集）
-            //attackEffect2.Play();// 攻撃エフェクト再生（中山が編集）
-            //attackEffect3.Play();// 攻撃エフェクト再生（中山が編集）
+            attackEffect.Play();
         }
 
         yield return new WaitForSeconds(playerLittleWaitTime);//playerLittleWaitTime秒待機（中山が編集）
@@ -558,19 +566,9 @@ public class Player : MonoBehaviour
                 motionState = MotionState.Sprinting;
             }
             dashAttackCollider.enabled = true;
-            //dashParticle1.Play();// ダッシュエフェクト再生（中山が編集）
-            //dashParticle2.Play();// ダッシュエフェクト再生（中山が編集）
-            //dashParticle3.Play();// ダッシュエフェクト再生（中山が編集）
-            //dashParticle4.Play();// ダッシュエフェクト再生（中山が編集）
+            
+            dashEffect.Play();
         }
-
-        //if ((motionState == MotionState.Stopping || motionState == MotionState.Walking) &&
-        //    PlayerPrefs.GetInt("AttackLevel", 1) == 2)
-        //{
-        //    motionState = MotionState.Sprinting; // MotionState更新 (富里が編集)
-        //    // DashAttack用なためコメントアウト
-        //    //animator.SetTrigger(dashAttackID); // アニメーター起動 (富里が編集)
-        //}
     }
 
     private void ExitSprint()
@@ -584,10 +582,7 @@ public class Player : MonoBehaviour
             motionState = MotionState.Walking;
         }
         dashAttackCollider.enabled = false;
-        //dashParticle1.Stop();// ダッシュエフェクト停止（中山が編集）
-        //dashParticle2.Stop();// ダッシュエフェクト停止（中山が編集）
-        //dashParticle3.Stop();// ダッシュエフェクト停止（中山が編集）
-        //dashParticle4.Stop();// ダッシュエフェクト停止（中山が編集）
+        dashEffect.Play();
     }
 
     public void Hit(Vector3 enemyPos)
