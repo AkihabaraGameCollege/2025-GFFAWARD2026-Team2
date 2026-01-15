@@ -1762,19 +1762,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneData:
-  - skillName: AttackSkill
+  - skillName: AttackLevel
     sceneName: Boss1
     defeatedSprite: {fileID: 21300000, guid: e0357316c3899014889254ed5097c951, type: 3}
     button: {fileID: 1669486120}
     hideSkillImage: {fileID: 1980873957}
     isGotSkill: 0
-  - skillName: JumpSkill
+  - skillName: JumpLevel
     sceneName: Boss2
     defeatedSprite: {fileID: 21300000, guid: f6a8fee99d452bc48a65395c3f7bc713, type: 3}
     button: {fileID: 353895126}
     hideSkillImage: {fileID: 866864825}
     isGotSkill: 0
-  - skillName: SpeedSkill
+  - skillName: SpeedLevel
     sceneName: Boss3
     defeatedSprite: {fileID: 21300000, guid: e1facb23cdd096e40b2e2b7ed9fe9392, type: 3}
     button: {fileID: 6056024}
@@ -1788,7 +1788,6 @@ MonoBehaviour:
   backGroundImage: {fileID: 483441239}
   normalBackGroundSprite: {fileID: 21300000, guid: 8a25af9e2b1affc4089fbc3e29f7ab5b, type: 3}
   clearedBackGroundSprite: {fileID: 21300000, guid: 2a3d41c06456ef44ab94711b1f214710, type: 3}
-  animator: {fileID: 1414940247}
   titleScene: Title
 --- !u!4 &1414940246
 Transform:

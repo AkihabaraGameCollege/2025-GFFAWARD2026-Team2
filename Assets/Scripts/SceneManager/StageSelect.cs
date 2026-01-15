@@ -178,7 +178,7 @@ public class StageSelect : MonoBehaviour
         abilityImage.enabled = true;
         for (int i = 0; i < sceneData.Length; i++)
         {
-            sceneData[i].hideSkillImage.enabled = sceneData[i].isGotSkill;
+            sceneData[i].hideSkillImage.enabled = !sceneData[i].isGotSkill;
         }
         abilityImageButton.enabled = true;
         abilityImageButton.Select();
