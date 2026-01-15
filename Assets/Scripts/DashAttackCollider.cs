@@ -1,30 +1,33 @@
 using System.Collections;
 using UnityEngine;
 
-public class DashAttackCollider : MonoBehaviour
+namespace QuickTheFury
 {
-    Collider thiscollider;
-    Player playerScript;
-
-    private void Start()
+    public class DashAttackCollider : MonoBehaviour
     {
-        thiscollider = GetComponent<Collider>();
-        playerScript = GetComponentInParent<Player>();
-    }
+        Collider thiscollider;
+        Player playerScript;
 
-    public void Hit()
-    {
-        thiscollider.enabled = false;
-        StartCoroutine(OnHit());
-    }
-
-    private IEnumerator OnHit()
-    {
-        yield return new WaitForSeconds(1);
-
-        if (playerScript.IsSprinting)
+        private void Start()
         {
-            thiscollider.enabled = true;
+            thiscollider = GetComponent<Collider>();
+            playerScript = GetComponentInParent<Player>();
+        }
+
+        public void Hit()
+        {
+            thiscollider.enabled = false;
+            StartCoroutine(OnHit());
+        }
+
+        private IEnumerator OnHit()
+        {
+            yield return new WaitForSeconds(1);
+
+            if (playerScript.IsSprinting)
+            {
+                thiscollider.enabled = true;
+            }
         }
     }
 }

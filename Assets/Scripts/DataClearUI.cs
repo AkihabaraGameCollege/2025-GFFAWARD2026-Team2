@@ -1,33 +1,36 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DataClearUI : MonoBehaviour
+namespace QuickTheFury
 {
-    [SerializeField]
-    private Image AskUI;
-    [SerializeField]
-    private Button NoButton;
-    [SerializeField]
-    private Image ConfirmUI;
-    [SerializeField]
-    private Button BackButton;
-
-    public void Hide()
+    public class DataClearUI : MonoBehaviour
     {
-        AskUI.gameObject.SetActive(false);
-        ConfirmUI.gameObject.SetActive(false);
-    }
+        [SerializeField]
+        private Image AskUI;
+        [SerializeField]
+        private Button NoButton;
+        [SerializeField]
+        private Image ConfirmUI;
+        [SerializeField]
+        private Button BackButton;
 
-    public void ShowAsk()
-    {
-        AskUI.gameObject.SetActive(true);
-        NoButton.Select();
-    }
+        public void Hide()
+        {
+            AskUI.gameObject.SetActive(false);
+            ConfirmUI.gameObject.SetActive(false);
+        }
 
-    public void ShowConfirm()
-    {
-        AskUI.gameObject.SetActive(false);
-        ConfirmUI.gameObject.SetActive(true);
-        BackButton.Select();
+        public void ShowAsk()
+        {
+            AskUI.gameObject.SetActive(true);
+            NoButton.Select();
+        }
+
+        public void ShowConfirm()
+        {
+            AskUI.gameObject.SetActive(false);
+            ConfirmUI.gameObject.SetActive(true);
+            BackButton.Select();
+        }
     }
 }

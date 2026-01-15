@@ -1,82 +1,85 @@
 using System;
 using UnityEngine;
 
-// ボスのステータスに関するスクリプト（中山が別プロジェクトから移植）
-public class StatusManagerBoss : MonoBehaviour
+namespace QuickTheFury
 {
-    //hp現在値
-    [SerializeField]
-    public int maxHealth = 15;
-    public int health;
-    //ラストスパートHP（中山が編集）
-    private int lastSpurtHP;
-    //ラストスパートBGM（中山が編集）
-    [SerializeField]
-    private int bossLastBGM = 1;
-
-    [SerializeField]
-    [Tooltip("HitBox")]
-    private HitboxEnemy hitbox;
-
-
-    private bool isAlreadyPlayed = false;//ラストスパートBGM再生判定用（中山が編集）
-
-    public bool isInvincible = false;
-
-    public event Action OnDamageTaken;
-    public event Action OnDeath;
-    public event Action OnStunTaken;
-
-    // 登録用（中山が編集）
-    void Awake()
+    // ボスのステータスに関するスクリプト（中山が別プロジェクトから移植）
+    public class StatusManagerBoss : MonoBehaviour
     {
+        //hp現在値
+        [SerializeField]
+        public int maxHealth = 15;
+        public int health;
+        //ラストスパートHP（中山が編集）
+        private int lastSpurtHP;
+        //ラストスパートBGM（中山が編集）
+        [SerializeField]
+        private int bossLastBGM = 1;
 
-        hitbox.OnHit += Hit;
+        [SerializeField]
+        [Tooltip("HitBox")]
+        private HitboxEnemy hitbox;
 
-        health = maxHealth;
 
-        lastSpurtHP = maxHealth / 3;
-    }
+        private bool isAlreadyPlayed = false;//ラストスパートBGM再生判定用（中山が編集）
 
-    public void Hit(int damage, bool stun)
-    {
-        if (!isInvincible)
+        public bool isInvincible = false;
+
+        public event Action OnDamageTaken;
+        public event Action OnDeath;
+        public event Action OnStunTaken;
+
+        // 登録用（中山が編集）
+        void Awake()
         {
 
-            // HPを減少させ、ダメージエフェクトを発生させる
-            health -= damage;
+            hitbox.OnHit += Hit;
 
-            StageScene.Instance.BossBarUpdate(health, maxHealth);//HPゲージを減少させる（中山が編集）
+            health = maxHealth;
 
-            
+            lastSpurtHP = maxHealth / 3;
+        }
 
-            // ラストスパートBGM再生判定（中山が編集）
-            if (health <= lastSpurtHP && !isAlreadyPlayed)
+        public void Hit(int damage, bool stun)
+        {
+            if (!isInvincible)
             {
-                AudioPlayer.instance.PlayBGM(bossLastBGM);// ラストスパートBGM再生（中山が編集）
-                isAlreadyPlayed = true;// 2回目以降再生されないようにする（Tomisatoが編集）
+
+                // HPを減少させ、ダメージエフェクトを発生させる
+                health -= damage;
+
+                StageScene.Instance.BossBarUpdate(health, maxHealth);//HPゲージを減少させる（中山が編集）
+
+
+
+                // ラストスパートBGM再生判定（中山が編集）
+                if (health <= lastSpurtHP && !isAlreadyPlayed)
+                {
+                    AudioPlayer.instance.PlayBGM(bossLastBGM);// ラストスパートBGM再生（中山が編集）
+                    isAlreadyPlayed = true;// 2回目以降再生されないようにする（Tomisatoが編集）
+                }
+
+                OnDamageTaken?.Invoke();
+
+                if (health <= 0)
+                {
+                    isInvincible = true;
+                    OnDeath?.Invoke();
+                }
             }
 
-            OnDamageTaken?.Invoke();
-
-            if (health <= 0)
+            if (stun)
             {
-                isInvincible = true;
-                OnDeath?.Invoke();
+                OnStunTaken?.Invoke();
             }
         }
-        
-        if (stun)
-        {
-            OnStunTaken?.Invoke();
-        }
-    }
 
-    void OnDestroy()
-    {
-        if (hitbox != null)
+        void OnDestroy()
         {
-            hitbox.OnHit -= Hit;
+            if (hitbox != null)
+            {
+                hitbox.OnHit -= Hit;
+            }
         }
     }
 }
