@@ -6,17 +6,14 @@ using UnityEngine;
 public class TargetFollowScript : MonoBehaviour
 {
     // 追従ターゲット
-    [Header("Target (set to weakpoint Transform)")]
     public Transform target;
 
     // エフェクトの見た目設定
-    [Header("Appearance")]
     public Vector3 localOffset = Vector3.zero;// weakpointに対するローカルオフセット
     public float baseScale = 1f;// 基本スケール
     public bool faceCamera = true;// 3Dならカメラに常に面する（ON/OFF）
 
     // モーション設定
-    [Header("Motion")]
     public float rotationSpeed = 90f;// 回転速度（度/秒）
     public float pulseAmount = 0.12f;// 拡大率
     public float pulseSpeed = 2f;// 1秒での脈動回数（速さ）

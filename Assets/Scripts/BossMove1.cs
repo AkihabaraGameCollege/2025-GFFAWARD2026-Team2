@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -18,6 +17,8 @@ public class BossMove1 : MonoBehaviour
     // ボス行動時間設定
     [SerializeField]
     private float bossLittleWaitTime = 0.5f;
+    [SerializeField]
+    private float bossVeryLittlWaiTim = 0.1f;
     [SerializeField]
     private float bossAttackTime = 1.5f;
     [SerializeField]
@@ -47,17 +48,17 @@ public class BossMove1 : MonoBehaviour
     // ハンマー攻撃時間初期値設定
     [SerializeField]
     private float hammerAttackTimeDefault = 30.0f;
+    // 近接攻撃アニメーション時間設定
     [SerializeField]
-    [Tooltip("ボスのアニメーションしてからコライダー出るまでの時間")]
     private float meleeAttackAnimTime = 1.5f;
+    // 踏みつけ攻撃の待機時間設定
     [SerializeField]
-    [Tooltip("ボス足上げる時間")]
     private float stumpWaitTime = 1;
+    // 踏みつけ攻撃コライダー出現までのクールタイム設定
     [SerializeField]
-    [Tooltip("足下げアニメーションの後の攻撃までの時間")]
     private float stumpColliderArriveCooldown = 1;
+    // 死亡時攻撃コライダー無効化までの時間設定
     [SerializeField]
-    [Tooltip("ボス死亡コライダー出現までの時間")]
     private float deathColliderTime;
 
     // 踏みつけ攻撃エフェクト再生までの待機時間
@@ -66,7 +67,6 @@ public class BossMove1 : MonoBehaviour
 
     // 踏みつけ攻撃用コライダー
     [SerializeField]
-    [Tooltip("踏みつけ攻撃用コライダー")]
     private Collider stumpCollider;
     // 攻撃判定
     [SerializeField]
@@ -76,7 +76,6 @@ public class BossMove1 : MonoBehaviour
     private Collider bodyAttackCollider;
     // 弱点コライダーの参照
     [SerializeField]
-    [Tooltip("弱点のコライダー")]
     private Collider weakCollider;
     // プレイヤーとのCollisionCollider参照用
     [SerializeField]
@@ -84,11 +83,9 @@ public class BossMove1 : MonoBehaviour
 
     // ダメージエフェクトの参照
     [SerializeField]
-    [Tooltip("ダメージ時のエフェクト")]
     private GameObject damageEffect;
     // ターゲットエフェクトの参照
     [SerializeField]
-    [Tooltip("ヘイローエフェクト")]
     private GameObject haloEffect;
 
     // アニメーターの参照
@@ -97,7 +94,6 @@ public class BossMove1 : MonoBehaviour
 
     // ボスモデルについてるScriptの参照
     [SerializeField]
-    [Tooltip("モデルについてるScript")]
     private ActionSounds modelScript;
 
     // パーティクルシステムの構造体
@@ -273,35 +269,40 @@ public class BossMove1 : MonoBehaviour
         transform.rotation = Quaternion.Slerp(this.transform.rotation, rotation, speed);// 現在の回転情報と、ターゲット方向の回転情報を補完する
     }
 
-    // ボスが移動する（中山が編集）
+    /// <summary>
+    /// ボスを移動する関数
+    /// </summary>
     private void MoveBoss()
     {
-        Vector3 forward = transform.forward * moveP;// 前方向に移動ベクトル設定（中山が編集）
-        rigidbody.linearVelocity = new Vector3(forward.x, rigidbody.linearVelocity.y, forward.z);// 前方向に移動（中山が編集）
-        animator.SetFloat(isWalkingID, rigidbody.linearVelocity.magnitude);// 歩行アニメーション開始（中山が編集）
+        Vector3 forward = transform.forward * moveP;// 前方向に移動ベクトル設定
+        rigidbody.linearVelocity = new Vector3(forward.x, rigidbody.linearVelocity.y, forward.z);// 前方向に移動
+        animator.SetFloat(isWalkingID, rigidbody.linearVelocity.magnitude);// 歩行アニメーション開始
 
-        // 歩行SE再生処理開始（中山が編集）
+        // 歩行SE再生処理開始
         if (isWalking)
         {
-            isWalking = false;// 歩行SE再生判定用（中山が編集）
+            isWalking = false;// 歩行SE再生判定用
         }
     }
 
-
-    // ボスが止まる（中山が編集）
+    /// <summary>
+    /// ボスが止まる関数
+    /// </summary>
     private void StopBoss()
     {
-        rigidbody.linearVelocity = new Vector3(0, rigidbody.linearVelocity.y, 0);// 移動停止（中山が編集）
-        animator.SetFloat(isWalkingID, rigidbody.linearVelocity.magnitude);// 歩行アニメーション停止（中山が編集）
+        rigidbody.linearVelocity = new Vector3(0, rigidbody.linearVelocity.y, 0);// 移動停止
+        animator.SetFloat(isWalkingID, rigidbody.linearVelocity.magnitude);// 歩行アニメーション停止
     }
 
-    // ジャンプ攻撃処理（中山が編集）
+    /// <summary>
+    /// ジャンプ攻撃処理を行う関数
+    /// </summary>
     private void StumpAttack()
     {
-        StartCoroutine(OnStump());// ジャンプ攻撃処理開始（中山が編集）
+        StartCoroutine(OnStump());// ジャンプ攻撃処理開始
     }
 
-    // ジャンプ攻撃処理（中山が編集）
+    // ジャンプ攻撃処理
     IEnumerator OnStump()
     {
         // ジャンプ開始
@@ -309,116 +310,126 @@ public class BossMove1 : MonoBehaviour
         isWalking = true;
         isJumping = true;
 
-        isTurning = false;// 回転停止（中山が編集）
-
-        
+        isTurning = false;// 回転停止
 
         animator.SetTrigger(stumpID);// ジャンプ開始
-        yield return new WaitForSeconds(stumpWaitTime);
-        animator.SetTrigger(landingID);
-        yield return new WaitForSeconds(stumpColliderArriveCooldown);
+        yield return new WaitForSeconds(stumpWaitTime);// ジャンプまでの待機時間
+        animator.SetTrigger(landingID);// ジャンプ着地アニメーション開始
+        yield return new WaitForSeconds(stumpColliderArriveCooldown);// 踏みつけ攻撃コライダー出現までのクールタイム待機
         AudioPlayer.instance.PlaySE(7);// ジャンプ攻撃SE再生（中山が編集）
-        stumpCollider.enabled = true;
-        yield return new WaitForSeconds(particleWaitTime);
+        stumpCollider.enabled = true;// 踏みつけ攻撃用コライダー有効化
+        yield return new WaitForSeconds(particleWaitTime);// 踏みつけ攻撃エフェクト再生までの待機時間
 
         // 踏みつけ攻撃エフェクト再生
         foreach (ParticleSystem stump in particles.stump)
         {
-            stump.Play();
+            stump.Play();// 踏みつけ攻撃エフェクト再生
         }
 
-        yield return new WaitForSeconds(stumpAttackTime);
-        stumpCollider.enabled = false;
-        isTurning = true;// 回転可能（中山が編集）
-        yield return new WaitForSeconds(standTime);// 少し待機（中山が編集）
+        yield return new WaitForSeconds(stumpAttackTime);// 踏みつけ攻撃時間待機
+        stumpCollider.enabled = false;// 踏みつけ攻撃用コライダー無効化
+        isTurning = true;// 回転可能
+        yield return new WaitForSeconds(standTime);// 少し待機
 
         // ジャンプ終了
         isMoving = true;
         isJumping = false;
     }
 
-    // ハンマー攻撃（中山が編集）
+    /// <summary>
+    /// ダブルスレッジハンマー攻撃処理を行う関数
+    /// </summary>
     private void HammerAttack()
     {
-        StartCoroutine(OnHammerAttack());// ハンマー攻撃処理開始（中山が編集）
+        StartCoroutine(OnHammerAttack());// ハンマー攻撃処理開始
     }
 
-    // ハンマー攻撃処理（中山が編集）
+    // ハンマー攻撃処理
     IEnumerator OnHammerAttack()
     {
-        isMoving = false;// 移動停止（中山が編集）
-        isWalking = true;// 歩行SE再生判定用（中山が編集）
+        isMoving = false;// 移動停止
+        isWalking = true;// 歩行SE再生判定用
 
-        isTurning = false;// 攻撃開始（中山が編集）
-        animator.SetTrigger(attackID);// ジャンプアニメーション開始（中山が編集）
-        AudioPlayer.instance.PlaySE(2);// 攻撃SE再生（中山が編集）
-        yield return new WaitForSeconds(meleeAttackAnimTime);
-        attackCollider.enabled = true;// 攻撃判定有効化（中山が編集）
+        isTurning = false;// 攻撃開始
+        animator.SetTrigger(attackID);// ジャンプアニメーション開始
+        AudioPlayer.instance.PlaySE(2);// 攻撃SE再生）
+        yield return new WaitForSeconds(meleeAttackAnimTime);// 近接攻撃アニメーション時間待機
+        attackCollider.enabled = true;// 攻撃判定有効化
 
         // ダブルスレッジハンマー攻撃エフェクト再生
         foreach (ParticleSystem bigStump in particles.bigStump)
         {
-            bigStump.Play();
+            bigStump.Play();// ダブルスレッジハンマー攻撃エフェクト再生
         }
 
-        yield return new WaitForSeconds(bossAttackTime);// 攻撃する時間（中山が編集）
-        attackCollider.enabled = false;// 攻撃判定無効化（中山が編集）
-        yield return new WaitForSeconds(bossLittleWaitTime);// 少し待機（中山が編集）
+        yield return new WaitForSeconds(bossAttackTime);// 攻撃する時間
+        attackCollider.enabled = false;// 攻撃判定無効化
+        yield return new WaitForSeconds(bossLittleWaitTime);// 少し待機
 
-        StartCoroutine(OnWeak(bossWeakTime));
+        StartCoroutine(OnWeak(bossWeakTime));// 弱点出現処理開始
     }
 
+    // 弱点出現処理
     private IEnumerator OnWeak(float stun)
     {
+        // スタン開始
         stunTimer = stun;
         isStunning = true;
         
-        Weak();// 弱点出現（中山が編集）
-        yield return new WaitForSeconds(bossWeakBeforeTime);// 弱点タイム（中山が編集）
-        bodyAttackCollider.enabled = false;
-        yield return new WaitForSeconds(0.1f);
-        collider2Player.enabled = true; // プレイヤーとのCollisionColliderを有効化 (富里が編集)
+        Weak();// 弱点出現
+        yield return new WaitForSeconds(bossWeakBeforeTime);// 弱点タイム
+        bodyAttackCollider.enabled = false;// ボス本体判定無効化
+        yield return new WaitForSeconds(bossVeryLittlWaiTim);// 少し待機
+        collider2Player.enabled = true; // プレイヤーとのCollisionColliderを有効化
 
         // 倒れる間のタイマー
         while (stunTimer >= 0)
         {
-            stunTimer -= Time.deltaTime;
-            yield return null;
+            stunTimer -= Time.deltaTime;// スタンタイマー減少
+            yield return null;// 1フレーム待機
         }
 
-        WakeUp();// 起き上がり（中山が編集）
-        yield return new WaitForSeconds(bossWakeUpTime);// 待機（中山が編集）
-        bodyAttackCollider.enabled = true;// ボス本体判定有効化（中山が編集）
-        yield return new WaitForSeconds(bossWaitTime);// 少し待機（中山が編集）
+        WakeUp();// 起き上がり
+        yield return new WaitForSeconds(bossWakeUpTime);// 待機
+        bodyAttackCollider.enabled = true;// ボス本体判定有効化
+        yield return new WaitForSeconds(bossWaitTime);// 少し待機
 
-        isTurning = true;// 攻撃停止（中山が編集）
-        isMoving = true;// 移動開始（中山が編集）
-        isAppeardWeak = false;
-        isStunning = false;
-        //rigidbody.isKinematic = false;
-        hammerAttackTime = hammerAttackTimeDefault;// ハンマー攻撃時間リセット（中山が編集）
+        isTurning = true;// 攻撃停止
+        isMoving = true;// 移動開始
+        isAppeardWeak = false;// 弱点非出現化
+        isStunning = false;// スタン解除
+        hammerAttackTime = hammerAttackTimeDefault;// ハンマー攻撃時間リセット
     }
 
-
-    // 弱点タイム（中山が編集）
+    /// <summary>
+    /// 弱点出現処理を行う関数
+    /// </summary>
     private void Weak()
     {
-        isAppeardWeak = true;
-    }
-    // 起き上がり（中山が編集）
-    private void WakeUp()
-    {
-        animator.SetTrigger(wakeUpID);// 起き上がりアニメーション再生（中山が編集）
-        collider2Player.enabled = false; // プレイヤーとのCollisionColliderを無効化 (富里が編集)
+        isAppeardWeak = true;// 弱点出現化
     }
 
+    /// <summary>
+    /// 起き上がり処理を行う関数
+    /// </summary>
+    private void WakeUp()
+    {
+        animator.SetTrigger(wakeUpID);// 起き上がりアニメーション再生
+        collider2Player.enabled = false; // プレイヤーとのCollisionColliderを無効化
+    }
+
+    /// <summary>
+    /// ボス撃退時の処理を行う関数
+    /// </summary>
     private void Die()
     {
-        StopAllCoroutines();
-        StartCoroutine(OnDeath());
+        StopAllCoroutines();// すべてのコルーチン停止
+        StartCoroutine(OnDeath());// 死亡処理開始
+
+        // エフェクト無効化
         if (haloEffect != null)
         {
-            haloEffect.SetActive(false);
+            haloEffect.SetActive(false);// ターゲットエフェクト無効化
         }
     }
 

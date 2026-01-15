@@ -8,25 +8,19 @@ public class AudioPlayer : MonoBehaviour
     public static AudioPlayer instance;// シングルトンインスタンス
 
     // オーディオクリップ
-    [Header("AudioClips")]
     // BGMの配列
     [SerializeField]
-    [Tooltip("BGMを格納する")]
     private AudioClip[] bgmClips = null;
     // SEの配列
     [SerializeField]
-    [Tooltip("SEを格納する")]
     private AudioClip[] seClips = null;
 
     // オーディオソース
-    [Header("AudioSources\n上はBGM,下はSE")]
     // BGM用オーディオソースの参照
     [SerializeField]
-    [Tooltip("BGMを再生するAudioSource")]
     private AudioSource bgmSource = null;
     // SE用オーディオソースの参照
     [SerializeField]
-    [Tooltip("SEを再生するAudioSource")]
     private AudioSource seSource = null;
 
     /// <summary>
