@@ -1,53 +1,56 @@
 using System;
 using UnityEngine;
 
-/// <summary>
-/// 子オブジェクトにつけたParticleSystemを再生したりする
-/// </summary>
-[Serializable]
-public class Effect
+namespace Assets.Scripts.Player
 {
-    [SerializeField]
-    public GameObject objectParent;
-    private ParticleSystem[] particleSystems;
     /// <summary>
-    /// 初期化メソッド
+    /// 子オブジェクトにつけたParticleSystemを再生したりする
     /// </summary>
-    public void Init()
+    [Serializable]
+    public class Effect
     {
-        particleSystems = objectParent.GetComponentsInChildren<ParticleSystem>();
-        Stop();
-    }
+        [SerializeField]
+        public GameObject objectParent;
+        private ParticleSystem[] particleSystems;
+        /// <summary>
+        /// 初期化メソッド
+        /// </summary>
+        public void Init()
+        {
+            particleSystems = objectParent.GetComponentsInChildren<ParticleSystem>();
+            Stop();
+        }
 
-    /// <summary>
-    /// 子オブジェクトらをまとめて再生
-    /// </summary>
-    public void Play()
-    {
-        if (particleSystems == null)
+        /// <summary>
+        /// 子オブジェクトらをまとめて再生
+        /// </summary>
+        public void Play()
         {
-            Debug.LogError("初期化されていません.。Init();してください");
-            return;
+            if (particleSystems == null)
+            {
+                Debug.LogError("初期化されていません.。Init();してください");
+                return;
+            }
+            foreach (var particle in particleSystems)
+            {
+                particle.Play();
+            }
         }
-        foreach (var particle in particleSystems)
-        {
-            particle.Play();
-        }
-    }
 
-    /// <summary>
-    /// 子オブジェクトらをまとめて停止
-    /// </summary>
-    public void Stop()
-    {
-        if (particleSystems == null)
+        /// <summary>
+        /// 子オブジェクトらをまとめて停止
+        /// </summary>
+        public void Stop()
         {
-            Debug.LogError("初期化されていません.。Init();してください");
-            return;
-        }
-        foreach (var particle in particleSystems)
-        {
-            particle.Stop();
+            if (particleSystems == null)
+            {
+                Debug.LogError("初期化されていません.。Init();してください");
+                return;
+            }
+            foreach (var particle in particleSystems)
+            {
+                particle.Stop();
+            }
         }
     }
 }

@@ -1,33 +1,36 @@
 using System.Collections;
 using UnityEngine;
 
-/// <summary>
-/// DashAttackColliderのオンオフなどを管理する
-/// </summary>
-public class DashAttackCollider : MonoBehaviour
+namespace QuickTheFury.Player
 {
-    Collider thiscollider;
-    Player playerScript;
-
-    private void Start()
+    /// <summary>
+    /// DashAttackColliderのオンオフなどを管理する
+    /// </summary>
+    public class DashAttackCollider : MonoBehaviour
     {
-        thiscollider = GetComponent<Collider>();
-        playerScript = GetComponentInParent<Player>();
-    }
+        Collider thiscollider;
+        PlayerController playerScript;
 
-    public void Hit()
-    {
-        thiscollider.enabled = false;
-        StartCoroutine(OnHit());
-    }
-
-    private IEnumerator OnHit()
-    {
-        yield return new WaitForSeconds(1);
-
-        if (playerScript.IsSprinting)
+        private void Start()
         {
-            thiscollider.enabled = true;
+            thiscollider = GetComponent<Collider>();
+            playerScript = GetComponentInParent<PlayerController>();
+        }
+
+        public void Hit()
+        {
+            thiscollider.enabled = false;
+            StartCoroutine(OnHit());
+        }
+
+        private IEnumerator OnHit()
+        {
+            yield return new WaitForSeconds(1);
+
+            if (playerScript.IsSprinting)
+            {
+                thiscollider.enabled = true;
+            }
         }
     }
 }

@@ -1,30 +1,33 @@
 using System;
 using UnityEngine;
 
-/// <summary>
-/// 敵側からPlayerがいるか検知する
-/// </summary>
-public class PlayerCheckCollider : MonoBehaviour
+namespace QuickTheFury.Enemy
 {
-    public event Action Enter;
-    private Collider thisCollider;
-    private void Awake()
+    /// <summary>
+    /// Playerがコライダー内にいるか検知する
+    /// </summary>
+    public class PlayerCheckCollider : MonoBehaviour
     {
-        thisCollider = GetComponent<Collider>();
-    }
+        public event Action Enter;
+        private Collider thisCollider;
+        private void Awake()
+        {
+            thisCollider = GetComponent<Collider>();
+        }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        Enter?.Invoke();
-    }
+        private void OnTriggerEnter(Collider other)
+        {
+            Enter?.Invoke();
+        }
 
-    public void Show()
-    {
-        thisCollider.enabled = true;
-    }
+        public void Show()
+        {
+            thisCollider.enabled = true;
+        }
 
-    public void Hide()
-    {
-        thisCollider.enabled = false;
+        public void Hide()
+        {
+            thisCollider.enabled = false;
+        }
     }
 }

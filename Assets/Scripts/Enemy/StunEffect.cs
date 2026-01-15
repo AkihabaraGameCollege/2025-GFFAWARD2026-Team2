@@ -1,37 +1,40 @@
 using UnityEngine;
 
-/// <summary>
-/// 敵の強制スタン時のeffectを管理
-/// </summary>
-public class StunEffect : MonoBehaviour
+namespace Assets.Scripts.Enemy
 {
-    [SerializeField]
-    private GameObject[] stars;
-
-    [SerializeField]
-    private float rotateSpeed = 180;
-
-    private void Start()
+    /// <summary>
+    /// 敵の強制スタン時のeffectを管理
+    /// </summary>
+    public class StunEffect : MonoBehaviour
     {
-        for (int i = 0; i < stars.Length; i++)
+        [SerializeField]
+        private GameObject[] stars;
+
+        [SerializeField]
+        private float rotateSpeed = 180;
+
+        private void Start()
         {
-            float radian = Mathf.PI * 2 / stars.Length * i;
-            stars[i].transform.localPosition = new Vector3
-                (
-                    Mathf.Cos(radian),
-                    0,
-                    Mathf.Sin(radian)
-                )
-                ;
+            for (int i = 0; i < stars.Length; i++)
+            {
+                float radian = Mathf.PI * 2 / stars.Length * i;
+                stars[i].transform.localPosition = new Vector3
+                    (
+                        Mathf.Cos(radian),
+                        0,
+                        Mathf.Sin(radian)
+                    )
+                    ;
+            }
         }
-    }
 
-    private void Update()
-    {
-        transform.Rotate(0,rotateSpeed * Time.deltaTime,0);
-        for (int i = 0;i < stars.Length;i++)
+        private void Update()
         {
-            stars[i].transform.forward = Camera.main.transform.forward;
+            transform.Rotate(0, rotateSpeed * Time.deltaTime, 0);
+            for (int i = 0; i < stars.Length; i++)
+            {
+                stars[i].transform.forward = Camera.main.transform.forward;
+            }
         }
     }
 }
