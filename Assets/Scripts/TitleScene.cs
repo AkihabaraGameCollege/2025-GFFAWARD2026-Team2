@@ -18,9 +18,6 @@ namespace QuickTheFury
         private string nextSceneName;
 
         [SerializeField]
-        private DataClearUI dataClearUI;
-
-        [SerializeField]
         private Image titleImage;
 
         [SerializeField]
@@ -39,6 +36,15 @@ namespace QuickTheFury
         [SerializeField]
         private float outroTime;
 
+        [SerializeField]
+        private Image AskUI;
+        [SerializeField]
+        private Button NoButton;
+        [SerializeField]
+        private Image ConfirmUI;
+        [SerializeField]
+        private Button BackButton;
+
         // Animatorコンポーネント
         Animator animator;
         // AnimatorのパラメーターID
@@ -51,7 +57,7 @@ namespace QuickTheFury
             // Animatorコンポーネントを取得
             animator = GetComponent<Animator>();
             AudioPlayer.instance.PlayBGM(15); // titlemusicを再生(富里が編集)
-            dataClearUI.Hide();
+                                              Hide();
         }
 
         // スタートボタンが押されたときに呼び出されるメソッド
@@ -91,7 +97,7 @@ namespace QuickTheFury
 
         public void OnClickBackButton()
         {
-            dataClearUI.Hide();
+           Hide();
             titleImage.enabled = true;
             titleButtons.SetActive(true);
             StartButton.Select();
@@ -99,13 +105,13 @@ namespace QuickTheFury
 
         public void OnClickYesButton()
         {
-            dataClearUI.ShowConfirm();
+            ShowConfirm();
             SaveDataClear();
         }
 
         public void OnClickDataClearButton()
         {
-            dataClearUI.ShowAsk();
+            ShowAsk();
             titleImage.enabled = false;
             titleButtons.SetActive(false);
         }
@@ -137,6 +143,27 @@ namespace QuickTheFury
             {
                 Cursor.lockState = CursorLockMode.Locked;
             }
+
+
+        }
+
+        public void Hide()
+        {
+            AskUI.gameObject.SetActive(false);
+            ConfirmUI.gameObject.SetActive(false);
+        }
+
+        public void ShowAsk()
+        {
+            AskUI.gameObject.SetActive(true);
+            NoButton.Select();
+        }
+
+        public void ShowConfirm()
+        {
+            AskUI.gameObject.SetActive(false);
+            ConfirmUI.gameObject.SetActive(true);
+            BackButton.Select();
         }
     }
 }

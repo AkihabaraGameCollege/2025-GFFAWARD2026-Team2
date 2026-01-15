@@ -2,9 +2,9 @@ using UnityEngine;
 
 namespace QuickTheFury
 {
-    public class CottonMonster : MonoBehaviour
+    public class CottonMonsterMoveAI : MonoBehaviour
     {
-        private BossMove2 bossScript = null;
+        private Boss2MoveAI bossScript = null;
         private Rigidbody rb = null;
 
         private Vector3 spreadVelocity = Vector3.zero;
@@ -32,7 +32,7 @@ namespace QuickTheFury
             Moving
         }
         private MotionState motionState = MotionState.Spreading;
-        public void Initialize(BossMove2 script, Vector3 direction, float spreadSpeed, float spreadTime, float moveSpeed, Vector3 spawnOffset, float absorbRad)
+        public void Initialize(Boss2MoveAI script, Vector3 direction, float spreadSpeed, float spreadTime, float moveSpeed, Vector3 spawnOffset, float absorbRad)
         {
             rb = GetComponent<Rigidbody>();
             hitbox.OnHit += OnDamageTaken;

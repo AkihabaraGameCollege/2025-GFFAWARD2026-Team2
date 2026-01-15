@@ -375,7 +375,7 @@ namespace QuickTheFury
                 // 召喚
                 GameObject go = Instantiate(zakoPrefab, transform.position + zakoSpawnOffset, Quaternion.identity);
                 // 召喚したオブジェクトのscriptを持ってくる
-                CottonMonster script = go.GetComponent<CottonMonster>();
+                CottonMonsterMoveAI script = go.GetComponent<CottonMonsterMoveAI>();
                 // Yはプラス、XZは完全ランダムな方向を取得
                 Vector3 dir = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized;
                 // 拡散スピードを決定

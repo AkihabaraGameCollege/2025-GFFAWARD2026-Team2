@@ -24,7 +24,7 @@ namespace QuickTheFury
             int dam = playerScript.damage;
 
             // ダッシュアタックかどうかを検知
-            DashAttackCollider colliderScript = other.GetComponent<DashAttackCollider>();
+            Player colliderScript = other.GetComponent<Player>();
 
 
             if (colliderScript != null)

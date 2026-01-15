@@ -177,6 +177,8 @@ namespace QuickTheFury
 
         public float StunSkillTime { get { return stunSkillTime; } }
 
+        Collider thiscollider;
+        Player playerScript;
 
         //アニメーションID登録（中山が編集）
         static readonly int jumpID = Animator.StringToHash("jump");
@@ -201,6 +203,8 @@ namespace QuickTheFury
         private void Awake()
         {
             rigidbody = GetComponent<Rigidbody>();// Rigidbody コンポーネントを取得
+            thiscollider = GetComponent<Collider>();
+            playerScript = GetComponentInParent<Player>();
 
             attackOK = true;// 攻撃制限変数初期化（中山が編集）
             attackCollider.enabled = false;// 攻撃判定を無効化（中山が編集）
@@ -715,6 +719,22 @@ namespace QuickTheFury
         private void GetSpeedSkill()
         {
             PlayerPrefs.SetInt("SpeedLevel", 2);
+        }
+
+        public void Hit()
+        {
+            thiscollider.enabled = false;
+            StartCoroutine(OnHit());
+        }
+
+        private IEnumerator OnHit()
+        {
+            yield return new WaitForSeconds(1);
+
+            if (playerScript.IsSprinting)
+            {
+                thiscollider.enabled = true;
+            }
         }
     }
 }
