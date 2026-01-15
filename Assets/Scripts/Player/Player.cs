@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -124,16 +125,30 @@ public class Player : MonoBehaviour
     [Tooltip("被弾エフェクト")]
     GameObject damageEffect;
 
-    // エフェクト関連（中山が編集）
+    [Serializable]
+    private struct Effect
+    {
+        public ParticleSystem[] attackEffects;
+        public ParticleSystem[] jumpEffects;
+        public ParticleSystem[] dashParticles;
+        public void AllStop()
+        {
+            foreach (var effect in attackEffects)
+            {
+                effect.Stop();
+            }
+
+            foreach (var effect in jumpEffects)
+            { effect.Stop(); }
+
+            foreach (var effect in dashParticles)
+            { effect.Stop(); }
+        }
+    }
+
     [SerializeField]
-    [Tooltip("アタックエフェクト")]
-    private ParticleSystem attackEffect1, attackEffect2, attackEffect3;
-    [SerializeField]
-    [Tooltip("ジャンプエフェクト")]
-    private ParticleSystem jumpEffect1, jumpEffect2, jumpEffect3;
-    [SerializeField]
-    [Tooltip("ダッシュパーティクル")]
-    private ParticleSystem dashParticle1, dashParticle2, dashParticle3, dashParticle4;
+    Effect effects;
+
 
     [Header("その他")]
     [SerializeField]
@@ -204,16 +219,8 @@ public class Player : MonoBehaviour
         attackCollider.enabled = false;// 攻撃判定を無効化（中山が編集）
         dashAttackCollider.enabled = false; // ダッシュアタック判定を無効化 (富里が編集)
         StatusReset();// ステータス初期化（中山が編集）
-        attackEffect1.Stop();// 攻撃エフェクト停止（中山が編集）
-        attackEffect2.Stop();// 攻撃エフェクト停止（中山が編集）
-        attackEffect3.Stop();// 攻撃エフェクト停止（中山が編集）
-        jumpEffect1.Stop();// ジャンプエフェクト停止（中山が編集）
-        jumpEffect2.Stop();// ジャンプエフェクト停止（中山が編集）
-        jumpEffect3.Stop();// ジャンプエフェクト停止（中山が編集）
-        dashParticle1.Stop();// ダッシュエフェクト停止（中山が編集）
-        dashParticle2.Stop();// ダッシュエフェクト停止（中山が編集）
-        dashParticle3.Stop();// ダッシュエフェクト停止（中山が編集）
-        dashParticle4.Stop();// ダッシュエフェクト停止（中山が編集）
+
+
     }
 
     private void StatusReset()
@@ -237,7 +244,7 @@ public class Player : MonoBehaviour
             jumpForce *= jumpForceMagnification;
         }
 
-        if (PlayerPrefs.GetInt("SpeedLevel",1 ) == 2)
+        if (PlayerPrefs.GetInt("SpeedLevel", 1) == 2)
         {
             isGotSpeedSkill = true;
         }
@@ -307,7 +314,7 @@ public class Player : MonoBehaviour
                 stunSkillTimer = 0;
                 IsStunable = true;
             }
-            StageScene.Instance.OnUpdateStrongArmCooldown(stunSkillTimer,stunCooldownTime);
+            StageScene.Instance.OnUpdateStrongArmCooldown(stunSkillTimer, stunCooldownTime);
         }
     }
 
@@ -373,7 +380,7 @@ public class Player : MonoBehaviour
                 }
                 break;
             case MotionState.Sprinting:
-                Move(IsSprinting,true);// カメラに準じた移動を呼び出し（富里が編集）
+                Move(IsSprinting, true);// カメラに準じた移動を呼び出し（富里が編集）
                 animator.SetFloat(speedID, rigidbody.linearVelocity.magnitude);// Runアニメーションを継続（中山が編集）
                 sprintTimer -= Time.fixedDeltaTime;
                 if (sprintTimer <= 0)
@@ -411,6 +418,9 @@ public class Player : MonoBehaviour
                 bool isCasted = false;
 
                 // すべてのoffsetで繰り返す
+                // wallCheckは別scriptにして、それを呼び出して一つのtrue or falseを返すようにした方がキレイ
+                // 子オブジェクト対応にするともっと良い
+                // (親のメソッド呼び出すと自動的に子の物も呼び出されて、子側で一つでもtrueあったらtrueにするように)
                 for (int i = 0; i < wallCheckerPos.Length; i++)
                 {
                     Vector3 offset = transform.forward * wallCheckerPos[i].x + transform.right * wallCheckerPos[i].z;
@@ -439,7 +449,7 @@ public class Player : MonoBehaviour
 
             // 移動実行！
             rigidbody.linearVelocity = moveDirection * ((sprint) ? sprintSpeed : moveSpeed) + new Vector3(0, rigidbody.linearVelocity.y, 0) + knockBackVelocity;//移動ベクトルを速度に設定
-           
+
 
             // Y軸移動は上書きではなく加算なため
             // 一度ノックバックさせたらそれ以降はY軸のノックバック速度をなくす
@@ -487,9 +497,9 @@ public class Player : MonoBehaviour
             // PlayerPrefsのJumpLevelが2の場合、ジャンプエフェクトを再生（中山が編集）
             if (PlayerPrefs.GetInt("JumpLevel", 1) == 2)
             {
-                jumpEffect1.Play();// ジャンプエフェクト再生（中山が編集）
-                jumpEffect2.Play();// ジャンプエフェクト再生（中山が編集）
-                jumpEffect3.Play();// ジャンプエフェクト再生（中山が編集）
+                //jumpEffect1.Play();// ジャンプエフェクト再生（中山が編集）
+                //jumpEffect2.Play();// ジャンプエフェクト再生（中山が編集）
+                //jumpEffect3.Play();// ジャンプエフェクト再生（中山が編集）
             }
         }
     }
@@ -516,9 +526,9 @@ public class Player : MonoBehaviour
         // PlayerPrefsのAttackLevelが2かつスタン可能の場合、攻撃エフェクトを再生（中山が編集）
         if (PlayerPrefs.GetInt("AttackLevel", 1) == 2 && IsStunable)
         {
-            attackEffect1.Play();// 攻撃エフェクト再生（中山が編集）
-            attackEffect2.Play();// 攻撃エフェクト再生（中山が編集）
-            attackEffect3.Play();// 攻撃エフェクト再生（中山が編集）
+            //attackEffect1.Play();// 攻撃エフェクト再生（中山が編集）
+            //attackEffect2.Play();// 攻撃エフェクト再生（中山が編集）
+            //attackEffect3.Play();// 攻撃エフェクト再生（中山が編集）
         }
 
         yield return new WaitForSeconds(playerLittleWaitTime);//playerLittleWaitTime秒待機（中山が編集）
@@ -548,10 +558,10 @@ public class Player : MonoBehaviour
                 motionState = MotionState.Sprinting;
             }
             dashAttackCollider.enabled = true;
-            dashParticle1.Play();// ダッシュエフェクト再生（中山が編集）
-            dashParticle2.Play();// ダッシュエフェクト再生（中山が編集）
-            dashParticle3.Play();// ダッシュエフェクト再生（中山が編集）
-            dashParticle4.Play();// ダッシュエフェクト再生（中山が編集）
+            //dashParticle1.Play();// ダッシュエフェクト再生（中山が編集）
+            //dashParticle2.Play();// ダッシュエフェクト再生（中山が編集）
+            //dashParticle3.Play();// ダッシュエフェクト再生（中山が編集）
+            //dashParticle4.Play();// ダッシュエフェクト再生（中山が編集）
         }
 
         //if ((motionState == MotionState.Stopping || motionState == MotionState.Walking) &&
@@ -574,10 +584,10 @@ public class Player : MonoBehaviour
             motionState = MotionState.Walking;
         }
         dashAttackCollider.enabled = false;
-        dashParticle1.Stop();// ダッシュエフェクト停止（中山が編集）
-        dashParticle2.Stop();// ダッシュエフェクト停止（中山が編集）
-        dashParticle3.Stop();// ダッシュエフェクト停止（中山が編集）
-        dashParticle4.Stop();// ダッシュエフェクト停止（中山が編集）
+        //dashParticle1.Stop();// ダッシュエフェクト停止（中山が編集）
+        //dashParticle2.Stop();// ダッシュエフェクト停止（中山が編集）
+        //dashParticle3.Stop();// ダッシュエフェクト停止（中山が編集）
+        //dashParticle4.Stop();// ダッシュエフェクト停止（中山が編集）
     }
 
     public void Hit(Vector3 enemyPos)
@@ -591,7 +601,7 @@ public class Player : MonoBehaviour
 
             // KnockBack
             Vector3 diff = transform.position - enemyPos;
-            
+
             KnockBack(diff, knockBackForce);
 
             // anim
@@ -661,7 +671,7 @@ public class Player : MonoBehaviour
         StageScene.Instance.GameOver(); // ゲームオーバー処理を呼び出す
     }
 
-    private void KnockBack(Vector3 diff,float force)
+    private void KnockBack(Vector3 diff, float force)
     {
         knockBackVelocity = diff.normalized * force;
         if (knockBackVelocity.y < 0)
@@ -670,7 +680,7 @@ public class Player : MonoBehaviour
         }
         isKnockBacking = true;
     }
-  
+
     private void OnDrawGizmos()
     {
         Vector3 rushDirection = transform.forward;
