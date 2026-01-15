@@ -1,11 +1,11 @@
 using UnityEngine;
 
-namespace QuickTheFury.StunEffect
+namespace QuickTheFury
 {
     /// <summary>
     /// ターゲットをスタンさせたときに表示する星エフェクトのクラス
     /// </summary>
-    public class StunEffectScript : MonoBehaviour
+    public class StunEffect : MonoBehaviour
     {
         // 星エフェクトの配列
         [SerializeField]

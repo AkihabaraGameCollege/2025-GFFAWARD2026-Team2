@@ -5,7 +5,7 @@ using Random = UnityEngine.Random;
 
 namespace QuickTheFury
 {
-    public class BossMove2 : MonoBehaviour
+    public class Boss2MoveAI : MonoBehaviour
     {
         new private Rigidbody rigidbody;//Rigidbodyコンポーネント参照用（中山が編集）
         [Header("ステータス")]

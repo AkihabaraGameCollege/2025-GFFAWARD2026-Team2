@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace QuickTheFury
 {
-    public class BossMove3 : MonoBehaviour
+    public class Boss3MoveAI : MonoBehaviour
     {
         private Rigidbody rb;
         [Header("ステータス")]

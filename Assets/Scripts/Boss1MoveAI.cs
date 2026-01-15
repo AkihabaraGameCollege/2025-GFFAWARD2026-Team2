@@ -7,7 +7,7 @@ namespace QuickTheFury
     /// <summary>
     /// ボスの移動・攻撃処理クラス
     /// </summary>
-    public class BossMove1 : MonoBehaviour
+    public class Boss1MoveAI : MonoBehaviour
     {
         // 移動速度設定
         [SerializeField]

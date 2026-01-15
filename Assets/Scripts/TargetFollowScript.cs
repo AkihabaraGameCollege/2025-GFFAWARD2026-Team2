@@ -1,11 +1,11 @@
 using UnityEngine;
 
-namespace QuickTheFury.Target
+namespace QuickTheFury
 {
     /// <summary>
     /// ターゲットに追従し、回転・脈動するエフェクトのクラス
     /// </summary>
-    public class TargetFollowScript : MonoBehaviour
+    public class TargetFollow : MonoBehaviour
     {
         // 追従ターゲット
         public Transform target;
@@ -55,4 +55,4 @@ namespace QuickTheFury.Target
             transform.localScale = baseScale * pulse * Vector3.one;
         }
     }
-}
+    }

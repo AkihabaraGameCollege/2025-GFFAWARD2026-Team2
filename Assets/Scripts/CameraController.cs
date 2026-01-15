@@ -4,7 +4,7 @@ using System.Collections;
 namespace QuickTheFury
 {
     // カメラのコントロールを行うスクリプト（中山が編集）
-    public class CamController : MonoBehaviour
+    public class CameraController : MonoBehaviour
     {
         // オブジェクト参照用（中山が編集）
         [SerializeField]
