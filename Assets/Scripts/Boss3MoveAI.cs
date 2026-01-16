@@ -46,7 +46,7 @@ namespace QuickTheFury
         [Tooltip("スタン終了時のジャンプ力")]
         private float stunEndJumpForce = 10;
 
-        private Player player;
+        private PlayerController player;
         private StatusManagerBoss statusManager;
         [Header("その他")]
         [SerializeField]
@@ -106,7 +106,7 @@ namespace QuickTheFury
 
 
             // find with tagってやっていいのかな
-            player = GameObject.FindWithTag("Player").GetComponent<Player>();
+            player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
 
 
             statusManager.OnDeath += Die;
@@ -147,7 +147,7 @@ namespace QuickTheFury
             yield return new WaitForSeconds(deathTime);
             AudioPlayer.instance.StopSE();
             yield return new WaitForSeconds(deathLittleTime);
-            StageScene.Instance.StageClear();
+            MainStageScene.Instance.StageClear();
             AudioPlayer.instance.PlaySE(13, 0.5f); // BossDestroyを再生（富里が編集）
             Destroy(gameObject);
         }

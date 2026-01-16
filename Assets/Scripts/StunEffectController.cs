@@ -5,7 +5,7 @@ namespace QuickTheFury
     /// <summary>
     /// ターゲットをスタンさせたときに表示する星エフェクトのクラス
     /// </summary>
-    public class StunEffect : MonoBehaviour
+    public class StunEffectController : MonoBehaviour
     {
         // 星エフェクトの配列
         [SerializeField]

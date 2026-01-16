@@ -6,7 +6,7 @@ namespace QuickTheFury
     /// <summary>
     /// アクションに応じた効果音を再生するためのイベントを管理するクラス
     /// </summary>
-    public class ActionSounds : MonoBehaviour
+    public class ActionSoundsPlayer : MonoBehaviour
     {
         public event Action PlayWalkSE;// 歩行効果音再生イベントの定義
 

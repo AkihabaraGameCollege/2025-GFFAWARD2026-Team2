@@ -20,11 +20,11 @@ namespace QuickTheFury
             // もし意図しない衝突判定が起きた場合は最初にレイヤーマスクを確認してください。
 
             // 被弾側のStatusManagerに通知
-            Player playerScript = other.GetComponentInParent<Player>();
+            PlayerController playerScript = other.GetComponentInParent<PlayerController>();
             int dam = playerScript.damage;
 
             // ダッシュアタックかどうかを検知
-            Player colliderScript = other.GetComponent<Player>();
+            PlayerController colliderScript = other.GetComponent<PlayerController>();
 
 
             if (colliderScript != null)

@@ -8,7 +8,7 @@ using System;
 namespace QuickTheFury
 {
     // ステージセレクト画面からステージへ遷移するスクリプト（中山が編集）
-    public class StageSelect : MonoBehaviour
+    public class StageSelectScene : MonoBehaviour
     {
         // 次のシーン名を指定（中山が編集）
         [SerializeField]

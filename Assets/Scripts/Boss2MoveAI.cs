@@ -41,7 +41,7 @@ namespace QuickTheFury
         private GameObject haloEffect;
         [SerializeField]
         [Tooltip("モデルについてるScript")]
-        private ActionSounds modelScript;
+        private ActionSoundsPlayer modelScript;
 
         [Header("ボス固有の設定")]
         [SerializeField]
@@ -108,7 +108,7 @@ namespace QuickTheFury
         [Tooltip("死亡SEを鳴らし続ける時間")]
         private float deathScreamTime = 2.5f;
 
-        private Player player;
+        private PlayerController player;
         private StatusManagerBoss statusManager;
         [Header("その他")]
 
@@ -170,7 +170,7 @@ namespace QuickTheFury
             statusManager = GetComponent<StatusManagerBoss>();
 
             // find with tagってやっていいのかな
-            player = GameObject.FindWithTag("Player").GetComponent<Player>();
+            player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
 
             statusManager.OnDamageTaken += TakeDamage;
             statusManager.OnDeath += Die;
@@ -229,7 +229,7 @@ namespace QuickTheFury
             }
 
             yield return new WaitForSeconds(deathAnimTime);
-            StageScene.Instance.StageClear();
+            MainStageScene.Instance.StageClear();
             Destroy(gameObject);
         }
 
@@ -392,7 +392,7 @@ namespace QuickTheFury
             if (statusManager.health % (statusManager.maxHealth / 3) != 0)
             {
                 statusManager.health++;
-                StageScene.Instance.BossBarUpdate(statusManager.health, statusManager.maxHealth);
+                MainStageScene.Instance.BossBarUpdate(statusManager.health, statusManager.maxHealth);
                 AudioPlayer.instance.PlaySE(14, 1);
             }
         }

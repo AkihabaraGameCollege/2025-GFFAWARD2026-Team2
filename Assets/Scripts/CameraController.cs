@@ -24,7 +24,7 @@ namespace QuickTheFury
 
         // スクリプト参照用（中山が編集）
         [SerializeField]
-        private Player player;
+        private PlayerController player;
 
         bool isSwitched;
 

@@ -48,7 +48,7 @@ namespace QuickTheFury
                 // HPを減少させ、ダメージエフェクトを発生させる
                 health -= damage;
 
-                StageScene.Instance.BossBarUpdate(health, maxHealth);//HPゲージを減少させる（中山が編集）
+                MainStageScene.Instance.BossBarUpdate(health, maxHealth);//HPゲージを減少させる（中山が編集）
 
 
 

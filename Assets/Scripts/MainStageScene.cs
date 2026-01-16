@@ -7,10 +7,10 @@ using UnityEngine.UI;
 
 namespace QuickTheFury
 {
-    public class StageScene : MonoBehaviour
+    public class MainStageScene : MonoBehaviour
     {
         // 自分自身のインスタンスを取得します。
-        public static StageScene Instance { get; private set; } = null;
+        public static MainStageScene Instance { get; private set; } = null;
 
         // このステージをクリアーしたときに読み込むシーンを指定します。
         [SerializeField]
@@ -38,7 +38,7 @@ namespace QuickTheFury
 
         //プレイヤーを指定(中山が編集)
         [SerializeField]
-        private Player player = null;
+        private PlayerController player = null;
 
         [Tooltip("プレイヤーの操作を司るコンポーネント")]
         private PlayerInput playerInput;

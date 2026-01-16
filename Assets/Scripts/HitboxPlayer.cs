@@ -9,12 +9,12 @@ namespace QuickTheFury
         //       「Layer Collision Matrix」で設定されています。
         //       例: 「EnemyAttack」レイヤーは「PlayerHitbox」レイヤーのみ衝突が許可されている必要があります。
 
-        private Player playerScript; // ダメージを受ける側のStatusManager
+        private PlayerController playerScript; // ダメージを受ける側のStatusManager
 
         void Start()
         {
             // 自身の親オブジェクトからStatusManagerを取得
-            playerScript = GetComponentInParent<Player>();
+            playerScript = GetComponentInParent<PlayerController>();
 
             if (playerScript == null)
             {

@@ -96,7 +96,7 @@ namespace QuickTheFury
 
         // ボスモデルについてるScriptの参照
         [SerializeField]
-        private ActionSounds modelScript;
+        private ActionSoundsPlayer modelScript;
 
         // パーティクルシステムの構造体
         [Serializable]
@@ -115,7 +115,7 @@ namespace QuickTheFury
         private float stunTimer = 0;// スタンタイマー
 
         // スクリプト参照用変数
-        private Player player;// プレイヤースクリプト参照用
+        private PlayerController player;// プレイヤースクリプト参照用
         private StatusManagerBoss statusManager;// ステータスマネージャーボス参照用
 
         // アニメーションID登録
@@ -144,7 +144,7 @@ namespace QuickTheFury
             statusManager = GetComponent<StatusManagerBoss>();// ステータスマネージャーボス参照用
             rigidbody = GetComponent<Rigidbody>();// Rigidbodyコンポーネント参照用
             targetObject = GameObject.FindWithTag("Player");// プレイヤーオブジェクト参照用
-            player = targetObject.GetComponent<Player>();// プレイヤースクリプト参照用
+            player = targetObject.GetComponent<PlayerController>();// プレイヤースクリプト参照用
 
             // イベント登録
             statusManager.OnDeath += Die; // 死亡時実行の関数をいれとく
@@ -445,7 +445,7 @@ namespace QuickTheFury
             yield return new WaitForSeconds(deathColliderTime);
 
             yield return new WaitForSeconds(bossDieTime - deathColliderTime);// 少し待機（中山が編集）
-            StageScene.Instance.StageClear();// ステージクリア処理（中山が編集）
+            MainStageScene.Instance.StageClear();// ステージクリア処理（中山が編集）
             Destroy(gameObject);// ボスオブジェクトを破壊（中山が編集）
         }
 

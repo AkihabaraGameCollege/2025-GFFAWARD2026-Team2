@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 namespace QuickTheFury
 {
-    public class Player : MonoBehaviour
+    public class PlayerController : MonoBehaviour
     {
         [Header("Default Status")]
         [SerializeField]
@@ -178,7 +178,7 @@ namespace QuickTheFury
         public float StunSkillTime { get { return stunSkillTime; } }
 
         Collider thiscollider;
-        Player playerScript;
+        PlayerController playerScript;
 
         //アニメーションID登録（中山が編集）
         static readonly int jumpID = Animator.StringToHash("jump");
@@ -204,7 +204,7 @@ namespace QuickTheFury
         {
             rigidbody = GetComponent<Rigidbody>();// Rigidbody コンポーネントを取得
             thiscollider = GetComponent<Collider>();
-            playerScript = GetComponentInParent<Player>();
+            playerScript = GetComponentInParent<PlayerController>();
 
             attackOK = true;// 攻撃制限変数初期化（中山が編集）
             attackCollider.enabled = false;// 攻撃判定を無効化（中山が編集）
@@ -259,7 +259,7 @@ namespace QuickTheFury
 
         private void Start()
         {
-            StageScene.Instance.OnUpdateStrongArmCooldown(stunSkillTimer, stunCooldownTime);
+            MainStageScene.Instance.OnUpdateStrongArmCooldown(stunSkillTimer, stunCooldownTime);
         }
 
         public void Sleep()
@@ -292,7 +292,7 @@ namespace QuickTheFury
         {
             if (context.started)
             {
-                StageScene.Instance.TogglePause();
+                MainStageScene.Instance.TogglePause();
             }
         }
 
@@ -317,7 +317,7 @@ namespace QuickTheFury
                     stunSkillTimer = 0;
                     IsStunable = true;
                 }
-                StageScene.Instance.OnUpdateStrongArmCooldown(stunSkillTimer, stunCooldownTime);
+                MainStageScene.Instance.OnUpdateStrongArmCooldown(stunSkillTimer, stunCooldownTime);
             }
         }
 
@@ -476,7 +476,7 @@ namespace QuickTheFury
 
             if (IsSprinting)
             {
-                StageScene.Instance.ApplySprintGauge(sprintTimer, sprintSecond);
+                MainStageScene.Instance.ApplySprintGauge(sprintTimer, sprintSecond);
             }
         }
 
@@ -629,7 +629,7 @@ namespace QuickTheFury
             // HPを減少させ、ダメージエフェクトを発生させる
             health--;
 
-            StageScene.Instance.DecreaseHpPlayer(health, maxHealth);//HPゲージを減少させる（中山が編集）
+            MainStageScene.Instance.DecreaseHpPlayer(health, maxHealth);//HPゲージを減少させる（中山が編集）
 
             // エフェクトをインスタンス化
             GameObject effect = Instantiate(damageEffect);
@@ -676,7 +676,7 @@ namespace QuickTheFury
         private void Die()
         {
             animator.SetTrigger(dieID);// Dieアニメーションを開始（中山が編集）
-            StageScene.Instance.GameOver(); // ゲームオーバー処理を呼び出す
+            MainStageScene.Instance.GameOver(); // ゲームオーバー処理を呼び出す
         }
 
         private void KnockBack(Vector3 diff, float force)
