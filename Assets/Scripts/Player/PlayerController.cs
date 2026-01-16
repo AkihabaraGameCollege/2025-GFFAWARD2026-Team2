@@ -120,7 +120,7 @@ namespace QuickTheFury.Player
 
         [SerializeField]
         [Tooltip("ダッシュ攻撃のコライダー")]
-        private Collider dashAttackCollider = null;
+        private DashAttackCollider dashAttackCollider;
 
         [SerializeField]
         [Tooltip("攻撃エフェクト")]
@@ -239,7 +239,6 @@ namespace QuickTheFury.Player
             // 初期化
             isAttacking = false;
             attackCollider.enabled = false;
-            dashAttackCollider.enabled = false;
             StatusReset();
             dashEffect.Init();
             jumpEffect.Init();
@@ -664,7 +663,7 @@ namespace QuickTheFury.Player
                 }
 
                 // ダッシュ攻撃コライダーオン
-                dashAttackCollider.enabled = true;
+                dashAttackCollider.SetActive(true);
 
                 // エフェクト再生
                 dashEffect.Play();
@@ -687,7 +686,7 @@ namespace QuickTheFury.Player
             }
 
             // ダッシュ攻撃コライダーオフ
-            dashAttackCollider.enabled = false;
+            dashAttackCollider.SetActive(false);
 
             // エフェクト停止
             dashEffect.Stop();
