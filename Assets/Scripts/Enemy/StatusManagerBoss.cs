@@ -20,27 +20,35 @@ namespace QuickTheFury.Enemy
         [Tooltip("HitBox")]
         private HitboxEnemy hitbox;
 
+        // LowHPLineを過ぎたかどうかのフラグ
+        private bool isAlreadyOveredLowHPLine = false;
 
-        private bool isAlreadyOveredLowHPLine = false;//ラストスパートBGM再生判定用（中山が編集）
-
-        public bool isInvincible = false;
+        // 無敵時間中かどうかのフラグ
+        private bool isInvincible = false;
 
         public event Action OnDamageTaken;
         public event Action OnDeath;
         public event Action OnStunTaken;
 
-        // 登録用（中山が編集）
         void Awake()
         {
             hitbox.OnHit += Hit;
 
             health = maxHealth;
+
+            isInvincible = false;
         }
 
+        /// <summary>
+        /// 被弾の処理
+        /// </summary>
+        /// <param name="damage">ダメージ量</param>
+        /// <param name="stun">スタン攻撃かどうか</param>
         public void Hit(int damage, bool stun)
         {
             if (!isInvincible)
             {
+                // Music変更のラインを下回ったら実行
                 if (!isAlreadyOveredLowHPLine && health <= maxHealth / 3)
                 {
                     StageScene.Instance.PlayLowHealthMusic();
@@ -48,9 +56,9 @@ namespace QuickTheFury.Enemy
                     // 2回目以降再生されないようにする
                     isAlreadyOveredLowHPLine = true;
                 }
-            }
 
-            Damage(damage);
+                Damage(damage);
+            }
 
             if (stun)
             {
@@ -58,12 +66,17 @@ namespace QuickTheFury.Enemy
             }
         }
 
+        /// <summary>
+        /// ダメージをHPに適応させる
+        /// </summary>
+        /// <param name="value">ダメージ量</param>
         public void Damage(int value)
         {
             health -= value;
             StageScene.Instance.UpdateBossBar(health, maxHealth);
             OnDamageTaken?.Invoke();
 
+            // 死亡してたら実行
             if (health <= 0)
             {
                 isInvincible = true;
@@ -71,10 +84,15 @@ namespace QuickTheFury.Enemy
             }
         }
 
+        /// <summary>
+        /// 回復をHPに適応
+        /// </summary>
+        /// <param name="value">回復量</param>
         public void Heal(int value)
         {
             health += value;
 
+            // 最大量超えたらclamp
             if (health > maxHealth)
             {
                  health = maxHealth;

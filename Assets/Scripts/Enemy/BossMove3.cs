@@ -110,7 +110,6 @@ namespace QuickTheFury.Enemy
 
             statusManager.OnDeath += Die;
             statusManager.OnStunTaken += TakeStun;
-            statusManager.isInvincible = false;
             playerCheckCollider.Enter += OnPlayerCheckColliderEnter;
             statusManager.OnDamageTaken += TakeDamage;//ダメージエフェクト再生用（中山が編集）
 

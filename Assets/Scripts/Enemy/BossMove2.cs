@@ -174,7 +174,6 @@ namespace QuickTheFury.Enemy
             statusManager.OnStunTaken += TakeStun;
             modelScript.PlayWalkSE += PlayWalkSE;
 
-            statusManager.isInvincible = false;
             attackCollider.enabled = false;//攻撃判定無効化
 
             stumpParticle1.Stop();// 攻撃エフェクト停止（中山が編集）

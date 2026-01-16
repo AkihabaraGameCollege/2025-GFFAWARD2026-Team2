@@ -146,7 +146,6 @@ namespace QuickTheFury.Enemy
             statusManager.OnDamageTaken += TakeDamage;
             modelScript.PlayWalkSE += PlayWalkSE;
 
-            statusManager.isInvincible = false;
             isWalking = true;// 歩行SE再生判定用（中山が編集）
             isTurning = false;// 方向可能（中山が編集）
             isMoving = false;// 移動停止（中山が編集）
