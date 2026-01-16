@@ -11,83 +11,119 @@ namespace Assets.Scripts.Scene
     /// </summary>
     public class GameClearScene : MonoBehaviour
     {
-        [SerializeField]
-        private string nextScene = "Title";
+        private static readonly string TitleSceneName = "Title";
 
-        // 各種待機時間の設定（中山が編集）
         [SerializeField]
+        [Tooltip("ボタンを押せるようになるまでの待機時間")]
         private float loadWaitTime = 1;
         [SerializeField]
+        [Tooltip("一つ目のJingleが終わるまでの待機時間")]
         private float musicWaitTime = 24;
         [SerializeField]
+        [Tooltip("ホワイトアウトのアニメーション待機時間")]
         private float outroTime = 2;
         [SerializeField]
+        [Tooltip("スキップボタン選択可能になるまでの時間")]
         private float skipButtonAppearWaitTime = 2.0f;
         [SerializeField]
+        [Tooltip("自動的に次のシーンへ進んでしまう時間")]
         private float stageTransitionDelay = 5.0f;
 
-        // ボタンの参照（中山が編集）
+        [Header("オブジェクト参照")]
         [SerializeField]
-        private Button nextButton = null;
+        [Tooltip("エンディングへ進むボタン")]
+        private Button nextButton;
         [SerializeField]
+        [Tooltip("エンディングをスキップするボタン")]
         private Button skipButton;
 
+        // 次のシーンへ遷移可能かのフラグ
         private bool isLoadable = false;
 
-        // Animatorコンポーネントの参照
-        [SerializeField]
         private Animator animator;
 
         static readonly int outroId = Animator.StringToHash("outroGamCle");
 
         private void Start()
         {
-            AudioPlayer.instance.StopSE(); // SEを停止(中山が編集)
-            AudioPlayer.instance.PlayBGM(7); // Gameclear1を再生（富里が編集）
-            Cursor.lockState = CursorLockMode.None;// カーソルのロックを解除（富里が編集）
+            animator = GetComponent<Animator>();
+
+            AudioPlayer.instance.StopSE();
+            AudioPlayer.instance.PlayBGM(7); // Gameclear1を再生
+            Cursor.lockState = CursorLockMode.None;
+
+            // シーン開始時ルーティン実行
             StartCoroutine(OnStart());
-            nextButton.onClick.AddListener(OnTitleButtonClick);
+
+            // ボタンに関数をいれる
+            nextButton.onClick.AddListener(OnButtonClick);
+            skipButton.onClick.AddListener(OnSkipButtonClick);
         }
 
-        IEnumerator OnStart()
+        /// <summary>
+        /// シーン開始時の演出を起こすIEnumerator
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator OnStart()
         {
             yield return new WaitForSeconds(loadWaitTime);
+
+            // 次のシーンへ遷移可能に
             isLoadable = true;
-            // button select
             nextButton.Select();
+
             yield return new WaitForSeconds(musicWaitTime - loadWaitTime);
-            AudioPlayer.instance.PlayBGM(16);// gameclear2を再生（富里が編集）
+            AudioPlayer.instance.PlayBGM(16);// gameclear2を再生
         }
 
-        public void OnTitleButtonClick()
+        /// <summary>
+        /// ボタンを押したときの処理
+        /// </summary>
+        public void OnButtonClick()
         {
+            // 遷移可能なら実行
             if (isLoadable)
             {
-                StopAllCoroutines();// すべてのコルーチンを停止（中山が編集）
-                StartCoroutine(LoadNextScene());// コルーチンを開始（中山が編集）
+                // OnStartの途中ならそれを停止
+                StopAllCoroutines();
+
+                StartCoroutine(LoadNextScene());
             }
         }
 
-        // 次のシーンを読み込むコルーチン（中山が編集）
-        IEnumerator LoadNextScene()
+        /// <summary>
+        /// 次のシーンへ遷移する
+        /// </summary>
+        private IEnumerator LoadNextScene()
         {
-            animator.SetTrigger(outroId);// アウトロアニメーションを再生（中山が編集）
-            yield return new WaitForSeconds(outroTime);// アニメーションの再生時間分待機（中山が編集）
-            AudioPlayer.instance.StopBGM(); // BGMを停止(中山が編集)
-                                            // ウェイト
+            // アニメーション
+            animator.SetTrigger(outroId);
+
+            yield return new WaitForSeconds(outroTime);
+            AudioPlayer.instance.StopBGM();
+
             yield return new WaitForSeconds(skipButtonAppearWaitTime);
-            // スキップボタンをセレクトする
             skipButton.Select();
-            // ウェイト
+
             yield return new WaitForSeconds(stageTransitionDelay - skipButtonAppearWaitTime);
-            // 次のシーンへ遷移
-            SceneManager.LoadScene(nextScene);
+
+            BackToTitleScene();
         }
 
-        // スキップボタンが押されたときの処理（中山が編集）
+        /// <summary>
+        /// スキップボタンを押したときの処理
+        /// </summary>
         public void OnSkipButtonClick()
         {
-            SceneManager.LoadScene(nextScene);// 次のシーンへ遷移（中山が編集）
+            BackToTitleScene();
+        }
+
+        /// <summary>
+        /// Titleシーンへ戻る処理
+        /// </summary>
+        private void BackToTitleScene()
+        {
+            SceneManager.LoadScene(TitleSceneName);
         }
     }
 }
