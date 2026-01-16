@@ -4,15 +4,11 @@ using UnityEngine;
 namespace Assets.Scripts.Player
 {
     /// <summary>
-    /// Playerのダメージを受けたeventを送る
+    /// HixBoxColliderに一緒につける、ダメージ検知を送るクラス
     /// </summary>
     public class HitboxPlayer : MonoBehaviour
     {
-        // 注意: このColliderが衝突する条件は、Unityの「Project Settings」->「Physics」の
-        //       「Layer Collision Matrix」で設定されています。
-        //       例: 「EnemyAttack」レイヤーは「PlayerHitbox」レイヤーのみ衝突が許可されている必要があります。
-
-        private PlayerController playerScript; // ダメージを受ける側のStatusManager
+        private PlayerController playerScript;
 
         void Start()
         {
@@ -28,12 +24,6 @@ namespace Assets.Scripts.Player
 
         private void OnTriggerEnter(Collider other)
         {
-            // 衝突判定について：
-            // 物理エンジンレベルでの事前フィルタリングは、レイヤー設定で行われています。(Enemy同士がぶつからないように、等)
-            // HitboxとAttackは、敵対関係のある相手にのみ当たり判定がある状態でこのスクリプトは機能します。
-            // もし意図しない衝突判定が起きた場合は最初にレイヤーマスクを確認してください。
-
-            // 被弾側のStatusManagerに通知
             playerScript.Hit(other.transform.position);
         }
     }
