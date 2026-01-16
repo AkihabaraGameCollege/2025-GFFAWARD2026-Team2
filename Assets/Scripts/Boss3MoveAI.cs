@@ -110,10 +110,10 @@ namespace QuickTheFury
 
 
             statusManager.OnDeath += Die;
-            statusManager.OnStunTaken += TakeStun;
+            statusManager.OnStunTaken += Stun;
             statusManager.isInvincible = false;
-            playerCheckCollider.Enter += OnPlayerCheckColliderEnter;
-            statusManager.OnDamageTaken += TakeDamage;//ダメージエフェクト再生用（中山が編集）
+            playerCheckCollider.Enter += PlayerCheck;
+            statusManager.OnDamageTaken += Damage;//ダメージエフェクト再生用（中山が編集）
 
             attackCollider.enabled = false;//攻撃判定無効化（中山が編集）
             playerCheckCollider.Hide();
@@ -129,7 +129,7 @@ namespace QuickTheFury
             }
 
             // 行動のコルーチンを起動
-            StartCoroutine(StartMotion());
+            StartCoroutine(OnPose());
         }
 
         public void Die()
@@ -139,9 +139,9 @@ namespace QuickTheFury
             AudioPlayer.instance.PlaySE(12, 1);
             attackCollider.enabled = false;
             StopAllCoroutines();
-            StartCoroutine(DeathTimer());
+            StartCoroutine(OnDie());
         }
-        IEnumerator DeathTimer()
+        IEnumerator OnDie()
         {
             AudioPlayer.instance.PlaySE(10, 0.5f); // BossDefeatを再生（中山が編集）
             yield return new WaitForSeconds(deathTime);
@@ -157,52 +157,51 @@ namespace QuickTheFury
             if (statusManager != null)
             {
                 statusManager.OnDeath -= Die;// 死亡時の処理解除（中山が編集）
-                statusManager.OnDamageTaken -= TakeDamage;// ダメージエフェクト用（中山が編集）
-                playerCheckCollider.Enter -= OnPlayerCheckColliderEnter;
-                statusManager.OnStunTaken -= TakeStun;
+                statusManager.OnDamageTaken -= Damage;// ダメージエフェクト用（中山が編集）
+                playerCheckCollider.Enter -= PlayerCheck;
+                statusManager.OnStunTaken -= Stun;
             }
         }
 
-        IEnumerator MainLoop()
+        IEnumerator OnMainThinking()
         {
-
             // 基本のループ
             while (true)
             {
-                yield return StartCoroutine(MainMotion());
+                yield return StartCoroutine(OnMainMoving());
 
-                yield return StartCoroutine(Stun(defaultStunTime));
+                yield return StartCoroutine(OnStun(defaultStunTime));
             }
         }
 
-        IEnumerator StartMotion()
+        IEnumerator OnPose()
         {
             yield return new WaitForSeconds(startMotionTime);
-            StartCoroutine(MainLoop());
+            StartCoroutine(OnMainThinking());
         }
 
-        IEnumerator MainMotion()
+        IEnumerator OnMainMoving()
         {
             // HP8以下なら7回、でなければ5回繰り返す
             for (int i = 0; i < ((statusManager.health <= 8) ? 7 : 5); i++)
             {
                 rushWaitTime = 1;
-                yield return StartCoroutine(Aim());
+                yield return StartCoroutine(OnAim());
                 if (isPlayerCheckColliderEntered)
                 {
                     // Drift
-                    yield return StartCoroutine(Drift());
+                    yield return StartCoroutine(OnDriftAttack());
                     // 突進回数にはカウントしない
                     i--;
                 }
                 else
                 {
-                    yield return StartCoroutine(Rush());
+                    yield return StartCoroutine(OnRushAttack());
                 }
             }
         }
 
-        IEnumerator Aim()
+        IEnumerator OnAim()
         {
             float timer = 0;
             isPlayerCheckColliderEntered = false;
@@ -225,12 +224,12 @@ namespace QuickTheFury
             playerCheckCollider.Hide();
         }
 
-        public void OnPlayerCheckColliderEnter()
+        public void PlayerCheck()
         {
             isPlayerCheckColliderEntered = true;
         }
 
-        IEnumerator Drift()
+        IEnumerator OnDriftAttack()
         {
             AudioPlayer.instance.PlaySE(9); // BossDriftを再生（中山が編集）
             attackCollider.enabled = true;
@@ -257,7 +256,7 @@ namespace QuickTheFury
             attackCollider.enabled = false;
         }
 
-        IEnumerator Rush()
+        IEnumerator OnRushAttack()
         {
             AudioPlayer.instance.PlaySE(11); // BossRushを再生（中山が編集）
             float timer = 0;
@@ -302,7 +301,7 @@ namespace QuickTheFury
             attackCollider.enabled = false;
         }
 
-        IEnumerator Stun(float stunTime)
+        IEnumerator OnStun(float stunTime)
         {
             stunTimer = stunTime;
             isStunning = true;
@@ -321,13 +320,13 @@ namespace QuickTheFury
         }
 
         [ContextMenu("デバッグ用すぐすたーん")]
-        private void TakeStun()
+        private void Stun()
         {
             if (!isStunning)
             {
                 // 現在のコルーチンを止めてひるむ
                 StopAllCoroutines();
-                StartCoroutine(OnStunTaken());
+                StartCoroutine(OnTakenStun());
             }
             else
             {
@@ -336,7 +335,7 @@ namespace QuickTheFury
             }
         }
 
-        IEnumerator OnStunTaken()
+        IEnumerator OnTakenStun()
         {
             playerCheckCollider.Hide();
             attackCollider.enabled = false;
@@ -344,8 +343,8 @@ namespace QuickTheFury
             rb.linearVelocity = Vector3.zero;
             stunEffectObject = Instantiate(stunEffect, this.transform.localPosition + stunEffectPos, Quaternion.identity);
             stunEffectObject.transform.localScale = stunEffectScale;
-            yield return StartCoroutine(Stun(player.StunSkillTime));
-            StartCoroutine(MainLoop());
+            yield return StartCoroutine(OnStun(player.StunSkillTime));
+            StartCoroutine(OnMainThinking());
         }
 
 
@@ -363,7 +362,7 @@ namespace QuickTheFury
             }
         }
 
-        private void TakeDamage()
+        private void Damage()
         {
             // エフェクトをインスタンス化
             GameObject effect = Instantiate(damageEffect);

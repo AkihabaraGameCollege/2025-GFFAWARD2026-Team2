@@ -172,9 +172,9 @@ namespace QuickTheFury
             // find with tagってやっていいのかな
             player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
 
-            statusManager.OnDamageTaken += TakeDamage;
+            statusManager.OnDamageTaken += Damage;
             statusManager.OnDeath += Die;
-            statusManager.OnStunTaken += TakeStun;
+            statusManager.OnStunTaken += Stun;
             modelScript.PlayWalkSE += PlayWalkSE;
 
             statusManager.isInvincible = false;
@@ -186,17 +186,17 @@ namespace QuickTheFury
                 stump.Stop();
             }
 
-            StartCoroutine(StartMotion());// スタートモーション開始
+            StartCoroutine(OnPose());// スタートモーション開始
         }
 
         // StatusManagerBossから呼び出される
-        public void TakeDamage()
+        public void Damage()
         {
             damageCounter++;
             AudioPlayer.instance.PlaySE(1);
             if (damageCounter >= damageCount2ZakoSummon)
             {
-                StartCoroutine(SummonZako(zakoSummonCount));
+                StartCoroutine(OnCottonPopsOut(zakoSummonCount));
                 damageCounter = 0;
             }
             // エフェクトをインスタンス化
@@ -210,12 +210,12 @@ namespace QuickTheFury
         public void Die()
         {
             StopAllCoroutines();
-            StartCoroutine(OnDeath());
+            StartCoroutine(OnDie());
             haloEffect.SetActive(false);
 
         }
 
-        IEnumerator OnDeath()
+        IEnumerator OnDie()
         {
             animator.SetTrigger(dieID);
             attackCollider.enabled = false;
@@ -237,27 +237,27 @@ namespace QuickTheFury
         {
             if (statusManager != null)
             {
-                statusManager.OnStunTaken -= TakeStun;
-                statusManager.OnDamageTaken -= TakeDamage;
+                statusManager.OnStunTaken -= Stun;
+                statusManager.OnDamageTaken -= Damage;
             }
         }
 
-        IEnumerator MainLoop()
+        IEnumerator OnMainThinking()
         {
             // 基本のループ
             while (true)
             {
-                yield return StartCoroutine(MainMotion());
+                yield return StartCoroutine(OnMainMoving());
             }
         }
 
-        IEnumerator StartMotion()
+        IEnumerator OnPose()
         {
             yield return new WaitForSeconds(startMotionTime);
-            StartCoroutine(MainLoop());
+            StartCoroutine(OnMainThinking());
         }
 
-        IEnumerator MainMotion()
+        IEnumerator OnMainMoving()
         {
             // 2秒間の間歩く
             float timer = 0;
@@ -269,9 +269,9 @@ namespace QuickTheFury
                 yield return new WaitForFixedUpdate();
             }
             // 一連の処理
-            yield return HipDrop();
-            yield return Stun(defaultStunTime);
-            yield return StandUp();
+            yield return OnHipDropAttack();
+            yield return OnStun(defaultStunTime);
+            yield return OnStandUp();
         }
 
         private void Walk()
@@ -299,7 +299,7 @@ namespace QuickTheFury
             animator.SetFloat(isWalkingID, rigidbody.linearVelocity.magnitude);// 歩行アニメーション
         }
 
-        IEnumerator HipDrop()
+        IEnumerator OnHipDropAttack()
         {
             // 方向を定める
             Vector3 direction = ((player.transform.position + new Vector3(0f, jumpTargetOffsetY, 0f)) - transform.position).normalized;
@@ -346,7 +346,7 @@ namespace QuickTheFury
             attackCollider.enabled = false;
         }
 
-        IEnumerator Stun(float weakTime)
+        IEnumerator OnStun(float weakTime)
         {
             stunTimer = weakTime;
             isStunning = true;
@@ -359,7 +359,7 @@ namespace QuickTheFury
             isStunning = false;
         }
 
-        IEnumerator StandUp()
+        IEnumerator OnStandUp()
         {
             // どうするんだ？アニメーション？
             animator.SetTrigger(standUpID);
@@ -368,7 +368,7 @@ namespace QuickTheFury
         }
 
 
-        IEnumerator SummonZako(int count)
+        IEnumerator OnCottonPopsOut(int count)
         {
             for (int i = 0; i < count; i++)
             {
@@ -398,14 +398,14 @@ namespace QuickTheFury
         }
 
         [ContextMenu("STUN")]
-        private void TakeStun()
+        private void Stun()
         {
             if (!isStunning)
             {
                 // ここで座り込むアニメーション再生が必要かも
 
                 StopAllCoroutines();
-                StartCoroutine(OnStunTaken());
+                StartCoroutine(OnTakenStun());
             }
             else
             {
@@ -413,34 +413,21 @@ namespace QuickTheFury
                 stunTimer = player.StunSkillTime;
             }
         }
-        IEnumerator OnStunTaken()
+        IEnumerator OnTakenStun()
         {
             attackCollider.enabled = false;
             animator.SetTrigger(immediatelyWeakID);
             stunEffectObject = Instantiate(stunEffect, this.transform.localPosition + stunEffectPos, Quaternion.identity);
             stunEffectObject.transform.localScale = stunEffectScale;
-            yield return StartCoroutine(Stun(player.StunSkillTime));
+            yield return StartCoroutine(OnStun(player.StunSkillTime));
             Destroy(stunEffectObject);
-            yield return StandUp();
-            StartCoroutine(MainLoop());
+            yield return OnStandUp();
+            StartCoroutine(OnMainThinking());
         }
 
         public void PlayWalkSE()
         {
             AudioPlayer.instance.PlaySE(0);
-        }
-
-        // 以下テスト
-        // Inspector上でBossMove2のComponentの右上にある三点リーダーをクリックするとあるよ
-        [ContextMenu("デバッグ用雑魚召喚ボタン")]
-        private void TesutoZakoShoukan()
-        {
-            if (!Application.isPlaying)
-            {
-                Debug.LogError("プレイ中のみ実行可能です");
-                return;
-            }
-            StartCoroutine(SummonZako(1));
         }
     }
 }

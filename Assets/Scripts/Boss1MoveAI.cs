@@ -148,8 +148,8 @@ namespace QuickTheFury
 
             // イベント登録
             statusManager.OnDeath += Die; // 死亡時実行の関数をいれとく
-            statusManager.OnStunTaken += TakeStun; //スタン食らったとき
-            statusManager.OnDamageTaken += TakeDamage;// ダメージ食らったとき
+            statusManager.OnStunTaken += Stun; //スタン食らったとき
+            statusManager.OnDamageTaken += Damage;// ダメージ食らったとき
             modelScript.PlayWalkSE += PlayWalkSE;// 歩行SE再生関数登録
 
             // フラグ初期化
@@ -173,7 +173,7 @@ namespace QuickTheFury
                 bigStump.Stop();
             }
 
-            StopBoss();
+            Idle();
         }
 
         /// <summary>
@@ -185,8 +185,8 @@ namespace QuickTheFury
             if (statusManager != null)
             {
                 statusManager.OnDeath -= Die;// 死亡時実行の関数を消す
-                statusManager.OnStunTaken -= TakeStun;// スタン食らったときの関数を消す
-                statusManager.OnDamageTaken -= TakeDamage;// ダメージ食らったときの関数を消す
+                statusManager.OnStunTaken -= Stun;// スタン食らったときの関数を消す
+                statusManager.OnDamageTaken -= Damage;// ダメージ食らったときの関数を消す
                 modelScript.PlayWalkSE -= PlayWalkSE;// 歩行SE再生関数解除
             }
         }
@@ -196,11 +196,11 @@ namespace QuickTheFury
         /// </summary>
         void Start()
         {
-            StartCoroutine(OnMove());// 初動行動開始
+            StartCoroutine(OnPose());// 初動行動開始
         }
 
         // 初動行動
-        IEnumerator OnMove()
+        IEnumerator OnPose()
         {
             yield return new WaitForSeconds(bossStartTime);// ボス開始時間待機
 
@@ -227,7 +227,7 @@ namespace QuickTheFury
             // もしハンマー攻撃時間が来ていて、ジャンプ攻撃中でなければ
             if (hammerAttackTime <= 0 && !isJumping)
             {
-                HammerAttack();// ハンマー攻撃処理
+                DoubleHammerAttack();// ハンマー攻撃処理
                 hammerAttackTime = hammerAttackTimeDefault;// ハンマー攻撃時間リセット
             }
             // そうでなければ
@@ -244,12 +244,12 @@ namespace QuickTheFury
                 // もし移動中であれば
                 if (isMoving)
                 {
-                    MoveBoss();
+                    Walk();
 
                     // もしプレイヤーが近くにいたら
                     if (distance <= distanceNumber)
                     {
-                        StumpAttack();
+                        TramplingAttack();
                     }
                 }
             }
@@ -274,7 +274,7 @@ namespace QuickTheFury
         /// <summary>
         /// ボスを移動する関数
         /// </summary>
-        private void MoveBoss()
+        private void Walk()
         {
             Vector3 forward = transform.forward * moveP;// 前方向に移動ベクトル設定
             rigidbody.linearVelocity = new Vector3(forward.x, rigidbody.linearVelocity.y, forward.z);// 前方向に移動
@@ -290,7 +290,7 @@ namespace QuickTheFury
         /// <summary>
         /// ボスが止まる関数
         /// </summary>
-        private void StopBoss()
+        private void Idle()
         {
             rigidbody.linearVelocity = new Vector3(0, rigidbody.linearVelocity.y, 0);// 移動停止
             animator.SetFloat(isWalkingID, rigidbody.linearVelocity.magnitude);// 歩行アニメーション停止
@@ -299,13 +299,13 @@ namespace QuickTheFury
         /// <summary>
         /// ジャンプ攻撃処理を行う関数
         /// </summary>
-        private void StumpAttack()
+        private void TramplingAttack()
         {
-            StartCoroutine(OnStump());// ジャンプ攻撃処理開始
+            StartCoroutine(OnTramplingAttack());// ジャンプ攻撃処理開始
         }
 
         // ジャンプ攻撃処理
-        IEnumerator OnStump()
+        IEnumerator OnTramplingAttack()
         {
             // ジャンプ開始
             isMoving = false;
@@ -341,13 +341,13 @@ namespace QuickTheFury
         /// <summary>
         /// ダブルスレッジハンマー攻撃処理を行う関数
         /// </summary>
-        private void HammerAttack()
+        private void DoubleHammerAttack()
         {
-            StartCoroutine(OnHammerAttack());// ハンマー攻撃処理開始
+            StartCoroutine(OnDoubleHammerAttack());// ハンマー攻撃処理開始
         }
 
         // ハンマー攻撃処理
-        IEnumerator OnHammerAttack()
+        IEnumerator OnDoubleHammerAttack()
         {
             isMoving = false;// 移動停止
             isWalking = true;// 歩行SE再生判定用
@@ -368,11 +368,11 @@ namespace QuickTheFury
             attackCollider.enabled = false;// 攻撃判定無効化
             yield return new WaitForSeconds(bossLittleWaitTime);// 少し待機
 
-            StartCoroutine(OnWeak(bossWeakTime));// 弱点出現処理開始
+            StartCoroutine(OnStun(bossWeakTime));// 弱点出現処理開始
         }
 
         // 弱点出現処理
-        private IEnumerator OnWeak(float stun)
+        private IEnumerator OnStun(float stun)
         {
             // スタン開始
             stunTimer = stun;
@@ -426,7 +426,7 @@ namespace QuickTheFury
         private void Die()
         {
             StopAllCoroutines();// すべてのコルーチン停止
-            StartCoroutine(OnDeath());// 死亡処理開始
+            StartCoroutine(OnDie());// 死亡処理開始
 
             // エフェクト無効化
             if (haloEffect != null)
@@ -435,7 +435,7 @@ namespace QuickTheFury
             }
         }
 
-        IEnumerator OnDeath()
+        IEnumerator OnDie()
         {
             animator.SetTrigger(dieID);// 死亡アニメーション再生（中山が編集）
             AudioPlayer.instance.PlaySE(4);
@@ -450,7 +450,7 @@ namespace QuickTheFury
         }
 
 
-        private void TakeDamage()
+        private void Damage()
         {
             // エフェクトをインスタンス化
             GameObject effect = Instantiate(damageEffect);
@@ -469,7 +469,7 @@ namespace QuickTheFury
             }
         }
 
-        private void TakeStun()
+        private void Stun()
         {
             if (!isStunning)
             {
@@ -478,7 +478,7 @@ namespace QuickTheFury
                 StopAllCoroutines();
 
                 animator.SetTrigger(immediateryWeakID); // これ専用の倒れるトランジション
-                StartCoroutine(OnWeak(player.StunSkillTime));
+                StartCoroutine(OnStun(player.StunSkillTime));
             }
             else
             {

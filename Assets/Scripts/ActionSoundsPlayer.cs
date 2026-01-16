@@ -13,7 +13,7 @@ namespace QuickTheFury
         /// <summary>
         /// アクションに応じた歩行効果音を再生するイベントを発火する関数
         /// </summary>
-        public void OnPlayWalkSE()
+        public void PlaySE()
         {
             PlayWalkSE?.Invoke();// イベント発火
         }

@@ -38,17 +38,17 @@ namespace QuickTheFury
             player.Sleep();// プレイヤーを行動不能（中山が編集）
             particle.Stop();// パーティクル停止（中山が編集）
 
-            StartAction();// アクション開始（中山が編集）
+            StartAngle();// アクション開始（中山が編集）
         }
 
         // アクション開始時の処理（中山が編集）
-        public void StartAction()
+        public void StartAngle()
         {
-            StartCoroutine(OnAction());// コルーチン開始（中山が編集）
+            StartCoroutine(OnStartAngle());// コルーチン開始（中山が編集）
         }
 
         // アクション中の処理（中山が編集）
-        private IEnumerator OnAction()
+        private IEnumerator OnStartAngle()
         {
             yield return new WaitForSeconds(waitTime);// 指定時間待機（中山が編集）
             particle.Play();// パーティクル再生（中山が編集）
