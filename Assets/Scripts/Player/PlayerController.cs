@@ -292,7 +292,7 @@ namespace QuickTheFury.Player
         private void Start()
         {
             // スタン攻撃クールダウンの初期化
-            StageScene.Instance.OnUpdateStrongArmCooldown(stunSkillTimer, stunCooldownTime);
+            StageScene.Instance.UpdateStrongArmCooldown(stunSkillTimer, stunCooldownTime);
         }
 
         /// <summary>
@@ -360,7 +360,7 @@ namespace QuickTheFury.Player
                     stunSkillTimer = 0;
                     IsStunable = true;
                 }
-                StageScene.Instance.OnUpdateStrongArmCooldown(stunSkillTimer, stunCooldownTime);
+                StageScene.Instance.UpdateStrongArmCooldown(stunSkillTimer, stunCooldownTime);
             }
         }
 
@@ -564,7 +564,7 @@ namespace QuickTheFury.Player
             // ダッシュ中ならUI更新
             if (IsSprinting)
             {
-                StageScene.Instance.ApplySprintGauge(sprintTimer, sprintSecond);
+                StageScene.Instance.UpdateSprintGauge(sprintTimer, sprintSecond);
             }
         }
 
@@ -735,7 +735,7 @@ namespace QuickTheFury.Player
             health--;
 
             // UIを更新
-            StageScene.Instance.DecreaseHpPlayer(health, maxHealth);
+            StageScene.Instance.UpdateLifeImage(health, maxHealth);
 
             // エフェクト出現
             GameObject effect = Instantiate(damageEffect);

@@ -386,7 +386,7 @@ namespace QuickTheFury.Enemy
             if (statusManager.health % (statusManager.maxHealth / 3) != 0)
             {
                 statusManager.health++;
-                StageScene.Instance.BossBarUpdate(statusManager.health, statusManager.maxHealth);
+                StageScene.Instance.UpdateBossBar(statusManager.health, statusManager.maxHealth);
                 AudioPlayer.instance.PlaySE(14, 1);
             }
         }

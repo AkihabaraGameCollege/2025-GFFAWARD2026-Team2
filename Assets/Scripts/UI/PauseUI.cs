@@ -17,10 +17,6 @@ namespace Assets.Scripts.UI
         [SerializeField, HideInInspector]
         private UnityEvent onRetryButtonClick = null;
 
-        public UnityEvent OnTutorialButtonClick => onTutorialButtonClick;
-        [SerializeField, HideInInspector]
-        private UnityEvent onTutorialButtonClick = null;
-
         public UnityEvent OnExitButtonClick => onExitButtonClick;
         [SerializeField, HideInInspector]
         private UnityEvent onExitButtonClick = null;
@@ -34,13 +30,23 @@ namespace Assets.Scripts.UI
         [SerializeField]
         private Button exitButton = null;
 
+        [SerializeField]
+        private Image tutorialImage = null;
+        private Button tutorialImageButton = null;
+
         void Start()
         {
+            tutorialImageButton = tutorialImage.GetComponent<Button>();
+
             // UnityEvent を追加
             resumeButton.onClick.AddListener(() => { onResumeButtonClick.Invoke(); });
             retryButton.onClick.AddListener(() => { onRetryButtonClick.Invoke(); });
-            tutorialButton.onClick.AddListener(() => { onTutorialButtonClick.Invoke(); });
+            tutorialButton.onClick.AddListener(Tutorial);
             exitButton.onClick.AddListener(() => { onExitButtonClick.Invoke(); });
+
+            tutorialImage.enabled = false;
+            tutorialImageButton.enabled = false;
+            tutorialImageButton.onClick.AddListener(OnClickBack);
 
             Hide();
         }
@@ -76,6 +82,26 @@ namespace Assets.Scripts.UI
             {
                 child.gameObject.SetActive(false);
             }
+        }
+
+        /// <summary>
+        /// チュートリアル表示
+        /// </summary>
+        public void Tutorial()
+        {
+            tutorialImage.enabled = true;
+            tutorialImageButton.enabled = true;
+            tutorialImageButton.Select();
+        }
+
+        /// <summary>
+        /// 通常のpauseに戻る
+        /// </summary>
+        public void OnClickBack()
+        {
+            tutorialImage.enabled = false;
+            tutorialImageButton.enabled = false;
+            Select();
         }
     }
 }

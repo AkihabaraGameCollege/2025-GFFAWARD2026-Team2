@@ -52,7 +52,7 @@ namespace QuickTheFury.Enemy
                 // HPを減少させ、ダメージエフェクトを発生させる
                 health -= damage;
 
-                StageScene.Instance.BossBarUpdate(health, maxHealth);//HPゲージを減少させる（中山が編集）
+                StageScene.Instance.UpdateBossBar(health, maxHealth);//HPゲージを減少させる（中山が編集）
 
                 // ラストスパートBGM再生判定（中山が編集）
                 if (health <= lastSpurtHP && !isAlreadyPlayed)

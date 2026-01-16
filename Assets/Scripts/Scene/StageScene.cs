@@ -1,4 +1,5 @@
 using Assets.Scripts.UI;
+using System;
 using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -15,193 +16,157 @@ namespace Assets.Scripts.Scene
     /// </summary>
     public class StageScene : MonoBehaviour
     {
-        // 自分自身のインスタンスを取得します。
         public static StageScene Instance { get; private set; } = null;
 
-        // このステージをクリアーしたときに読み込むシーンを指定します。
-        [SerializeField]
-        private string nextStage = "GameClear";
+        // シーン名
+        private static readonly string StageSelectSceneName = "StageSelect";
+        private static readonly string GameClearSceneName = "GameClear";
+        private static readonly string TitleSceneName = "Title";
+
+        // ポーズ状態かどうか
+        public bool IsPaused { get; private set; } = false;
 
         [SerializeField]
-        private string clearStage = "GameClear";
-
-        [SerializeField]
-        private string titleStage = "Title";
-
-
-        // ポーズUIを指定します。
-        [SerializeField]
-        private PauseUI pause = null;
+        private PauseUI pauseUI;
 
         [SerializeField]
         private PlayerUI playerUI;
 
-        public bool IsPaused { get; private set; } = false;// ポーズ状態の場合はtrue、プレイ状態の場合はfalse
-
-        // ゲームオーバー表示用のUIを指定します。(中山が編集)
         [SerializeField]
-        private GameOverUI gameOverUI = null;
+        private GameOverUI gameOverUI;
 
-        //プレイヤーを指定(中山が編集)
         [SerializeField]
-        private PlayerController player = null;
+        private StageClearUI stageClearUI;
 
-        [Tooltip("プレイヤーの操作を司るコンポーネント")]
+        [SerializeField]
+        private PlayerController player;
         private PlayerInput playerInput;
 
-        // ステージクリアー表示用のUIを指定します。（中山が編集）
-        [SerializeField]
-        private StageClearUI stageClearUI = null;
+        /// <summary>
+        /// Sceneの番号により異なるデータを管理するクラス
+        /// </summary>
+        [Serializable]
+        private class SceneData
+        {
+            [SerializeField]
+            private int sceneNumber;
+            [SerializeField]
+            private int soundIndex;
+            [SerializeField]
+            private int musicIndex;
 
-        // チュートリアル画像（中山が編集）
-        [SerializeField]
-        private Image tutorialImage = null;
-        private Button tutorialImageButton = null;
+            public int SceneNumber => sceneNumber;
+            public int SoundIndex => soundIndex;
+            public int MusicIndex => musicIndex;
+        }
 
-        // ステージ名での現在のステージ数検知用
         [SerializeField]
-        private string boss1StageName = "Boss1";
-        [SerializeField]
-        private string boss2StageName = "Boss2";
-        [SerializeField]
-        private string boss3StageName = "Boss2";
+        private SceneData sceneData;
 
         [SerializeField]
         Image bossLifeImage = null;
 
-        // イントロ演出の時間を指定（中山が編集）
         [SerializeField]
+        [Tooltip("Intro演出の時間")]
         private float introTime = 5.0f;
-        // 音声再生までの待機時間を指定（中山が編集）
+
         [SerializeField]
-        private float waitTime = 1.0f;
-        // SEの音量を指定（中山が編集）
+        [Tooltip("SE再生までの待機時間")]
+        private float introWaitTimeToPlaySoundEffect = 1.0f;
+
         [SerializeField]
+        [Tooltip("IntroのSEの音量")]
         private float seVolume = 0.5f;
 
         [SerializeField]
         [Tooltip("プレイヤーに追従するfreelookカメラ")]
         private CinemachineInputAxisController freelookCamera;
 
-        private int bGMID;// BGMのIDを指定する変数（中山が編集）
-        private int sEID;// SEのIDを指定する変数（中山が編集）
+        private bool IsFullUpgraded => PlayerPrefs.GetInt("AttackLevel", 1) == 2 &&
+                    PlayerPrefs.GetInt("JumpLevel", 1) == 2 &&
+                    PlayerPrefs.GetInt("SpeedLevel", 1) == 2;
 
-        private bool isFullUpgraded = false;
-
-
-        // ステージ画面内の進行状態を表します。
+        /// <summary>
+        /// Sceneの状態
+        /// </summary>
         enum SceneState
         {
-            // ステージ開始演出中
+            /// <summary>
+            /// Intro演出中
+            /// </summary>
             Intro,
-            // ステージプレイ中
+            /// <summary>
+            /// ステージプレイ中
+            /// </summary>
             Play,
-            // ゲームオーバーが確定していて演出中
+            /// <summary>
+            /// ゲームオーバー後
+            /// </summary>
             GameOver,
-            // ステージクリアーが確定していて演出中
+            /// <summary>
+            /// クリア後
+            /// </summary>
             StageClear,
         }
-        SceneState sceneState = SceneState.Intro;// 現在のステージ画面内の進行状態
+        SceneState sceneState = SceneState.Intro;
 
-        // プレイヤーがゲームパッドを使っているかどうかを返す関数
+        /// <summary>
+        /// プレイヤーがゲームパッドを使っているか判定
+        /// </summary>
+        /// <returns>GamePadを使っていたらtrue</returns>
         private bool IsUsingGamepad()
         {
             return playerInput.currentControlScheme == "Gamepad";
         }
 
-
-        // Awake is called when the script instance is being loaded（中山が編集）
         private void Awake()
         {
-            Instance = this;// シングルトンインスタンスを設定(中山が編集)
-
-            // 多分いらなくなった(富里が編集)
-            //clearAudio.Stop();// ステージクリアー音声を停止しておく(中山が編集)
-            //overAudio.Stop();// ゲームオーバー音声を停止しておく(中山が編集)
+            Instance = this;
         }
 
-        // Start is called before the first frame update（中山が編集）
         private void Start()
         {
-            tutorialImageButton = tutorialImage.GetComponent<Button>();
-
-            // ポーズUIの各ボタンが押されたときのイベントを登録
-            pause.OnResumeButtonClick.AddListener(Resume);
-            pause.OnRetryButtonClick.AddListener(Retry);
-            pause.OnTutorialButtonClick.AddListener(Tutorial);
-            pause.OnExitButtonClick.AddListener(Title);
-
-            // ゲームオーバーUIの各ボタンが押されたときのイベントを登録(中山が編集)
+            // 各ボタンが押されたときのイベントを登録
+            pauseUI.OnResumeButtonClick.AddListener(Resume);
+            pauseUI.OnRetryButtonClick.AddListener(Retry);
+            pauseUI.OnExitButtonClick.AddListener(Title);
             gameOverUI.OnRetryButtonClick.AddListener(Retry);
             gameOverUI.OnTitleButtonClick.AddListener(Title);
-
-            stageClearUI.OnNextButtonClick.AddListener(LoadNextStage);// ステージクリアーUIのNEXTボタンにイベントを登録（中山が編集）
+            stageClearUI.OnNextButtonClick.AddListener(LoadNextStage);
             stageClearUI.OnTitleButtonClick.AddListener(Title);
 
-            OnApplicationFocus(true);
+            // カーソルをロック
+            Cursor.lockState = CursorLockMode.Locked;
 
-            // シーン名を取得
-            string activeSceneName = SceneManager.GetActiveScene().name;
-            // 各シーンに対応したBGMを再生
-            if (activeSceneName == boss1StageName)
-            {
-                bGMID = 0;// boss1MusicのIDを指定（中山が編集）
-                sEID = 4;// introMusicのIDを指定（中山が編集）
-                StartCoroutine(OnIntro());// イントロ演出コルーチンを開始（中山が編集）
-            }
-            else if (activeSceneName == boss2StageName)
-            {
-                bGMID = 2;// boss2MusicのIDを指定（中山が編集）
-                sEID = 15;// introMusicのIDを指定（中山が編集）
-                StartCoroutine(OnIntro());// イントロ演出コルーチンを開始（中山が編集）
-            }
-            else if (activeSceneName == boss3StageName)
-            {
-                bGMID = 4;// boss3MusicのIDを指定（中山が編集）
-                sEID = 10;// introMusicのIDを指定（中山が編集）
-                StartCoroutine(OnIntro());// イントロ演出コルーチンを開始（中山が編集）
-            }
-            else
-            {
-                Debug.LogError("現在のsceneが、どのstageNameとも一致しません");
-            }
-
-            tutorialImage.enabled = false;
-            tutorialImageButton.enabled = false;
-            tutorialImageButton.onClick.AddListener(OnClickBack);
+            // Intro演出開始
+            StartCoroutine(OnIntro(sceneData.MusicIndex,sceneData.SoundIndex));
 
             playerInput = player.GetComponent<PlayerInput>();
         }
 
-        // イントロ演出を処理するコルーチン（中山が編集）
-        IEnumerator OnIntro()
+        /// <summary>
+        /// Intro演出
+        /// </summary>
+        /// <param name="musicIndex">このステージで流すBGMの番号</param>
+        /// <param name="effectIndex">このステージでIntro演出時に流すSEの番号</param>
+        IEnumerator OnIntro(int musicIndex,int effectIndex)
         {
-            yield return new WaitForSeconds(waitTime);// 待機してから音声再生（中山が編集）
-            AudioPlayer.instance.PlaySE(sEID, seVolume);// introMusicを再生（中山が編集）
-            yield return new WaitForSeconds(introTime);// イントロ演出の時間待機（中山が編集）
-            AudioPlayer.instance.StopSE();// SEを停止（中山が編集）
-            AudioPlayer.instance.PlayBGM(bGMID);// boss1Musicを再生（中山が編集）
-            sceneState = SceneState.Play;// シーン状態をPlayに変更（中山が編集）
+            yield return new WaitForSeconds(introWaitTimeToPlaySoundEffect);
+
+            AudioPlayer.instance.PlaySE(effectIndex, seVolume);
+
+            yield return new WaitForSeconds(introTime);
+
+            AudioPlayer.instance.StopSE();
+
+            AudioPlayer.instance.PlayBGM(musicIndex);
+
+            sceneState = SceneState.Play;
         }
 
-        void Update()
-        {
-            switch (sceneState)
-            {
-                case SceneState.Intro:
-                    break;
-                case SceneState.Play:
-                    break;
-                case SceneState.GameOver:
-                    break;
-                case SceneState.StageClear:
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        // このゲームのポーズ状態をトグルします。
+        /// <summary>
+        /// ポーズ状態を切り替えます
+        /// </summary>
         public void TogglePause()
         {
             if (!IsPaused)
@@ -214,80 +179,77 @@ namespace Assets.Scripts.Scene
             }
         }
 
-        // このゲームを一時停止します。
+        /// <summary>
+        /// ポーズ
+        /// </summary>
         public void Pause()
         {
+            // プレイ中のみポーズ可能
             if (sceneState == SceneState.Play && !IsPaused)
             {
-                AudioPlayer.instance.StopSE();// SEを停止（中山が編集）
+                AudioPlayer.instance.StopSE();
                 player.Sleep();
                 IsPaused = true;
                 Time.timeScale = 0;
-                pause.Show();
+                pauseUI.Show();
                 CursorUnLockJudge(true);
             }
         }
 
-        // このゲームの一時停止状態を解除します。
+        /// <summary>
+        /// ポーズ解除
+        /// </summary>
         public void Resume()
         {
             if (sceneState == SceneState.Play && IsPaused)
             {
                 IsPaused = false;
                 Time.timeScale = 1;
-                pause.Hide();
-                OnClickBack(); // チュートリアル画像を閉じる（中山が編集）
+                pauseUI.Hide();
+                pauseUI.OnClickBack();
                 Cursor.lockState = CursorLockMode.Locked;
                 player.WakeUp();
             }
         }
 
-        // このステージを再読み込みします。
+        /// <summary>
+        /// ステージを再読み込みします
+        /// </summary>
         public void Retry()
         {
-            AudioPlayer.instance.StopBGM(); // BGMを停止(中山が編集)
-            AudioPlayer.instance.StopSE();// SEを停止（中山が編集）
+            AudioPlayer.instance.StopBGM();
+            AudioPlayer.instance.StopSE();
             OnLoadScene(SceneManager.GetActiveScene().name);
         }
 
-        // チュートリアルボタンが押されたときの処理（中山が編集）
-        public void Tutorial()
-        {
-            tutorialImage.enabled = true;
-            tutorialImageButton.enabled = true;
-            tutorialImageButton.Select();
-        }
-
-        // チュートリアル画像を閉じるボタンが押されたときの処理（中山が編集）
-        public void OnClickBack()
-        {
-            tutorialImage.enabled = false;// チュートリアル画像を非表示にする（中山が編集）
-            tutorialImageButton.enabled = false;// チュートリアル画像のボタンを無効化する（中山が編集）
-            pause.Select();
-        }
-
-        // このステージを抜けてタイトル画面を読み込みます。
+        /// <summary>
+        /// タイトルシーンへ移動します
+        /// </summary>
         public void Title()
         {
-            OnLoadScene(titleStage);
+            OnLoadScene(TitleSceneName);
         }
 
-        // 次のステージを読み込みます。
+        /// <summary>
+        /// 次のシーンを判断し、そのステージへ遷移します
+        /// </summary>
         public void LoadNextStage()
         {
             // すべての強化を取得していたらクリアシーンに
-            if (isFullUpgraded)
+            if (IsFullUpgraded)
             {
-                OnLoadScene(clearStage);
+                OnLoadScene(GameClearSceneName);
             }
             else
             {
-                OnLoadScene(nextStage);
+                OnLoadScene(StageSelectSceneName);
             }
         }
 
-
-        // 指定したシーンを読み込みます。（中山が編集）
+        /// <summary>
+        /// 指定したシーンへ遷移します
+        /// </summary>
+        /// <param name="sceneName">シーン名</param>
         private void OnLoadScene(string sceneName)
         {
             // ポーズ状態の場合は、コルーチン内で処理が流れなくなるためポーズ解除する
@@ -296,106 +258,124 @@ namespace Assets.Scripts.Scene
                 Resume();
             }
 
-
-
-            // シーンをロードする
             SceneManager.LoadScene(sceneName);
         }
 
-        // このステージをゲームオーバーとします。(中山が編集)
+        /// <summary>
+        /// ゲームオーバーの処理
+        /// </summary>
         public void GameOver()
         {
-            // ステージプレイ中のみ(中山が編集)
+            // プレイ中のみ可能
             if (sceneState == SceneState.Play)
             {
                 sceneState = SceneState.GameOver;
                 player.Sleep();
-                AudioPlayer.instance.PlayBGM(8); // gameoverを再生(富里が編集)
-                gameOverUI.Show();// ゲームオーバーUIを表示(中山が編集)
+                AudioPlayer.instance.PlayBGM(8); // GameOverBGM
+                gameOverUI.Show();
+
+                // カメラのプレイヤー追従をオフに
                 freelookCamera.enabled = false;
+
                 CursorUnLockJudge(true);
             }
         }
 
-        // このステージをステージクリアーとします。
+        /// <summary>
+        /// ステージクリア処理
+        /// </summary>
         public void StageClear()
         {
             // ステージプレイ中のみ
             if (sceneState == SceneState.Play)
             {
                 sceneState = SceneState.StageClear;
-                AudioPlayer.instance.PlayBGM(12); // stageclearを再生 (富里が編集)
-                player.Sleep();// プレイヤー操作を無効化(中山が編集)
-                               // ステージクリアーUIを表示
+                AudioPlayer.instance.PlayBGM(12); // stageclearを再生
+                player.Sleep();
                 stageClearUI.Show();
                 CursorUnLockJudge(true);
+
+                // カメラのプレイヤー追従をオフ
                 freelookCamera.enabled = false;
 
-                // 装備強化フラグに応じて装備強化を行う(富里が編集)
-                var thisSceneName = SceneManager.GetActiveScene().name;
-                // Stage1ならブリキアーム強化
-                if (thisSceneName == boss1StageName)
+                // シーン番号に合わせた強化を実行
+                switch (sceneData.SceneNumber)
                 {
-                    PlayerPrefs.SetInt("AttackLevel", 2);
+                    case 1:
+                        PlayerPrefs.SetInt("AttackLevel", 2);
+                        break;
+                    case 2:
+                        PlayerPrefs.SetInt("JumpLevel", 2);
+                        break;
+                    case 3:
+                        PlayerPrefs.SetInt("SpeedLevel", 2);
+                        break;
                 }
-                // Stage2ならもこもこブーツ強化
-                else if (thisSceneName == boss2StageName)
-                {
-                    PlayerPrefs.SetInt("JumpLevel", 2);
-                }
-                // Stage3なら殺戮ダッシュ強化
-                else if (thisSceneName == boss3StageName)
-                {
-                    PlayerPrefs.SetInt("SpeedLevel", 2);
-                }
-                // どこでもない場合はエラー
-                else
-                {
-                    Debug.LogError("どこやねんここ");
-                }
-
-                isFullUpgraded = PlayerPrefs.GetInt("AttackLevel", 1) == 2 &&
-                    PlayerPrefs.GetInt("JumpLevel", 1) == 2 &&
-                    PlayerPrefs.GetInt("SpeedLevel", 1) == 2;
             }
         }
 
-        public void DecreaseHpPlayer(int value, int max)
+        /// <summary>
+        /// 体力を表示するUIを更新
+        /// </summary>
+        /// <param name="value">現在値</param>
+        /// <param name="max">最大体力</param>
+        public void UpdateLifeImage(int value, int max)
         {
             playerUI.Life((float)value / max);
         }
 
-        // ボスのHPを減少させるメソッド（中山が編集）
-        public void BossBarUpdate(float health, int maxhealth)
+        /// <summary>
+        /// ボスの体力UIを更新
+        /// </summary>
+        /// <param name="health">現在地</param>
+        /// <param name="maxhealth">最大体力</param>
+        public void UpdateBossBar(float health, int maxhealth)
         {
-            bossLifeImage.fillAmount = health / maxhealth;// 15回攻撃で0になるように調整
+            bossLifeImage.fillAmount = health / maxhealth;
         }
 
-        public void ApplySprintGauge(float value, float max)
+        /// <summary>
+        /// プレイヤーのダッシュゲージを更新
+        /// </summary>
+        /// <param name="value">現在値</param>
+        /// <param name="max">最大値</param>
+        public void UpdateSprintGauge(float value, float max)
         {
             playerUI.ApplySprintGauge(value / max);
         }
 
+        /// <summary>
+        /// プレイヤーのスタン攻撃のクールダウンUIを更新
+        /// </summary>
+        /// <param name="value">現在地</param>
+        /// <param name="max">最大値</param>
+        public void UpdateStrongArmCooldown(float value, float max)
+        {
+            playerUI.StrongArmCooldown(value / max);
+        }
+
+        /// <summary>
+        /// ゲーム画面が開かれているかをチェック
+        /// </summary>
+        /// <param name="focus">開かれていたらtrue</param>
         private void OnApplicationFocus(bool focus)
         {
-            // フォーカスがある場合はカーソルをロックし、ない場合はロックを解除する（中山が編集）
+            // 開かれていて、特定のシーン中かつポーズでないならカーソルロック
             if (focus && (sceneState == SceneState.Play || sceneState == SceneState.Intro) && !IsPaused)
             {
-                Cursor.lockState = CursorLockMode.Locked;// カーソルをロック（中山が編集）
+                Cursor.lockState = CursorLockMode.Locked;
             }
+            // 開かれていないならロック解除
             else
             {
                 CursorUnLockJudge(false);
             }
         }
 
-        public void OnUpdateStrongArmCooldown(float value, float max)
-        {
-            playerUI.StrongArmCooldown(value / max);
-        }
-
-
-        // UIの表示時などに、カーソルのロックを外すかどうか判断する
+        /// <summary>
+        /// gamepadに対応した、カーソルのロックを外す関数
+        /// </summary>
+        /// <param name="isConfine">trueだとウィンドウ枠から出ないConfineに</param>
         public void CursorUnLockJudge(bool isConfine = false)
         {
             // ゲームパッドを使っていないのであればロック解除
