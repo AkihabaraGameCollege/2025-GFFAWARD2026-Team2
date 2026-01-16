@@ -20,14 +20,13 @@ namespace QuickTheFury.Enemy
             Enter?.Invoke();
         }
 
-        public void Show()
+        /// <summary>
+        /// コライダーオンオフ切り替え
+        /// </summary>
+        /// <param name="enabled">有効化ならtrue無効化ならfalse</param>
+        public void SetActive(bool enabled)
         {
-            thisCollider.enabled = true;
-        }
-
-        public void Hide()
-        {
-            thisCollider.enabled = false;
+            thisCollider.enabled = enabled;
         }
     }
 }

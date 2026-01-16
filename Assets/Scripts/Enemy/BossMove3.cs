@@ -114,7 +114,7 @@ namespace QuickTheFury.Enemy
             statusManager.OnDamageTaken += TakeDamage;//ダメージエフェクト再生用（中山が編集）
 
             attackCollider.enabled = false;//攻撃判定無効化（中山が編集）
-            playerCheckCollider.Hide();
+            playerCheckCollider.SetActive(false);
 
             //ドリブルエフェクト停止（中山が編集）
             driftParticle1.Stop();
@@ -210,7 +210,7 @@ namespace QuickTheFury.Enemy
         {
             float timer = 0;
             isPlayerCheckColliderEntered = false;
-            playerCheckCollider.Show();
+            playerCheckCollider.SetActive(true);
             while (timer <= rushWaitTime)
             {
                 // ここでプレイヤーの方を向いてる
@@ -226,7 +226,7 @@ namespace QuickTheFury.Enemy
                 timer += Time.fixedDeltaTime;
                 yield return new WaitForFixedUpdate();
             }
-            playerCheckCollider.Hide();
+            playerCheckCollider.SetActive(false);
         }
 
         public void OnPlayerCheckColliderEnter()
@@ -346,7 +346,7 @@ namespace QuickTheFury.Enemy
 
         IEnumerator OnStunTaken()
         {
-            playerCheckCollider.Hide();
+            playerCheckCollider.SetActive(false);
             attackCollider.enabled = false;
             rb.angularVelocity = Vector3.zero;
             rb.linearVelocity = Vector3.zero;
