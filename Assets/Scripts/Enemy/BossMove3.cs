@@ -189,7 +189,7 @@ namespace QuickTheFury.Enemy
         IEnumerator MainMotion()
         {
             // HP8ˆÈ‰º‚È‚ç7‰ñA‚Å‚È‚¯‚ê‚Î5‰ñŒJ‚è•Ô‚·
-            for (int i = 0; i < (statusManager.health <= 8 ? 7 : 5); i++)
+            for (int i = 0; i < (statusManager.Health <= 8 ? 7 : 5); i++)
             {
                 rushWaitTime = 1;
                 yield return StartCoroutine(Aim());

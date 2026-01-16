@@ -55,10 +55,13 @@ namespace Assets.Scripts.Scene
             private int soundIndex;
             [SerializeField]
             private int musicIndex;
+            [SerializeField]
+            private int lowHealthMusicIndex;
 
             public int SceneNumber => sceneNumber;
             public int SoundIndex => soundIndex;
             public int MusicIndex => musicIndex;
+            public int LowHealthMusicIndex => lowHealthMusicIndex;
         }
 
         [SerializeField]
@@ -324,6 +327,15 @@ namespace Assets.Scripts.Scene
                         break;
                 }
             }
+        }
+
+        /// <summary>
+        /// ƒ{ƒX‚ÌHP‚ªˆê’èƒ‰ƒCƒ“‚ğ‰º‰ñ‚Á‚½‚Æ‚«‚ÌBGM‚ğÄ¶
+        /// </summary>
+        public void PlayLowHealthMusic()
+        {
+            AudioPlayer.instance.StopBGM();
+            AudioPlayer.instance.PlayBGM(sceneData.LowHealthMusicIndex);
         }
 
         /// <summary>

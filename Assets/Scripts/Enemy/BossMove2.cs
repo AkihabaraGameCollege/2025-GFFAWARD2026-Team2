@@ -383,10 +383,10 @@ namespace QuickTheFury.Enemy
 
         public void Heal()
         {
-            if (statusManager.health % (statusManager.maxHealth / 3) != 0)
+            if (statusManager.Health % (statusManager.MaxHealth / 3) != 0)
             {
-                statusManager.health++;
-                StageScene.Instance.UpdateBossBar(statusManager.health, statusManager.maxHealth);
+                statusManager.Heal(1);
+                StageScene.Instance.UpdateBossBar(statusManager.Health, statusManager.MaxHealth);
                 AudioPlayer.instance.PlaySE(14, 1);
             }
         }

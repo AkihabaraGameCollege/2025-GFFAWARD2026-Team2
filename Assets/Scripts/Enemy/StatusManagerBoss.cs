@@ -1,7 +1,6 @@
 using Assets.Scripts.Scene;
 using System;
 using UnityEngine;
-using AudioPlayer = QuickTheFury.Core.AudioPlayer;
 
 namespace QuickTheFury.Enemy
 {
@@ -10,22 +9,19 @@ namespace QuickTheFury.Enemy
     /// </summary>
     public class StatusManagerBoss : MonoBehaviour
     {
-        //hp現在値
         [SerializeField]
-        public int maxHealth = 15;
-        public int health;
-        //ラストスパートHP（中山が編集）
-        private int lastSpurtHP;
-        //ラストスパートBGM（中山が編集）
-        [SerializeField]
-        private int bossLastBGM = 1;
+        private int maxHealth = 15;
+        public int MaxHealth => maxHealth;
+
+        private int health;
+        public int Health => health;
 
         [SerializeField]
         [Tooltip("HitBox")]
         private HitboxEnemy hitbox;
 
 
-        private bool isAlreadyPlayed = false;//ラストスパートBGM再生判定用（中山が編集）
+        private bool isAlreadyOveredLowHPLine = false;//ラストスパートBGM再生判定用（中山が編集）
 
         public bool isInvincible = false;
 
@@ -36,39 +32,25 @@ namespace QuickTheFury.Enemy
         // 登録用（中山が編集）
         void Awake()
         {
-
             hitbox.OnHit += Hit;
 
             health = maxHealth;
-
-            lastSpurtHP = maxHealth / 3;
         }
 
         public void Hit(int damage, bool stun)
         {
             if (!isInvincible)
             {
-
-                // HPを減少させ、ダメージエフェクトを発生させる
-                health -= damage;
-
-                StageScene.Instance.UpdateBossBar(health, maxHealth);//HPゲージを減少させる（中山が編集）
-
-                // ラストスパートBGM再生判定（中山が編集）
-                if (health <= lastSpurtHP && !isAlreadyPlayed)
+                if (!isAlreadyOveredLowHPLine && health <= maxHealth / 3)
                 {
-                    AudioPlayer.instance.PlayBGM(bossLastBGM);// ラストスパートBGM再生（中山が編集）
-                    isAlreadyPlayed = true;// 2回目以降再生されないようにする（Tomisatoが編集）
-                }
+                    StageScene.Instance.PlayLowHealthMusic();
 
-                OnDamageTaken?.Invoke();
-
-                if (health <= 0)
-                {
-                    isInvincible = true;
-                    OnDeath?.Invoke();
+                    // 2回目以降再生されないようにする
+                    isAlreadyOveredLowHPLine = true;
                 }
             }
+
+            Damage(damage);
 
             if (stun)
             {
@@ -76,7 +58,30 @@ namespace QuickTheFury.Enemy
             }
         }
 
-        void OnDestroy()
+        public void Damage(int value)
+        {
+            health -= value;
+            StageScene.Instance.UpdateBossBar(health, maxHealth);
+            OnDamageTaken?.Invoke();
+
+            if (health <= 0)
+            {
+                isInvincible = true;
+                OnDeath?.Invoke();
+            }
+        }
+
+        public void Heal(int value)
+        {
+            health += value;
+
+            if (health > maxHealth)
+            {
+                 health = maxHealth;
+            }
+        }
+
+        private void OnDestroy()
         {
             if (hitbox != null)
             {

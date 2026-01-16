@@ -293,6 +293,7 @@ MonoBehaviour:
     sceneNumber: 1
     soundIndex: 4
     musicIndex: 0
+    lowHealthMusicIndex: 1
   bossLifeImage: {fileID: 688980665}
   introTime: 3.5
   introWaitTimeToPlaySoundEffect: 1
