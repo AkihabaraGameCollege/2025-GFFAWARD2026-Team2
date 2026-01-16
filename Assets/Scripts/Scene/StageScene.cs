@@ -41,6 +41,7 @@ namespace Assets.Scripts.Scene
         [SerializeField]
         private PlayerController player;
         private PlayerInput playerInput;
+        public PlayerController Player => player;
 
         /// <summary>
         /// Sceneの番号により異なるデータを管理するクラス
@@ -81,6 +82,17 @@ namespace Assets.Scripts.Scene
         [SerializeField]
         [Tooltip("プレイヤーに追従するfreelookカメラ")]
         private CinemachineInputAxisController freelookCamera;
+        public GameObject FreeLookCamera => freelookCamera.gameObject;
+
+        [SerializeField]
+        [Tooltip("演出用のボスを見てるカメラ")]
+        private GameObject bossCamera;
+        public GameObject BossCamera => bossCamera;
+
+        [SerializeField]
+        [Tooltip("ボス出現演出用のparticle")]
+        private ParticleSystem bossEnterParticle;
+        public ParticleSystem BossEnterParticle => bossEnterParticle;
 
         private bool IsFullUpgraded => PlayerPrefs.GetInt("AttackLevel", 1) == 2 &&
                     PlayerPrefs.GetInt("JumpLevel", 1) == 2 &&

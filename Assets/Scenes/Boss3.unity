@@ -276,12 +276,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74b6aa298ff0d4b49b262f0b295df570, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCam: {fileID: 1035830207}
-  bossCam: {fileID: 2144548451}
-  particle: {fileID: 1972482358}
-  waitTime: 3
-  switchTime: 3
-  player: {fileID: 506130954}
+  firstWaitTime: 3
+  secoundWaitTime: 3
 --- !u!114 &215913256 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2759312577438447402, guid: c7504c53f353dc649bb9cd9f7cedd9b3, type: 3}
@@ -766,17 +762,12 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5510125990464931087, guid: b85461b88e7c5a1409740cdf35789089, type: 3}
   m_PrefabInstance: {fileID: 1035830205}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1035830207}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 89875cdc57c54474a8a74efd9b2a3b5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1035830207 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5830815541940380236, guid: b85461b88e7c5a1409740cdf35789089, type: 3}
-  m_PrefabInstance: {fileID: 1035830205}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1035830208 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3435511377095007130, guid: b85461b88e7c5a1409740cdf35789089, type: 3}
@@ -1082,6 +1073,8 @@ MonoBehaviour:
   introWaitTimeToPlaySoundEffect: 1
   seVolume: 0.5
   freelookCamera: {fileID: 1035830206}
+  bossCamera: {fileID: 2144548451}
+  bossEnterParticle: {fileID: 1972482358}
 --- !u!4 &1589278023
 Transform:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using PlayerController = QuickTheFury.Player.PlayerController;
 using System.Collections;
 using UnityEngine;
+using Assets.Scripts.Scene;
 
 namespace QuickTheFury.Scene
 {
@@ -9,73 +10,54 @@ namespace QuickTheFury.Scene
     /// </summary>
     public class CamController : MonoBehaviour
     {
-        [Header("オブジェクト参照")]
-        [SerializeField]
-        [Tooltip("プレイヤーの三人称カメラ")]
-        private GameObject playerCam;
-        [SerializeField]
-        [Tooltip("ボスを見ている演出用カメラ")]
-        private GameObject bossCam;
+        // プレイヤーを見ているいつものカメラ
+        private GameObject freelookCamera;
+        // 開始演出用のボスを見てるカメラ
+        private GameObject bossCamera;
 
-        [SerializeField]
-        [Tooltip("ボス登場のParticleEffect")]
+        // 演出用のパーティクル
         private ParticleSystem particle;
 
         [Header("各種数値設定")]
         [SerializeField]
         [Tooltip("ボス登場エフェクトまでの待機時間")]
-        private float waitTime = 3f;
+        private float firstWaitTime = 1.5f;
         [SerializeField]
         [Tooltip("ボス登場エフェクトからプレイヤー操作可能までの遷移時間")]
-        private float switchTime = 3f;
+        private float secoundWaitTime = 3f;
 
-        // スクリプト参照用（中山が編集）
-        [SerializeField]
         private PlayerController player;
 
-        bool isSwitched;
-
-        // オンオフ切り替え用フラグ（中山が編集）
-        void Start()
+        private void Start()
         {
-            // 初期設定（中山が編集）
-            isSwitched = false;
-            playerCam.SetActive(false);
+            player = StageScene.Instance.Player;
+            freelookCamera = StageScene.Instance.FreeLookCamera;
+            bossCamera = StageScene.Instance.BossCamera;
+            particle = StageScene.Instance.BossEnterParticle;
 
-            player.Sleep();// プレイヤーを行動不能（中山が編集）
-            particle.Stop();// パーティクル停止（中山が編集）
+            freelookCamera.SetActive(false);
 
-            StartAction();// アクション開始（中山が編集）
+            player.Sleep();
+            particle.Stop();
+
+            StartCoroutine(OnAction());
         }
 
-        // アクション開始時の処理（中山が編集）
-        public void StartAction()
-        {
-            StartCoroutine(OnAction());// コルーチン開始（中山が編集）
-        }
-
-        // アクション中の処理（中山が編集）
+        /// <summary>
+        /// シーン開始時演出
+        /// </summary>
         private IEnumerator OnAction()
         {
-            yield return new WaitForSeconds(waitTime);// 指定時間待機（中山が編集）
-            particle.Play();// パーティクル再生（中山が編集）
-            yield return new WaitForSeconds(switchTime);// 指定時間待機（中山が編集）
+            yield return new WaitForSeconds(firstWaitTime);
+            particle.Play();
 
-            // フラグを立ててカメラを切り替える（中山が編集）
-            isSwitched = true;
+            yield return new WaitForSeconds(secoundWaitTime);
+
+            // カメラを切り替え
+            freelookCamera.SetActive(true);
+            bossCamera.SetActive(false);
+
             player.WakeUp();
-        }
-
-        // 毎フレームの更新処理（中山が編集）
-        void Update()
-        {
-            // フラグが立っていなかったらカメラを切り替える（中山が編集）
-            if (isSwitched)
-            {
-                playerCam.SetActive(!playerCam.activeSelf);// プレイヤーカメラを有効にする（中山が編集）
-                bossCam.SetActive(!bossCam.activeSelf);// ボスカメラを無効にする（中山が編集）
-                isSwitched = false;
-            }
         }
     }
 }
