@@ -395,27 +395,34 @@ namespace QuickTheFury
             }
         }
 
-        // 指定した速度で、このキャラクターを移動させるプログラムを移植（中山が編集）
-        public void Move(bool sprint, bool isEnableInputMove)
+        /// <summary>
+        /// 指定した速度で、このキャラクターを移動させるクラス
+        /// </summary>
+        /// <param name="isSprint"></param>
+        /// <param name="isEnableInputMove"></param>
+        public void Move(bool isSprint, bool isEnableInputMove)
         {
-            // メインカメラが存在する場合のみ処理を行う
+            // もしメインカメラが存在する場合
             if (Camera.main != null)
             {
-                Vector3 moveDirection = Vector3.zero;
-                Vector3 rotateDirection = Vector3.zero;
+                // 方向に関する情報の変数を追加する
+                Vector3 moveDirection = Vector3.zero;// 移動方向を初期化
+                Vector3 rotateDirection = Vector3.zero;// 視点方向を初期化
+
+                // もし移動可能の場合
                 if (isEnableInputMove)
                 {
-                    // メインカメラの前方と右方向を取得（カメラローカル座標でいうところのz軸とx軸）
-                    Vector3 cameraForward = Camera.main.transform.forward;
-                    Vector3 cameraRight = Camera.main.transform.right;
+                    // メインカメラの前方と右方向を取得
+                    Vector3 cameraForward = Camera.main.transform.forward;// カメラローカル座標でいうＺ軸を取得
+                    Vector3 cameraRight = Camera.main.transform.right;// カメラローカル座標でいうＸ軸を取得
 
                     // カメラのy軸方向を無視して、地面に沿った移動にする
-                    cameraForward.y = 0;
-                    cameraRight.y = 0;
+                    cameraForward.y = 0;// Ｚ軸におけるY軸の方向は０にしておく
+                    cameraRight.y = 0;// Ｘ軸におけるY軸の方向は０にしておく
 
-                    moveDirection = (cameraForward * moveInput.y + cameraRight * moveInput.x).normalized;//正規化して移動方向ベクトルを計算
+                    moveDirection = (cameraForward * moveInput.y + cameraRight * moveInput.x).normalized;// 正規化して移動方向ベクトルを計算
 
-                    rotateDirection = moveDirection;
+                    rotateDirection = moveDirection;// 移動方向と視点方向を同期する
 
                     // Wall Check
                     bool isCasted = false;
@@ -438,6 +445,14 @@ namespace QuickTheFury
                     }
                 }
 
+                // もし視点方向が０ではない場合
+                if (rotateDirection != Vector3.zero)
+                {
+                    Quaternion targetRotation = Quaternion.LookRotation(rotateDirection);// キャラクターが進む方向に合わせてキャラクターの向きを変えるための回転を求める
+
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);// この補間処理によって、キャラクターは急に向きを変えるのではなく、自然な速度で回転します。
+                }
+
                 if (isKnockBacking)
                 {
                     knockBackVelocity = Vector3.Lerp(knockBackVelocity, Vector3.zero, knockBackDecay * Time.fixedDeltaTime);
@@ -448,29 +463,13 @@ namespace QuickTheFury
                 }
 
                 // 移動実行！
-                rigidbody.linearVelocity = moveDirection * ((sprint) ? sprintSpeed : moveSpeed) + new Vector3(0, rigidbody.linearVelocity.y, 0) + knockBackVelocity;//移動ベクトルを速度に設定
-
+                rigidbody.linearVelocity = moveDirection * ((isSprint) ? sprintSpeed : moveSpeed) + new Vector3(0, rigidbody.linearVelocity.y, 0) + knockBackVelocity;//移動ベクトルを速度に設定
 
                 // Y軸移動は上書きではなく加算なため
                 // 一度ノックバックさせたらそれ以降はY軸のノックバック速度をなくす
                 if (knockBackVelocity.y != 0)
                 {
                     knockBackVelocity.y = 0;
-                }
-
-                // キャラクターを移動する方向に向かせるための処理
-                if (rotateDirection != Vector3.zero)  // 何かしら移動が発生している場合のみ回転させる
-                {
-                    // Quaternion.LookRotationは、指定された方向（moveDirection）を向くための回転を計算します。
-                    // moveDirectionはカメラの向きに基づいた移動方向です。
-                    // つまり、キャラクターが進む方向に合わせてキャラクターの向きを変えるための回転を求めています。
-                    Quaternion targetRotation = Quaternion.LookRotation(rotateDirection);
-
-                    // transform.rotationはキャラクターの現在の回転を表します。
-                    // Quaternion.Slerpは、現在の回転（transform.rotation）から目標の回転（targetRotation）までを滑らかに補間します。
-                    // Time.deltaTime * 10fは、補間の速度を決めるためのものです。値が大きいほど速く回転し、小さいほどゆっくり回転します。
-                    // この補間処理によって、キャラクターは急に向きを変えるのではなく、自然な速度で回転します。
-                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
                 }
             }
 
