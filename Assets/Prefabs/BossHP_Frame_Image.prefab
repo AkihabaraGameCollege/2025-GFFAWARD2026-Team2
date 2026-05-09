@@ -163,7 +163,7 @@ GameObject:
   - component: {fileID: 1470833842443965961}
   - component: {fileID: 6362102062406985834}
   m_Layer: 5
-  m_Name: BossHPFrameImage
+  m_Name: BossHP_Frame_Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
