@@ -571,7 +571,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2905996720995638244}
   m_Layer: 0
-  m_Name: PlayerSkillUI
+  m_Name: PlayerSkill_UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -611,7 +611,7 @@ GameObject:
   - component: {fileID: 4339072913510142831}
   - component: {fileID: 138634322065831700}
   m_Layer: 5
-  m_Name: PlayerDamageImage
+  m_Name: PlayerDamage_Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -761,7 +761,7 @@ GameObject:
   - component: {fileID: 7014096742490080037}
   - component: {fileID: 6194056237993710261}
   m_Layer: 5
-  m_Name: BaseImage
+  m_Name: Base_Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -836,7 +836,7 @@ GameObject:
   - component: {fileID: 4080073106564264973}
   - component: {fileID: 238256357315759289}
   m_Layer: 5
-  m_Name: PlayerLifeImage
+  m_Name: PlayerLife_Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

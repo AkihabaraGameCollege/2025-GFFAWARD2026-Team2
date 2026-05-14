@@ -652,14 +652,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerUI
       objectReference: {fileID: 0}
-    - target: {fileID: 4744577789980959553, guid: f1c6a631104695c458ffedf6fd961476, type: 3}
-      propertyPath: m_Name
-      value: PlayerSkill_UI
-      objectReference: {fileID: 0}
-    - target: {fileID: 5022456017697889988, guid: f1c6a631104695c458ffedf6fd961476, type: 3}
-      propertyPath: m_Name
-      value: PlayerDamage_Image
-      objectReference: {fileID: 0}
     - target: {fileID: 5103914914208907526, guid: f1c6a631104695c458ffedf6fd961476, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -739,14 +731,6 @@ PrefabInstance:
     - target: {fileID: 5103914914208907526, guid: f1c6a631104695c458ffedf6fd961476, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5968778714923275802, guid: f1c6a631104695c458ffedf6fd961476, type: 3}
-      propertyPath: m_Name
-      value: Base_Image
-      objectReference: {fileID: 0}
-    - target: {fileID: 8241318563129150956, guid: f1c6a631104695c458ffedf6fd961476, type: 3}
-      propertyPath: m_Name
-      value: PlayerLife_Image
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -964,10 +948,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 293355261}
     m_Modifications:
-    - target: {fileID: 490353238481721769, guid: 4ded2646c424dfe4ab8c9415d53bbc5c, type: 3}
-      propertyPath: bossDieTime
-      value: 6
-      objectReference: {fileID: 0}
     - target: {fileID: 4596725739751054584, guid: 4ded2646c424dfe4ab8c9415d53bbc5c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 123.5
@@ -1069,18 +1049,6 @@ PrefabInstance:
     - target: {fileID: 3435511377095007130, guid: b85461b88e7c5a1409740cdf35789089, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4382925425420074535, guid: b85461b88e7c5a1409740cdf35789089, type: 3}
-      propertyPath: Lens.FieldOfView
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 4382925425420074535, guid: b85461b88e7c5a1409740cdf35789089, type: 3}
-      propertyPath: Priority.Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4382925425420074535, guid: b85461b88e7c5a1409740cdf35789089, type: 3}
-      propertyPath: Priority.m_Value
-      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4382925425420074535, guid: b85461b88e7c5a1409740cdf35789089, type: 3}
       propertyPath: Target.TrackingTarget
@@ -1709,10 +1677,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 507014776}
     m_Modifications:
-    - target: {fileID: 8598794375511743789, guid: 9d91257cbbfeb9c489e22f4dfd16f244, type: 3}
-      propertyPath: m_Name
-      value: Tutorial_Button
-      objectReference: {fileID: 0}
     - target: {fileID: 8694827747239605175, guid: 9d91257cbbfeb9c489e22f4dfd16f244, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1865,14 +1829,6 @@ PrefabInstance:
     - target: {fileID: 4577534768737173413, guid: 6dc9e39f96a76674f9a9f40ca8ebe0e1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4681253297564004497, guid: 6dc9e39f96a76674f9a9f40ca8ebe0e1, type: 3}
-      propertyPath: m_Name
-      value: Global_Volume
-      objectReference: {fileID: 0}
-    - target: {fileID: 5005376121483404720, guid: 6dc9e39f96a76674f9a9f40ca8ebe0e1, type: 3}
-      propertyPath: m_Name
-      value: Directional_Light
       objectReference: {fileID: 0}
     - target: {fileID: 8599605522248163358, guid: 6dc9e39f96a76674f9a9f40ca8ebe0e1, type: 3}
       propertyPath: m_Name
@@ -6732,10 +6688,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 507014776}
     m_Modifications:
-    - target: {fileID: 1789222227988222485, guid: c7504c53f353dc649bb9cd9f7cedd9b3, type: 3}
-      propertyPath: m_Name
-      value: BossHP_Top_Image
-      objectReference: {fileID: 0}
     - target: {fileID: 3123722847013099908, guid: c7504c53f353dc649bb9cd9f7cedd9b3, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -6816,15 +6768,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5747540417436121742, guid: c7504c53f353dc649bb9cd9f7cedd9b3, type: 3}
-      propertyPath: m_Name
-      value: BossHP_Name_Image
-      objectReference: {fileID: 0}
     - target: {fileID: 7267712162857863704, guid: c7504c53f353dc649bb9cd9f7cedd9b3, type: 3}
-      propertyPath: m_Name
-      value: BossHP_Base_Image
-      objectReference: {fileID: 0}
-    - target: {fileID: 8189334051146962253, guid: c7504c53f353dc649bb9cd9f7cedd9b3, type: 3}
       propertyPath: m_Name
       value: BossHP_Base_Image
       objectReference: {fileID: 0}
@@ -6926,10 +6870,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1255891026238647754, guid: 49bc269f736198841bf115e54a09a5f1, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 45f9bae79c129a54f9a1ba48f59703c1, type: 3}
     - target: {fileID: 6697740530733593895, guid: 49bc269f736198841bf115e54a09a5f1, type: 3}
       propertyPath: m_Name
       value: StageClearUI

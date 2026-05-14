@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4984409804345435332}
   - component: {fileID: 2759312577438447402}
   m_Layer: 5
-  m_Name: BossHPTopImage
+  m_Name: BossHP_Top_Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 1897211763799910210}
   - component: {fileID: 8240235347470107641}
   m_Layer: 5
-  m_Name: BossHPNameImage
+  m_Name: BossHP_Name_Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -239,7 +239,7 @@ GameObject:
   - component: {fileID: 4219712365160832619}
   - component: {fileID: 653042404398092859}
   m_Layer: 5
-  m_Name: BossHPBaseImage
+  m_Name: BossHP_Base_Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -327,10 +327,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8451905351038115448}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 50
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -379,6 +379,7 @@ MonoBehaviour:
   moveP: 4
   speedNumber: 0.1
   bossLittleWaitTime: 0.5
+  bossVeryLittlWaiTim: 0.1
   bossAttackTime: 1
   bossWeakBeforeTime: 2.5
   bossWeakTime: 10
@@ -388,7 +389,7 @@ MonoBehaviour:
   standTime: 1
   distanceNumber: 5
   hammerAttackTime: 30
-  bossDieTime: 9
+  bossDieTime: 6
   bossStartTime: 5
   hammerAttackTimeDefault: 10
   meleeAttackAnimTime: 1.5
@@ -405,14 +406,9 @@ MonoBehaviour:
   haloEffect: {fileID: 294778641911174086}
   animator: {fileID: 2725522206805685334}
   modelScript: {fileID: 1603338361867627524}
-  particleStump1: {fileID: 5939714058683951917}
-  particleStump2: {fileID: 6395281648130557299}
-  particleStump3: {fileID: 2574337611602759083}
-  particleStump4: {fileID: 6616642883697709379}
-  particleBigStump1: {fileID: 1114222877184761813}
-  particleBigStump2: {fileID: 421090399341490571}
-  particleBigStump3: {fileID: 9124710461297965395}
-  particleBigStump4: {fileID: 489643450474243515}
+  particles:
+    stump: []
+    bigStump: []
 --- !u!65 &2051404858789972711
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -494,26 +490,6 @@ PrefabInstance:
 --- !u!4 &473233387825688924 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3169153323541494407, guid: c8ab8aaa28b487944b64725fa70d3f28, type: 3}
-  m_PrefabInstance: {fileID: 3272528591694597083}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &2574337611602759083 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 1068400952555767408, guid: c8ab8aaa28b487944b64725fa70d3f28, type: 3}
-  m_PrefabInstance: {fileID: 3272528591694597083}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &5939714058683951917 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 9152511935634481398, guid: c8ab8aaa28b487944b64725fa70d3f28, type: 3}
-  m_PrefabInstance: {fileID: 3272528591694597083}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &6395281648130557299 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 8478802193395322536, guid: c8ab8aaa28b487944b64725fa70d3f28, type: 3}
-  m_PrefabInstance: {fileID: 3272528591694597083}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &6616642883697709379 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 8554960016466975384, guid: c8ab8aaa28b487944b64725fa70d3f28, type: 3}
   m_PrefabInstance: {fileID: 3272528591694597083}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3623344411414123315
@@ -676,29 +652,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c8ab8aaa28b487944b64725fa70d3f28, type: 3}
---- !u!198 &421090399341490571 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 8478802193395322536, guid: c8ab8aaa28b487944b64725fa70d3f28, type: 3}
-  m_PrefabInstance: {fileID: 8102752881107681059}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &489643450474243515 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 8554960016466975384, guid: c8ab8aaa28b487944b64725fa70d3f28, type: 3}
-  m_PrefabInstance: {fileID: 8102752881107681059}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &1114222877184761813 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 9152511935634481398, guid: c8ab8aaa28b487944b64725fa70d3f28, type: 3}
-  m_PrefabInstance: {fileID: 8102752881107681059}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6596043890183259556 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3169153323541494407, guid: c8ab8aaa28b487944b64725fa70d3f28, type: 3}
-  m_PrefabInstance: {fileID: 8102752881107681059}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &9124710461297965395 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 1068400952555767408, guid: c8ab8aaa28b487944b64725fa70d3f28, type: 3}
   m_PrefabInstance: {fileID: 8102752881107681059}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8410918329217698247
