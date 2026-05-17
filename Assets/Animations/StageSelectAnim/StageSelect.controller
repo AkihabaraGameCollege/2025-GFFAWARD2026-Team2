@@ -7,7 +7,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: OutroSelec2
+  m_Name: SelectBoss2_Outro
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -54,7 +54,7 @@ AnimatorStateMachine:
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 50, y: 20, z: 0}
   m_EntryPosition: {x: 50, y: 120, z: 0}
-  m_ExitPosition: {x: 50, y: 560, z: 0}
+  m_ExitPosition: {x: 240, y: 50, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 5833715557682032181}
 --- !u!1101 &-4877759274074310367
@@ -66,7 +66,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: outro1
+    m_ConditionEvent: OnBoss1_Outro
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -2492667044459960401}
@@ -91,7 +91,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: outro3
+    m_ConditionEvent: OnBoss3_Outro
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 2073705389432167409}
@@ -136,7 +136,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: OutroSelec1
+  m_Name: SelectBoss1_Outro
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -164,19 +164,19 @@ AnimatorController:
   m_Name: StageSelect
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: outro1
+  - m_Name: OnBoss1_Outro
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: outro2
+  - m_Name: OnBoss2_Outro
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: outro3
+  - m_Name: OnBoss3_Outro
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -224,7 +224,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: OutroSelec3
+  m_Name: SelectBoss3_Outro
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -252,7 +252,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: outro2
+    m_ConditionEvent: OnBoss2_Outro
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -9029444340024902791}
@@ -275,7 +275,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: IdleSelec
+  m_Name: Select_Idle
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
