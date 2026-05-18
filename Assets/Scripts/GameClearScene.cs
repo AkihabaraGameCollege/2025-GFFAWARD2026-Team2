@@ -38,8 +38,8 @@ namespace QuickTheFury
 
         private void Start()
         {
-            AudioPlayer.instance.StopSE(); // SEを停止(中山が編集)
-            AudioPlayer.instance.PlayBGM(7); // Gameclear1を再生（富里が編集）
+            AudioPlayer.Instance.StopSE(); // SEを停止(中山が編集)
+            AudioPlayer.Instance.PlayBGM(7); // Gameclear1を再生（富里が編集）
             Cursor.lockState = CursorLockMode.None;// カーソルのロックを解除（富里が編集）
             StartCoroutine(OnStart());
             nextButton.onClick.AddListener(OnTitleButtonClick);
@@ -52,7 +52,7 @@ namespace QuickTheFury
             // button select
             nextButton.Select();
             yield return new WaitForSeconds(musicWaitTime - loadWaitTime);
-            AudioPlayer.instance.PlayBGM(16);// gameclear2を再生（富里が編集）
+            AudioPlayer.Instance.PlayBGM(16);// gameclear2を再生（富里が編集）
         }
 
         public void OnTitleButtonClick()
@@ -69,7 +69,7 @@ namespace QuickTheFury
         {
             animator.SetTrigger(outroId);// アウトロアニメーションを再生（中山が編集）
             yield return new WaitForSeconds(outroTime);// アニメーションの再生時間分待機（中山が編集）
-            AudioPlayer.instance.StopBGM(); // BGMを停止(中山が編集)
+            AudioPlayer.Instance.StopBGM(); // BGMを停止(中山が編集)
                                             // ウェイト
             yield return new WaitForSeconds(skipButtonAppearWaitTime);
             // スキップボタンをセレクトする

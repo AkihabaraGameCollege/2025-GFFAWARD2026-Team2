@@ -88,7 +88,7 @@ namespace QuickTheFury
         // 登録・音楽再生用（中山が編集）
         void Start()
         {
-            AudioPlayer.instance.PlayBGM(13); // stageSelectMusicを再生(中山が編集)
+            AudioPlayer.Instance.PlayBGM(13); // stageSelectMusicを再生(中山が編集)
 
             if (PlayerPrefs.GetInt("AttackLevel", 1) == 2)
             {
@@ -163,7 +163,7 @@ namespace QuickTheFury
         // ボス戦1へ行くコルーチン（中山が編集）
         IEnumerator LoadBoss1Scene()
         {
-            AudioPlayer.instance.StopBGM(); // BGMを停止(中山が編集)
+            AudioPlayer.Instance.StopBGM(); // BGMを停止(中山が編集)
             animator.SetTrigger(OutroTriggerIds.outro1Id);// アウトロアニメーションを再生
             yield return new WaitForSeconds(outroTime);// アニメーションの再生時間分待機（中山が編集）
             SceneManager.LoadScene(nextSceneName1);// 次のシーンへ遷移（中山が編集）
@@ -178,7 +178,7 @@ namespace QuickTheFury
         // ボス戦2へ行くコルーチン（中山が編集）
         IEnumerator LoadBoss2Scene()
         {
-            AudioPlayer.instance.StopBGM(); // BGMを停止(中山が編集)
+            AudioPlayer.Instance.StopBGM(); // BGMを停止(中山が編集)
             animator.SetTrigger(OutroTriggerIds.outro2Id);// アウトロアニメーションを再生
             yield return new WaitForSeconds(outroTime);// アニメーションの再生時間分待機（中山が編集）
             SceneManager.LoadScene(nextSceneName2);// 次のシーンへ遷移（中山が編集）
@@ -193,7 +193,7 @@ namespace QuickTheFury
         // ボス戦3へ行くコルーチン（中山が編集）
         IEnumerator LoadBoss3Scene()
         {
-            AudioPlayer.instance.StopBGM(); // BGMを停止(中山が編集)
+            AudioPlayer.Instance.StopBGM(); // BGMを停止(中山が編集)
             animator.SetTrigger(OutroTriggerIds.outro3Id);// アウトロアニメーションを再生
             yield return new WaitForSeconds(outroTime);// アニメーションの再生時間分待機（中山が編集）
             SceneManager.LoadScene(nextSceneName3);// 次のシーンへ遷移（中山が編集）
@@ -230,7 +230,7 @@ namespace QuickTheFury
 
         public void OnClickTitleButton()
         {
-            AudioPlayer.instance.StopBGM(); // BGMを停止(中山が編集)
+            AudioPlayer.Instance.StopBGM(); // BGMを停止(中山が編集)
             SceneManager.LoadScene(titleScene);
         }
 

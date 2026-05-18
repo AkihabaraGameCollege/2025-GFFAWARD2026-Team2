@@ -193,7 +193,7 @@ namespace QuickTheFury
         public void Damage()
         {
             damageCounter++;
-            AudioPlayer.instance.PlaySE(1);
+            AudioPlayer.Instance.PlaySE(1);
             if (damageCounter >= damageCount2ZakoSummon)
             {
                 StartCoroutine(OnCottonPopsOut(zakoSummonCount));
@@ -225,7 +225,7 @@ namespace QuickTheFury
             {
                 counter++;
                 yield return new WaitForSeconds(deathScreamTime / deathScreamCount);
-                AudioPlayer.instance.PlaySE(1);
+                AudioPlayer.Instance.PlaySE(1);
             }
 
             yield return new WaitForSeconds(deathAnimTime);
@@ -316,7 +316,7 @@ namespace QuickTheFury
             yield return new WaitForSeconds(jumpFreezeTime / 2);
 
             // ピッチ下げてる影響で、着地後に鳴らすと遅すぎる為ここで鳴らす
-            AudioPlayer.instance.PlaySE(0, 1f, 0.2f);
+            AudioPlayer.Instance.PlaySE(0, 1f, 0.2f);
 
             yield return new WaitForSeconds(jumpFreezeTime / 2);
 
@@ -393,7 +393,7 @@ namespace QuickTheFury
             {
                 statusManager.health++;
                 MainStageScene.Instance.BossBarUpdate(statusManager.health, statusManager.maxHealth);
-                AudioPlayer.instance.PlaySE(14, 1);
+                AudioPlayer.Instance.PlaySE(14, 1);
             }
         }
 
@@ -427,7 +427,7 @@ namespace QuickTheFury
 
         public void PlayWalkSE()
         {
-            AudioPlayer.instance.PlaySE(0);
+            AudioPlayer.Instance.PlaySE(0);
         }
     }
 }

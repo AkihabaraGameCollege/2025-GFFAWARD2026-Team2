@@ -55,7 +55,7 @@ namespace QuickTheFury
                 // ラストスパートBGM再生判定（中山が編集）
                 if (health <= lastSpurtHP && !isAlreadyPlayed)
                 {
-                    AudioPlayer.instance.PlayBGM(bossLastBGM);// ラストスパートBGM再生（中山が編集）
+                    AudioPlayer.Instance.PlayBGM(bossLastBGM);// ラストスパートBGM再生（中山が編集）
                     isAlreadyPlayed = true;// 2回目以降再生されないようにする（Tomisatoが編集）
                 }
 

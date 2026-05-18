@@ -7,36 +7,39 @@ namespace QuickTheFury
     /// </summary>
     public class AudioPlayer : MonoBehaviour
     {
-        public static AudioPlayer instance;// シングルトンインスタンス
+        /// <summary>
+        /// シングルトンインスタンスを参照する変数
+        /// </summary>
+        public static AudioPlayer Instance;
 
-        // オーディオクリップ
-        // BGMの配列
-        [SerializeField]
-        private AudioClip[] bgmClips = null;
-        // SEの配列
-        [SerializeField]
-        private AudioClip[] seClips = null;
-
-        // オーディオソース
-        // BGM用オーディオソースの参照
-        [SerializeField]
-        private AudioSource bgmSource = null;
-        // SE用オーディオソースの参照
-        [SerializeField]
-        private AudioSource seSource = null;
+        /// <summary>
+        /// BGMの配列を参照する変数
+        /// </summary>
+        public AudioClip[] BGM_Clips;
+        /// <summary>
+        /// SEの配列を参照する変数
+        /// </summary>
+        public AudioClip[] SE_Clips;
+        /// <summary>
+        /// BGM用オーディオソースを参照する変数
+        /// </summary>
+        public AudioSource BGM_Source;
+        /// <summary>
+        /// SE用オーディオソースを参照する変数
+        /// </summary>
+        public AudioSource SE_Source = null;
 
         /// <summary>
         /// 初期の設定を行う関数
         /// </summary>
         private void Awake()
         {
-            // シングルトンの設定
-            if (instance == null)
+            // もしインスタンスが存在しない場合
+            if (Instance == null)
             {
-                instance = this;// インスタンスを設定
+                Instance = this;// インスタンスを設定
                 DontDestroyOnLoad(gameObject);// シーン切り替え時に破棄しない
             }
-            // すでにインスタンスが存在する場合は破棄する
             else
             {
                 Destroy(gameObject);
@@ -44,61 +47,70 @@ namespace QuickTheFury
         }
 
         /// <summary>
-        /// BGMを再生するための関数（フェード中は再生できない）
+        /// BGMを再生するための関数
         /// </summary>
-        /// <param name="bgmIndex">BGMの配列インデックス</param>
+        /// <param name="bgmIndex"></param>
         public void PlayBGM(int bgmIndex)
         {
-            // インデックスの範囲チェック
-            if (bgmIndex < 0 || bgmIndex >= bgmClips.Length)
+            // もしインデックスが0未満またはBGMの配列の長さ以上の場合
+            if (bgmIndex < 0 || bgmIndex >= BGM_Clips.Length)
             {
-                Debug.LogError("BGMのインデックスが範囲外です");// エラーログ出力
-                return;// この関数を抜ける
+                return;
             }
 
-            // BGMが再生中なら停止する
-            if (bgmSource.isPlaying)
+            // もしBGMが再生中の場合
+            if (BGM_Source.isPlaying)
             {
-                bgmSource.Stop();// BGM停止
+                BGM_Source.Stop();
             }
 
             // BGMを再生する
-            bgmSource.clip = bgmClips[bgmIndex];
-            bgmSource.Play();
+            BGM_Source.clip = BGM_Clips[bgmIndex];// インデックスに対応するBGMを設定
+            BGM_Source.Play();
         }
 
+        /// <summary>
+        /// BGMを一時停止する関数
+        /// </summary>
         public void PauseBGM()
         {
-            bgmSource.Pause();
+            BGM_Source.Pause();
         }
 
+        /// <summary>
+        /// BGMを停止する関数
+        /// </summary>
         public void StopBGM()
         {
-            bgmSource.Stop();
+            BGM_Source.Stop();
         }
 
         /// <summary>
         /// SEを再生する関数
         /// </summary>
-        /// <param name="seIndex">SEの配列インデックス</param>
+        /// <param name="seIndex"></param>
+        /// <param name="volume"></param>
+        /// <param name="pitch"></param>
         public void PlaySE(int seIndex, float volume = 0.2f, float pitch = 1)
         {
-            // インデックスの範囲チェック
-            if (seIndex < 0 || seIndex >= seClips.Length)
+            // もしインデックスが0未満またはSEの配列の長さ以上の場合
+            if (seIndex < 0 || seIndex >= SE_Clips.Length)
             {
-                Debug.LogError("SEのインデックスが範囲外です\n呼び出されたIndex:" + seIndex);// エラーログ出力
-                return;// この関数を抜ける
+                return;
             }
 
-            seSource.pitch = pitch;
-            seSource.volume = volume;
-
-            seSource.PlayOneShot(seClips[seIndex]);// インデックスに対応するSEを再生
+            // SEを再生する
+            SE_Source.pitch = pitch;// ピッチを設定
+            SE_Source.volume = volume;// ボリュームを設定
+            SE_Source.PlayOneShot(SE_Clips[seIndex]);// インデックスに対応するSEを再生
         }
 
+        /// <summary>
+        /// SEを停止する関数
+        /// </summary>
         public void StopSE()
         {
-            seSource.Stop();
+            SE_Source.Stop();
         }
     }
 }

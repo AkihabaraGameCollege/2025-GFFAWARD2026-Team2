@@ -171,10 +171,10 @@ namespace QuickTheFury
         IEnumerator OnIntro()
         {
             yield return new WaitForSeconds(waitTime);// 待機してから音声再生（中山が編集）
-            AudioPlayer.instance.PlaySE(sEID, seVolume);// introMusicを再生（中山が編集）
+            AudioPlayer.Instance.PlaySE(sEID, seVolume);// introMusicを再生（中山が編集）
             yield return new WaitForSeconds(introTime);// イントロ演出の時間待機（中山が編集）
-            AudioPlayer.instance.StopSE();// SEを停止（中山が編集）
-            AudioPlayer.instance.PlayBGM(bGMID);// boss1Musicを再生（中山が編集）
+            AudioPlayer.Instance.StopSE();// SEを停止（中山が編集）
+            AudioPlayer.Instance.PlayBGM(bGMID);// boss1Musicを再生（中山が編集）
             sceneState = SceneState.Play;// シーン状態をPlayに変更（中山が編集）
         }
 
@@ -213,7 +213,7 @@ namespace QuickTheFury
         {
             if (sceneState == SceneState.Play && !IsPaused)
             {
-                AudioPlayer.instance.StopSE();// SEを停止（中山が編集）
+                AudioPlayer.Instance.StopSE();// SEを停止（中山が編集）
                 player.Sleep();
                 IsPaused = true;
                 Time.timeScale = 0;
@@ -239,8 +239,8 @@ namespace QuickTheFury
         // このステージを再読み込みします。
         public void Retry()
         {
-            AudioPlayer.instance.StopBGM(); // BGMを停止(中山が編集)
-            AudioPlayer.instance.StopSE();// SEを停止（中山が編集）
+            AudioPlayer.Instance.StopBGM(); // BGMを停止(中山が編集)
+            AudioPlayer.Instance.StopSE();// SEを停止（中山が編集）
             OnLoadScene(SceneManager.GetActiveScene().name);
         }
 
@@ -304,7 +304,7 @@ namespace QuickTheFury
             {
                 sceneState = SceneState.GameOver;
                 player.Sleep();
-                AudioPlayer.instance.PlayBGM(8); // gameoverを再生(富里が編集)
+                AudioPlayer.Instance.PlayBGM(8); // gameoverを再生(富里が編集)
                 gameOverUI.Show();// ゲームオーバーUIを表示(中山が編集)
                 freelookCamera.enabled = false;
                 CursorUnLockJudge(true);
@@ -318,7 +318,7 @@ namespace QuickTheFury
             if (sceneState == SceneState.Play)
             {
                 sceneState = SceneState.StageClear;
-                AudioPlayer.instance.PlayBGM(12); // stageclearを再生 (富里が編集)
+                AudioPlayer.Instance.PlayBGM(12); // stageclearを再生 (富里が編集)
                 player.Sleep();// プレイヤー操作を無効化(中山が編集)
                                // ステージクリアーUIを表示
                 stageClearUI.Show();

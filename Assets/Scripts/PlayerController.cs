@@ -522,7 +522,7 @@ namespace QuickTheFury
         {
             attackOK = false;//攻撃制限変数をfalseに設定（中山が編集）
             animator.SetTrigger(attackID);// Attackアニメーションを開始（中山が編集）
-            AudioPlayer.instance.PlaySE(3);// PlayerClawAttackを再生 (富里が編集)
+            AudioPlayer.Instance.PlaySE(3);// PlayerClawAttackを再生 (富里が編集)
 
             // PlayerPrefsのAttackLevelが2かつスタン可能の場合、攻撃エフェクトを再生（中山が編集）
             if (PlayerPrefs.GetInt("AttackLevel", 1) == 2 && IsStunable)

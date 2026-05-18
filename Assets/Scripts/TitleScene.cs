@@ -56,7 +56,7 @@ namespace QuickTheFury
             CursorUnLockJudge(false);
             // Animatorコンポーネントを取得
             animator = GetComponent<Animator>();
-            AudioPlayer.instance.PlayBGM(15); // titlemusicを再生(富里が編集)
+            AudioPlayer.Instance.PlayBGM(15); // titlemusicを再生(富里が編集)
                                               Hide();
         }
 
@@ -72,7 +72,7 @@ namespace QuickTheFury
             // エフェクトを再生
             animator.SetTrigger(outroId);
             yield return new WaitForSeconds(outroTime);// アニメーションの再生時間分待機（中山が編集）
-            AudioPlayer.instance.StopBGM(); // BGMを停止(中山が編集)
+            AudioPlayer.Instance.StopBGM(); // BGMを停止(中山が編集)
                                             // ウェイト
             yield return new WaitForSeconds(skipButtonAppearWaitTime);
             // スキップボタンをセレクトする

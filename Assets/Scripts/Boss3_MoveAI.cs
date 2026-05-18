@@ -134,21 +134,21 @@ namespace QuickTheFury
 
         public void Die()
         {
-            AudioPlayer.instance.StopSE(); // BossSE停止（中山が編集）
+            AudioPlayer.Instance.StopSE(); // BossSE停止（中山が編集）
             animator.SetTrigger(defeatId);//死亡モーション再生（中山が編集）
-            AudioPlayer.instance.PlaySE(12, 1);
+            AudioPlayer.Instance.PlaySE(12, 1);
             attackCollider.enabled = false;
             StopAllCoroutines();
             StartCoroutine(OnDie());
         }
         IEnumerator OnDie()
         {
-            AudioPlayer.instance.PlaySE(10, 0.5f); // BossDefeatを再生（中山が編集）
+            AudioPlayer.Instance.PlaySE(10, 0.5f); // BossDefeatを再生（中山が編集）
             yield return new WaitForSeconds(deathTime);
-            AudioPlayer.instance.StopSE();
+            AudioPlayer.Instance.StopSE();
             yield return new WaitForSeconds(deathLittleTime);
             MainStageScene.Instance.StageClear();
-            AudioPlayer.instance.PlaySE(13, 0.5f); // BossDestroyを再生（富里が編集）
+            AudioPlayer.Instance.PlaySE(13, 0.5f); // BossDestroyを再生（富里が編集）
             Destroy(gameObject);
         }
 
@@ -231,7 +231,7 @@ namespace QuickTheFury
 
         IEnumerator OnDriftAttack()
         {
-            AudioPlayer.instance.PlaySE(9); // BossDriftを再生（中山が編集）
+            AudioPlayer.Instance.PlaySE(9); // BossDriftを再生（中山が編集）
             attackCollider.enabled = true;
             float rotatedDegree = 0;
             Quaternion startRot = rb.rotation;
@@ -258,7 +258,7 @@ namespace QuickTheFury
 
         IEnumerator OnRushAttack()
         {
-            AudioPlayer.instance.PlaySE(11); // BossRushを再生（中山が編集）
+            AudioPlayer.Instance.PlaySE(11); // BossRushを再生（中山が編集）
             float timer = 0;
             Vector3 rushDirection = transform.forward;
             bool isCasted = false;

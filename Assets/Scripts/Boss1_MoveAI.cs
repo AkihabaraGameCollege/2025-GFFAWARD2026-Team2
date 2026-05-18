@@ -318,7 +318,7 @@ namespace QuickTheFury
             yield return new WaitForSeconds(stumpWaitTime);// ジャンプまでの待機時間
             animator.SetTrigger(landingID);// ジャンプ着地アニメーション開始
             yield return new WaitForSeconds(stumpColliderArriveCooldown);// 踏みつけ攻撃コライダー出現までのクールタイム待機
-            AudioPlayer.instance.PlaySE(7);// ジャンプ攻撃SE再生（中山が編集）
+            AudioPlayer.Instance.PlaySE(7);// ジャンプ攻撃SE再生（中山が編集）
             stumpCollider.enabled = true;// 踏みつけ攻撃用コライダー有効化
             yield return new WaitForSeconds(particleWaitTime);// 踏みつけ攻撃エフェクト再生までの待機時間
 
@@ -354,7 +354,7 @@ namespace QuickTheFury
 
             isTurning = false;// 攻撃開始
             animator.SetTrigger(attackID);// ジャンプアニメーション開始
-            AudioPlayer.instance.PlaySE(2);// 攻撃SE再生）
+            AudioPlayer.Instance.PlaySE(2);// 攻撃SE再生）
             yield return new WaitForSeconds(meleeAttackAnimTime);// 近接攻撃アニメーション時間待機
             attackCollider.enabled = true;// 攻撃判定有効化
 
@@ -438,7 +438,7 @@ namespace QuickTheFury
         IEnumerator OnDie()
         {
             animator.SetTrigger(dieID);// 死亡アニメーション再生（中山が編集）
-            AudioPlayer.instance.PlaySE(4);
+            AudioPlayer.Instance.PlaySE(4);
             attackCollider.enabled = false;
             bodyAttackCollider.enabled = false;
             stumpCollider.enabled = false;
@@ -464,8 +464,8 @@ namespace QuickTheFury
         {
             if (!isWalking)
             {
-                AudioPlayer.instance.PlaySE(6);
-                AudioPlayer.instance.PlaySE(5);
+                AudioPlayer.Instance.PlaySE(6);
+                AudioPlayer.Instance.PlaySE(5);
             }
         }
 
