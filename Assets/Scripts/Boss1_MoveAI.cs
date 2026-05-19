@@ -9,12 +9,14 @@ namespace QuickTheFury
     /// </summary>
     public class Boss1MoveAI : MonoBehaviour
     {
-        // 移動速度設定
-        [SerializeField]
-        private float moveP = 3;
-        // 回転速度設定
-        [SerializeField]
-        private float speedNumber = 11.1f;
+        /// <summary>
+        /// 移動速度を参照する変数
+        /// </summary>
+        public float _moveP = 3;
+        /// <summary>
+        /// 回転速度を参照する変数
+        /// </summary>
+        public float _rotateSpeed = 11.1f;
 
         // ボス行動時間設定
         [SerializeField]
@@ -261,7 +263,7 @@ namespace QuickTheFury
         private void Turn()
         {
             // 回転処理
-            float speed = speedNumber;// 補完スピードを決める
+            float speed = _rotateSpeed;// 補完スピードを決める
             Vector3 relativePos = targetObject.transform.position - transform.position;// ターゲット方向のベクトルを取得
 
             relativePos.y = 0;// X軸の回転は禁止する
@@ -276,7 +278,7 @@ namespace QuickTheFury
         /// </summary>
         private void Walk()
         {
-            Vector3 forward = transform.forward * moveP;// 前方向に移動ベクトル設定
+            Vector3 forward = transform.forward * _moveP;// 前方向に移動ベクトル設定
             rigidbody.linearVelocity = new Vector3(forward.x, rigidbody.linearVelocity.y, forward.z);// 前方向に移動
             animator.SetFloat(isWalkingID, rigidbody.linearVelocity.magnitude);// 歩行アニメーション開始
 
