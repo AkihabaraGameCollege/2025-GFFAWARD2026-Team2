@@ -12,31 +12,48 @@ namespace QuickTheFury
         /// <summary>
         /// 移動速度を参照する変数
         /// </summary>
-        public float _moveP = 3;
+        public float MoveP = 3;
         /// <summary>
         /// 回転速度を参照する変数
         /// </summary>
-        public float _rotateSpeed = 11.1f;
+        public float RotateSpeed = 11.1f;
+        /// <summary>
+        /// ボスの少しだけ待機する時間を参照する変数
+        /// </summary>
+        public float BossLittleWaitTime = 0.5f;
+        /// <summary>
+        /// ボスの一瞬だけ待機する時間を参照する変数
+        /// </summary>
+        public float BossVeryLittleWaitTime = 0.1f;
+        /// <summary>
+        /// ボスの攻撃する時間を参照する変数
+        /// </summary>
+        public float BossAttackTime = 1.5f;
+        /// <summary>
+        /// ボスの弱点が出現する前の時間を参照する変数
+        /// </summary>
+        public float BossWeakBeforeTime = 6;
+        /// <summary>
+        /// ボスの弱点が出現する時間を参照する変数
+        /// </summary>
+        public float BossWeakTime = 12f;
+        /// <summary>
+        /// ボスの目覚める時間を参照する変数
+        /// </summary>
+        public float BossWakeUpTime = 5f;
+        /// <summary>
+        /// ボスの待機する時間を参照する変数
+        /// </summary>
+        public float BossWaitTime = 3f;
+        /// <summary>
+        /// ボスの踏みつけ攻撃の時間を参照する変数
+        /// </summary>
+        public float StumpAttackTime = 0.5f;
+        /// <summary>
+        /// ボスが復帰してくる時間を参照する変数
+        /// </summary>
+        public float StandTime = 1.0f;
 
-        // ボス行動時間設定
-        [SerializeField]
-        private float bossLittleWaitTime = 0.5f;
-        [SerializeField]
-        private float bossVeryLittlWaiTim = 0.1f;
-        [SerializeField]
-        private float bossAttackTime = 1.5f;
-        [SerializeField]
-        private float bossWeakBeforeTime = 6;
-        [SerializeField]
-        private float bossWeakTime = 12f;
-        [SerializeField]
-        private float bossWakeUpTime = 5f;
-        [SerializeField]
-        private float bossWaitTime = 3f;
-        [SerializeField]
-        private float stumpAttackTime = 0.5f;
-        [SerializeField]
-        private float standTime = 1.0f;
         // ジャンプ攻撃を仕掛ける距離設定
         [SerializeField]
         private float distanceNumber = 8.0f;
@@ -263,7 +280,7 @@ namespace QuickTheFury
         private void Turn()
         {
             // 回転処理
-            float speed = _rotateSpeed;// 補完スピードを決める
+            float speed = RotateSpeed;// 補完スピードを決める
             Vector3 relativePos = targetObject.transform.position - transform.position;// ターゲット方向のベクトルを取得
 
             relativePos.y = 0;// X軸の回転は禁止する
@@ -278,7 +295,7 @@ namespace QuickTheFury
         /// </summary>
         private void Walk()
         {
-            Vector3 forward = transform.forward * _moveP;// 前方向に移動ベクトル設定
+            Vector3 forward = transform.forward * MoveP;// 前方向に移動ベクトル設定
             rigidbody.linearVelocity = new Vector3(forward.x, rigidbody.linearVelocity.y, forward.z);// 前方向に移動
             animator.SetFloat(isWalkingID, rigidbody.linearVelocity.magnitude);// 歩行アニメーション開始
 
@@ -330,10 +347,10 @@ namespace QuickTheFury
                 stump.Play();// 踏みつけ攻撃エフェクト再生
             }
 
-            yield return new WaitForSeconds(stumpAttackTime);// 踏みつけ攻撃時間待機
+            yield return new WaitForSeconds(StumpAttackTime);// 踏みつけ攻撃時間待機
             stumpCollider.enabled = false;// 踏みつけ攻撃用コライダー無効化
             isTurning = true;// 回転可能
-            yield return new WaitForSeconds(standTime);// 少し待機
+            yield return new WaitForSeconds(StandTime);// 少し待機
 
             // ジャンプ終了
             isMoving = true;
@@ -366,11 +383,11 @@ namespace QuickTheFury
                 bigStump.Play();// ダブルスレッジハンマー攻撃エフェクト再生
             }
 
-            yield return new WaitForSeconds(bossAttackTime);// 攻撃する時間
+            yield return new WaitForSeconds(BossAttackTime);// 攻撃する時間
             attackCollider.enabled = false;// 攻撃判定無効化
-            yield return new WaitForSeconds(bossLittleWaitTime);// 少し待機
+            yield return new WaitForSeconds(BossLittleWaitTime);// 少し待機
 
-            StartCoroutine(OnStun(bossWeakTime));// 弱点出現処理開始
+            StartCoroutine(OnStun(BossWeakTime));// 弱点出現処理開始
         }
 
         // 弱点出現処理
@@ -381,9 +398,9 @@ namespace QuickTheFury
             isStunning = true;
 
             Weak();// 弱点出現
-            yield return new WaitForSeconds(bossWeakBeforeTime);// 弱点タイム
+            yield return new WaitForSeconds(BossWeakBeforeTime);// 弱点タイム
             bodyAttackCollider.enabled = false;// ボス本体判定無効化
-            yield return new WaitForSeconds(bossVeryLittlWaiTim);// 少し待機
+            yield return new WaitForSeconds(BossVeryLittleWaitTime);// 少し待機
             collider2Player.enabled = true; // プレイヤーとのCollisionColliderを有効化
 
             // 倒れる間のタイマー
@@ -394,9 +411,9 @@ namespace QuickTheFury
             }
 
             WakeUp();// 起き上がり
-            yield return new WaitForSeconds(bossWakeUpTime);// 待機
+            yield return new WaitForSeconds(BossWakeUpTime);// 待機
             bodyAttackCollider.enabled = true;// ボス本体判定有効化
-            yield return new WaitForSeconds(bossWaitTime);// 少し待機
+            yield return new WaitForSeconds(BossWaitTime);// 少し待機
 
             isTurning = true;// 攻撃停止
             isMoving = true;// 移動開始

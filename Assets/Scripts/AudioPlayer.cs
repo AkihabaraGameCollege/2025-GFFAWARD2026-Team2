@@ -37,8 +37,10 @@ namespace QuickTheFury
             // もしインスタンスが存在しない場合
             if (Instance == null)
             {
-                Instance = this;// インスタンスを設定
-                DontDestroyOnLoad(gameObject);// シーン切り替え時に破棄しない
+                // インスタンスを設定
+                Instance = this;
+                // シーン切り替え時に破棄しない
+                DontDestroyOnLoad(gameObject);
             }
             else
             {
@@ -64,8 +66,9 @@ namespace QuickTheFury
                 BGM_Source.Stop();
             }
 
-            // BGMを再生する
-            BGM_Source.clip = BGM_Clips[bgmIndex];// インデックスに対応するBGMを設定
+            // ---BGMを再生する---
+            // インデックスに対応するBGMを設定
+            BGM_Source.clip = BGM_Clips[bgmIndex];
             BGM_Source.Play();
         }
 
@@ -99,10 +102,13 @@ namespace QuickTheFury
                 return;
             }
 
-            // SEを再生する
-            SE_Source.pitch = pitch;// ピッチを設定
-            SE_Source.volume = volume;// ボリュームを設定
-            SE_Source.PlayOneShot(SE_Clips[seIndex]);// インデックスに対応するSEを再生
+            // ---SEを再生する---
+            // ピッチを設定
+            SE_Source.pitch = pitch;
+            // ボリュームを設定
+            SE_Source.volume = volume;
+            // インデックスに対応するSEを再生
+            SE_Source.PlayOneShot(SE_Clips[seIndex]);
         }
 
         /// <summary>

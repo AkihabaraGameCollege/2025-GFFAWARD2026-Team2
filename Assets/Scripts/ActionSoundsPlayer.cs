@@ -18,7 +18,8 @@ namespace QuickTheFury
         /// </summary>
         public void PlaySE()
         {
-            PlayWalkSE?.Invoke();// イベント発火
+            // イベント発火
+            PlayWalkSE?.Invoke();
         }
     }
 }
