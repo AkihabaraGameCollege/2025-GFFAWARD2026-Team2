@@ -7,8 +7,91 @@ namespace QuickTheFury
     /// <summary>
     /// ボスの移動・攻撃処理クラス
     /// </summary>
-    public class Boss1MoveAI : MonoBehaviour
+    public class Boss1_MoveAI : MonoBehaviour
     {
+        /// <summary>
+        /// パーティクルシステムの構造体
+        /// </summary>
+        [Serializable]
+        private struct ParticleSystems
+        {
+            /// <summary>
+            /// 踏みつけ攻撃エフェクト配列を参照する変数
+            /// </summary>
+            public ParticleSystem[] Stump;
+            /// <summary>
+            /// ダブルスレッジハンマー攻撃エフェクト配列を参照する変数
+            /// </summary>
+            public ParticleSystem[] BigStump;
+        }
+
+        /// <summary>
+        /// 攻撃エフェクトをまとめる構造体を参照する変数
+        /// </summary>
+        [SerializeField]
+        private ParticleSystems _particles;
+
+        /// <summary>
+        /// 踏みつけ攻撃用コライダーを参照する変数
+        /// </summary>
+        public Collider StumpCollider;
+        /// <summary>
+        /// 攻撃判定を参照する変数
+        /// </summary>
+        public Collider AttackCollider;
+        /// <summary>
+        /// ボスの体に当たった時の判定を参照する変数
+        /// </summary>
+        public Collider BodyAttackCollider;
+        /// <summary>
+        /// 弱点コライダーを参照する変数
+        /// </summary>
+        public Collider WeakCollider;
+        /// <summary>
+        /// プレイヤーとのCollisionColliderを参照する変数
+        /// </summary>
+        public Collider Collider2_Player;
+
+        /// <summary>
+        /// プレイヤーオブジェクトを参照する変数
+        /// </summary>
+        private GameObject _targetObject;
+        /// <summary>
+        /// ダメージエフェクトを参照する変数
+        /// </summary>
+        public GameObject DamageEffect;
+        /// <summary>
+        /// ターゲットエフェクトを参照する変数
+        /// </summary>
+        public GameObject HaloEffect;
+
+        /// <summary>
+        /// アニメーターを参照する変数
+        /// </summary>
+        public Animator Animator;
+
+        /// <summary>
+        /// プレイヤースクリプトを参照する変数
+        /// </summary>
+        private PlayerController player;
+        /// <summary>
+        /// ステータスマネージャーボスを参照する変数
+        /// </summary>
+        private StatusManagerBoss statusManager;
+        /// <summary>
+        /// ボスモデルについてるScriptを参照する変数
+        /// </summary>
+        public ActionSoundsPlayer ModelScript;
+
+        /// <summary>
+        /// Rigidbodyコンポーネントを参照する変数
+        /// </summary>
+        new private Rigidbody rigidbody;
+
+        /// <summary>
+        /// スタンのタイマー用の値を参照する変数
+        /// </summary>
+        private float _stunTimer = 0;
         /// <summary>
         /// 移動速度を参照する変数
         /// </summary>
@@ -53,106 +136,102 @@ namespace QuickTheFury
         /// ボスが復帰してくる時間を参照する変数
         /// </summary>
         public float StandTime = 1.0f;
+        /// <summary>
+        /// ジャンプ攻撃を仕掛ける距離を参照する変数
+        /// </summary>
+        public float DistanceNumber = 8.0f;
+        /// <summary>
+        /// ハンマー攻撃を仕掛ける時間を参照する変数
+        /// </summary>
+        public float HammerAttackTime = 30.0f;
+        /// <summary>
+        /// ボスがやられる時間を参照する変数
+        /// </summary>
+        public float BossDefeatTime = 3.0f;
+        /// <summary>
+        /// ボス開始待機時間を参照する変数
+        /// </summary>
+        public float BossStartTime = 3.0f;
+        /// <summary>
+        /// ハンマー攻撃時間初期値を参照する変数
+        /// </summary>
+        public float HammerAttackTimeDefault = 30.0f;
+        /// <summary>
+        /// 近接攻撃アニメーション時間を参照する変数
+        /// </summary>
+        public float MeleeAttackAnimTime = 1.5f;
+        /// <summary>
+        /// 踏みつけ攻撃の待機時間を参照する変数
+        /// </summary>
+        public float StumpWaitTime = 1;
+        /// <summary>
+        /// 踏みつけ攻撃コライダー出現までのクールタイムを参照する変数
+        /// </summary>
+        public float StumpColliderArriveCooldown = 1;
+        /// <summary>
+        /// 死亡時攻撃コライダー無効化までの時間を参照する変数
+        /// </summary>
+        public float DeathColliderTime;
+        /// <summary>
+        /// 踏みつけ攻撃エフェクト再生までの待機時間を参照する変数
+        /// </summary>
+        public float ParticleWaitTime = 0.5f;
 
-        // ジャンプ攻撃を仕掛ける距離設定
-        [SerializeField]
-        private float distanceNumber = 8.0f;
-        // ハンマー攻撃を仕掛ける時間設定
-        [SerializeField]
-        private float hammerAttackTime = 30.0f;
-        // ボスがやられる時間設定
-        [SerializeField]
-        private float bossDieTime = 3.0f;
-        // ボス開始待機時間設定
-        [SerializeField]
-        private float bossStartTime = 3.0f;
-        // ハンマー攻撃時間初期値設定
-        [SerializeField]
-        private float hammerAttackTimeDefault = 30.0f;
-        // 近接攻撃アニメーション時間設定
-        [SerializeField]
-        private float meleeAttackAnimTime = 1.5f;
-        // 踏みつけ攻撃の待機時間設定
-        [SerializeField]
-        private float stumpWaitTime = 1;
-        // 踏みつけ攻撃コライダー出現までのクールタイム設定
-        [SerializeField]
-        private float stumpColliderArriveCooldown = 1;
-        // 死亡時攻撃コライダー無効化までの時間設定
-        [SerializeField]
-        private float deathColliderTime;
+        // ---アニメーションID登録---
+        /// <summary>
+        /// 歩行アニメーションのIDを参照する変数
+        /// </summary>
+        public static readonly int IsWalkingID = Animator.StringToHash("On_IsWalking");
+        /// <summary>
+        /// 近接攻撃アニメーションのIDを参照する変数
+        /// </summary>
+        public static readonly int AttackID = Animator.StringToHash("OnAttack");
+        /// <summary>
+        /// 弱点出現アニメーションのIDを参照する変数
+        /// </summary>
+        public static readonly int ImmediateryWeakID = Animator.StringToHash("On_ImmediatelyWeak");
+        /// <summary>
+        /// 復帰アニメーションのIDを参照する変数
+        /// </summary>
+        public static readonly int WakeUpID = Animator.StringToHash("OnWakeUp");
+        /// <summary>
+        /// 死亡アニメーションのIDを参照する変数
+        /// </summary>
+        public static readonly int DieID = Animator.StringToHash("OnDie");
+        /// <summary>
+        /// 着地アニメーションのIDを参照する変数
+        /// </summary>
+        public static readonly int LandingID = Animator.StringToHash("OnLanding");
+        /// <summary>
+        /// 踏みつけ攻撃アニメーションのIDを参照する変数
+        /// </summary>
+        public static readonly int StumpID = Animator.StringToHash("OnStump");
 
-        // 踏みつけ攻撃エフェクト再生までの待機時間
-        [SerializeField]
-        private float particleWaitTime = 0.5f;
-
-        // 踏みつけ攻撃用コライダー
-        [SerializeField]
-        private Collider stumpCollider;
-        // 攻撃判定
-        [SerializeField]
-        private Collider attackCollider;
-        // ボスの体に当たった時の判定
-        [SerializeField]
-        private Collider bodyAttackCollider;
-        // 弱点コライダーの参照
-        [SerializeField]
-        private Collider weakCollider;
-        // プレイヤーとのCollisionCollider参照用
-        [SerializeField]
-        private Collider collider2Player = null;
-
-        // ダメージエフェクトの参照
-        [SerializeField]
-        private GameObject damageEffect;
-        // ターゲットエフェクトの参照
-        [SerializeField]
-        private GameObject haloEffect;
-
-        // アニメーターの参照
-        [SerializeField]
-        Animator animator;
-
-        // ボスモデルについてるScriptの参照
-        [SerializeField]
-        private ActionSoundsPlayer modelScript;
-
-        // パーティクルシステムの構造体
-        [Serializable]
-        private struct ParticleSystems
-        {
-            public ParticleSystem[] stump;// 踏みつけ攻撃エフェクト配列
-            public ParticleSystem[] bigStump;// ダブルスレッジハンマー攻撃エフェクト配列
-        }
-
-        // 攻撃エフェクト参照
-        [SerializeField]
-        private ParticleSystems particles;
-
-        private GameObject targetObject;// プレイヤーオブジェクト参照用
-        new private Rigidbody rigidbody;// Rigidbodyコンポーネント参照用
-        private float stunTimer = 0;// スタンタイマー
-
-        // スクリプト参照用変数
-        private PlayerController player;// プレイヤースクリプト参照用
-        private StatusManagerBoss statusManager;// ステータスマネージャーボス参照用
-
-        // アニメーションID登録
-        static readonly int isWalkingID = Animator.StringToHash("isWalking");
-        static readonly int attackID = Animator.StringToHash("attack");
-        static readonly int immediateryWeakID = Animator.StringToHash("ImmediatelyWeak");// スタン食らったとき用トランジション
-        static readonly int wakeUpID = Animator.StringToHash("wakeUp");
-        static readonly int dieID = Animator.StringToHash("die");
-        static readonly int landingID = Animator.StringToHash("landing");// ジャンプ攻撃着地用
-        static readonly int stumpID = Animator.StringToHash("Stump");
-
-        // 判定用フラグ
-        private bool isMoving = false;// 移動中かどうか判定
-        private bool isTurning = false;// 攻撃中かどうか判定
-        private bool isJumping = false;// 攻撃中かどうか判定
-        private bool isWalking = false;// 歩行SE再生判定用
-        private bool isAppeardWeak = false;// 弱点が露出したかどうか
-        private bool isStunning = false;// スタン中かどうか判定
+        // ---判定用フラグ---
+        /// <summary>
+        /// 移動中かどうかの判定を参照する変数
+        /// </summary>
+        private bool _isMoving = false;
+        /// <summary>
+        /// 回転中かどうかの判定を参照する変数
+        /// </summary>
+        private bool _isTurning = false;
+        /// <summary>
+        /// 踏みつけ攻撃中かどうかの判定を参照する変数
+        /// </summary>
+        private bool _isStumping = false;
+        /// <summary>
+        /// 歩行SE再生中かどうかの判定を参照する変数
+        /// </summary>
+        private bool _isWalkingSE = false;
+        /// <summary>
+        /// 弱点出現中かどうかの判定を参照する変数
+        /// </summary>
+        private bool _isAppeardWeak = false;
+        /// <summary>
+        /// スタン中かどうかの判定を参照する変数
+        /// </summary>
+        private bool _isStunning = false;
 
         /// <summary>
         /// 初期化処理を行う関数
@@ -162,32 +241,32 @@ namespace QuickTheFury
             // スクリプト参照用変数初期化
             statusManager = GetComponent<StatusManagerBoss>();// ステータスマネージャーボス参照用
             rigidbody = GetComponent<Rigidbody>();// Rigidbodyコンポーネント参照用
-            targetObject = GameObject.FindWithTag("Player");// プレイヤーオブジェクト参照用
-            player = targetObject.GetComponent<PlayerController>();// プレイヤースクリプト参照用
+            _targetObject = GameObject.FindWithTag("Player");// プレイヤーオブジェクト参照用
+            player = _targetObject.GetComponent<PlayerController>();// プレイヤースクリプト参照用
 
             // イベント登録
             statusManager.OnDeath += Die; // 死亡時実行の関数をいれとく
             statusManager.OnStunTaken += Stun; //スタン食らったとき
             statusManager.OnDamageTaken += Damage;// ダメージ食らったとき
-            modelScript.PlayWalkSE += PlayWalkSE;// 歩行SE再生関数登録
+            ModelScript.PlayWalkSE += PlayWalkSE;// 歩行SE再生関数登録
 
             // フラグ初期化
             statusManager.isInvincible = false;// 無敵解除
-            isWalking = true;// 歩行SE再生判定用
-            isTurning = false;// 方向可能
-            isMoving = false;// 移動停止
-            isJumping = false;// 攻撃停止
-            attackCollider.enabled = false;// 攻撃判定無効化
-            bodyAttackCollider.enabled = true;// ボス本体判定有効化
-            stumpCollider.enabled = false;// 踏みつけ攻撃用コライダー無効化
-            collider2Player.enabled = false; // プレイヤーとのCollisionColliderを無効化
+            _isWalkingSE = true;// 歩行SE再生判定用
+            _isTurning = false;// 方向可能
+            _isMoving = false;// 移動停止
+            _isStumping = false;// 踏みつけ攻撃停止
+            AttackCollider.enabled = false;// 攻撃判定無効化
+            BodyAttackCollider.enabled = true;// ボス本体判定有効化
+            StumpCollider.enabled = false;// 踏みつけ攻撃用コライダー無効化
+            Collider2_Player.enabled = false; // プレイヤーとのCollisionColliderを無効化
 
             // すべての攻撃パーティクル停止
-            foreach (ParticleSystem stump in particles.stump)
+            foreach (ParticleSystem stump in _particles.Stump)
             {
                 stump.Stop();
             }
-            foreach (ParticleSystem bigStump in particles.bigStump)
+            foreach (ParticleSystem bigStump in _particles.BigStump)
             {
                 bigStump.Stop();
             }
@@ -206,7 +285,7 @@ namespace QuickTheFury
                 statusManager.OnDeath -= Die;// 死亡時実行の関数を消す
                 statusManager.OnStunTaken -= Stun;// スタン食らったときの関数を消す
                 statusManager.OnDamageTaken -= Damage;// ダメージ食らったときの関数を消す
-                modelScript.PlayWalkSE -= PlayWalkSE;// 歩行SE再生関数解除
+                ModelScript.PlayWalkSE -= PlayWalkSE;// 歩行SE再生関数解除
             }
         }
 
@@ -221,13 +300,13 @@ namespace QuickTheFury
         // 初動行動
         IEnumerator OnPose()
         {
-            yield return new WaitForSeconds(bossStartTime);// ボス開始時間待機
+            yield return new WaitForSeconds(BossStartTime);// ボス開始時間待機
 
             // フラグ変更
-            isTurning = true;// 回転可能
-            isMoving = true;// 移動開始
+            _isTurning = true;// 回転可能
+            _isMoving = true;// 移動開始
 
-            hammerAttackTime = hammerAttackTimeDefault;// ハンマー攻撃時間リセット
+            HammerAttackTime = HammerAttackTimeDefault;// ハンマー攻撃時間リセット
         }
 
         /// <summary>
@@ -236,37 +315,37 @@ namespace QuickTheFury
         void FixedUpdate()
         {
             // もし弱点出現中であれば
-            if (isAppeardWeak)
+            if (_isAppeardWeak)
             {
                 return;// 弱点出現中は処理終了
             }
 
-            float distance = Vector3.Distance(targetObject.transform.position, this.transform.position);// プレイヤーの近くにいたらジャンプ攻撃を仕掛ける処理
+            float distance = Vector3.Distance(_targetObject.transform.position, this.transform.position);// プレイヤーの近くにいたらジャンプ攻撃を仕掛ける処理
 
             // もしハンマー攻撃時間が来ていて、ジャンプ攻撃中でなければ
-            if (hammerAttackTime <= 0 && !isJumping)
+            if (HammerAttackTime <= 0 && !_isStumping)
             {
                 DoubleHammerAttack();// ハンマー攻撃処理
-                hammerAttackTime = hammerAttackTimeDefault;// ハンマー攻撃時間リセット
+                HammerAttackTime = HammerAttackTimeDefault;// ハンマー攻撃時間リセット
             }
             // そうでなければ
             else
             {
-                hammerAttackTime -= Time.fixedDeltaTime;// ハンマー攻撃時間カウントダウン
+                HammerAttackTime -= Time.fixedDeltaTime;// ハンマー攻撃時間カウントダウン
             }
 
             // もし回転可能であれば
-            if (isTurning)
+            if (_isTurning)
             {
                 Turn();// 回転処理
 
                 // もし移動中であれば
-                if (isMoving)
+                if (_isMoving)
                 {
                     Walk();
 
                     // もしプレイヤーが近くにいたら
-                    if (distance <= distanceNumber)
+                    if (distance <= DistanceNumber)
                     {
                         TramplingAttack();
                     }
@@ -281,7 +360,7 @@ namespace QuickTheFury
         {
             // 回転処理
             float speed = RotateSpeed;// 補完スピードを決める
-            Vector3 relativePos = targetObject.transform.position - transform.position;// ターゲット方向のベクトルを取得
+            Vector3 relativePos = _targetObject.transform.position - transform.position;// ターゲット方向のベクトルを取得
 
             relativePos.y = 0;// X軸の回転は禁止する
 
@@ -297,12 +376,12 @@ namespace QuickTheFury
         {
             Vector3 forward = transform.forward * MoveP;// 前方向に移動ベクトル設定
             rigidbody.linearVelocity = new Vector3(forward.x, rigidbody.linearVelocity.y, forward.z);// 前方向に移動
-            animator.SetFloat(isWalkingID, rigidbody.linearVelocity.magnitude);// 歩行アニメーション開始
+            Animator.SetFloat(IsWalkingID, rigidbody.linearVelocity.magnitude);// 歩行アニメーション開始
 
             // 歩行SE再生処理開始
-            if (isWalking)
+            if (_isWalkingSE)
             {
-                isWalking = false;// 歩行SE再生判定用
+                _isWalkingSE = false;// 歩行SE再生判定用
             }
         }
 
@@ -312,7 +391,7 @@ namespace QuickTheFury
         private void Idle()
         {
             rigidbody.linearVelocity = new Vector3(0, rigidbody.linearVelocity.y, 0);// 移動停止
-            animator.SetFloat(isWalkingID, rigidbody.linearVelocity.magnitude);// 歩行アニメーション停止
+            Animator.SetFloat(IsWalkingID, rigidbody.linearVelocity.magnitude);// 歩行アニメーション停止
         }
 
         /// <summary>
@@ -327,34 +406,34 @@ namespace QuickTheFury
         IEnumerator OnTramplingAttack()
         {
             // ジャンプ開始
-            isMoving = false;
-            isWalking = true;
-            isJumping = true;
+            _isMoving = false;
+            _isWalkingSE = true;
+            _isStumping = true;
 
-            isTurning = false;// 回転停止
+            _isTurning = false;// 回転停止
 
-            animator.SetTrigger(stumpID);// ジャンプ開始
-            yield return new WaitForSeconds(stumpWaitTime);// ジャンプまでの待機時間
-            animator.SetTrigger(landingID);// ジャンプ着地アニメーション開始
-            yield return new WaitForSeconds(stumpColliderArriveCooldown);// 踏みつけ攻撃コライダー出現までのクールタイム待機
+            Animator.SetTrigger(StumpID);// ジャンプ開始
+            yield return new WaitForSeconds(StumpWaitTime);// ジャンプまでの待機時間
+            Animator.SetTrigger(LandingID);// ジャンプ着地アニメーション開始
+            yield return new WaitForSeconds(StumpColliderArriveCooldown);// 踏みつけ攻撃コライダー出現までのクールタイム待機
             AudioPlayer.Instance.PlaySE(7);// ジャンプ攻撃SE再生（中山が編集）
-            stumpCollider.enabled = true;// 踏みつけ攻撃用コライダー有効化
-            yield return new WaitForSeconds(particleWaitTime);// 踏みつけ攻撃エフェクト再生までの待機時間
+            StumpCollider.enabled = true;// 踏みつけ攻撃用コライダー有効化
+            yield return new WaitForSeconds(ParticleWaitTime);// 踏みつけ攻撃エフェクト再生までの待機時間
 
             // 踏みつけ攻撃エフェクト再生
-            foreach (ParticleSystem stump in particles.stump)
+            foreach (ParticleSystem stump in _particles.Stump)
             {
                 stump.Play();// 踏みつけ攻撃エフェクト再生
             }
 
             yield return new WaitForSeconds(StumpAttackTime);// 踏みつけ攻撃時間待機
-            stumpCollider.enabled = false;// 踏みつけ攻撃用コライダー無効化
-            isTurning = true;// 回転可能
+            StumpCollider.enabled = false;// 踏みつけ攻撃用コライダー無効化
+            _isTurning = true;// 回転可能
             yield return new WaitForSeconds(StandTime);// 少し待機
 
             // ジャンプ終了
-            isMoving = true;
-            isJumping = false;
+            _isMoving = true;
+            _isStumping = false;
         }
 
         /// <summary>
@@ -368,23 +447,23 @@ namespace QuickTheFury
         // ハンマー攻撃処理
         IEnumerator OnDoubleHammerAttack()
         {
-            isMoving = false;// 移動停止
-            isWalking = true;// 歩行SE再生判定用
+            _isMoving = false;// 移動停止
+            _isWalkingSE = true;// 歩行SE再生判定用
 
-            isTurning = false;// 攻撃開始
-            animator.SetTrigger(attackID);// ジャンプアニメーション開始
+            _isTurning = false;// 攻撃開始
+            Animator.SetTrigger(AttackID);// ジャンプアニメーション開始
             AudioPlayer.Instance.PlaySE(2);// 攻撃SE再生）
-            yield return new WaitForSeconds(meleeAttackAnimTime);// 近接攻撃アニメーション時間待機
-            attackCollider.enabled = true;// 攻撃判定有効化
+            yield return new WaitForSeconds(MeleeAttackAnimTime);// 近接攻撃アニメーション時間待機
+            AttackCollider.enabled = true;// 攻撃判定有効化
 
             // ダブルスレッジハンマー攻撃エフェクト再生
-            foreach (ParticleSystem bigStump in particles.bigStump)
+            foreach (ParticleSystem bigStump in _particles.BigStump)
             {
                 bigStump.Play();// ダブルスレッジハンマー攻撃エフェクト再生
             }
 
             yield return new WaitForSeconds(BossAttackTime);// 攻撃する時間
-            attackCollider.enabled = false;// 攻撃判定無効化
+            AttackCollider.enabled = false;// 攻撃判定無効化
             yield return new WaitForSeconds(BossLittleWaitTime);// 少し待機
 
             StartCoroutine(OnStun(BossWeakTime));// 弱点出現処理開始
@@ -394,32 +473,32 @@ namespace QuickTheFury
         private IEnumerator OnStun(float stun)
         {
             // スタン開始
-            stunTimer = stun;
-            isStunning = true;
+            _stunTimer = stun;
+            _isStunning = true;
 
             Weak();// 弱点出現
             yield return new WaitForSeconds(BossWeakBeforeTime);// 弱点タイム
-            bodyAttackCollider.enabled = false;// ボス本体判定無効化
+           BodyAttackCollider.enabled = false;// ボス本体判定無効化
             yield return new WaitForSeconds(BossVeryLittleWaitTime);// 少し待機
-            collider2Player.enabled = true; // プレイヤーとのCollisionColliderを有効化
+            Collider2_Player.enabled = true; // プレイヤーとのCollisionColliderを有効化
 
             // 倒れる間のタイマー
-            while (stunTimer >= 0)
+            while (_stunTimer >= 0)
             {
-                stunTimer -= Time.deltaTime;// スタンタイマー減少
+                _stunTimer -= Time.deltaTime;// スタンタイマー減少
                 yield return null;// 1フレーム待機
             }
 
             WakeUp();// 起き上がり
             yield return new WaitForSeconds(BossWakeUpTime);// 待機
-            bodyAttackCollider.enabled = true;// ボス本体判定有効化
+            BodyAttackCollider.enabled = true;// ボス本体判定有効化
             yield return new WaitForSeconds(BossWaitTime);// 少し待機
 
-            isTurning = true;// 攻撃停止
-            isMoving = true;// 移動開始
-            isAppeardWeak = false;// 弱点非出現化
-            isStunning = false;// スタン解除
-            hammerAttackTime = hammerAttackTimeDefault;// ハンマー攻撃時間リセット
+            _isTurning = true;// 攻撃停止
+            _isMoving = true;// 移動開始
+            _isAppeardWeak = false;// 弱点非出現化
+            _isStunning = false;// スタン解除
+            HammerAttackTime = HammerAttackTimeDefault;// ハンマー攻撃時間リセット
         }
 
         /// <summary>
@@ -427,7 +506,7 @@ namespace QuickTheFury
         /// </summary>
         private void Weak()
         {
-            isAppeardWeak = true;// 弱点出現化
+            _isAppeardWeak = true;// 弱点出現化
         }
 
         /// <summary>
@@ -435,8 +514,8 @@ namespace QuickTheFury
         /// </summary>
         private void WakeUp()
         {
-            animator.SetTrigger(wakeUpID);// 起き上がりアニメーション再生
-            collider2Player.enabled = false; // プレイヤーとのCollisionColliderを無効化
+            Animator.SetTrigger(WakeUpID);// 起き上がりアニメーション再生
+            Collider2_Player.enabled = false; // プレイヤーとのCollisionColliderを無効化
         }
 
         /// <summary>
@@ -448,22 +527,22 @@ namespace QuickTheFury
             StartCoroutine(OnDie());// 死亡処理開始
 
             // エフェクト無効化
-            if (haloEffect != null)
+            if (HaloEffect != null)
             {
-                haloEffect.SetActive(false);// ターゲットエフェクト無効化
+                HaloEffect.SetActive(false);// ターゲットエフェクト無効化
             }
         }
 
         IEnumerator OnDie()
         {
-            animator.SetTrigger(dieID);// 死亡アニメーション再生（中山が編集）
+            Animator.SetTrigger(DieID);// 死亡アニメーション再生（中山が編集）
             AudioPlayer.Instance.PlaySE(4);
-            attackCollider.enabled = false;
-            bodyAttackCollider.enabled = false;
-            stumpCollider.enabled = false;
-            yield return new WaitForSeconds(deathColliderTime);
+            AttackCollider.enabled = false;
+            BodyAttackCollider.enabled = false;
+            StumpCollider.enabled = false;
+            yield return new WaitForSeconds(DeathColliderTime);
 
-            yield return new WaitForSeconds(bossDieTime - deathColliderTime);// 少し待機（中山が編集）
+            yield return new WaitForSeconds(BossDefeatTime - DeathColliderTime);// 少し待機（中山が編集）
             MainStageScene.Instance.StageClear();// ステージクリア処理（中山が編集）
             Destroy(gameObject);// ボスオブジェクトを破壊（中山が編集）
         }
@@ -472,16 +551,16 @@ namespace QuickTheFury
         private void Damage()
         {
             // エフェクトをインスタンス化
-            GameObject effect = Instantiate(damageEffect);
+            GameObject effect = Instantiate(DamageEffect);
 
-            effect.transform.position = weakCollider.transform.position;// 弱点コライダーの位置にエフェクトを出す（中山が編集）
+            effect.transform.position = WeakCollider.transform.position;// 弱点コライダーの位置にエフェクトを出す（中山が編集）
 
             Destroy(effect, 5);// エフェクトを5秒後に破壊（中山が編集）
         }
 
         public void PlayWalkSE()
         {
-            if (!isWalking)
+            if (!_isWalkingSE)
             {
                 AudioPlayer.Instance.PlaySE(6);
                 AudioPlayer.Instance.PlaySE(5);
@@ -490,19 +569,19 @@ namespace QuickTheFury
 
         private void Stun()
         {
-            if (!isStunning)
+            if (!_isStunning)
             {
                 // これのために、アニメーションをanystate→倒れるにしとかないとダメかも
 
                 StopAllCoroutines();
 
-                animator.SetTrigger(immediateryWeakID); // これ専用の倒れるトランジション
+                Animator.SetTrigger(ImmediateryWeakID); // これ専用の倒れるトランジション
                 StartCoroutine(OnStun(player.StunSkillTime));
             }
             else
             {
                 // ひるむ時間を5秒にする
-                stunTimer = player.StunSkillTime;
+                _stunTimer = player.StunSkillTime;
             }
         }
     }

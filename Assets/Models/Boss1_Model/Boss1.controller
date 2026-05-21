@@ -9,7 +9,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: wakeUp
+    m_ConditionEvent: OnWakeUp
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 3586161526018669276}
@@ -127,7 +127,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: die
+    m_ConditionEvent: OnDie
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -1324895401791853541}
@@ -205,43 +205,43 @@ AnimatorController:
   m_Name: Boss1
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: isWalking
+  - m_Name: On_IsWalking
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: landing
+  - m_Name: OnLanding
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: attack
+  - m_Name: OnAttack
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: wakeUp
+  - m_Name: OnWakeUp
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: die
+  - m_Name: OnDie
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: Stump
+  - m_Name: OnStump
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: ImmediatelyWeak
+  - m_Name: On_ImmediatelyWeak
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -296,31 +296,31 @@ AnimatorStateMachine:
     m_Position: {x: 30, y: 240, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2358809672345552956}
-    m_Position: {x: 30, y: 350, z: 0}
+    m_Position: {x: 10, y: 510, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1488813391453880151}
-    m_Position: {x: 330, y: 170, z: 0}
+    m_Position: {x: -420, y: 100, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 8761420191496492365}
-    m_Position: {x: 280, y: 230, z: 0}
+    m_Position: {x: -420, y: 300, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4616972032630621780}
-    m_Position: {x: 240, y: 290, z: 0}
+    m_Position: {x: -420, y: 510, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1500149944088782491}
-    m_Position: {x: 550, y: 260, z: 0}
+    m_Position: {x: -210, y: 260, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5073657115783398436}
-    m_Position: {x: 550, y: 350, z: 0}
+    m_Position: {x: -210, y: 360, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1324895401791853541}
-    m_Position: {x: 560, y: 20, z: 0}
+    m_Position: {x: -420, y: 40, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -7722110079148634716}
-    m_Position: {x: 670, y: 190, z: 0}
+    m_Position: {x: -210, y: 150, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3586161526018669276}
-    m_Position: {x: 290, y: 350, z: 0}
+    m_Position: {x: -210, y: 450, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: 9016672774530243044}
@@ -330,9 +330,9 @@ AnimatorStateMachine:
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: 420, y: 120, z: 0}
+  m_AnyStatePosition: {x: 50, y: 40, z: 0}
   m_EntryPosition: {x: 50, y: 120, z: 0}
-  m_ExitPosition: {x: 800, y: 120, z: 0}
+  m_ExitPosition: {x: 280, y: 80, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: -633262653718723281}
 --- !u!1102 &1488813391453880151
@@ -542,7 +542,7 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: Blend
     m_Mirror: 0
-  m_BlendParameter: isWalking
+  m_BlendParameter: On_IsWalking
   m_BlendParameterY: Blend
   m_MinThreshold: 0
   m_MaxThreshold: 0.49401394
@@ -558,7 +558,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: landing
+    m_ConditionEvent: OnLanding
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 4616972032630621780}
@@ -583,7 +583,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: attack
+    m_ConditionEvent: OnAttack
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -7722110079148634716}
@@ -657,7 +657,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: ImmediatelyWeak
+    m_ConditionEvent: On_ImmediatelyWeak
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1500149944088782491}
@@ -682,7 +682,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: Stump
+    m_ConditionEvent: OnStump
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1488813391453880151}
