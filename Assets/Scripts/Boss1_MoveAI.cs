@@ -234,43 +234,70 @@ namespace QuickTheFury
         private bool _isStunning = false;
 
         /// <summary>
+        /// プレイヤーのタグ名を参照する変数
+        /// </summary>
+        private string _playerTagName = "Player";
+
+        /// <summary>
         /// 初期化処理を行う関数
         /// </summary>
-        void Awake()
+        private void Awake()
         {
-            // スクリプト参照用変数初期化
-            statusManager = GetComponent<StatusManagerBoss>();// ステータスマネージャーボス参照用
-            rigidbody = GetComponent<Rigidbody>();// Rigidbodyコンポーネント参照用
-            _targetObject = GameObject.FindWithTag("Player");// プレイヤーオブジェクト参照用
-            player = _targetObject.GetComponent<PlayerController>();// プレイヤースクリプト参照用
+            // ---スクリプト参照用変数初期化---
+            // ステータスマネージャーボス参照用
+            statusManager = GetComponent<StatusManagerBoss>();
+            // Rigidbodyコンポーネント参照用
+            rigidbody = GetComponent<Rigidbody>();
+            // プレイヤーオブジェクト参照用
+            _targetObject = GameObject.FindWithTag(_playerTagName);
+            // プレイヤースクリプト参照用
+            player = _targetObject.GetComponent<PlayerController>();
 
-            // イベント登録
-            statusManager.OnDeath += Die; // 死亡時実行の関数をいれとく
-            statusManager.OnStunTaken += Stun; //スタン食らったとき
-            statusManager.OnDamageTaken += Damage;// ダメージ食らったとき
-            ModelScript.PlayWalkSE += PlayWalkSE;// 歩行SE再生関数登録
+            // ---イベント登録---
+            // 死亡時実行の関数を入れる
+            statusManager.OnDeath += Die;
+            // スタン食らったときの関数を入れる
+            statusManager.OnStunTaken += Stun;
+            // ダメージ食らったときの関数を入れる
+            statusManager.OnDamageTaken += Damage;
+            // 歩行SE再生関数を入れる
+            ModelScript.PlayWalkSE += PlayWalkSE;
 
-            // フラグ初期化
-            statusManager.isInvincible = false;// 無敵解除
-            _isWalkingSE = true;// 歩行SE再生判定用
-            _isTurning = false;// 方向可能
-            _isMoving = false;// 移動停止
-            _isStumping = false;// 踏みつけ攻撃停止
-            AttackCollider.enabled = false;// 攻撃判定無効化
-            BodyAttackCollider.enabled = true;// ボス本体判定有効化
-            StumpCollider.enabled = false;// 踏みつけ攻撃用コライダー無効化
-            Collider2_Player.enabled = false; // プレイヤーとのCollisionColliderを無効化
+            // ---フラグ初期化---
+            // 無敵解除
+            statusManager.isInvincible = false;
+            // 歩行SE再生可
+            _isWalkingSE = true;
+            // 方向不可
+            _isTurning = false;
+            // 移動停止
+            _isMoving = false;
+            // 踏みつけ攻撃停止
+            _isStumping = false;
+            // 攻撃判定無効化
+            AttackCollider.enabled = false;
+            // ボス本体判定有効化
+            BodyAttackCollider.enabled = true;
+            // 踏みつけ攻撃用コライダー無効化
+            StumpCollider.enabled = false;
+            // プレイヤーとのCollisionColliderを無効化
+            Collider2_Player.enabled = false;
 
-            // すべての攻撃パーティクル停止
+            // すべての攻撃パーティクルをサーチ
             foreach (ParticleSystem stump in _particles.Stump)
             {
+                // パーティクルを停止
                 stump.Stop();
             }
+
+            // すべての大型攻撃パーティクルをサーチ
             foreach (ParticleSystem bigStump in _particles.BigStump)
             {
+                // パーティクルを停止
                 bigStump.Stop();
             }
 
+            // 待機時の関数を呼び出し
             Idle();
         }
 
@@ -478,7 +505,7 @@ namespace QuickTheFury
 
             Weak();// 弱点出現
             yield return new WaitForSeconds(BossWeakBeforeTime);// 弱点タイム
-           BodyAttackCollider.enabled = false;// ボス本体判定無効化
+            BodyAttackCollider.enabled = false;// ボス本体判定無効化
             yield return new WaitForSeconds(BossVeryLittleWaitTime);// 少し待機
             Collider2_Player.enabled = true; // プレイヤーとのCollisionColliderを有効化
 
