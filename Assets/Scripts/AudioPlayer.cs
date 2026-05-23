@@ -66,7 +66,7 @@ namespace QuickTheFury
                 BGM_Source.Stop();
             }
 
-            // ---BGMを再生する---
+            // --- BGMを再生する ---
             // インデックスに対応するBGMを設定
             BGM_Source.clip = BGM_Clips[bgmIndex];
             BGM_Source.Play();
@@ -102,7 +102,7 @@ namespace QuickTheFury
                 return;
             }
 
-            // ---SEを再生する---
+            // --- SEを再生する ---
             // ピッチを設定
             SE_Source.pitch = pitch;
             // ボリュームを設定

@@ -177,7 +177,7 @@ namespace QuickTheFury
         /// </summary>
         public float ParticleWaitTime = 0.5f;
 
-        // ---アニメーションID登録---
+        // --- アニメーションID登録 ---
         /// <summary>
         /// 歩行アニメーションのIDを参照する変数
         /// </summary>
@@ -207,7 +207,7 @@ namespace QuickTheFury
         /// </summary>
         public static readonly int StumpID = Animator.StringToHash("OnStump");
 
-        // ---判定用フラグ---
+        // --- 判定用フラグ ---
         /// <summary>
         /// 移動中かどうかの判定を参照する変数
         /// </summary>
@@ -233,6 +233,7 @@ namespace QuickTheFury
         /// </summary>
         private bool _isStunning = false;
 
+        // ---タグ名の参照---
         /// <summary>
         /// プレイヤーのタグ名を参照する変数
         /// </summary>
@@ -243,7 +244,7 @@ namespace QuickTheFury
         /// </summary>
         private void Awake()
         {
-            // ---スクリプト参照用変数初期化---
+            // --- スクリプト参照用変数初期化 ---
             // ステータスマネージャーボス参照用
             statusManager = GetComponent<StatusManagerBoss>();
             // Rigidbodyコンポーネント参照用
@@ -253,7 +254,7 @@ namespace QuickTheFury
             // プレイヤースクリプト参照用
             player = _targetObject.GetComponent<PlayerController>();
 
-            // ---イベント登録---
+            // --- イベント登録 ---
             // 死亡時実行の関数を入れる
             statusManager.OnDeath += Die;
             // スタン食らったときの関数を入れる
@@ -263,7 +264,7 @@ namespace QuickTheFury
             // 歩行SE再生関数を入れる
             ModelScript.PlayWalkSE += PlayWalkSE;
 
-            // ---フラグ初期化---
+            // --- フラグ初期化 ---
             // 無敵解除
             statusManager.isInvincible = false;
             // 歩行SE再生可
@@ -306,13 +307,17 @@ namespace QuickTheFury
         /// </summary>
         private void OnDestroy()
         {
-            // イベント登録解除
+            // もしステータスマネージャーがある場合
             if (statusManager != null)
             {
-                statusManager.OnDeath -= Die;// 死亡時実行の関数を消す
-                statusManager.OnStunTaken -= Stun;// スタン食らったときの関数を消す
-                statusManager.OnDamageTaken -= Damage;// ダメージ食らったときの関数を消す
-                ModelScript.PlayWalkSE -= PlayWalkSE;// 歩行SE再生関数解除
+                // 死亡時実行の関数を消す
+                statusManager.OnDeath -= Die;
+                // スタン食らったときの関数を消す
+                statusManager.OnStunTaken -= Stun;
+                // ダメージ食らったときの関数を消す
+                statusManager.OnDamageTaken -= Damage;
+                // 歩行SE再生関数解除
+                ModelScript.PlayWalkSE -= PlayWalkSE;
             }
         }
 
