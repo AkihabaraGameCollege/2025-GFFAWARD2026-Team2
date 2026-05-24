@@ -324,9 +324,10 @@ namespace QuickTheFury
         /// <summary>
         /// スタート時の処理を行う関数
         /// </summary>
-        void Start()
+        private void Start()
         {
-            StartCoroutine(OnPose());// 初動行動開始
+            // 初動行動を開始
+            StartCoroutine(OnPose());
         }
 
         // 初動行動
