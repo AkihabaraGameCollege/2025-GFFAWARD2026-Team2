@@ -330,16 +330,23 @@ namespace QuickTheFury
             StartCoroutine(OnPose());
         }
 
-        // 初動行動
-        IEnumerator OnPose()
+        /// <summary>
+        /// 初動の行動を行うコルーチン
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator OnPose()
         {
-            yield return new WaitForSeconds(BossStartTime);// ボス開始時間待機
+            // ボス開始時間待機
+            yield return new WaitForSeconds(BossStartTime);
 
-            // フラグ変更
-            _isTurning = true;// 回転可能
-            _isMoving = true;// 移動開始
+            // --- フラグ変更 ---
+            // 回転可能
+            _isTurning = true;
+            // 移動開始
+            _isMoving = true;
 
-            HammerAttackTime = HammerAttackTimeDefault;// ハンマー攻撃時間リセット
+            // ハンマー攻撃時間リセット
+            HammerAttackTime = HammerAttackTimeDefault;
         }
 
         /// <summary>
