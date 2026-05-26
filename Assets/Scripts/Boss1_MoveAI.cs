@@ -350,44 +350,50 @@ namespace QuickTheFury
         }
 
         /// <summary>
-        /// ボスの行動処理を行う関数
+        /// ボスの行動処理を毎フレームで管理する関数
         /// </summary>
-        void FixedUpdate()
+        private void FixedUpdate()
         {
-            // もし弱点出現中であれば
+            // もし弱点出現中な場合
             if (_isAppeardWeak)
             {
-                return;// 弱点出現中は処理終了
+                return;
             }
 
-            float distance = Vector3.Distance(_targetObject.transform.position, this.transform.position);// プレイヤーの近くにいたらジャンプ攻撃を仕掛ける処理
+            // プレイヤーとの距離を参照する変数を定義
+            float distance = Vector3.Distance(_targetObject.transform.position, this.transform.position);
 
-            // もしハンマー攻撃時間が来ていて、ジャンプ攻撃中でなければ
+            // もしハンマー攻撃時間が来ていて、ジャンプ攻撃中の場合
             if (HammerAttackTime <= 0 && !_isStumping)
             {
-                DoubleHammerAttack();// ハンマー攻撃処理
-                HammerAttackTime = HammerAttackTimeDefault;// ハンマー攻撃時間リセット
+                // ハンマー攻撃処理
+                DoubleHammerAttack();
+                // ハンマー攻撃時間リセット
+                HammerAttackTime = HammerAttackTimeDefault;
             }
-            // そうでなければ
             else
             {
-                HammerAttackTime -= Time.fixedDeltaTime;// ハンマー攻撃時間カウントダウン
+                // ハンマー攻撃時間カウントダウン
+                HammerAttackTime -= Time.fixedDeltaTime;
             }
 
-            // もし回転可能であれば
+            // もし回転可能の場合
             if (_isTurning)
             {
-                Turn();// 回転処理
+                // 回転処理
+                Turn();
 
-                // もし移動中であれば
+                // もし移動中の場合
                 if (_isMoving)
                 {
+                    // 移動処理
                     Walk();
 
-                    // もしプレイヤーが近くにいたら
+                    // もしプレイヤーが近くにいた場合
                     if (distance <= DistanceNumber)
                     {
-                        TramplingAttack();
+                        // 踏みつけ攻撃
+                        StumpAttack();
                     }
                 }
             }
@@ -435,15 +441,18 @@ namespace QuickTheFury
         }
 
         /// <summary>
-        /// ジャンプ攻撃処理を行う関数
+        /// ジャンプ攻撃処理を呼び出す関数
         /// </summary>
-        private void TramplingAttack()
+        private void StumpAttack()
         {
-            StartCoroutine(OnTramplingAttack());// ジャンプ攻撃処理開始
+            StartCoroutine(StumpAttackCoroutine());// ジャンプ攻撃処理開始
         }
 
-        // ジャンプ攻撃処理
-        IEnumerator OnTramplingAttack()
+        /// <summary>
+        /// ジャンプ攻撃処理を行うコルーチン
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator StumpAttackCoroutine()
         {
             // ジャンプ開始
             _isMoving = false;
