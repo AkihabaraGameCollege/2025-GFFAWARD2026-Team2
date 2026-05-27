@@ -285,17 +285,17 @@ namespace QuickTheFury
             Collider2_Player.enabled = false;
 
             // すべての攻撃パーティクルをサーチ
-            foreach (ParticleSystem stump in _particles.Stump)
+            foreach (ParticleSystem _stump in _particles.Stump)
             {
                 // パーティクルを停止
-                stump.Stop();
+                _stump.Stop();
             }
 
             // すべての大型攻撃パーティクルをサーチ
-            foreach (ParticleSystem bigStump in _particles.BigStump)
+            foreach (ParticleSystem _bigStump in _particles.BigStump)
             {
                 // パーティクルを停止
-                bigStump.Stop();
+                _bigStump.Stop();
             }
 
             // 待機時の関数を呼び出し
@@ -361,7 +361,7 @@ namespace QuickTheFury
             }
 
             // プレイヤーとの距離を参照する変数を定義
-            float distance = Vector3.Distance(_targetObject.transform.position, this.transform.position);
+            float _distance = Vector3.Distance(_targetObject.transform.position, this.transform.position);
 
             // もしハンマー攻撃時間が来ていて、ジャンプ攻撃中の場合
             if (HammerAttackTime <= 0 && !_isStumping)
@@ -390,7 +390,7 @@ namespace QuickTheFury
                     Walk();
 
                     // もしプレイヤーが近くにいた場合
-                    if (distance <= DistanceNumber)
+                    if (_distance <= DistanceNumber)
                     {
                         // 踏みつけ攻撃
                         StumpAttack();
@@ -404,15 +404,20 @@ namespace QuickTheFury
         /// </summary>
         private void Turn()
         {
-            // 回転処理
-            float speed = RotateSpeed;// 補完スピードを決める
-            Vector3 relativePos = _targetObject.transform.position - transform.position;// ターゲット方向のベクトルを取得
+            // --- 回転処理 ---
+            // 補完スピードを決める
+            float _speed = RotateSpeed;
+            // ターゲット方向のベクトルを取得
+            Vector3 _relativePos = _targetObject.transform.position - transform.position;
 
-            relativePos.y = 0;// X軸の回転は禁止する
+            // Y軸座標のサーチは禁止する
+            _relativePos.y = 0;
 
-            // 方向を向く処理
-            Quaternion rotation = Quaternion.LookRotation(relativePos);// 方向を、回転情報に変換
-            transform.rotation = Quaternion.Slerp(this.transform.rotation, rotation, speed);// 現在の回転情報と、ターゲット方向の回転情報を補完する
+            // --- 方向を向く処理 ---
+            // 方向を、回転情報に変換
+            Quaternion _rotation = Quaternion.LookRotation(_relativePos);
+            // 現在の回転情報と、ターゲット方向の回転情報を補完する
+            transform.rotation = Quaternion.Slerp(this.transform.rotation, _rotation, _speed);
         }
 
         /// <summary>
