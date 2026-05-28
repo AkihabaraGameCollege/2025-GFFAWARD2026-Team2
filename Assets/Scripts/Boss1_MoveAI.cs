@@ -421,138 +421,198 @@ namespace QuickTheFury
         }
 
         /// <summary>
-        /// ボスを移動する関数
+        /// ボスが移動する関数
         /// </summary>
         private void Walk()
         {
-            Vector3 forward = transform.forward * MoveP;// 前方向に移動ベクトル設定
-            rigidbody.linearVelocity = new Vector3(forward.x, rigidbody.linearVelocity.y, forward.z);// 前方向に移動
-            Animator.SetFloat(IsWalkingID, rigidbody.linearVelocity.magnitude);// 歩行アニメーション開始
+            // 前方向に移動ベクトル設定
+            Vector3 _forward = transform.forward * MoveP;
+            // 前方向に移動
+            rigidbody.linearVelocity = new Vector3(_forward.x, rigidbody.linearVelocity.y, _forward.z);
+            // 歩行アニメーション開始
+            Animator.SetFloat(IsWalkingID, rigidbody.linearVelocity.magnitude);
 
-            // 歩行SE再生処理開始
+            // もし歩行SEが流れていた場合
             if (_isWalkingSE)
             {
-                _isWalkingSE = false;// 歩行SE再生判定用
+                // 歩行SE再生のフラグをリセット
+                _isWalkingSE = false;
             }
         }
 
         /// <summary>
-        /// ボスが止まる関数
+        /// ボスが待機状態になる関数
         /// </summary>
         private void Idle()
         {
-            rigidbody.linearVelocity = new Vector3(0, rigidbody.linearVelocity.y, 0);// 移動停止
-            Animator.SetFloat(IsWalkingID, rigidbody.linearVelocity.magnitude);// 歩行アニメーション停止
+            // 移動停止
+            rigidbody.linearVelocity = new Vector3(0, rigidbody.linearVelocity.y, 0);
+            // 歩行アニメーション停止
+            Animator.SetFloat(IsWalkingID, rigidbody.linearVelocity.magnitude);
         }
 
         /// <summary>
-        /// ジャンプ攻撃処理を呼び出す関数
+        /// 踏みつけ攻撃処理を呼び出す関数
         /// </summary>
         private void StumpAttack()
         {
-            StartCoroutine(StumpAttackCoroutine());// ジャンプ攻撃処理開始
+            // 踏みつけ攻撃処理開始
+            StartCoroutine(StumpAttackCoroutine());
         }
 
         /// <summary>
-        /// ジャンプ攻撃処理を行うコルーチン
+        /// 踏みつけ攻撃処理を行うコルーチン
         /// </summary>
         /// <returns></returns>
         private IEnumerator StumpAttackCoroutine()
         {
-            // ジャンプ開始
+            // --- フラグをリセット ---
+            // 移動停止
             _isMoving = false;
+            // 歩行SE停止
             _isWalkingSE = true;
+            // 踏みつけ攻撃開始
             _isStumping = true;
+            // 視点移動停止
+            _isTurning = false;
 
-            _isTurning = false;// 回転停止
+            // ジャンプ開始
+            Animator.SetTrigger(StumpID);
+            // ジャンプまでの待機
+            yield return new WaitForSeconds(StumpWaitTime);
+            // ジャンプ着地アニメーション開始
+            Animator.SetTrigger(LandingID);
+            // 踏みつけ攻撃コライダー出現までのクールタイム待機
+            yield return new WaitForSeconds(StumpColliderArriveCooldown);
+            // ジャンプ攻撃SE再生
+            AudioPlayer.Instance.PlaySE(7);
+            // 踏みつけ攻撃用コライダー有効化
+            StumpCollider.enabled = true;
+            // 踏みつけ攻撃エフェクト再生までの待機
+            yield return new WaitForSeconds(ParticleWaitTime);
 
-            Animator.SetTrigger(StumpID);// ジャンプ開始
-            yield return new WaitForSeconds(StumpWaitTime);// ジャンプまでの待機時間
-            Animator.SetTrigger(LandingID);// ジャンプ着地アニメーション開始
-            yield return new WaitForSeconds(StumpColliderArriveCooldown);// 踏みつけ攻撃コライダー出現までのクールタイム待機
-            AudioPlayer.Instance.PlaySE(7);// ジャンプ攻撃SE再生（中山が編集）
-            StumpCollider.enabled = true;// 踏みつけ攻撃用コライダー有効化
-            yield return new WaitForSeconds(ParticleWaitTime);// 踏みつけ攻撃エフェクト再生までの待機時間
-
-            // 踏みつけ攻撃エフェクト再生
-            foreach (ParticleSystem stump in _particles.Stump)
+            // 踏みつけ攻撃エフェクトをすべてサーチ
+            foreach (ParticleSystem _stump in _particles.Stump)
             {
-                stump.Play();// 踏みつけ攻撃エフェクト再生
+                // 踏みつけ攻撃エフェクト再生
+                _stump.Play();
             }
 
-            yield return new WaitForSeconds(StumpAttackTime);// 踏みつけ攻撃時間待機
-            StumpCollider.enabled = false;// 踏みつけ攻撃用コライダー無効化
-            _isTurning = true;// 回転可能
-            yield return new WaitForSeconds(StandTime);// 少し待機
+            // 踏みつけ攻撃時間待機
+            yield return new WaitForSeconds(StumpAttackTime);
+            // 踏みつけ攻撃用コライダー無効化
+            StumpCollider.enabled = false;
+            // 回転可能
+            _isTurning = true;
+            // 少し待機
+            yield return new WaitForSeconds(StandTime);
 
-            // ジャンプ終了
+            // --- フラグを変更 ---
+            // 移動開始
             _isMoving = true;
+            // 踏みつけ攻撃停止
             _isStumping = false;
         }
 
         /// <summary>
-        /// ダブルスレッジハンマー攻撃処理を行う関数
+        /// ダブルスレッジハンマー攻撃処理を呼び出す関数
         /// </summary>
         private void DoubleHammerAttack()
         {
-            StartCoroutine(OnDoubleHammerAttack());// ハンマー攻撃処理開始
+            // ハンマー攻撃処理開始
+            StartCoroutine(DoubleHammerAttackCoroutine());
         }
 
-        // ハンマー攻撃処理
-        IEnumerator OnDoubleHammerAttack()
+        /// <summary>
+        /// ハンマー攻撃処理を行うコルーチン
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator DoubleHammerAttackCoroutine()
         {
-            _isMoving = false;// 移動停止
-            _isWalkingSE = true;// 歩行SE再生判定用
+            // --- フラグをリセット ---
+            // 移動停止
+            _isMoving = false;
+            // 歩行SE停止
+            _isWalkingSE = true;
+            // 視点移動停止
+            _isTurning = false;
 
-            _isTurning = false;// 攻撃開始
-            Animator.SetTrigger(AttackID);// ジャンプアニメーション開始
-            AudioPlayer.Instance.PlaySE(2);// 攻撃SE再生）
-            yield return new WaitForSeconds(MeleeAttackAnimTime);// 近接攻撃アニメーション時間待機
-            AttackCollider.enabled = true;// 攻撃判定有効化
+            // ジャンプアニメーション開始
+            Animator.SetTrigger(AttackID);
+            // 攻撃SE再生）
+            AudioPlayer.Instance.PlaySE(2);
+            // 近接攻撃アニメーション時間待機
+            yield return new WaitForSeconds(MeleeAttackAnimTime);
+            // 攻撃判定有効化
+            AttackCollider.enabled = true;
 
-            // ダブルスレッジハンマー攻撃エフェクト再生
-            foreach (ParticleSystem bigStump in _particles.BigStump)
+            // ダブルスレッジハンマー攻撃エフェクトをすべてサーチ
+            foreach (ParticleSystem _bigStump in _particles.BigStump)
             {
-                bigStump.Play();// ダブルスレッジハンマー攻撃エフェクト再生
+                // ダブルスレッジハンマー攻撃エフェクト再生
+                _bigStump.Play();
             }
 
-            yield return new WaitForSeconds(BossAttackTime);// 攻撃する時間
-            AttackCollider.enabled = false;// 攻撃判定無効化
-            yield return new WaitForSeconds(BossLittleWaitTime);// 少し待機
+            // 攻撃する時間分待機
+            yield return new WaitForSeconds(BossAttackTime);
+            // 攻撃判定無効化
+            AttackCollider.enabled = false;
+            // 少し待機
+            yield return new WaitForSeconds(BossLittleWaitTime);
 
-            StartCoroutine(OnStun(BossWeakTime));// 弱点出現処理開始
+            // 弱点出現処理開始
+            StartCoroutine(StunCoroutine(BossWeakTime));
         }
 
-        // 弱点出現処理
-        private IEnumerator OnStun(float stun)
+        /// <summary>
+        /// 弱点出現処理を行うコルーチン
+        /// </summary>
+        /// <param name="_stun"></param>
+        /// <returns></returns>
+        private IEnumerator StunCoroutine(float _stunTime)
         {
-            // スタン開始
-            _stunTimer = stun;
+            // --- スタン処理の準備 ---
+            _stunTimer = _stunTime;
             _isStunning = true;
 
-            Weak();// 弱点出現
-            yield return new WaitForSeconds(BossWeakBeforeTime);// 弱点タイム
-            BodyAttackCollider.enabled = false;// ボス本体判定無効化
-            yield return new WaitForSeconds(BossVeryLittleWaitTime);// 少し待機
-            Collider2_Player.enabled = true; // プレイヤーとのCollisionColliderを有効化
+            // 弱点ポイント出現
+            Weak();
+            // ボスがスタンする前に少し待機
+            yield return new WaitForSeconds(BossWeakBeforeTime);
+            // ボス本体判定無効化
+            BodyAttackCollider.enabled = false;
+            // 少し待機
+            yield return new WaitForSeconds(BossVeryLittleWaitTime);
+            // プレイヤーとのCollisionColliderを有効化
+            Collider2_Player.enabled = true;
 
-            // 倒れる間のタイマー
+            // スタンタイマーが0以上の間ループ
             while (_stunTimer >= 0)
             {
                 _stunTimer -= Time.deltaTime;// スタンタイマー減少
                 yield return null;// 1フレーム待機
             }
 
-            WakeUp();// 起き上がり
-            yield return new WaitForSeconds(BossWakeUpTime);// 待機
-            BodyAttackCollider.enabled = true;// ボス本体判定有効化
-            yield return new WaitForSeconds(BossWaitTime);// 少し待機
+            // 起き上がり
+            WakeUp();
+            // 待機
+            yield return new WaitForSeconds(BossWakeUpTime);
+            // ボス本体判定有効化
+            BodyAttackCollider.enabled = true;
+            // 少し待機
+            yield return new WaitForSeconds(BossWaitTime);
 
-            _isTurning = true;// 攻撃停止
-            _isMoving = true;// 移動開始
-            _isAppeardWeak = false;// 弱点非出現化
-            _isStunning = false;// スタン解除
-            HammerAttackTime = HammerAttackTimeDefault;// ハンマー攻撃時間リセット
+            // --- スタン終了後の後処理 ---
+            // 攻撃停止
+            _isTurning = true;
+            // 移動開始
+            _isMoving = true;
+            // 弱点非出現化
+            _isAppeardWeak = false;
+            // スタン解除
+            _isStunning = false;
+            // ハンマー攻撃時間リセット
+            HammerAttackTime = HammerAttackTimeDefault;
         }
 
         /// <summary>
@@ -560,7 +620,8 @@ namespace QuickTheFury
         /// </summary>
         private void Weak()
         {
-            _isAppeardWeak = true;// 弱点出現化
+            // 弱点出現化
+            _isAppeardWeak = true;
         }
 
         /// <summary>
@@ -568,73 +629,103 @@ namespace QuickTheFury
         /// </summary>
         private void WakeUp()
         {
-            Animator.SetTrigger(WakeUpID);// 起き上がりアニメーション再生
-            Collider2_Player.enabled = false; // プレイヤーとのCollisionColliderを無効化
+            // 起き上がりアニメーション再生
+            Animator.SetTrigger(WakeUpID);
+            // プレイヤーとのCollisionColliderを無効化
+            Collider2_Player.enabled = false;
         }
 
         /// <summary>
-        /// ボス撃退時の処理を行う関数
+        /// ボス撃退時の処理を呼び出す関数
         /// </summary>
         private void Die()
         {
-            StopAllCoroutines();// すべてのコルーチン停止
-            StartCoroutine(OnDie());// 死亡処理開始
+            // すべてのコルーチン停止
+            StopAllCoroutines();
+            // 死亡処理開始
+            StartCoroutine(DieCoroutine());
 
-            // エフェクト無効化
+            // もし弱点強調エフェクトがある場合
             if (HaloEffect != null)
             {
-                HaloEffect.SetActive(false);// ターゲットエフェクト無効化
+                // 弱点強調エフェクト無効化
+                HaloEffect.SetActive(false);
             }
         }
 
-        IEnumerator OnDie()
+        /// <summary>
+        /// ボス撃退時の処理を行うコルーチン
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator DieCoroutine()
         {
-            Animator.SetTrigger(DieID);// 死亡アニメーション再生（中山が編集）
+            // 死亡アニメーション再生
+            Animator.SetTrigger(DieID);
+            // 死亡時の咆哮SE再生
             AudioPlayer.Instance.PlaySE(4);
+
+            // ---各フラグの変更---
             AttackCollider.enabled = false;
             BodyAttackCollider.enabled = false;
             StumpCollider.enabled = false;
+
+            // ボスが死亡する時間分待機
             yield return new WaitForSeconds(DeathColliderTime);
 
-            yield return new WaitForSeconds(BossDefeatTime - DeathColliderTime);// 少し待機（中山が編集）
-            MainStageScene.Instance.StageClear();// ステージクリア処理（中山が編集）
-            Destroy(gameObject);// ボスオブジェクトを破壊（中山が編集）
+            // 少し待機
+            yield return new WaitForSeconds(BossDefeatTime - DeathColliderTime);
+            // ステージクリア処理
+            MainStageScene.Instance.StageClear();
+            // ボスオブジェクトを破壊
+            Destroy(gameObject);
         }
 
-
+        /// <summary>
+        /// ダメージ処理を行う関数
+        /// </summary>
         private void Damage()
         {
             // エフェクトをインスタンス化
             GameObject effect = Instantiate(DamageEffect);
 
-            effect.transform.position = WeakCollider.transform.position;// 弱点コライダーの位置にエフェクトを出す（中山が編集）
+            // 弱点コライダーの位置にエフェクトを出す
+            effect.transform.position = WeakCollider.transform.position;
 
-            Destroy(effect, 5);// エフェクトを5秒後に破壊（中山が編集）
+            // エフェクトを5秒後に破壊
+            Destroy(effect, 5);
         }
 
+        /// <summary>
+        /// 歩行SEを再生する関数
+        /// </summary>
         public void PlayWalkSE()
         {
-            if (!_isWalkingSE)
+            // もし歩行SE再生のフラグがオフの場合
+            if (_isWalkingSE)
             {
                 AudioPlayer.Instance.PlaySE(6);
                 AudioPlayer.Instance.PlaySE(5);
             }
         }
 
+        /// <summary>
+        /// スタン処理を呼び出す関数
+        /// </summary>
         private void Stun()
         {
+            // スタンしていない場合
             if (!_isStunning)
             {
-                // これのために、アニメーションをanystate→倒れるにしとかないとダメかも
-
                 StopAllCoroutines();
 
-                Animator.SetTrigger(ImmediateryWeakID); // これ専用の倒れるトランジション
-                StartCoroutine(OnStun(player.StunSkillTime));
+                // 倒れるアニメーションを再生
+                Animator.SetTrigger(ImmediateryWeakID);
+                // スタン処理開始
+                StartCoroutine(StunCoroutine(player.StunSkillTime));
             }
             else
             {
-                // ひるむ時間を5秒にする
+                // ひるむ時間を調整する
                 _stunTimer = player.StunSkillTime;
             }
         }
