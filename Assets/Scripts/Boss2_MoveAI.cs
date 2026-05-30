@@ -5,185 +5,303 @@ using Random = UnityEngine.Random;
 
 namespace QuickTheFury
 {
-    public class Boss2MoveAI : MonoBehaviour
+    /// <summary>
+    /// 第二ボスの移動・攻撃処理クラス
+    /// </summary>
+    public class Boss2_MoveAI : MonoBehaviour
     {
-        new private Rigidbody rigidbody;//Rigidbodyコンポーネント参照用（中山が編集）
-        [Header("ステータス")]
-        [SerializeField]
-        [Tooltip("ジャンプ力")]
-        private float jumpForce = 10;
-        [SerializeField]
-        [Tooltip("移動速度")]
-        private float moveSpeed = 3;
-        [SerializeField]
-        [Tooltip("回転速度")]
-        private float rotateSpeed = 11.1f;
-        [SerializeField]
-        [Tooltip("スタン時間")]
-        private float defaultStunTime = 15;
-
-        [Header("参照")]
-        [SerializeField]
-        [Tooltip("着地攻撃コライダー")]
-        private Collider attackCollider;
-        [SerializeField]
-        [Tooltip("弱点コライダー")]
-        private Collider weakCollider;
-        [SerializeField]
-        [Tooltip("ダメージエフェクトのプレハブ")]
-        private GameObject damageEffect;
-        [SerializeField]
-        [Tooltip("モデルについてるアニメーター")]
-        private Animator animator;
-
-        [SerializeField]
-        [Tooltip("ヘイローエフェクト")]
-        private GameObject haloEffect;
-        [SerializeField]
-        [Tooltip("モデルについてるScript")]
-        private ActionSoundsPlayer modelScript;
-
-        [Header("ボス固有の設定")]
-        [SerializeField]
-        [Tooltip("すたーともーしょん時間")]
-        private float startMotionTime = 4;
-        [SerializeField]
-        [Tooltip("何回ダメージを食らったら雑魚を召喚するか")]
-        private int damageCount2ZakoSummon = 5;
-        [SerializeField]
-        [Tooltip("一度に召喚する雑魚の数")]
-        private int zakoSummonCount = 3;
-        [SerializeField]
-        [Tooltip("次の雑魚が召喚されるまでの待機時間\n(0だと一斉スポーン)")]
-        private float zakoSummonWaitTime = 0.1f;
-        [SerializeField]
-        [Tooltip("雑魚のprefab")]
-        private GameObject zakoPrefab;
-        [SerializeField]
-        [Tooltip("雑魚の拡散スピード最小値")]
-        private float zakoMinSpreadSpeed;
-        [SerializeField]
-        [Tooltip("雑魚の拡散スピード最大値")]
-        private float zakoMaxSpreadSpeed;
-        [SerializeField]
-        [Tooltip("雑魚の拡散時間")]
-        private float zakoSpreadTime;
-        [SerializeField]
-        [Tooltip("雑魚の移動速度")]
-        private float zakoMoveSpeed;
-        [SerializeField]
-        [Tooltip("雑魚のスポーン地点")]
-        private Vector3 zakoSpawnOffset;
-        [SerializeField]
-        [Tooltip("雑魚を吸収可能な範囲")]
-        private float zakoAbsorbRadius;
-        [SerializeField]
-        [Tooltip("歩行継続時間")]
-        private float walkTime = 2;
-        [SerializeField]
-        [Tooltip("ジャンプ目標のY軸オフセット")]
-        private float jumpTargetOffsetY = 10;
-        [SerializeField]
-        [Tooltip("ジャンプ後の静止までの待機時間")]
-        private float jump2FreezeWaitTime = 1;
-        [SerializeField]
-        [Tooltip("空中での静止時間")]
-        private float jumpFreezeTime = 1;
-        [SerializeField]
-        [Tooltip("着地時のスピード")]
-        private float dropSpeed = 10;
-        [SerializeField]
-        [Tooltip("着地時コライダー出現継続時間")]
-        private float dropAttackTime = 0.1f;
-        [SerializeField]
-        [Tooltip("立ち上がりにかかる時間")]
-        private float standUpTime = 5;
-        [SerializeField]
-        [Tooltip("死亡アニメーション時間")]
-        private float deathAnimTime = 3.5f;
-        [SerializeField]
-        [Tooltip("死亡SEを鳴らす回数")]
-        private float deathScreamCount = 12;
-        [SerializeField]
-        [Tooltip("死亡SEを鳴らし続ける時間")]
-        private float deathScreamTime = 2.5f;
-
-        private PlayerController player;
-        private StatusManagerBoss statusManager;
-        [Header("その他")]
-
-        [SerializeField]
-        [Tooltip("地面との着地判定線始点")]
-        private Vector3 groundCheckStartPoint = new Vector3(0, 0.5f, 0);
-        [SerializeField]
-        [Tooltip("地面との着地判定線終点")]
-        private Vector3 groundCheckEndPoint = new Vector3(0, -0.5f, 0);
-
-        [SerializeField]
-        [Tooltip("地面のレイヤー")]
-        private LayerMask groundLayer;
-
-        [SerializeField]
-        [Tooltip("歩行時のSEを鳴らす間隔")]
-        private float walkSECooldown;
-
-
-        [SerializeField]
-        GameObject stunEffect;
-
-        [SerializeField]
-        Vector3 stunEffectPos;
-
-        [SerializeField]
-        Vector3 stunEffectScale;
-
-        // ヒップドロップ攻撃のエフェクト
+        /// <summary>
+        /// ヒップドロップ攻撃エフェクトの構造体
+        /// </summary>
         [Serializable]
         private struct ParticleSystems
         {
-            public ParticleSystem[] stump;
+            /// <summary>
+            /// スタンプエフェクトの配列を参照する変数
+            /// </summary>
+            public ParticleSystem[] Stump;
         }
 
-        // structの配列を使うとInspectorで編集できないので個別に宣言
+        /// <summary>
+        /// 着地攻撃コライダーを参照する変数
+        /// </summary>
         [SerializeField]
-        private ParticleSystems particles;
+        private Collider _attackCollider;
+        /// <summary>
+        /// 弱点コライダーを参照する変数
+        /// </summary>
+        [SerializeField]
+        private Collider _weakCollider;
 
-        private GameObject stunEffectObject;
+        /// <summary>
+        /// ダメージエフェクトのプレハブを参照する変数
+        /// </summary>
+        [SerializeField]
+        private GameObject _damageEffect;
+        /// <summary>
+        /// 弱点強調エフェクト
+        /// </summary>
+        [SerializeField]
+        private GameObject _haloEffect;
+        /// <summary>
+        /// 雑魚のprefabを参照する変数
+        /// </summary>
+        [SerializeField]
+        private GameObject _zakoPrefab;
+        /// <summary>
+        /// スタン時のエフェクトを参照する変数
+        /// </summary>
+        [SerializeField]
+        private GameObject _stunEffect;
 
+        /// <summary>
+        /// モデルについてるアニメーターを参照する変数
+        /// </summary>
+        [SerializeField]
+        private Animator _animator;
 
-        //アニメーションID登録
-        static readonly int isWalkingID = Animator.StringToHash("IsWalking");
-        static readonly int standUpID = Animator.StringToHash("Stand");
-        static readonly int hipDropID = Animator.StringToHash("HipDrop");
-        static readonly int dieID = Animator.StringToHash("Die");
-        static readonly int immediatelyWeakID = Animator.StringToHash("ImmediatelyWeak");
+        /// <summary>
+        /// モデルについてるScriptを参照する変数
+        /// </summary>
+        [SerializeField]
+        private ActionSoundsPlayer _model_Script;
 
+        /// <summary>
+        /// 雑魚のスポーン地点を参照する変数
+        /// </summary>
+        [SerializeField]
+        private Vector3 _zakoSpawnOffset;
+        /// <summary>
+        /// 地面との着地判定線始点を参照する変数
+        /// </summary>
+        [SerializeField]
+        private Vector3 _groundCheckStartPoint = new Vector3(0, 0.5f, 0);
+        /// <summary>
+        /// 地面との着地判定線終点を参照する変数
+        /// </summary>
+        [SerializeField]
+        private Vector3 _groundCheckEndPoint = new Vector3(0, -0.5f, 0);
+        /// <summary>
+        /// スタンエフェクトの位置を参照する変数
+        /// </summary>
+        [SerializeField]
+        private Vector3 _stunEffectPos;
+        /// <summary>
+        /// スタンエフェクトのサイズを参照する変数
+        /// </summary>
+        [SerializeField]
+        private Vector3 _stunEffectScale;
 
-        // 何回ダメージ食らったかのカウンター
-        private int damageCounter = 0;
-        private float stunTimer = 0;
-        private bool isStunning = false;
+        /// <summary>
+        /// 地面のレイヤーを参照する変数
+        /// </summary>
+        [SerializeField]
+        private LayerMask _groundLayer;
+
+        /// <summary>
+        /// パーティクルエフェクトを参照する変数
+        /// </summary>
+        [SerializeField]
+        private ParticleSystems _particles;
+
+        /// <summary>
+        /// ジャンプ力を参照する変数
+        /// </summary>
+        [SerializeField]
+        private float _jumpForce = 10;
+        /// <summary>
+        /// 移動速度を参照する変数
+        /// </summary>
+        [SerializeField]
+        private float _moveSpeed = 3;
+        /// <summary>
+        /// 回転速度を参照する変数
+        /// </summary>
+        [SerializeField]
+        private float _rotateSpeed = 11.1f;
+        /// <summary>
+        /// スタン時間を参照する変数
+        /// </summary>
+        [SerializeField]
+        private float _defaultStunTime = 15;
+        /// <summary>
+        /// スタートモーション時間を参照する変数
+        /// </summary>
+        [SerializeField]
+        private float _startMotionTime = 4;
+        /// <summary>
+        /// 次の雑魚が召喚されるまでの待機時間を参照する変数
+        /// </summary>
+        [SerializeField]
+        private float _zakoSummonWaitTime = 0.1f;
+        /// <summary>
+        /// 雑魚の拡散スピード最小値を参照する変数
+        /// </summary>
+        [SerializeField]
+        private float _zakoMinSpreadSpeed;
+        /// <summary>
+        /// 雑魚の拡散スピード最大値を参照する変数
+        /// </summary>
+        [SerializeField]
+        private float _zakoMaxSpreadSpeed;
+        /// <summary>
+        /// 雑魚の拡散時間を参照する変数
+        /// </summary>
+        [SerializeField]
+        private float _zakoSpreadTime;
+        /// <summary>
+        /// 雑魚の移動速度を参照する変数
+        /// </summary>
+        [SerializeField]
+        private float _zakoMoveSpeed;
+        /// <summary>
+        /// 雑魚を吸収可能な範囲を参照する変数
+        /// </summary>
+        [SerializeField]
+        private float _zakoAbsorbRadius;
+        /// <summary>
+        /// 歩行継続時間を参照する変数
+        /// </summary>
+        [SerializeField]
+        private float _walkTime = 2;
+        /// <summary>
+        /// ジャンプ目標のY軸オフセットを参照する変数
+        /// </summary>
+        [SerializeField]
+        private float _jumpTargetOffsetY = 10;
+        /// <summary>
+        /// ヒップドロップ時の中に固定される時間を参照する変数
+        /// </summary>
+        [SerializeField]
+        private float _jump2_FreezeWaitTime = 1;
+        /// <summary>
+        /// 空中での静止時間を参照する変数
+        /// </summary>
+        [SerializeField]
+        private float _jumpFreezeTime = 1;
+        /// <summary>
+        /// 着地時のスピードを参照する変数
+        /// </summary>
+        [SerializeField]
+        private float _dropSpeed = 10;
+        /// <summary>
+        /// 着地時コライダー出現継続時間を参照する変数
+        /// </summary>
+        [SerializeField]
+        private float _dropAttackTime = 0.1f;
+        /// <summary>
+        /// 立ち上がりにかかる時間を参照する変数
+        /// </summary>
+        [SerializeField]
+        private float _standUpTime = 5;
+        /// <summary>
+        /// 死亡アニメーション時間を参照する変数
+        /// </summary>
+        [SerializeField]
+        private float _deathAnimTime = 3.5f;
+        /// <summary>
+        /// 死亡SEを鳴らす回数を参照する変数
+        /// </summary>
+        [SerializeField]
+        private float _deathScreamCount = 12;
+        /// <summary>
+        /// 死亡SEを鳴らし続ける時間を参照する変数
+        /// </summary>
+        [SerializeField]
+        private float _deathScreamTime = 2.5f;
+        /// <summary>
+        /// 歩行時のSEを鳴らす間隔を参照する変数
+        /// </summary>
+        [SerializeField]
+        private float _walkSE_Cooldown;
+
+        /// <summary>
+        /// 何回ダメージを食らったら雑魚を召喚するかの回数を参照する変数
+        /// </summary>
+        [SerializeField]
+        private int _damageCount2_ZakoSummon = 5;
+        /// <summary>
+        /// 一度に召喚する雑魚の数を参照する変数
+        /// </summary>
+        [SerializeField]
+        private int _zakoSummonCount = 3;
+
+        /// <summary>
+        /// プレイヤー操作管理クラスを参照する変数
+        /// </summary>
+        private PlayerController _playerController;
+        /// <summary>
+        /// ボスのステータスを管理するクラスを参照する変数
+        /// </summary>
+        private StatusManagerBoss _statusManagerBoss;
+
+        /// <summary>
+        /// Rigidbodyコンポーネントを参照する変数
+        /// </summary>
+        private Rigidbody _rigidbody;
+
+        /// <summary>
+        /// スタンエフェクトを発生させるオブジェクトを参照する変数
+        /// </summary>
+        private GameObject _stunEffectObject;
+
+        /// <summary>
+        /// 何回ダメージ食らったかのカウンターを参照する変数
+        /// </summary>
+        private int _damageCounter = 0;
+
+        // --- アニメーションデータ ---
+        /// <summary>
+        /// 歩きモーションのIDを参照する変数
+        /// </summary>
+        private static readonly int _isWalkingID = Animator.StringToHash("IsWalking");
+        /// <summary>
+        /// 立ち上がりモーションのIDを参照する変数
+        /// </summary>
+        private static readonly int _standUpID = Animator.StringToHash("Stand");
+        /// <summary>
+        /// ヒップドロップモーションのIDを参照する変数
+        /// </summary>
+        private static readonly int _hipDropID = Animator.StringToHash("HipDrop");
+        /// <summary>
+        /// 死亡モーションのIDを参照する変数
+        /// </summary>
+        private static readonly int _dieID = Animator.StringToHash("Die");
+        /// <summary>
+        /// 弱点発生モーションのIDを参照する変数
+        /// </summary>
+        private static readonly int _immediatelyWeakID = Animator.StringToHash("ImmediatelyWeak");
+
+        /// <summary>
+        /// スタン時間を参照する変数
+        /// </summary>
+        private float _stunTimer = 0;
+
+        /// <summary>
+        /// スタン中かを判別するフラグを参照する変数
+        /// </summary>
+        private bool _isStunning = false;
 
         void Start()
         {
-            rigidbody = GetComponent<Rigidbody>();//Rigidbodyコンポーネント取得
-            statusManager = GetComponent<StatusManagerBoss>();
+            _rigidbody = GetComponent<Rigidbody>();//Rigidbodyコンポーネント取得
+            _statusManagerBoss = GetComponent<StatusManagerBoss>();
 
             // find with tagってやっていいのかな
-            player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+            _playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
 
-            statusManager.OnDamageTaken += Damage;
-            statusManager.OnDeath += Die;
-            statusManager.OnStunTaken += Stun;
-            modelScript.PlayWalkSE += PlayWalkSE;
+            _statusManagerBoss.OnDamageTaken += Damage;
+            _statusManagerBoss.OnDeath += Die;
+            _statusManagerBoss.OnStunTaken += Stun;
+            _model_Script.PlayWalkSE += PlayWalkSE;
 
-            statusManager.isInvincible = false;
-            attackCollider.enabled = false;//攻撃判定無効化
+            _statusManagerBoss.isInvincible = false;
+            _attackCollider.enabled = false;//攻撃判定無効化
 
             // ヒップドロップ攻撃エフェクト停止
-            foreach (ParticleSystem stump in particles.stump)
+            foreach (ParticleSystem _stump in _particles.Stump)
             {
-                stump.Stop();
+                _stump.Stop();
             }
 
             StartCoroutine(OnPose());// スタートモーション開始
@@ -192,17 +310,17 @@ namespace QuickTheFury
         // StatusManagerBossから呼び出される
         public void Damage()
         {
-            damageCounter++;
+            _damageCounter++;
             AudioPlayer.Instance.PlaySE(1);
-            if (damageCounter >= damageCount2ZakoSummon)
+            if (_damageCounter >= _damageCount2_ZakoSummon)
             {
-                StartCoroutine(OnCottonPopsOut(zakoSummonCount));
-                damageCounter = 0;
+                StartCoroutine(OnCottonPopsOut(_zakoSummonCount));
+                _damageCounter = 0;
             }
             // エフェクトをインスタンス化
-            GameObject effect = Instantiate(damageEffect);
+            GameObject effect = Instantiate(_damageEffect);
 
-            effect.transform.position = weakCollider.transform.position;// 弱点コライダーの位置にエフェクトを出す（中山が編集）
+            effect.transform.position = _weakCollider.transform.position;// 弱点コライダーの位置にエフェクトを出す（中山が編集）
 
             Destroy(effect, 5);// エフェクトを5秒後に破壊
         }
@@ -211,34 +329,34 @@ namespace QuickTheFury
         {
             StopAllCoroutines();
             StartCoroutine(OnDie());
-            haloEffect.SetActive(false);
+            _haloEffect.SetActive(false);
 
         }
 
         IEnumerator OnDie()
         {
-            animator.SetTrigger(dieID);
-            attackCollider.enabled = false;
+            _animator.SetTrigger(_dieID);
+            _attackCollider.enabled = false;
 
             int counter = 0;
-            while (counter < deathScreamCount)
+            while (counter < _deathScreamCount)
             {
                 counter++;
-                yield return new WaitForSeconds(deathScreamTime / deathScreamCount);
+                yield return new WaitForSeconds(_deathScreamTime / _deathScreamCount);
                 AudioPlayer.Instance.PlaySE(1);
             }
 
-            yield return new WaitForSeconds(deathAnimTime);
+            yield return new WaitForSeconds(_deathAnimTime);
             MainStageScene.Instance.StageClear();
             Destroy(gameObject);
         }
 
         void OnDestroy()
         {
-            if (statusManager != null)
+            if (_statusManagerBoss != null)
             {
-                statusManager.OnStunTaken -= Stun;
-                statusManager.OnDamageTaken -= Damage;
+                _statusManagerBoss.OnStunTaken -= Stun;
+                _statusManagerBoss.OnDamageTaken -= Damage;
             }
         }
 
@@ -253,7 +371,7 @@ namespace QuickTheFury
 
         IEnumerator OnPose()
         {
-            yield return new WaitForSeconds(startMotionTime);
+            yield return new WaitForSeconds(_startMotionTime);
             StartCoroutine(OnMainThinking());
         }
 
@@ -261,7 +379,7 @@ namespace QuickTheFury
         {
             // 2秒間の間歩く
             float timer = 0;
-            while (timer < walkTime)
+            while (timer < _walkTime)
             {
                 timer += Time.fixedDeltaTime;
 
@@ -270,101 +388,101 @@ namespace QuickTheFury
             }
             // 一連の処理
             yield return OnHipDropAttack();
-            yield return OnStun(defaultStunTime);
+            yield return OnStun(_defaultStunTime);
             yield return OnStandUp();
         }
 
         private void Walk()
         {
             // 移動方向を取得
-            Vector3 moveDirection = (player.transform.position - transform.position).normalized;
+            Vector3 moveDirection = (_playerController.transform.position - transform.position).normalized;
 
             // Yをなくす
             moveDirection.y = 0;
 
             // 移動
-            rigidbody.linearVelocity = moveDirection * moveSpeed;
+            _rigidbody.linearVelocity = moveDirection * _moveSpeed;
 
             // 方向転換
             // 補完スピードを決める
             // ターゲット方向のベクトルを取得
-            Vector3 relativePos = player.gameObject.transform.position - transform.position;
+            Vector3 relativePos = _playerController.gameObject.transform.position - transform.position;
 
             relativePos.y = 0; // X軸の回転は禁止する
 
             // 方向を、回転情報に変換
             Quaternion rotation = Quaternion.LookRotation(relativePos);
             // 現在の回転情報と、ターゲット方向の回転情報を補完する
-            rigidbody.rotation = Quaternion.Slerp(transform.rotation, rotation, rotateSpeed * Time.fixedDeltaTime);
-            animator.SetFloat(isWalkingID, rigidbody.linearVelocity.magnitude);// 歩行アニメーション
+            _rigidbody.rotation = Quaternion.Slerp(transform.rotation, rotation, _rotateSpeed * Time.fixedDeltaTime);
+            _animator.SetFloat(_isWalkingID, _rigidbody.linearVelocity.magnitude);// 歩行アニメーション
         }
 
         IEnumerator OnHipDropAttack()
         {
             // 方向を定める
-            Vector3 direction = ((player.transform.position + new Vector3(0f, jumpTargetOffsetY, 0f)) - transform.position).normalized;
+            Vector3 direction = ((_playerController.transform.position + new Vector3(0f, _jumpTargetOffsetY, 0f)) - transform.position).normalized;
             // スピードに代入
-            rigidbody.linearVelocity = direction * jumpForce;
+            _rigidbody.linearVelocity = direction * _jumpForce;
             // アニメーション
-            animator.SetTrigger(hipDropID);
+            _animator.SetTrigger(_hipDropID);
             // ちょっとまつ
-            yield return new WaitForSeconds(jump2FreezeWaitTime);
+            yield return new WaitForSeconds(_jump2_FreezeWaitTime);
 
             // フリーズ
-            rigidbody.linearVelocity = Vector3.zero;
-            rigidbody.useGravity = false;
-            yield return new WaitForSeconds(jumpFreezeTime / 2);
+            _rigidbody.linearVelocity = Vector3.zero;
+            _rigidbody.useGravity = false;
+            yield return new WaitForSeconds(_jumpFreezeTime / 2);
 
             // ピッチ下げてる影響で、着地後に鳴らすと遅すぎる為ここで鳴らす
             AudioPlayer.Instance.PlaySE(0, 1f, 0.2f);
 
-            yield return new WaitForSeconds(jumpFreezeTime / 2);
+            yield return new WaitForSeconds(_jumpFreezeTime / 2);
 
             // ドロップ
-            rigidbody.useGravity = true;
-            rigidbody.linearVelocity = Vector3.down * dropSpeed;
+            _rigidbody.useGravity = true;
+            _rigidbody.linearVelocity = Vector3.down * _dropSpeed;
 
             // 地面に着地するまで待つ
             bool isGrounded = false;
             while (!isGrounded)
             {
-                isGrounded = Physics.Linecast(transform.position + groundCheckStartPoint, transform.position + groundCheckEndPoint, groundLayer);
+                isGrounded = Physics.Linecast(transform.position + _groundCheckStartPoint, transform.position + _groundCheckEndPoint, _groundLayer);
                 yield return new WaitForFixedUpdate();
             }
 
             // ヒップドロップ攻撃エフェクト再生
-            foreach (ParticleSystem stump in particles.stump)
+            foreach (ParticleSystem stump in _particles.Stump)
             {
                 stump.Play();
             }
 
             // 着地攻撃判定を出す
-            attackCollider.enabled = true;
+            _attackCollider.enabled = true;
             // 攻撃時間待つ
-            yield return new WaitForSeconds(dropAttackTime);
+            yield return new WaitForSeconds(_dropAttackTime);
             // 判定消す
-            attackCollider.enabled = false;
+            _attackCollider.enabled = false;
         }
 
         IEnumerator OnStun(float weakTime)
         {
-            stunTimer = weakTime;
-            isStunning = true;
+            _stunTimer = weakTime;
+            _isStunning = true;
 
-            while (stunTimer >= 0)
+            while (_stunTimer >= 0)
             {
-                stunTimer -= Time.deltaTime;
+                _stunTimer -= Time.deltaTime;
                 yield return null;
             }
-            isStunning = false;
+            _isStunning = false;
         }
 
         IEnumerator OnStandUp()
         {
             // どうするんだ？アニメーション？
-            animator.SetTrigger(standUpID);
+            _animator.SetTrigger(_standUpID);
             // 待つ(アニメーションイベントでもいいかも)
-            yield return new WaitForSeconds(standUpTime);
+            yield return new WaitForSeconds(_standUpTime);
         }
 
 
@@ -373,26 +491,26 @@ namespace QuickTheFury
             for (int i = 0; i < count; i++)
             {
                 // 召喚
-                GameObject go = Instantiate(zakoPrefab, transform.position + zakoSpawnOffset, Quaternion.identity);
+                GameObject go = Instantiate(_zakoPrefab, transform.position + _zakoSpawnOffset, Quaternion.identity);
                 // 召喚したオブジェクトのscriptを持ってくる
                 CottonMonsterMoveAI script = go.GetComponent<CottonMonsterMoveAI>();
                 // Yはプラス、XZは完全ランダムな方向を取得
                 Vector3 dir = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized;
                 // 拡散スピードを決定
-                float spd = Random.Range(zakoMinSpreadSpeed, zakoMaxSpreadSpeed);
+                float spd = Random.Range(_zakoMinSpreadSpeed, _zakoMaxSpreadSpeed);
                 // 初期化
-                script.Initialize(this, dir, spd, zakoSpreadTime, zakoMoveSpeed, zakoSpawnOffset, zakoAbsorbRadius);
+                script.Initialize(this, dir, spd, _zakoSpreadTime, _zakoMoveSpeed, _zakoSpawnOffset, _zakoAbsorbRadius);
                 // 次までの待機
-                yield return new WaitForSeconds(zakoSummonWaitTime);
+                yield return new WaitForSeconds(_zakoSummonWaitTime);
             }
         }
 
         public void Heal()
         {
-            if (statusManager.health % (statusManager.maxHealth / 3) != 0)
+            if (_statusManagerBoss.health % (_statusManagerBoss.maxHealth / 3) != 0)
             {
-                statusManager.health++;
-                MainStageScene.Instance.BossBarUpdate(statusManager.health, statusManager.maxHealth);
+                _statusManagerBoss.health++;
+                MainStageScene.Instance.BossBarUpdate(_statusManagerBoss.health, _statusManagerBoss.maxHealth);
                 AudioPlayer.Instance.PlaySE(14, 1);
             }
         }
@@ -400,7 +518,7 @@ namespace QuickTheFury
         [ContextMenu("STUN")]
         private void Stun()
         {
-            if (!isStunning)
+            if (!_isStunning)
             {
                 // ここで座り込むアニメーション再生が必要かも
 
@@ -410,17 +528,17 @@ namespace QuickTheFury
             else
             {
                 // ひるむ時間を３秒くらいのばす
-                stunTimer = player.StunSkillTime;
+                _stunTimer = _playerController.StunSkillTime;
             }
         }
         IEnumerator OnTakenStun()
         {
-            attackCollider.enabled = false;
-            animator.SetTrigger(immediatelyWeakID);
-            stunEffectObject = Instantiate(stunEffect, this.transform.localPosition + stunEffectPos, Quaternion.identity);
-            stunEffectObject.transform.localScale = stunEffectScale;
-            yield return StartCoroutine(OnStun(player.StunSkillTime));
-            Destroy(stunEffectObject);
+            _attackCollider.enabled = false;
+            _animator.SetTrigger(_immediatelyWeakID);
+            _stunEffectObject = Instantiate(_stunEffect, this.transform.localPosition + _stunEffectPos, Quaternion.identity);
+            _stunEffectObject.transform.localScale = _stunEffectScale;
+            yield return StartCoroutine(OnStun(_playerController.StunSkillTime));
+            Destroy(_stunEffectObject);
             yield return OnStandUp();
             StartCoroutine(OnMainThinking());
         }

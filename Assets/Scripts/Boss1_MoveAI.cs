@@ -5,7 +5,7 @@ using UnityEngine;
 namespace QuickTheFury
 {
     /// <summary>
-    /// ボスの移動・攻撃処理クラス
+    /// 第一ボスの移動・攻撃処理クラス
     /// </summary>
     public class Boss1_MoveAI : MonoBehaviour
     {
