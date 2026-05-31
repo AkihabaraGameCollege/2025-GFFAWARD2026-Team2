@@ -3,40 +3,59 @@ using System.Collections;
 
 namespace QuickTheFury
 {
-    // カメラのコントロールを行うスクリプト（中山が編集）
+    /// <summary>
+    /// カメラのコントロールを行うクラス
+    /// </summary>
     public class CameraController : MonoBehaviour
     {
-        // オブジェクト参照用（中山が編集）
+        /// <summary>
+        /// プレイヤーカメラを参照する変数
+        /// </summary>
         [SerializeField]
-        private GameObject playerCam;
+        private GameObject _playerCamera;
+        /// <summary>
+        /// ボスカメラを参照する変数
+        /// </summary>
         [SerializeField]
-        private GameObject bossCam;
+        private GameObject _bossCamera;
 
-        // パーティクル参照用（中山が編集）
+        /// <summary>
+        /// パーティクルエフェクトを参照する変数
+        /// </summary>
         [SerializeField]
-        private ParticleSystem particle;
+        private ParticleSystem _particle;
 
-        // 時間指定用変数（中山が編集）
+        /// <summary>
+        /// プレイヤー操作を管理するクラスを参照する変数
+        /// </summary>
         [SerializeField]
-        private float waitTime = 3f;
-        [SerializeField]
-        private float switchTime = 3f;
+        private PlayerController _playerController;
 
-        // スクリプト参照用（中山が編集）
+        /// <summary>
+        /// カメラ操作までの待機時間を参照する変数
+        /// </summary>
         [SerializeField]
-        private PlayerController player;
+        private float _waitTime = 3f;
+        /// <summary>
+        /// カメラを入れ替える時間を参照する変数
+        /// </summary>
+        [SerializeField]
+        private float _switchTime = 3f;
 
-        bool isSwitched;
+        /// <summary>
+        /// 入れ替えるかを判別するフラグを参照する変数
+        /// </summary>
+        private bool _isSwitched;
 
         // オンオフ切り替え用フラグ（中山が編集）
         void Start()
         {
             // 初期設定（中山が編集）
-            isSwitched = false;
-            playerCam.SetActive(false);
+            _isSwitched = false;
+            _playerCamera.SetActive(false);
 
-            player.Sleep();// プレイヤーを行動不能（中山が編集）
-            particle.Stop();// パーティクル停止（中山が編集）
+           _playerController.Sleep();// プレイヤーを行動不能（中山が編集）
+            _particle.Stop();// パーティクル停止（中山が編集）
 
             StartAngle();// アクション開始（中山が編集）
         }
@@ -50,24 +69,24 @@ namespace QuickTheFury
         // アクション中の処理（中山が編集）
         private IEnumerator OnStartAngle()
         {
-            yield return new WaitForSeconds(waitTime);// 指定時間待機（中山が編集）
-            particle.Play();// パーティクル再生（中山が編集）
-            yield return new WaitForSeconds(switchTime);// 指定時間待機（中山が編集）
+            yield return new WaitForSeconds(_waitTime);// 指定時間待機（中山が編集）
+            _particle.Play();// パーティクル再生（中山が編集）
+            yield return new WaitForSeconds(_switchTime);// 指定時間待機（中山が編集）
 
             // フラグを立ててカメラを切り替える（中山が編集）
-            isSwitched = true;
-            player.WakeUp();
+            _isSwitched = true;
+            _playerController.WakeUp();
         }
 
         // 毎フレームの更新処理（中山が編集）
         void Update()
         {
             // フラグが立っていなかったらカメラを切り替える（中山が編集）
-            if (isSwitched)
+            if (_isSwitched)
             {
-                playerCam.SetActive(!playerCam.activeSelf);// プレイヤーカメラを有効にする（中山が編集）
-                bossCam.SetActive(!bossCam.activeSelf);// ボスカメラを無効にする（中山が編集）
-                isSwitched = false;
+                _playerCamera.SetActive(!_playerCamera.activeSelf);// プレイヤーカメラを有効にする（中山が編集）
+                _bossCamera.SetActive(!_bossCamera.activeSelf);// ボスカメラを無効にする（中山が編集）
+                _isSwitched = false;
             }
         }
     }
