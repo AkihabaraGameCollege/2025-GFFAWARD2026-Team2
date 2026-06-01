@@ -47,17 +47,22 @@ namespace QuickTheFury
         /// </summary>
         private bool _isSwitched;
 
-        // オンオフ切り替え用フラグ（中山が編集）
-        void Start()
+        /// <summary>
+        /// 初期設定を行う関数
+        /// </summary>
+        private void Start()
         {
-            // 初期設定（中山が編集）
+            // --- 各変数のオンオフ準備 ---
             _isSwitched = false;
             _playerCamera.SetActive(false);
 
-           _playerController.Sleep();// プレイヤーを行動不能（中山が編集）
-            _particle.Stop();// パーティクル停止（中山が編集）
+            // プレイヤーを行動不能
+            _playerController.Sleep();
+            // パーティクル停止
+            _particle.Stop();
 
-            StartAngle();// アクション開始（中山が編集）
+            // アクション開始
+            StartAngle();
         }
 
         // アクション開始時の処理（中山が編集）

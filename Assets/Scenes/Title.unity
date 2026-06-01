@@ -2105,10 +2105,10 @@ MonoBehaviour:
   StartButton: {fileID: 1004716220}
   skipButtonAppearWaitTime: 1.1
   outroTime: 4
-  AskUI: {fileID: 0}
-  NoButton: {fileID: 0}
-  ConfirmUI: {fileID: 0}
-  BackButton: {fileID: 0}
+  AskUI: {fileID: 1874660816}
+  NoButton: {fileID: 2112277371}
+  ConfirmUI: {fileID: 252666620}
+  BackButton: {fileID: 1455878239}
 --- !u!4 &1976859859
 Transform:
   m_ObjectHideFlags: 0
