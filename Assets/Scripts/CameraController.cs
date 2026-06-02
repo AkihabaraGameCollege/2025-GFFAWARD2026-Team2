@@ -65,32 +65,48 @@ namespace QuickTheFury
             StartAngle();
         }
 
-        // アクション開始時の処理（中山が編集）
+        /// <summary>
+        /// アクション開始時の処理を呼び出す関数
+        /// </summary>
         public void StartAngle()
         {
-            StartCoroutine(OnStartAngle());// コルーチン開始（中山が編集）
+            // コルーチン開始
+            StartCoroutine(StartAngleCoroutine());
         }
 
-        // アクション中の処理（中山が編集）
-        private IEnumerator OnStartAngle()
+        /// <summary>
+        /// アクション中の処理を行うコルーチン
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator StartAngleCoroutine()
         {
-            yield return new WaitForSeconds(_waitTime);// 指定時間待機（中山が編集）
-            _particle.Play();// パーティクル再生（中山が編集）
-            yield return new WaitForSeconds(_switchTime);// 指定時間待機（中山が編集）
+            // 指定時間待機
+            yield return new WaitForSeconds(_waitTime);
+            // パーティクル再生
+            _particle.Play();
+            // 指定時間待機
+            yield return new WaitForSeconds(_switchTime);
 
-            // フラグを立ててカメラを切り替える（中山が編集）
+            // --- フラグを立ててカメラを切り替える ---
+            // カメラを入れ替えるフラグを立てる
             _isSwitched = true;
+            // プレイヤーを行動可能にする
             _playerController.WakeUp();
         }
 
-        // 毎フレームの更新処理（中山が編集）
-        void Update()
+        /// <summary>
+        /// 毎フレームの更新処理を行う関数
+        /// </summary>
+        private void Update()
         {
-            // フラグが立っていなかったらカメラを切り替える（中山が編集）
+            // もし入れ替えるフラグが立っていた場合
             if (_isSwitched)
             {
-                _playerCamera.SetActive(!_playerCamera.activeSelf);// プレイヤーカメラを有効にする（中山が編集）
-                _bossCamera.SetActive(!_bossCamera.activeSelf);// ボスカメラを無効にする（中山が編集）
+                // プレイヤーカメラを有効にする
+                _playerCamera.SetActive(!_playerCamera.activeSelf);
+                // ボスカメラを無効にする
+                _bossCamera.SetActive(!_bossCamera.activeSelf);
+                // 入れ替えフラグを下ろす
                 _isSwitched = false;
             }
         }
