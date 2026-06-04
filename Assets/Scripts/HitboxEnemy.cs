@@ -3,14 +3,15 @@ using UnityEngine;
 
 namespace QuickTheFury
 {
-    // ボスの当たり判定のスクリプト（中山が移植）
+    /// <summary>
+    /// ボスの当たり判定を管理するクラス
+    /// </summary>
     public class HitboxEnemy : MonoBehaviour
     {
-        // 注意: このColliderが衝突する条件は、Unityの「Project Settings」->「Physics」の
-        //       「Layer Collision Matrix」で設定されています。
-        //       例: 「EnemyAttack」レイヤーは「PlayerHitbox」レイヤーのみ衝突が許可されている必要があります。
-
-        public event Action<int, bool> OnHit;
+        /// <summary>
+        /// ヒットしたときのアクションを参照する変数
+        /// </summary>
+        public event Action<int, bool> HitAction;
 
         private void OnTriggerEnter(Collider other)
         {
@@ -32,12 +33,12 @@ namespace QuickTheFury
                 // ダッシュアタックならダッシュアタックコライダー側にヒットを送る
                 colliderScript.Hit();
                 // かつスタンを強制オフ
-                OnHit?.Invoke(dam, false);
+                HitAction?.Invoke(dam, false);
             }
             else
             {
                 // ダッシュアタックでないなら通常攻撃
-                OnHit?.Invoke(dam, playerScript.IsStunable);
+                HitAction?.Invoke(dam, playerScript.IsStunable);
             }
         }
     }

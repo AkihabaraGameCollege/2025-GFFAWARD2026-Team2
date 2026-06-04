@@ -35,7 +35,7 @@ namespace QuickTheFury
         public void Initialize(Boss2_MoveAI script, Vector3 direction, float spreadSpeed, float spreadTime, float moveSpeed, Vector3 spawnOffset, float absorbRad)
         {
             rb = GetComponent<Rigidbody>();
-            hitbox.OnHit += OnDamageTaken;
+            hitbox.HitAction += OnDamageTaken;
 
 
             bossScript = script;
@@ -81,7 +81,7 @@ namespace QuickTheFury
             GameObject effect = Instantiate(defeatEffect);// ダメージエフェクト生成（中山が編集）
             effect.transform.position = transform.position;// エフェクト位置設定（中山が編集）
 
-            hitbox.OnHit -= OnDamageTaken;
+            hitbox.HitAction -= OnDamageTaken;
             Destroy(gameObject);
         }
         [ContextMenu("Destroy")]

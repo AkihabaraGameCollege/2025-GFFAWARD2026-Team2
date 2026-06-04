@@ -33,7 +33,7 @@ namespace QuickTheFury
         void Awake()
         {
 
-            hitbox.OnHit += Hit;
+            hitbox.HitAction += Hit;
 
             health = maxHealth;
 
@@ -78,7 +78,7 @@ namespace QuickTheFury
         {
             if (hitbox != null)
             {
-                hitbox.OnHit -= Hit;
+                hitbox.HitAction -= Hit;
             }
         }
     }
